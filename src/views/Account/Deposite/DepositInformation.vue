@@ -14,7 +14,7 @@
                 <div class="bg-white pt-[50px] pb-[20px]">
                     <div class="flex justify-center items-end">
                         <p class="pb-[2px]">￥</p>
-                        <p class="text-[25px] font-bold">1,000.00</p>
+                        <p class="text-[25px] font-bold">{{money}}</p>
                     </div>
                     <div class="flex justify-center">
                         <p class="font-bold">壹仟圆整</p>
@@ -38,10 +38,10 @@
                         <p class="">易币付虚拟币</p>
                     </div>
                     <div class="flex justify-between">
-                        <p class="">Wallet Address</p>
+                        <p class="">{{isCrypto ?  'Wallet Address' :'订单号'}}</p>
                         <div class="flex items-center">
                             <p class="pr-1"
-                                >{{address}}</p
+                                >{{isCrypto ? bank?.bankaddress: bank?.bankno }}</p
                             >
                             <img
                                 class="w-[10px] h-[13px]"
@@ -57,7 +57,7 @@
                             <p class="text-blue-500">取消存款申请</p>
                         </button>
 
-                        <button class="button_1 flex w-full justify-center  py-1 border-2 border-blue-500 rounded-sm bg-blue-500">
+                        <button class="button_1 flex w-full justify-center  py-1 border-2 border-blue-500 rounded-sm bg-blue-500" @click="submitResult">
                             <p class="text-white">确定</p>
                         </button>
                     </div>
@@ -88,20 +88,26 @@ import { storeToRefs } from "pinia";
 import { useDepositStore } from '@/stores/deposit';
 const route = useRoute();
 const show = ref(false);
-const address = ref('');
+const bank = ref();
+const money = ref(0);
+const name = ref('');
 const {
-    getBanks
+    getBanks,
+    isCrypto
 } = storeToRefs(useDepositStore());
+const {
+    sumbitDeposit
+} = useDepositStore();
 onMounted(() => {
-    let bankID = route.params.bankID
+    let bankID  = route.params.bankID;
+    money.value = route.params.money;
+    name.value = route.params.name;
     getBanks.value.map((item:any) => {
-        console.log(item.ID,bankID)
-        if(item.ID === bankID){
-            address.value = item.address;
+        if(item.ID === parseInt(bankID.toString())){
+            bank.value = item;
         }
     })
-}
-)
+})
 const onClick_1 = () => {
     router.push({ name: 'depositInformation' });
 }
@@ -118,9 +124,20 @@ const commit = () => {
         message: "订单已取消",
         icon: new URL('@/assets/images/account/icon-success.png', import.meta.url).href,
     })
+    router.go(-1)
 }
 const deleteResult = () => {
     show.value = true;
+}
+const submitResult = async () => {
+    let response = await sumbitDeposit(bank.value, money.value, name.value);
+    if(response.success){
+        showToast({
+            message: "存款成功",
+            icon: new URL('@/assets/images/account/icon-success.png', import.meta.url).href,
+        })
+        router.go(-1)
+    }
 }
 </script>
 <style scoped lang="scss">
