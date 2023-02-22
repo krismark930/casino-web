@@ -81,8 +81,8 @@ import { toRefs ,ref} from 'vue';
 import router from '@/router';
 const amountFlag = ref(false);
 const amount = ref('');
-const state = defineProps<{tokenList:Array<any>, bankId:string}>();
-const { tokenList, bankId } = toRefs(state);
+const state = defineProps<{tokenList:Array<any>}>();
+const { tokenList } = toRefs(state);
 const tokenActive = ref('TRC20');
 const emit = defineEmits(['selectToken']);
 const amountChange = () => {
@@ -103,7 +103,7 @@ const onSubmit = () => {
     if(amount.value <= 100){
         amountFlag.value = true;
     }else{
-        router.push({ name: 'depositInformation', params:{ bankID: (temp as any).bankID}});
+        router.push({ name: 'depositInformation', params:{name:'crypto', bankID: (temp as any).bankID, money: amount.value}});
     }
 }
 </script>

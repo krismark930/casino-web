@@ -11,11 +11,13 @@ export const useDepositStore = defineStore({
     banks: [] as Array<any>,
     currencyRate: 1,
     walletAddress: '',
+    isCrypto: true,
   }),
   getters:{
     getBanks: (state) => state.banks,
     getCurrencyRate: (state) => state.currencyRate,
     getWalletAddress: (state) => state.walletAddress,
+    getIsCrypto: (state) => state.isCrypto
   },
   actions:{
     setBanks(banks:string){
@@ -27,6 +29,9 @@ export const useDepositStore = defineStore({
     setWalletAddress(walletAddress: string){
       this.walletAddress = walletAddress;
     },
+    setIsCrypto(isCrypto: boolean){
+      this.isCrypto = isCrypto;
+    },
     async getBankList() {
       try {
         const url = config.api.BANK_LIST;
@@ -37,6 +42,25 @@ export const useDepositStore = defineStore({
         return e;
       }
     },
+    async sumbitDeposit(bank:any , amount: number, name: string) {
+      try{
+        console.log(amount)
+        const url = config.api.DEPOSIT;
+        let data = {
+          isCrypto: this.isCrypto,
+          money: amount,
+          name : name,
+          bankName: bank.bankname,
+          bankAddress: bank.bankaddress,
+          bankNo: bank.bankno
+        };
+        
+        const response = (await axios.post(url, data)).data;
+        return response;
+      }catch(e){
+        
+      }
+    }
   },
   persist:{
     enabled:true

@@ -34,7 +34,7 @@
        
         <div class="flex-col bg-white">
             <div class="px-2 pt-2">
-                <button :class="[amount ? 'bg-blue-500' : 'bg-blue-200']"
+                <button :class="[name ? 'bg-blue-500' : 'bg-blue-200']"
                     class="text-[18px] flex justify-center bg-blue-500 text-white rounded-sm w-full py-1"
                     @click="onClick_1">
                     <span class="text_20">立即存款</span>
@@ -50,12 +50,15 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, toRefs } from 'vue';
 import router from '@/router';
 
 const tokenActive = ref(1);
 const name = ref('');
 const amount = ref(109);
+const state = defineProps<{bank: any}>();
+const { bank } = toRefs(state);
+
 const currencyList = ref([
     {
         id: 1,
@@ -83,7 +86,10 @@ const selectToken = (item: any) => {
     amount.value = item.value;
 };
 const onClick_1 = () => {
-    router.push({ name: 'depositInformation' });
+    console.log(name.value)
+    if(name.value){
+        router.push({ name: 'depositInformation', params:{name: name.value, bankID: bank.value.bankID, money: amount.value}});
+    }
 }
 </script>
 

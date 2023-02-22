@@ -161,7 +161,7 @@ const router = createRouter({
                     }
                 },
                 {
-                    path: '/depositInformation/:bankID',
+                    path: '/depositInformation/:name/:bankID/:money',
                     name: 'depositInformation',
                     component: () =>
                         import(

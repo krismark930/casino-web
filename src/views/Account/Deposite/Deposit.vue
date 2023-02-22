@@ -17,7 +17,7 @@
 
                     <div class="box_1">
                         <div class="flex justify-start gap-1">
-                            <div v-for="(item, index) in cryptoList" :key="index" @click="selectCategory(index)"
+                            <div v-for="(item, index) in cryptoList" :key="index" @click="selectCategory(index,item)"
                                 :class="[
                                     active === index
                                         ? 'border border-blue-600'
@@ -48,12 +48,11 @@
                 </div>
 
                 <currency-recharge v-if="active === 0" :tokenList="cryptoList[active]?.subBank&&cryptoList[active]?.subBank[active]"
-                    :bankId="cryptoList[active].ID"
-                    @selectToken="selectToken" />
-                <yebi-currency v-if="active === 1" :tokenList="tokenList" :tokenActive="tokenActive"
-                    @selectToken="selectToken" />
-                <bank-card v-if="active === 3" />
-                <alipay-currency v-if="active === 4" />
+                   />
+                <!-- <yebi-currency v-if="active === 1" :tokenList="tokenList" :tokenActive="tokenActive"
+                    @selectToken="selectToken" /> -->
+                <bank-card v-if="active === 1" :bank="cryptoList[active]"/>
+                <!-- <alipay-currency v-if="active === 4" /> -->
             </div>
         </div>
     </div>
@@ -71,10 +70,12 @@ const active = ref(0);
 const tokenActive = ref(1);
 
 const {
-    getBanks
+    getBanks,
+    isCrypto
 } = storeToRefs(useDepositStore());
 const {
-    getBankList
+    getBankList,
+    setIsCrypto
 } = useDepositStore();
 const cryptoList = ref([
     {
@@ -179,6 +180,7 @@ onMounted(async () => {
     });
     let tempBank = cryptoList.value
     for(var i = 0 ; i< bankList.length; i++){
+        tempBank[i].bankID = bankList[i].ID;
         tempBank[i].name = bankList[i].bankname;
         tempBank[i].bankaddress = bankList[i].bankaddress;
         tempBank[i].bankname = bankList[i].bankname;
@@ -198,8 +200,13 @@ const tokenList = ref([
         name: 'ERC20'
     }
 ]);
-const selectCategory = (name: number) => {
-    active.value = name;
+const selectCategory = (index: number, bank: any) => {
+    active.value = index;
+    if(bank.name === "虚拟币种类"){
+        setIsCrypto(true)
+    }else{
+        setIsCrypto(false)
+    }
 };
 const selectToken = (id: number) => {
     tokenActive.value = id;
