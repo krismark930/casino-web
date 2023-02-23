@@ -81,6 +81,9 @@
                 <input type="number" v-model="amount" @input="amountChange" placeholder="" name="name" id="name"
                     class="ml-1 bg-gray-50block w-full border-0 border-b border-transparent placeholder-[#CBCBCB] placeholder:text-[12px] text-[25px] font-bold" />
             </div>
+            <p v-if="alertMessage" class="px-2 py-[5px] text-[12px] text-red-500 bg-gray-100 ml-10">
+                {{alertMessage}}
+            </p>
             <div class=" px-2  flex  text-[10px] mt-2 flex justify-center">
                 <p>如需帮助，请 <span class="text-blue-500">联系客服</span></p>
             </div>
@@ -93,7 +96,7 @@
                 <!-- <button class="button_1 flex w-full justify-center  py-1 border-2 border-blue-500 rounded-sm" @click="deleteResult">
                     <p class="text-blue-500">取消存款申请</p>
                 </button> -->
-                <button class="button_1 flex w-full justify-center  py-1 border-2 border-blue-500 rounded-sm bg-blue-500" @click="submitResult">
+                <button :class="[amount && type.value ? 'bg-blue-500 border-blue-500':'bg-blue-200 border-blue-200']" class="button_1 flex w-full justify-center  py-1 border-2  rounded-sm " @click="submitResult">
                     <p class="text-white text-[12px]">确定</p>
                 </button>
             </div>
@@ -108,6 +111,23 @@ import { Picker, showToast } from 'vant';
 import { useAuthStore } from '@/stores/auth';
 import { useSysConfigStore } from '@/stores/sysConfig';
 import { storeToRefs } from 'pinia';
+import { useTransferStore } from '@/stores/transfer';
+const type = ref({title:'', value:''});
+const showPicker = ref(false);
+const tokenActive = ref(1);
+const active = ref(1);
+const checked = ref(true);
+const amount = ref(0);
+const alertMessage = ref("");
+
+////////////////////////////
+const Credit_AG = ref('');
+const Credit_OG = ref('');
+const Credit_BBIN = ref('');
+const Credit_MG = ref('');
+const Credit_PT = ref('');
+const Credit_KY = ref('');
+
 const {
     user,
 } = storeToRefs(useAuthStore());
@@ -121,7 +141,9 @@ const {
 const {
     getSysConfigValue
 } = useSysConfigStore();
-
+const {
+    sumbitTransfer
+} = useTransferStore();
 onMounted( async ()=>{
     await signIn('test1111', 'test111123');
     console.log(user.value)
@@ -130,24 +152,9 @@ onMounted( async ()=>{
     console.log(user.value.AG&&sysConfig.value.AG ? "true":"false")
 })
 
-const type = ref({title:'', value:''});
-const showPicker = ref(false);
-const tokenActive = ref(1);
-const active = ref(1);
-const checked = ref(true);
-const amount = ref(0);
-const tokenList = ref([
-    {
-        id: 1,
-        name: '预约取款',
-        disccount: true
-    },
-    {
-        id: 2,
-        name: '即时取款',
-        disccount: false
-    }
-]);
+const amountChange = () => {
+    alertMessage.value = "";
+}
 
 const moneyList = ref([
     {
@@ -230,49 +237,107 @@ const itemList = ref([
     },
 
 ])
-const selectList = ref([
-    {
-        name: '极速取款',
-        id: 1
-    },
-    {
-        name: 'USDT提币',
-        id: 2
-    }
-]);
-const onClick_1 = () => {
-    //alert(1);
-};
-const selectToken = (id: number) => {
-    tokenActive.value = id;
-};
+
 const onClickLeft = () => {
     router.go(-1);
 };
-const selectCategory = (id: number) => {
-    active.value = id;
-};
-const selectTime = (id:number) => {
-    active.value = id;
-}
-
-
 
 const selectType = (value:string, title:string) => {
     type.value = {title: title, value:value}
     showPicker.value = false
 };
 
-const onCancel = () => {
-    type.value = ''
-};
-
-const submitResult = () => {
-    verifyData();
+const submitResult = async () => {
+    await sumbitTransfer(user.value.ID, amount.value, type.value.value);
+    // const result = verifyData();
+    // if(result){
+    //     await sumbitTransfer(user.value.ID, amount.value, type.value.value);
+    // }
 }
 const verifyData = () => {
-    if (amount.value <= 0 ){
-        
+    console.log(user.value.Money )
+    if (amount.value < sysConfig.value.min_change_money ){
+        alertMessage.value = "转账金额不能小于"+sysConfig.value.min_change_money+"元!";
+        return false;
     }
+    if(type.value.value=="AGIN" || type.value.value=="OGIN" || type.value.value=="BBIN" || type.value.value=="MGIN" || type.value.value=="PTIN" || type.value.value=="KYIN"){
+		if(amount.value > user.value.Money){
+            alertMessage.value = "转账金额不能大于钱包的额度！";
+			return false;
+		}
+	}
+    if(user.value.AG && sysConfig.value.AG){
+        if(type.value.value=="AGOUT"){
+            if(Credit_AG==-1 || Credit_AG==-99){
+                alert("数据读取中，请稍候!");
+                return false;
+            }
+            if(amount.value > Credit_AG){
+                alert("转账金额不能大于真人的额度！");
+                return false;
+            }
+	    }
+    }if(user.value.BBIN && sysConfig.value.BBIN){
+        if(type.value.value=="BBOUT"){
+			if(Credit_BBIN==-1 || Credit_BBIN==-99){
+				alert("数据读取中，请稍候!")
+				return false;
+			}
+			if(amount.value>Credit_BBIN){
+                alert("转账金额不能大于真人的额度！");
+                return false;
+			}
+		}
+    }
+    if(user.value.OG && sysConfig.value.OG){
+        if(type.value.value=="OGOUT"){
+			if(Credit_OG==-1 || Credit_OG==-99){
+				alert("数据读取中，请稍候!")
+				return false;
+			}
+			if(amount.value>Credit_OG){
+                alert("转账金额不能大于真人的额度！");
+                return false;
+			}
+		}
+    }
+    if(user.value.MG && sysConfig.value.MG){
+        if(type.value.value=="MGOUT"){
+			if(Credit_OG==-1 || Credit_OG==-99){
+				alert("数据读取中，请稍候!")
+				return false;
+			}
+			if(amount.value>Credit_MG){
+                alert("转账金额不能大于真人的额度！");
+                return false;
+			}
+		}
+    }
+    if(user.value.PT && sysConfig.value.PT){
+        if(type.value.value=="PTOUT"){
+			if(Credit_OG==-1 || Credit_OG==-99){
+				alert("数据读取中，请稍候!")
+				return false;
+			}
+			if(amount.value>Credit_PT){
+                alert("转账金额不能大于真人的额度！");
+                return false;
+			}
+		}
+    }
+    if(user.value.KY && sysConfig.value.KY){
+        if(type.value.value=="KYOUT"){
+			if(Credit_OG==-1 || Credit_OG==-99){
+				alert("数据读取中，请稍候!")
+				return false;
+			}
+			if(amount.value>Credit_KY){
+                alert("转账金额不能大于真人的额度！");
+                return false;
+			}
+		}
+    }
+    alert('正在转账中，请耐心等待！');
+    return true;
 } 
 </script>
