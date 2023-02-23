@@ -43,7 +43,7 @@ export default {
 		resultData (gametype:any, selectedDate:any) {
 			if (gametype == 0) {
 				console.log(selectedDate)
-				axios.post("http://127.0.0.1:8000/api/get_result_ft", {
+				axios.post("http://127.0.0.1:8000/api/result/get_result_ft", {
 				date:formatDate(selectedDate) 
 				// date:"2021-06-29" //  Test Mode  //
 				})
