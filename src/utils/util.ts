@@ -78,7 +78,18 @@ export const inArray = (need:any, arr:any) => {
     }
     return format.replace(regex, _replace)
   }
-  
+  // 日期格式
+  export const formatDate = (date:any) => {
+    var year = date.getFullYear();
+    var month = date.getMonth();
+    var day = date.getDate();
+    var dateStr = "" + year;
+    if(month + 1 < 10) dateStr += ("-0"+(month+1));
+    else dateStr += ("-"+(month+1));
+    if(day < 10) dateStr += ("-0"+day);
+    else dateStr += ("-"+day);
+    return dateStr;
+  } 
   //  数组去重
   export const unique = (arr:any) => {
     return Array.from(new Set(arr))
