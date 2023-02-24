@@ -290,7 +290,7 @@
 					let url = config.api.GET_SPORTS_DATA;
 					let data = {
 					type: '',
-					m_date: '2021-07-13',
+					m_date: '2021-07-11',
 					get_type: '',
 					}
 					const response = (await axios.post(url, data)).data;

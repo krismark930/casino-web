@@ -1,3 +1,26 @@
+<script lang="ts">
+    import { defineComponent } from 'vue'
+    import { storeToRefs } from 'pinia';
+    import { useAuthStore } from '@/stores/auth';
+    export default defineComponent({
+        data() {
+        return {
+            userData: []
+        }
+    },
+        mounted() {
+            const {
+                getToken,
+                getUser,
+            } = storeToRefs(useAuthStore());
+            this.userData=getUser.value;
+            if(!getUser.value.ID){
+                router.push({name:'my'})
+            }
+        },
+        
+    })
+</script>
 <template>
     <div class="animated fadeInLeft">
         <van-nav-bar class="border-b-2 border-gray-300" fixed @click-left="onClickLeft">
@@ -19,7 +42,7 @@
                     
                     <div class="w-full">
                         <div class="pl-2 flex ">
-                            <p class="font-bold text-[17px]">ACC822</p>
+                            <p class="font-bold text-[17px]">{{userData.UserName}}</p>
                         </div>
                         <div  class="pl-2 flex text-[13px]">
                             <p class="text-gray-500">加入开运体育第22天</p>
@@ -81,7 +104,7 @@
                         </div>
                         <div class="text-[14px] pt-[10px] text-black flex items-center">
                             <span class="text-[16px] font-bold">￥</span>
-                            <span class="text-[20px] font-bold">2,000.00</span>
+                            <span class="text-[20px] font-bold">{{userData.Money}}</span>
                             <img class="w-[15px] ml-1" src="@/assets/images/withdraw/icon-refresh.png"/>
                         </div>
                     </div>
