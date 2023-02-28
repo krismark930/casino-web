@@ -145,7 +145,7 @@ const {
     sumbitTransfer
 } = useTransferStore();
 onMounted( async ()=>{
-    await signIn('test1111', 'test111123');
+    await signIn('test1', 'test1123');
     console.log(user.value)
     await getSysConfigValue();
     console.log(sysConfig.value)
@@ -248,11 +248,11 @@ const selectType = (value:string, title:string) => {
 };
 
 const submitResult = async () => {
-    await sumbitTransfer(user.value.ID, amount.value, type.value.value);
-    // const result = verifyData();
-    // if(result){
-    //     await sumbitTransfer(user.value.ID, amount.value, type.value.value);
-    // }
+    //const result = verifyData();
+    //if(result){
+        const response = await sumbitTransfer(user.value.ID, amount.value, type.value.value);
+        showToast(response.message);
+    //}
 }
 const verifyData = () => {
     console.log(user.value.Money )
@@ -269,22 +269,22 @@ const verifyData = () => {
     if(user.value.AG && sysConfig.value.AG){
         if(type.value.value=="AGOUT"){
             if(Credit_AG==-1 || Credit_AG==-99){
-                alert("数据读取中，请稍候!");
+                showToast("数据读取中，请稍候!");
                 return false;
             }
             if(amount.value > Credit_AG){
-                alert("转账金额不能大于真人的额度！");
+                showToast("转账金额不能大于真人的额度！");
                 return false;
             }
 	    }
     }if(user.value.BBIN && sysConfig.value.BBIN){
         if(type.value.value=="BBOUT"){
 			if(Credit_BBIN==-1 || Credit_BBIN==-99){
-				alert("数据读取中，请稍候!")
+				showToast("数据读取中，请稍候!")
 				return false;
 			}
 			if(amount.value>Credit_BBIN){
-                alert("转账金额不能大于真人的额度！");
+                showToast("转账金额不能大于真人的额度！");
                 return false;
 			}
 		}
@@ -292,11 +292,11 @@ const verifyData = () => {
     if(user.value.OG && sysConfig.value.OG){
         if(type.value.value=="OGOUT"){
 			if(Credit_OG==-1 || Credit_OG==-99){
-				alert("数据读取中，请稍候!")
+				showToast("数据读取中，请稍候!")
 				return false;
 			}
 			if(amount.value>Credit_OG){
-                alert("转账金额不能大于真人的额度！");
+                showToast("转账金额不能大于真人的额度！");
                 return false;
 			}
 		}
@@ -304,11 +304,11 @@ const verifyData = () => {
     if(user.value.MG && sysConfig.value.MG){
         if(type.value.value=="MGOUT"){
 			if(Credit_OG==-1 || Credit_OG==-99){
-				alert("数据读取中，请稍候!")
+				showToast("数据读取中，请稍候!")
 				return false;
 			}
 			if(amount.value>Credit_MG){
-                alert("转账金额不能大于真人的额度！");
+                showToast("转账金额不能大于真人的额度！");
                 return false;
 			}
 		}
@@ -316,11 +316,11 @@ const verifyData = () => {
     if(user.value.PT && sysConfig.value.PT){
         if(type.value.value=="PTOUT"){
 			if(Credit_OG==-1 || Credit_OG==-99){
-				alert("数据读取中，请稍候!")
+				showToast("数据读取中，请稍候!")
 				return false;
 			}
 			if(amount.value>Credit_PT){
-                alert("转账金额不能大于真人的额度！");
+                showToast("转账金额不能大于真人的额度！");
                 return false;
 			}
 		}
@@ -328,16 +328,15 @@ const verifyData = () => {
     if(user.value.KY && sysConfig.value.KY){
         if(type.value.value=="KYOUT"){
 			if(Credit_OG==-1 || Credit_OG==-99){
-				alert("数据读取中，请稍候!")
+				showToast("数据读取中，请稍候!")
 				return false;
 			}
 			if(amount.value>Credit_KY){
-                alert("转账金额不能大于真人的额度！");
+                showToast("转账金额不能大于真人的额度！");
                 return false;
 			}
 		}
     }
-    alert('正在转账中，请耐心等待！');
     return true;
 } 
 </script>

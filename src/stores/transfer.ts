@@ -52,9 +52,7 @@ export const useTransferStore = defineStore({
           money: amount,
           type : type,
         };
-        
         const response = (await axios.post(url, data)).data;
-        console.log(response)
         return response;
       }catch(e){
         
