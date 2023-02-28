@@ -32,7 +32,7 @@
       和
       <span>隐私政策</span>
     </div>
-    <button v-if="!username || !password || !isVerification || !passwords" class="submit_btn">
+    <button v-if="!username || !password || !isVerification || !passwords" class="submit_btn" @click="register">
       登录
     </button>
     <button v-else class="submit_btn2">登录</button>
@@ -43,6 +43,21 @@
 <script setup lang="ts">
 import verification from "./verification.vue";
 import { ref } from "vue";
+import { useAuthStore } from "@/stores/auth";
+import { storeToRefs } from "pinia";
+import axios from "axios";
+import config from "@/config";
+import router from "@/router";
+const {
+  getToken,
+  getUser
+} = storeToRefs(useAuthStore());
+
+const {
+  signUp
+} = useAuthStore();
+
+
 const isVerification = ref(false);
 const checked = ref(false);
 const username = ref("");
@@ -62,6 +77,29 @@ const clearUsername = () => {
 const clearPsssword = () => {
   password.value = "";
 }
+
+const register = async () => {
+  try {
+        console.log("auth_resgisger", username)
+        let url = config.api.SIGN_UP;
+        let data = {
+          UserName:username.value,
+          password:password.value
+        };
+        const response = (await axios.post(url, data)).data;
+        router.push({name:'home'})
+        return response;
+      } catch (e) {
+        return e;
+      }
+}
+
+// const register = async () =>{
+//   await signUp(username.value, password.value)
+//   console.log(getToken.value)
+//   console.log(getUser.value)
+//   // router.push({name:'home'})
+// }
 </script>
 
 <style scoped lang="scss">

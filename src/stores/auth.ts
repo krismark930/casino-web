@@ -39,9 +39,11 @@ export const useAuthStore = defineStore({
     },
     async signUp(username:string, password:string) {
       try {
-        let url = config.api.SIGN_IN;
+
+        console.log("auth_resgisger", username)
+        let url = config.api.SIGN_UP;
         let data = {
-          username:username,
+          UserName:username,
           password:password
         };
         const response = (await axios.post(url, data)).data;
@@ -51,6 +53,7 @@ export const useAuthStore = defineStore({
       }
     },
   },
+  
   persist:{
     enabled:true
   }
