@@ -1,4 +1,5 @@
 <template>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <div class="modal-backdrop">
       <div class="modal">
         <header class="modal-header">
@@ -27,22 +28,38 @@
          </section>
         <section class="modal-body">
             <div class="list_input">
-						<input type="text" placeholder="输入投注金额" v-model="input_value">
+						<input type="text" placeholder="输入投注金额" v-model="input_value" @focus="showpanel">
 						<div>
 							<span v-if="input_value" class="grey">可赢额</span>
-							<span v-if="Number(input_value)>20000" class="max">最大投注金额 20000</span>
-							<span v-if="Number(input_value)<=20000" class="win_text green">{{Number(input_value)*Number(this.rate.num)}}</span>
-							<span v-else="Number(input_value)<=20000" class="win_text green">{{20000*Number(this.rate.num)}}</span>
+							<span v-if="input_value<=20000" class="win_text green">{{Number(input_value)*Number(this.rate.num)}}</span>
+							<span v-if="input_value==20000" class="max">最大投注金额 20000</span>
 						</div>
 					</div>
          </section>
-  
+         <div v-if="openKeyboard" class="grid-container">
+          <button class="item1" value="1" @click="addValue($event)">1</button>
+          <button class="item2" value="2" @click="addValue($event)">2</button>
+          <button class="item3" value="3" @click="addValue($event)">3</button>  
+          <button class="item4" value="4" @click="addValue($event)">4</button>
+          <button class="item5" value="5" @click="addValue($event)">5</button>
+          <button class="item6" value="6" @click="addValue($event)">6</button>
+          <button class="item7" value="7" @click="addValue($event)">7</button>
+          <button class="item8" value="8" @click="addValue($event)">8</button>
+          <button class="item9" value="9" @click="addValue($event)">9</button>
+          <button class="item10" @click="backSpace"><i class="material-icons">backspace</i></button>
+          <button class="item11" value="0" @click="addValue($event)">0</button>
+          <button class="item12" value="." @click="addValue($event)">.</button>
+          <button class="item13" value="100" @click="addValue($event)">+100</button>
+          <button class="item14" value="1000" @click="addValue($event)">+1000</button>
+          <button class="item15" @click="setValue">OK</button>
+        </div>
         <footer class="modal-footer">
             <div class="footer_btns">
 
                 <button
                   type="button"
-                  class="btn-green"
+                  class="btn-green"                  
+                  :disabled="this.is_status"
                   @click="bet"
                 >
                   Bet
@@ -61,6 +78,7 @@
   </template>
   
 <script>
+
 export default {
   name: 'Modal',
   props: {
@@ -73,7 +91,11 @@ export default {
   },
   data() {
     return {
-        input_value: ''
+        input_value: '',
+        openKeyboard: false,
+        value_s: '',
+        vaiue_n: 0,
+        is_status: true
     }
   },
   methods: {
@@ -81,7 +103,51 @@ export default {
       this.$emit('close');
     },
     bet() {
-        alert("really?")
+      if(this.input_value != '')
+        alert(this.input_value + " really?")
+    },
+    showpanel() {
+      this.openKeyboard = true;
+      document.onkeydown = function (e) 
+      {
+        return false;
+      }
+    },
+    setValue() {
+      this.openKeyboard = false;
+      if(this.input_value != '') {
+        this.is_status = false;
+      }
+    },
+    backSpace() {
+      this.value_s = this.value_s.substr(0, this.value_s.length-1)
+      this.value_n = Number(this.value_s)
+      this.input_value = this.value_s
+    },
+    addValue(e) {
+      switch (e.target.value){
+        case '100': 
+          this.value_n += 100
+          this.value_s = String(this.value_n)
+          this.input_value = this.value_s
+          break
+        
+        case '1000': 
+          this.value_n += 1000
+          this.value_s = String(this.value_n)
+          this.input_value = this.value_s
+          break
+        
+        default:
+          this.value_s += e.target.value
+          this.value_n = Number(this.value_s)
+          this.input_value = this.value_s
+      }
+      if (this.value_n > 20000) {
+        this.value_n = 20000
+        this.value_s = '20000'
+        this.input_value = '20000'
+      }
     }
   },
 };
@@ -204,5 +270,20 @@ export default {
         button {
             height: 30px;
         }
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      background-color: #6e6e79;
+
+    }
+
+    .grid-container > button {
+      background-color: rgba(255, 255, 255, 0);
+      text-align: center;
+      padding: 10px 0;
+      font-size: 15px;
+      color: white;
     }
 </style>
