@@ -3,10 +3,18 @@
 	import axios from "axios";
 	import config from "@/config";
 	import {ref} from 'vue';
-
+	import OrderModal from "@/views/Stadium/components/Ordermodal.vue"
+import { number } from '@intlify/core-base';
     export default defineComponent({
         data() {
 			return{
+				type: "FT",
+				title: "",
+				rate: 0,
+				m_team: "",
+				t_team: "",
+				league: "",
+				openModal: false,
 				sportData: [],
 				tableList: [
 					{
@@ -517,6 +525,20 @@
 					return e;
 				}
 			},
+			handleModal(table_id: number, game_id: number, score_id: number, num_id: number) {
+				console.log(this.sportData[table_id])
+				this.m_team = this.sportData[table_id].MB_Team
+				this.t_team = this.sportData[table_id].TG_Team
+				this.league = this.sportData[table_id].M_League
+				this.title = this.tableList[table_id].gameList[game_id].titletext[num_id + 1].text1
+				this.rate = this.tableList[table_id].gameList[game_id].scoreList[score_id].nums[num_id]
+				console.log( this.rate)
+				if (this.rate.num==0 || this.rate.num==null) this.openModal = false
+				else this.openModal = true
+			},
+			closeModal() {
+				this.openModal = false
+			}
 		}
 	})
 
@@ -614,8 +636,8 @@
 						<img v-if="!datalist.Collection" src="@/assets/images/stadiums/store_up.png" alt="">
 						<img v-if="datalist.Collection" src="@/assets/images/stadiums/store_in.png" alt="">
 					</div>
-					<div class="table_text_r" v-for="(num, idx) in datalist.nums" :key="idx + 200">
-						<div v-if="num.type == 1">
+					<div class="table_text_r" v-for="(num, idx_sub) in datalist.nums" :key="idx_sub + 200">
+						<div v-if="num.type == 1" @click="handleModal(index, indexs, idx, idx_sub)">
 							<span v-if="num.text">{{ num.text }}</span>
 							<span v-if="num.num">{{ num.num }}</span>
 						</div>
@@ -662,6 +684,16 @@
 			</div>
 
 		</div>
+		<OrderModal 
+			v-if="openModal"
+			:type="this.type"
+			:title="this.title"
+			:m_team="this.m_team"
+			:t_team="this.t_team"
+			:league="this.league"
+			:rate="this.rate"
+			@close="closeModal"
+		/>
 	</div>
 </template>
 
