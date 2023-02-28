@@ -1,3 +1,23 @@
+<script lang="ts">
+    import { defineComponent } from 'vue'
+    import { storeToRefs } from 'pinia';
+    import { useAuthStore } from '@/stores/auth';
+    export default defineComponent({
+        data() {
+        return {
+            userData: []
+        }
+    },
+        mounted() {
+            const {
+                getToken,
+                getUser,
+            } = storeToRefs(useAuthStore());
+            this.userData=getUser.value;
+        },
+        
+    })
+</script>
 <template>
     <div>
         <div class="box-header">
@@ -32,12 +52,12 @@
                 <div class="advertising_bottom">
                     <div class="user_box_l">
                         <div class="user_top">
-                            <span>achen822</span>
+                            <span>{{userData.UserName}}</span>
                             <img src="../../assets/images/home/vip.png" alt="" />
                         </div>
                         <div class="user_bottom">
                             <span>￥</span>
-                            <span>0.00</span>
+                            <span>{{userData.Money}}</span>
                         </div>
                     </div>
                     <div class="user_box_r">
