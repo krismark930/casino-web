@@ -9,7 +9,7 @@
     </div>
     <div class="form_item">
       <img class="form_icon" src="@/assets/images/login/password.png" alt="" />
-      <input v-model="password" :type="!passwordType ? 'password' : 'number'" placeholder="请输入密码" />
+      <input v-model="password" :type="!passwordType ? 'password' : 'string'" placeholder="请输入密码" />
       <div>
         <img v-if="password" src="@/assets/images/login/see.png" @click="seePassword" alt="" />
         <img v-if="password" src="@/assets/images/login/clear.png" @click="clearPsssword" alt="" />
@@ -17,7 +17,7 @@
     </div>
     <div class="form_item">
       <img class="form_icon" src="@/assets/images/login/password.png" alt="" />
-      <input v-model="passwords" :type="!passwordType ? 'password' : 'number'" placeholder="再次输入密码" />
+      <input v-model="passwords" :type="!passwordType ? 'password' : 'string'" placeholder="再次输入密码" />
       <div>
         <img v-if="passwords" src="@/assets/images/login/see.png" @click="seePassword" alt="" />
         <img v-if="passwords" src="@/assets/images/login/clear.png" @click="clearPsssword" alt="" />
@@ -32,10 +32,10 @@
       和
       <span>隐私政策</span>
     </div>
-    <button v-if="!username || !password || !isVerification || !passwords" class="submit_btn" @click="register">
+    <button v-if="!username || !password || !passwords" class="submit_btn" @click="register">
       登录
     </button>
-    <button v-else class="submit_btn2">登录</button>
+    <button v-else class="submit_btn2" @click="register">登录</button>
     <p class="venture">合营咨询</p>
   </div>
 </template>
