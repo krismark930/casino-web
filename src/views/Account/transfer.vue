@@ -145,10 +145,8 @@ const {
     sumbitTransfer
 } = useTransferStore();
 onMounted( async ()=>{
-    await signIn('test1', 'test1123');
     console.log(user.value)
     await getSysConfigValue();
-    console.log(sysConfig.value)
     console.log(user.value.AG&&sysConfig.value.AG ? "true":"false")
 })
 
@@ -250,7 +248,7 @@ const selectType = (value:string, title:string) => {
 const submitResult = async () => {
     //const result = verifyData();
     //if(result){
-        const response = await sumbitTransfer(user.value.ID, amount.value, type.value.value);
+        const response = await sumbitTransfer(user.value.id, amount.value, type.value.value);
         showToast(response.message);
     //}
 }
