@@ -123,6 +123,13 @@
                 </div>
             </div>
 
+            <div  class=" px-2 bg-whitetext-[12px] pb-1">
+                <div class="text-wrapper_2 flex justify-start items-end">
+                    <p class="text-[15px]">￥</p>
+                    <input type="text" v-model="amount" @input="amountChange" placeholder="请输入￥100~￥1000000" name="name" id="name"
+                        class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB] placeholder:text-[12px] text-[25px] font-bold" />
+                </div>
+            </div>
             <div class=" px-2 bg-white  text-[12px] pb-1">
                 <div class="flex justify-between mt-1 pt-[10px]">
                     <div class="flex">
@@ -136,20 +143,71 @@
                     </div>
                 </div>
             </div>
-            <div class=" px-2  flex  text-[10px] mt-2">
-                <p>请先绑定一张银行卡，用于收款 </p>
+            <div v-if="user.Bank_Address">
+                <div class="bg-white flex justify-between items-center mt-[10px] px-3 py-[15px]">
+                    <div class="image-text_1 flex justify-between items-center">
+                        <img class="w-[25px]" referrerpolicy="no-referrer" src="@/assets/images/my/bank-mark.png" />
+                        <span class="text-[12px] pl-1">农业银行</span>
+                    </div>
+                    <span class="text-[13px] text-bold">622848******888</span>
+                    <span class="text-[12px] text-[#4EABFF]" @click="editBank()">编辑</span>
+                </div>
             </div>
-            <div class=" px-2  flex  text-[10px] mt-2 flex justify-center">
-                <p>取款遇到问题？联系<span class="text-blue-500">人工客服</span>解决</p>
+            
+            <div v-else>
+                <div class=" px-2  flex  text-[10px] mt-2">
+                    <p>请先绑定一张银行卡，用于收款 </p>
+                </div>
+                <div class=" px-2  flex  text-[10px] mt-2 flex justify-center">
+                    <p>取款遇到问题？联系<span class="text-blue-500">人工客服</span>解决</p>
+                </div>
+            </div>
+            
+            <div class=" bg-white fixed bottom-0 w-full  border-t-2 border-gray-300 py-1 px-[15px]  rounded-[7px]">
+                <div class="w-full flex justify-center gap-1">
+                    <!-- <button class="button_1 flex w-full justify-center  py-1 border-2 border-blue-500 rounded-sm" @click="deleteResult">
+                        <p class="text-blue-500">取消存款申请</p>
+                    </button> -->
+                    <button :class="[amount > 0 && user.Bank_Address ? 'bg-blue-500 border-blue-500':'bg-blue-200 border-blue-200']" class="button_1 flex w-full justify-center  py-1 border-2  rounded-sm " 
+                        @click="submitResult">
+                        <p class="text-white text-[12px]">确定</p>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script setup lang="ts">
 import router from '@/router';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useAuthStore } from '@/stores/auth';
+import { useWithdrawStore } from '@/stores/withdraw';
+import { useSysConfigStore } from '@/stores/sysConfig';
+import { storeToRefs } from 'pinia';
+import { showToast } from 'vant';
+const {
+    user,
+} = storeToRefs(useAuthStore());
+const {
+    sumbitWithdraw,
+} = useWithdrawStore();
+const {
+    getSysConfigValue
+} = useSysConfigStore();
+const {
+    sysConfig
+} = storeToRefs(useSysConfigStore());
+
+onMounted( async ()=>{
+    console.log(user.value)
+    if(!sysConfig)
+        await getSysConfigValue();
+})
+
 const tokenActive = ref(1);
 const active = ref(1);
+const amount = ref(0);
+const amountFlag = ref(false);
 const tokenList = ref([
     {
         id: 1,
@@ -233,5 +291,41 @@ const selectCategory = (id: number) => {
 };
 const selectTime = (id:number) => {
     active.value = id;
+}
+const editBank = (item: any) => {
+    router.push({name: 'editBankCard'});
+}
+const submitResult = async () => {
+    const result = VerifyData();
+    if(result && amount.value > 0 && user.value.Bank_Address &&user.value.Bank_Account){
+        await sumbitWithdraw(user.value.id, amount.value, user.value.Bank_Address, user.value.Bank_Account)
+    }
+}
+const VerifyData = () => {
+    if (amount.value == "") {
+        showToast("请输入提款金额！");
+        return false;
+	}
+	if (amount.value !="") {
+        if(amount.value > user.value.Money )
+        {
+        showToast(`提款金额不能大于账号金额:${user.value.Money}`);
+        return false;
+        }
+	}
+    if (amount.value !="") {
+        var ccc=amount.value%100;
+        if(ccc!=0)
+        {
+            showToast("提款金额必须是100的倍数！");
+            return false;
+        }
+        if(amount.value < sysConfig.value.min_qukuan_money)
+        {
+            showToast(`提款金额不能小于${value.min_qukuan_money}元！`);
+            return false;
+        }
+	}
+    return true
 }
 </script>
