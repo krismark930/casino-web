@@ -146,7 +146,8 @@ const {
 } = useTransferStore();
 onMounted( async ()=>{
     console.log(user.value)
-    await getSysConfigValue();
+    if(!sysConfig)
+        await getSysConfigValue();
     console.log(user.value.AG&&sysConfig.value.AG ? "true":"false")
 })
 
