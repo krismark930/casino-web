@@ -86,6 +86,7 @@ import { useRoute } from 'vue-router';
 import { showToast } from 'vant';
 import { storeToRefs } from "pinia";
 import { useDepositStore } from '@/stores/deposit';
+import {useAuthStore } from '@/stores/auth';
 const route = useRoute();
 const show = ref(false);
 const bank = ref();
@@ -98,6 +99,10 @@ const {
 const {
     sumbitDeposit
 } = useDepositStore();
+const {
+    user,
+} = storeToRefs(useAuthStore());
+
 onMounted(() => {
     let bankID  = route.params.bankID;
     money.value = route.params.money;
@@ -130,7 +135,7 @@ const deleteResult = () => {
     show.value = true;
 }
 const submitResult = async () => {
-    let response = await sumbitDeposit(bank.value, money.value, name.value);
+    let response = await sumbitDeposit(user.value.id, bank.value, money.value, name.value);
     if(response.success){
         showToast({
             message: "存款成功",

@@ -42,11 +42,12 @@ export const useDepositStore = defineStore({
         return e;
       }
     },
-    async sumbitDeposit(bank:any , amount: number, name: string) {
+    async sumbitDeposit(userId: number, bank:any , amount: number, name: string) {
       try{
         console.log(amount)
         const url = config.api.DEPOSIT;
         let data = {
+          userId : userId,
           isCrypto: this.isCrypto,
           money: amount,
           name : name,
