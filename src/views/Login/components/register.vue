@@ -78,28 +78,11 @@ const clearPsssword = () => {
   password.value = "";
 }
 
-const register = async () => {
-  try {
-        console.log("auth_resgisger", username)
-        let url = config.api.SIGN_UP;
-        let data = {
-          UserName:username.value,
-          password:password.value
-        };
-        const response = (await axios.post(url, data)).data;
-        router.push({name:'home'})
-        return response;
-      } catch (e) {
-        return e;
-      }
+const register = async () => {   ///register
+  console.log("UserName", username.value, password.value)
+  await signUp(username.value, password.value)
 }
 
-// const register = async () =>{
-//   await signUp(username.value, password.value)
-//   console.log(getToken.value)
-//   console.log(getUser.value)
-//   // router.push({name:'home'})
-// }
 </script>
 
 <style scoped lang="scss">

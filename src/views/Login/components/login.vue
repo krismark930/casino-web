@@ -64,15 +64,9 @@ const clearUsername = () => {
 const clearPsssword = () => {
   password.value = "";
 }
-const login = async () =>{
+const login = async () => {   ///login
   console.log("UserName", username.value, password.value)
   await signIn(username.value, password.value)
-  console.log("token",getToken.value)
-  console.log("user", getUser.value)
-  if(getToken.value.id)
-  router.push({name:'myhome'})
-  else
-  router.push({name:'login'})
 }
 </script>
 

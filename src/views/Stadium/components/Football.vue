@@ -1,148 +1,51 @@
 <script lang="ts">
-	import { defineComponent } from 'vue';
-	import axios from "axios";
-	import config from "@/config";
-	import {ref} from 'vue';
-	import OrderModal from "@/views/Stadium/components/Ordermodal.vue"
+import { defineComponent } from 'vue';
+import axios from "axios";
+import config from "@/config";
+import { ref } from 'vue';
+import OrderModal from "@/views/Stadium/components/Ordermodal.vue"
 import { number } from '@intlify/core-base';
-    export default defineComponent({
-        data() {
-			return{
-				type: "FT",
-				title: "",
-				rate: 0,
-				m_team: "",
-				t_team: "",
-				league: "",
-				openModal: false,
-				sportData: [],
-				tableList: [
-					{
+export default defineComponent({
+	data() {
+		return {
+			type: "FT",
+			title: "",
+			rate: 0,
+			m_team: "",
+			t_team: "",
+			league: "",
+			openModal: false,
+			sportData: [],
+			tableList: [
+				{
 					name: '国际友谊联赛',
 					icon: new URL("@/assets/images/stadiums/title-icon.png", import.meta.url).href,
 					gameList: [
 						{
-						titletext: [{
-							text1: '半场'
-						},
-						{
-							text1: '让球'
-						},
-						{
-							text1: '得分大小'
-						},
-						{
-							text1: '独赢'
-						},
-						{
-							text1: '下一个进球'
-						}
-						],
-						scoreList: [{
-							goalsScored: 1,
-							name: '日本',
-
-							nums: [{
-								type: 1,
-								text: '',
-								num: '1.00'
+							titletext: [{
+								text1: '半场'
 							},
 							{
-								type: 1,
-								text: '大1/1.5',
-								num: '1.95'
+								text1: '让球'
 							},
 							{
-								type: 1,
-								text: '',
-								num: '5.9'
+								text1: '得分大小'
 							},
 							{
-								type: 1,
-								text: '第一个',
-								num: '4.35'
+								text1: '独赢'
+							},
+							{
+								text1: '下一个进球'
 							}
-							]
-						},
-						{
-							goalsScored: 1,
-							name: '加拿大',
-							nums: [{
-								type: 1,
-								text: '0.5',
-								num: '1.86'
-							},
-							{
-								type: 1,
-								text: '小1/1.5',
-								num: '1.95'
-							},
-							{
-								type: 1,
-								text: '',
-								num: '1.92'
-							},
-							{
-								type: 1,
-								text: '第一个',
-								num: '1.64'
-							}
-							]
-						},
-						{
-							Collection: false,
-							nums: [{},
-							{},
-							{
-								type: 1,
-								text: '和',
-								num: '2.47'
-							},
-							{
-								type: 1,
-								text: '无',
-								num: '3.35'
-							}
-							]
-						}
-						],
-						tepe: [
-							{
-								name: '让球&大/小',
-								type: 1
-							},
-							{
-								name: '角球',
-								type: 1
-							}
-						]
-					},
-					{
-						titletext: [{
-							text1: '半场'
-						},
-						{
-							text1: '让球'
-						},
-						{
-							text1: '得分大小'
-						},
-						{
-							text1: '独赢'
-						},
-						{
-							text1: '下一个进球'
-						}
-						],
-						scoreList: [
-							{
+							],
+							scoreList: [{
 								goalsScored: 1,
-								name: '瓜达卢佩',
+								name: '日本',
 
 								nums: [{
 									type: 1,
 									text: '',
-									num: '1.96'
+									num: '1.00'
 								},
 								{
 									type: 1,
@@ -159,12 +62,11 @@ import { number } from '@intlify/core-base';
 									text: '第一个',
 									num: '4.35'
 								}
-								],
-
+								]
 							},
 							{
 								goalsScored: 1,
-								name: '朋塔雷纳斯',
+								name: '加拿大',
 								nums: [{
 									type: 1,
 									text: '0.5',
@@ -183,13 +85,12 @@ import { number } from '@intlify/core-base';
 								{
 									type: 1,
 									text: '第一个',
-									num: '1.84'
+									num: '1.64'
 								}
-								],
-
+								]
 							},
 							{
-								Collection: true,
+								Collection: false,
 								nums: [{},
 								{},
 								{
@@ -204,14 +105,113 @@ import { number } from '@intlify/core-base';
 								}
 								]
 							}
-						],
-						tepe: [
+							],
+							tepe: [
+								{
+									name: '让球&大/小',
+									type: 1
+								},
+								{
+									name: '角球',
+									type: 1
+								}
+							]
+						},
+						{
+							titletext: [{
+								text1: '半场'
+							},
 							{
-								name: '让球&大/小',
-								type: 2
+								text1: '让球'
+							},
+							{
+								text1: '得分大小'
+							},
+							{
+								text1: '独赢'
+							},
+							{
+								text1: '下一个进球'
 							}
-						]
-					}],
+							],
+							scoreList: [
+								{
+									goalsScored: 1,
+									name: '瓜达卢佩',
+
+									nums: [{
+										type: 1,
+										text: '',
+										num: '1.96'
+									},
+									{
+										type: 1,
+										text: '大1/1.5',
+										num: '1.95'
+									},
+									{
+										type: 1,
+										text: '',
+										num: '5.9'
+									},
+									{
+										type: 1,
+										text: '第一个',
+										num: '4.35'
+									}
+									],
+
+								},
+								{
+									goalsScored: 1,
+									name: '朋塔雷纳斯',
+									nums: [{
+										type: 1,
+										text: '0.5',
+										num: '1.86'
+									},
+									{
+										type: 1,
+										text: '小1/1.5',
+										num: '1.95'
+									},
+									{
+										type: 1,
+										text: '',
+										num: '1.92'
+									},
+									{
+										type: 1,
+										text: '第一个',
+										num: '1.84'
+									}
+									],
+
+								},
+								{
+									Collection: true,
+									nums: [{},
+									{},
+									{
+										type: 1,
+										text: '和',
+										num: '2.47'
+									},
+									{
+										type: 1,
+										text: '无',
+										num: '3.35'
+									}
+									]
+								}
+							],
+							tepe: [
+								{
+									name: '让球&大/小',
+									type: 2
+								}
+							]
+						}],
 					fullCourt1: {
 						title: '让球',
 						data: [
@@ -284,337 +284,316 @@ import { number } from '@intlify/core-base';
 					}
 				}
 
-				]
-				
-			}
-		},
-		mounted() {
-			this.get_sports_data()
-		},
-		methods:{
-			async get_sports_data() {
-				try {
-					console.log('Football_Detail');
-					let url = config.api.GET_SPORTS_DATA;
-					let data = {
+			]
+
+		}
+	},
+	mounted() {
+		this.get_sports_data()
+	},
+	methods: {
+		async get_sports_data() {
+			try {
+				console.log('Football_Detail');
+				let url = config.api.GET_SPORTS_DATA;
+				let data = {
 					type: '',
 					m_date: '2021-07-11',
 					get_type: '',
+				}
+				const response = (await axios.post(url, data)).data;
+				const cateData: Cate[] = response;
+				this.sportData = cateData.filter((Cate) => Cate.Type == 'FT')
+				let result = [];
+				let titleTextTemp = [
+					{
+						text1: '半场'
+					},
+					{
+						text1: '让球'
+					},
+					{
+						text1: '得分大小'
+					},
+					{
+						text1: '独赢'
+					},
+					{
+						text1: '下一个进球'
 					}
-					const response = (await axios.post(url, data)).data;
-					
-					const cateData: Cate[] = response;
-					this.sportData = cateData.filter((Cate) => Cate.Type == 'FT')
-					console.log(this.sportData)
-					//console.log("reponse_data", this.sportData[0].M_League);
-					console.log(this.sportData[0])
-					let result = [];
-					
-					let titleTextTemp = [
+				]
+
+				for (let i = 0; i < this.sportData.length; i++) {
+					let existing = result.filter((r) => r.name == this.sportData[i].M_League)
+					//let scorelist = []
+					let scoreList = [
 						{
-							text1: '半场'
+							goalsScored: 1,
+							name: this.sportData[i].MB_Team,
+							nums: [
+								{
+									type: 1,
+									text: this.sportData[i].M_LetB_H,
+									num: this.sportData[i].MB_LetB_Rate_H
+								},
+								{
+									type: 1,
+									text: this.sportData[i].MB_Dime_H,
+									num: this.sportData[i].MB_Dime_Rate_H
+								},
+								{
+									type: 1,
+									text: ' ',
+									num: this.sportData[i].MB_Win_Rate_H
+								},
+								{
+									type: 1,
+									text: ' ',
+									num: this.sportData[i].o
+								},
+							]
 						},
 						{
-							text1: '让球'
+							goalsScored: 1,
+							name: this.sportData[i].TG_Team,
+							nums: [
+								{
+									type: 1,
+									text: this.sportData[i].M_LetB_H,
+									num: this.sportData[i].MB_LetB_Rate_H
+								},
+								{
+									type: 1,
+									text: this.sportData[i].TG_Dime_H,
+									num: this.sportData[i].TG_Dime_Rate_H
+								},
+								{
+									type: 1,
+									text: this.sportData[i].M_LetB_H,
+									num: this.sportData[i].TG_Win_Rate_H
+								},
+								{
+									type: 1,
+									text: this.sportData[i].M_LetB_H,
+									num: this.sportData[i].e
+								},
+							]
 						},
 						{
-							text1: '得分大小'
-						},
-						{
-							text1: '独赢'
-						},
-						{
-							text1: '下一个进球'
+							Collection: false,
+							nums: [
+								{},
+								{},
+								{
+									type: 1,
+									text: '和',
+									num: this.sportData[i].M_Flat_Rate_H
+								},
+								{
+									type: 1,
+									text: '无',
+									num: '3.35'
+								}
+							]
 						}
 					]
-					
-					for(let i = 0;i < this.sportData.length;i++){
-						let existing = result.filter((r)=>r.name == this.sportData[i].M_League)
-						//let scorelist = []
-						let scoreList = [
+					let tepe = [
+						{
+							name: '让球&大/小',
+							type: 1
+						},
+						{
+							name: '角球',
+							type: 1
+						}
+					]
+					let fullCourt1 = {
+						title: '让球',
+						data: [
 							{
-								goalsScored:1,
-								name:this.sportData[i].MB_Team,
-								nums:[
-									{
-										type:1,
-										text:this.sportData[i].M_LetB_H,
-										num:this.sportData[i].MB_LetB_Rate_H
-									},
-									{
-										type:1,
-										text:this.sportData[i].MB_Dime_H,
-										num:this.sportData[i].MB_Dime_Rate_H
-									},
-									{
-										type:1,
-										text:' ',
-										num:this.sportData[i].MB_Win_Rate_H
-									},
-									{
-										type:1,
-										text:' ',
-										num:this.sportData[i].o
-									},
-								]
-							},
-							{
-								goalsScored:1,
-								name:this.sportData[i].TG_Team,
-								nums:[
-									{
-										type:1,
-										text:this.sportData[i].M_LetB_H,
-										num:this.sportData[i].MB_LetB_Rate_H
-									},
-									{
-										type:1,
-										text:this.sportData[i].TG_Dime_H,
-										num:this.sportData[i].TG_Dime_Rate_H
-									},
-									{
-										type:1,
-										text:this.sportData[i].M_LetB_H,
-										num:this.sportData[i].TG_Win_Rate_H
-									},
-									{
-										type:1,
-										text:this.sportData[i].M_LetB_H,
-										num:this.sportData[i].e
-									},
-								]
-							},
-							{
-								Collection: false,
+								name: this.sportData[i].MB_Team,
+								goalsScored: 1,
 								nums: [
-									{},
-									{},
 									{
-										type: 1,
-										text: '和',
-										num: this.sportData[i].M_Flat_Rate_H
+										text: this.sportData[i].hratio,
+										num: this.sportData[i].MB_LetB_Rate
 									},
 									{
-										type: 1,
-										text: '无',
-										num: '3.35'
+										text: '0.5',
+										num: this.sportData[i].MB_LetB_Rate
 									}
 								]
-							}
-						]
-						let tepe = [
-							{
-								name: '让球&大/小',
-								type: 1
 							},
 							{
-								name: '角球',
-								type: 1
+								name: this.sportData[i].TG_Team,
+								goalsScored: 1,
+								nums: [
+									{
+										text: this.sportData[i].hratio,
+										num: this.sportData[i].TG_LetB_Rate
+									},
+									{
+										text: '0.5',
+										num: this.sportData[i].TG_LetB_Rate
+									}
+								]
+							},
+						]
+					}
+					let fullCourt2 = {
+						title: '得分大小',
+						data: [
+							{
+								nums: [
+									{
+										text: this.sportData[i].hratio,
+										num: this.sportData[i].TG_Dime_Rate
+									},
+									{
+										text: '0.5',
+										num: this.sportData[i].TG_Dime_Rate
+									}
+								]
+							},
+							{
+								nums: [
+									{
+										text: this.sportData[i].hratio,
+										num: this.sportData[i].MB_Dime_Rate
+									},
+									{
+										text: '0.5',
+										num: this.sportData[i].MB_Dime_Rate
+									}
+								]
+							},
+						]
+					}
+					if (existing.length == 0) {
+						//let scorelist = []
+
+						result = [
+							...result,
+							{
+								name: this.sportData[i].M_League,
+								gameList: [{
+									titletext: [...titleTextTemp],
+									scoreList: [...scoreList],
+									tepe: [...tepe]
+								}],
+								fullCourt1: fullCourt1,
+								fullCourt2: fullCourt2
 							}
 						]
-						let fullCourt1 = {
-							title:'让球',
-							data:[
-								{
-									name:this.sportData[i].MB_Team,
-									goalsScored:1,
-									nums:[
-										{
-											text:this.sportData[i].hratio,
-											num:this.sportData[i].MB_LetB_Rate
-										},
-										{
-											text:'0.5',
-											num:this.sportData[i].MB_LetB_Rate
-										}
-									]
-								},
-								{
-									name:this.sportData[i].TG_Team,
-									goalsScored:1,
-									nums:[
-										{
-											text:this.sportData[i].hratio,
-											num:this.sportData[i].TG_LetB_Rate
-										},
-										{
-											text:'0.5',
-											num:this.sportData[i].TG_LetB_Rate
-										}
-									]
-								},
-							]
-						}
-						let fullCourt2 = {
-							title:'得分大小',
-							data:[
-								{									
-									nums:[
-										{
-											text:this.sportData[i].hratio,
-											num:this.sportData[i].TG_Dime_Rate
-										},
-										{
-											text:'0.5',
-											num:this.sportData[i].TG_Dime_Rate
-										}
-									]
-								},
-								{
-									nums:[
-										{
-											text:this.sportData[i].hratio,
-											num:this.sportData[i].MB_Dime_Rate
-										},
-										{
-											text:'0.5',
-											num:this.sportData[i].MB_Dime_Rate
-										}
-									]
-								},
-							]
-						}		
-						if(existing.length == 0){
-							//let scorelist = []
-
-							result = [
-								...result,
-								{
-									name:this.sportData[i].M_League,
-									gameList:[{
-										titletext:[...titleTextTemp],
-										scoreList:[...scoreList],
-										tepe:[...tepe]
-									}],
-									fullCourt1:fullCourt1,
-									fullCourt2:fullCourt2
-								}
-							]
-						}else{
-							existing[0].gameList = [
-								...existing[0].gameList,
-								{
-									titletext:[...titleTextTemp],
-									scoreList:[...scoreList],
-									tepe:[...tepe]
-								}
-							]
-						}
-					}
-					
-					/*
-					for (let i=0;  i < this.sportData.length; i++) {
-						let exist = false
-						for (let j=0;  j < this.sportData.length; j++) {
-							if (res[j]['M_League'] === this.sportData[i]['M_League']){
-								exist = true
-								res[j]["gameList"].push(this.sportData[i]["gameList"][0])
+					} else {
+						existing[0].gameList = [
+							...existing[0].gameList,
+							{
+								titletext: [...titleTextTemp],
+								scoreList: [...scoreList],
+								tepe: [...tepe]
 							}
-						}
-						if (exist === false){
-							res.push(this.sportData[i])
-						}
+						]
 					}
-					*/
-					this.tableList = [...result];
-					console.log(result)
-
-					return response;
-				} catch (e) {
-					console.log(e);
-					return e;
 				}
-			},
-			handleModal(table_id: number, game_id: number, score_id: number, num_id: number) {
-				console.log(this.sportData[table_id])
-				this.m_team = this.sportData[table_id].MB_Team
-				this.t_team = this.sportData[table_id].TG_Team
-				this.league = this.sportData[table_id].M_League
-				this.title = this.tableList[table_id].gameList[game_id].titletext[num_id + 1].text1
-				this.rate = this.tableList[table_id].gameList[game_id].scoreList[score_id].nums[num_id]
-				console.log( this.rate)
-				if (this.rate.num==0 || this.rate.num==null) this.openModal = false
-				else this.openModal = true
-			},
-			closeModal() {
-				this.openModal = false
+				this.tableList = [...result];
+
+				return response;
+			} catch (e) {
+				console.log(e);
+				return e;
 			}
+		},
+		handleModal(table_id: number, game_id: number, score_id: number, num_id: number) {
+			console.log(this.sportData[table_id])
+			this.m_team = this.sportData[table_id].MB_Team
+			this.t_team = this.sportData[table_id].TG_Team
+			this.league = this.sportData[table_id].M_League
+			this.title = this.tableList[table_id].gameList[game_id].titletext[num_id + 1].text1
+			this.rate = this.tableList[table_id].gameList[game_id].scoreList[score_id].nums[num_id]
+			console.log(this.rate)
+			if (this.rate.num == 0 || this.rate.num == null) this.openModal = false
+			else this.openModal = true
+		},
+		closeModal() {
+			this.openModal = false
 		}
-	})
+	}
+})
 
 </script>
 
 <template>
 	<div>
 		<!-- <div class="game_list" v-for="(item, index) in tableList" :key="index + 100">
-			<div class="center_title">
-				<span>{{ item.name }}</span>
-				<img :src="item.icon" alt="">
-			</div>
-			<div class="center_item" v-for="(data, indexs) in item.gameList" :key="indexs + 300">
-				<div class="table_title table_list">
-					<div v-for="(title, k) in data.titletext" :key="k + 400">
-						<span v-if="title.text1">{{ title.text1 }}</span>
-						<span v-if="(title as any).text2===null?false:true">{{ (title as any).text2 }}</span>
-					</div>
+				<div class="center_title">
+					<span>{{ item.name }}</span>
+					<img :src="item.icon" alt="">
 				</div>
-				<div class="table_text table_list" v-for="(datalist, idx) in data.scoreList" :key="idx + 300">
-					<div class="table_text_l" v-if="datalist.name">
-						<span>{{ datalist.goalsScored }}</span>
-						<span>{{ datalist.name }}</span>
-					</div>
-					<div class="store_up" v-if="!datalist.name">
-						<img v-if="!datalist.Collection" src="@/assets/images/stadiums/store_up.png" alt="">
-						<img v-if="datalist.Collection" src="@/assets/images/stadiums/store_in.png" alt="">
-					</div>
-					<div class="table_text_r" v-for="(num, idx) in datalist.nums" :key="idx + 200">
-						<div v-if="num.type == 1">
-							<span v-if="num.text">{{ num.text }}</span>
-							<span v-if="num.num">{{ num.num }}</span>
-						</div>
-						<div class="lock" v-if="num.type == 2">
-							<img src="@/assets/images/stadiums/lock.png" alt="">
+				<div class="center_item" v-for="(data, indexs) in item.gameList" :key="indexs + 300">
+					<div class="table_title table_list">
+						<div v-for="(title, k) in data.titletext" :key="k + 400">
+							<span v-if="title.text1">{{ title.text1 }}</span>
+							<span v-if="(title as any).text2===null?false:true">{{ (title as any).text2 }}</span>
 						</div>
 					</div>
+					<div class="table_text table_list" v-for="(datalist, idx) in data.scoreList" :key="idx + 300">
+						<div class="table_text_l" v-if="datalist.name">
+							<span>{{ datalist.goalsScored }}</span>
+							<span>{{ datalist.name }}</span>
+						</div>
+						<div class="store_up" v-if="!datalist.name">
+							<img v-if="!datalist.Collection" src="@/assets/images/stadiums/store_up.png" alt="">
+							<img v-if="datalist.Collection" src="@/assets/images/stadiums/store_in.png" alt="">
+						</div>
+						<div class="table_text_r" v-for="(num, idx) in datalist.nums" :key="idx + 200">
+							<div v-if="num.type == 1">
+								<span v-if="num.text">{{ num.text }}</span>
+								<span v-if="num.num">{{ num.num }}</span>
+							</div>
+							<div class="lock" v-if="num.type == 2">
+								<img src="@/assets/images/stadiums/lock.png" alt="">
+							</div>
+						</div>
+					</div>
+					<div class="table_type">
+						<button :class="{ btnSelect: btn.type == 2 }" v-for="(btn, i) in data.tepe" :key="i + 800">
+							{{ btn.name }}
+						</button>
+					</div>
 				</div>
-				<div class="table_type">
-					<button :class="{ btnSelect: btn.type == 2 }" v-for="(btn, i) in data.tepe" :key="i + 800">
-						{{ btn.name }}
-					</button>
-				</div>
-			</div>
 
-			<div class="summary">
-				<div class="summary_top">全场</div>
-				<div class="summary_center">
-					<div class="summary_title">{{ item.fullCourt1.title }}</div>
-					<div class="summary_item" v-for="(summary, key) in item.fullCourt1.data" :key="key + 600">
-						<div class="summary_item_l">
-							<span>{{ summary.goalsScored }}</span>
-							<span>{{ summary.name }}</span>
-						</div>
-						<div class="summary_item_r" v-for="(summaryitem, k) in summary.nums" :key="k + 650">
-							<span>{{ summaryitem.text }}</span>
-							<span>{{ summaryitem.num }}</span>
-						</div>
-					</div>
-				</div>
-				<div class="summary_center">
-					<div class="summary_title">{{ item.fullCourt2.title }}</div>
-					<div class="summary_item" v-for="(summary2, s) in item.fullCourt2.data" :key="s + 700">
-						<div class="summary_item_r summary_bottom" v-for="(h, k) in summary2.nums" :key="k + 750">
-
-							<span>{{ h.text }}</span>
-							<span>{{ h.num }}</span>
+				<div class="summary">
+					<div class="summary_top">全场</div>
+					<div class="summary_center">
+						<div class="summary_title">{{ item.fullCourt1.title }}</div>
+						<div class="summary_item" v-for="(summary, key) in item.fullCourt1.data" :key="key + 600">
+							<div class="summary_item_l">
+								<span>{{ summary.goalsScored }}</span>
+								<span>{{ summary.name }}</span>
+							</div>
+							<div class="summary_item_r" v-for="(summaryitem, k) in summary.nums" :key="k + 650">
+								<span>{{ summaryitem.text }}</span>
+								<span>{{ summaryitem.num }}</span>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="summary_over">
-					所有玩法
-				</div>
-			</div>
+					<div class="summary_center">
+						<div class="summary_title">{{ item.fullCourt2.title }}</div>
+						<div class="summary_item" v-for="(summary2, s) in item.fullCourt2.data" :key="s + 700">
+							<div class="summary_item_r summary_bottom" v-for="(h, k) in summary2.nums" :key="k + 750">
 
-		</div> -->
+								<span>{{ h.text }}</span>
+								<span>{{ h.num }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="summary_over">
+						所有玩法
+					</div>
+				</div>
+
+			</div> -->
 		<div class="game_list" v-for="(item, index) in tableList" :key="index + 100">
 			<div class="center_title">
 				<span>{{ item.name }}</span>
@@ -624,7 +603,7 @@ import { number } from '@intlify/core-base';
 				<div class="table_title table_list">
 					<div v-for="(title, k) in data.titletext" :key="k + 400">
 						<span v-if="title.text1">{{ title.text1 }}</span>
-						<span v-if="(title as any).text2===null?false:true">{{ (title as any).text2 }}</span>
+						<span v-if="(title as any).text2 === null ? false : true">{{ (title as any).text2 }}</span>
 					</div>
 				</div>
 				<div class="table_text table_list" v-for="(datalist, idx) in data.scoreList" :key="idx + 300">
@@ -684,16 +663,8 @@ import { number } from '@intlify/core-base';
 			</div>
 
 		</div>
-		<OrderModal 
-			v-if="openModal"
-			:type="this.type"
-			:title="this.title"
-			:m_team="this.m_team"
-			:t_team="this.t_team"
-			:league="this.league"
-			:rate="this.rate"
-			@close="closeModal"
-		/>
+		<OrderModal v-if="openModal" :type="this.type" :title="this.title" :m_team="this.m_team" :t_team="this.t_team"
+			:league="this.league" :rate="this.rate" @close="closeModal" />
 	</div>
 </template>
 
