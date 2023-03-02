@@ -14,6 +14,7 @@ import { number } from '@intlify/core-base';
 				m_team: "",
 				t_team: "",
 				league: "",
+				mid: 0,
 				openModal: false,
 				sportData: [],
 				tableList: [
@@ -335,6 +336,7 @@ import { number } from '@intlify/core-base';
 							{
 								goalsScored:1,
 								name:this.sportData[i].MB_Team,
+								mid:this.sportData[i].MID,
 								nums:[
 									{
 										type:1,
@@ -360,6 +362,7 @@ import { number } from '@intlify/core-base';
 							},
 							{
 								goalsScored:1,
+								mid:this.sportData[i].MID,
 								name:this.sportData[i].TG_Team,
 								nums:[
 									{
@@ -526,9 +529,11 @@ import { number } from '@intlify/core-base';
 				}
 			},
 			handleModal(table_id: number, game_id: number, score_id: number, num_id: number) {
-				console.log(this.sportData[table_id])
-				this.m_team = this.sportData[table_id].MB_Team
-				this.t_team = this.sportData[table_id].TG_Team
+				console.log(this.tableList[table_id].gameList[game_id].scoreList[score_id].mid)
+				this.mid = this.tableList[table_id].gameList[game_id].scoreList[score_id].mid
+				this.m_team = this.tableList[table_id].gameList[game_id].scoreList[0].name
+				this.t_team = this.tableList[table_id].gameList[game_id].scoreList[1].name
+				this.select_team = this.tableList[table_id].gameList[game_id].scoreList[score_id].name
 				this.league = this.sportData[table_id].M_League
 				this.title = this.tableList[table_id].gameList[game_id].titletext[num_id + 1].text1
 				this.rate = this.tableList[table_id].gameList[game_id].scoreList[score_id].nums[num_id]
@@ -690,6 +695,8 @@ import { number } from '@intlify/core-base';
 			:title="this.title"
 			:m_team="this.m_team"
 			:t_team="this.t_team"
+			:select_team="this.select_team"
+			:mid="this.mid"
 			:league="this.league"
 			:rate="this.rate"
 			@close="closeModal"

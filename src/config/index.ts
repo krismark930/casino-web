@@ -6,7 +6,8 @@ const config = {
     DEPOSIT : "http://127.0.0.1:8000/api/deposit/addMoney",
     TRANSFER : "http://127.0.0.1:8000/api/transfer/transferMoney",
     GET_SYSCONFIG: "http://127.0.0.1:8000/api/transfer/getSysConfig",
-    GET_SPORTS_DATA: "http://127.0.0.1:8000/api/get_item_date"
+    GET_SPORTS_DATA: "http://127.0.0.1:8000/api/get_item_date",
+    BET_FT : "http://127.0.0.1:8000/api/sport/bet_ft"
   },
 };
 
