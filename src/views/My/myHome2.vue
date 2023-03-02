@@ -14,9 +14,9 @@
                 getUser,
             } = storeToRefs(useAuthStore());
             this.userData=getUser.value;
-            if(!getUser.value.ID){
-                router.push({name:'my'})
-            }
+            // if(!getUser.value.id){
+            //     router.push({name:'my'})
+            // }
         },
         
     })

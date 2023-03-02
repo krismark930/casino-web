@@ -9,7 +9,7 @@
     </div>
     <div class="form_item">
       <img class="form_icon" src="@/assets/images/login/password.png" alt="" />
-      <input v-model="password" :type="!passwordType ? 'password' : 'number'" placeholder="请输入密码" />
+      <input v-model="password" :type="!passwordType ? 'password' : 'string'" placeholder="请输入密码" />
       <div>
         <img v-if="password" src="@/assets/images/login/see.png" @click="seePassword" alt="" />
         <img v-if="password" src="@/assets/images/login/clear.png" @click="clearPsssword" alt="" />
@@ -22,10 +22,10 @@
       <van-checkbox v-model="checked" icon-size="14px" checked-color="#00A8FF">记住密码</van-checkbox>
       <span>忘记密码</span>
     </div>
-    <button v-if="!username || !password || !isVerification" class="submit_btn" @click="login">
+    <button v-if="!username || !password" class="submit_btn">
       登录
     </button>
-    <button v-else class="submit_btn2">登录</button>
+    <button v-else class="submit_btn2" @click="login">登录</button>
     <p class="venture">合营咨询</p>
   </div>
 </template>
@@ -64,11 +64,9 @@ const clearUsername = () => {
 const clearPsssword = () => {
   password.value = "";
 }
-const login = async () =>{
+const login = async () => {   ///login
+  console.log("UserName", username.value, password.value)
   await signIn(username.value, password.value)
-  console.log(getToken.value)
-  console.log(getUser.value)
-  router.push({name:'my'})
 }
 </script>
 
