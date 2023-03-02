@@ -199,8 +199,7 @@ const {
 } = storeToRefs(useSysConfigStore());
 
 onMounted( async ()=>{
-    console.log(user.value)
-    if(!sysConfig)
+    if(!sysConfig.value.AG)
         await getSysConfigValue();
 })
 const tokenActive = ref(1);
