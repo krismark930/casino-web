@@ -10,6 +10,7 @@ const config = {
     TRANSFER : SERVER_API + "/api/transfer/transferMoney",
     GET_SYSCONFIG: SERVER_API + "/api/transfer/getSysConfig",
     GET_SPORTS_DATA: SERVER_API + "/api/get_item_date"
+    BET_FT : SERVER_API + "/api/sport/bet_ft"
   },
 };
 
