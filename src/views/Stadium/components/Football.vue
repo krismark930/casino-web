@@ -13,6 +13,7 @@ export default defineComponent({
 			rate: 0,
 			m_team: "",
 			t_team: "",
+			select_team: "",
 			league: "",
       mid: 0,
 			openModal: false,
@@ -330,6 +331,7 @@ export default defineComponent({
 					let scoreList = [
 						{
 							goalsScored: 1,
+							mid: this.sportData[i].MID,
 							name: this.sportData[i].MB_Team,
 							nums: [
 								{
@@ -356,6 +358,7 @@ export default defineComponent({
 						},
 						{
 							goalsScored: 1,
+							mid: this.sportData[i].MID,
 							name: this.sportData[i].TG_Team,
 							nums: [
 								{
@@ -413,7 +416,6 @@ export default defineComponent({
 						data: [
 							{
 								name: this.sportData[i].MB_Team,
-                mid:this.sportData[i].MID,
 								goalsScored: 1,
 								nums: [
 									{
@@ -428,7 +430,6 @@ export default defineComponent({
 							},
 							{
 								name: this.sportData[i].TG_Team,
-                mid:this.sportData[i].MID,
 								goalsScored: 1,
 								nums: [
 									{
@@ -669,7 +670,7 @@ export default defineComponent({
 
 		</div>
 		<OrderModal v-if="openModal" :type="this.type" :title="this.title" :m_team="this.m_team" :t_team="this.t_team"
-			:league="this.league" :rate="this.rate" :mid="this.mid" @close="closeModal" />
+			:league="this.league" :rate="this.rate" :mid="this.mid" :select_team="this.select_team" @close="closeModal" />
 	</div>
 </template>
 
