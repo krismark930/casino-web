@@ -17,7 +17,7 @@ export const useWithdrawStore = defineStore({
         const url = config.api.QUICK_WITHDRAW;
         let data = {
           userId : userId,
-          Money: amount,
+          money: amount,
           Bank_Address : bankAddress,
           Bank_Account: bankAccount,
         };

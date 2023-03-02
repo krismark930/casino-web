@@ -15,12 +15,12 @@
 
         <div class="pt-[40px] pb-[60px] bg-[#f7f7ff] h-screen">
             <div class="flex justify-start text-[15px] px-1 pt-1 mt-1 bg-white text-[#454558]">
-                <div v-for="(item, index) in selectList" :key="index" @click="selectCategory(item.id)" class="px-2">
+                <div v-for="(item, index) in selectList" :key="index" @click="selectMainCategory(item.id)" class="px-2">
                     {{ item.name }}
                     <div class="flex justify-center mt-1">
                         <div :class="{
                             'w-[36px] h-[2px] bg-[#01b3ff]':
-                                active == item.id
+                                mainActive == item.id
                         }"></div>
                     </div>
                 </div>
@@ -123,7 +123,7 @@
                 </div>
             </div>
 
-            <div  class=" px-2 bg-whitetext-[12px] pb-1">
+            <div  class=" px-2 bg-white text-[12px] pb-1">
                 <div class="text-wrapper_2 flex justify-start items-end">
                     <p class="text-[15px]">￥</p>
                     <input type="text" v-model="amount" @input="amountChange" placeholder="请输入￥100~￥1000000" name="name" id="name"
@@ -136,7 +136,7 @@
                         <p>银行卡 </p>
                          <p>(0/10)</p>
                     </div>
-                    <div class="flex border border-blue-400 px-[5px] items-center rounded-sm">
+                    <div class="flex border border-blue-400 px-[5px] items-center rounded-sm" @click="addBank">
                         <!-- <img class="w-[10px] h-[10px] mr-1" referrerpolicy="no-referrer"
                             src="@/assets/images/deposit/active.png" /> -->
                             添加银行卡
@@ -203,11 +203,10 @@ onMounted( async ()=>{
     if(!sysConfig)
         await getSysConfigValue();
 })
-
 const tokenActive = ref(1);
 const active = ref(1);
+const mainActive = ref(1);
 const amount = ref(0);
-const amountFlag = ref(false);
 const tokenList = ref([
     {
         id: 1,
@@ -238,7 +237,6 @@ const timeList = ref([
         name: '0-9小时之内取款-加送0.8%',
     },
 ]);
-
 const moneyList = ref([
     {
         name: '中心钱包',
@@ -277,17 +275,16 @@ const selectList = ref([
         id: 2
     }
 ]);
-const onClick_1 = () => {
-    //alert(1);
-};
+
 const selectToken = (id: number) => {
     tokenActive.value = id;
 };
 const onClickLeft = () => {
     router.go(-1);
 };
-const selectCategory = (id: number) => {
-    active.value = id;
+
+const selectMainCategory = (id: number) => {
+    mainActive.value = id;
 };
 const selectTime = (id:number) => {
     active.value = id;
@@ -298,7 +295,11 @@ const editBank = (item: any) => {
 const submitResult = async () => {
     const result = VerifyData();
     if(result && amount.value > 0 && user.value.Bank_Address &&user.value.Bank_Account){
-        await sumbitWithdraw(user.value.id, amount.value, user.value.Bank_Address, user.value.Bank_Account)
+        const result = await sumbitWithdraw(user.value.id, amount.value, user.value.Bank_Address, user.value.Bank_Account);
+        showToast(result.message);
+        if(result.success){
+            router.push({name: 'my'});
+        }
     }
 }
 const VerifyData = () => {
@@ -327,5 +328,8 @@ const VerifyData = () => {
         }
 	}
     return true
+}
+const addBank = () => {
+    router.push({name: 'addBank'});
 }
 </script>
