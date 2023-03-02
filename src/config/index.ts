@@ -1,13 +1,16 @@
+const SERVER_API = "http://localhost:8000"
+
 const config = {
   api: {
-    SIGN_IN: "http://localhost:8000/api/users/login",
-    SIGN_UP: "http://localhost:8000/api/users/register",
-    BANK_LIST: "http://127.0.0.1:8000/api/deposit/getBank",
-    DEPOSIT : "http://127.0.0.1:8000/api/deposit/addMoney",
-    TRANSFER : "http://127.0.0.1:8000/api/transfer/transferMoney",
-    GET_SYSCONFIG: "http://127.0.0.1:8000/api/transfer/getSysConfig",
-    GET_SPORTS_DATA: "http://127.0.0.1:8000/api/get_item_date",
-    BET_FT : "http://127.0.0.1:8000/api/sport/bet_ft"
+    SIGN_IN: SERVER_API + "/api/users/login",
+    SIGN_UP: SERVER_API + "/api/users/register",
+    BANK_LIST: SERVER_API + "/api/deposit/getBank",
+    DEPOSIT : SERVER_API + "/api/deposit/addMoney",
+    QUICK_WITHDRAW: SERVER_API + "/api/withdraw/quick-withdraw",
+    TRANSFER : SERVER_API + "/api/transfer/transferMoney",
+    GET_SYSCONFIG: SERVER_API + "/api/transfer/getSysConfig",
+    GET_SPORTS_DATA: SERVER_API + "/api/get_item_date"
+    BET_FT : SERVER_API + "/api/sport/bet_ft"
   },
 };
 

@@ -14,6 +14,10 @@
                 getUser,
             } = storeToRefs(useAuthStore());
             this.userData=getUser.value;
+            // if(!getUser.value.id){
+            //     router.push({name:'my'})
+            // }
+
         },
         
     })
@@ -24,8 +28,8 @@
 		<div class="user_box">
 			<img @click="goSubHome" src="@/assets/images/stadiums/user.png" alt="">
 			<div class="money">
-				<span>（RMB）</span>
-				<span>{{ userData.Money }}</span>
+				<span>{{userData.UserName}}</span>
+				<span>{{userData.Money}}</span>
 			</div>
 		</div>
 		<img @click="openPopup" class="search" src="@/assets/images/stadiums/search.png" alt="">
