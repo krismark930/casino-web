@@ -15,7 +15,7 @@ export default defineComponent({
 			t_team: "",
 			select_team: "",
 			league: "",
-      mid: 0,
+      		mid: 0,
 			openModal: false,
 			sportData: [],
 			tableList: [
@@ -509,18 +509,18 @@ export default defineComponent({
 			}
 		},
 		handleModal(table_id: number, game_id: number, score_id: number, num_id: number) {
-      console.log(this.tableList[table_id].gameList[game_id].scoreList[score_id].mid)
-      this.mid = this.tableList[table_id].gameList[game_id].scoreList[score_id].mid
-      this.m_team = this.tableList[table_id].gameList[game_id].scoreList[0].name
-      this.t_team = this.tableList[table_id].gameList[game_id].scoreList[1].name
-      this.select_team = this.tableList[table_id].gameList[game_id].scoreList[score_id].name
-      this.league = this.sportData[table_id].M_League
-      this.title = this.tableList[table_id].gameList[game_id].titletext[num_id + 1].text1
-      this.rate = this.tableList[table_id].gameList[game_id].scoreList[score_id].nums[num_id]
-      console.log( this.rate)
-      if (this.rate.num==0 || this.rate.num==null) this.openModal = false
-      else this.openModal = true
-    },
+			console.log(this.tableList[table_id].gameList[game_id].scoreList[score_id].mid)
+			this.mid = this.tableList[table_id].gameList[game_id].scoreList[score_id].mid
+			this.m_team = this.tableList[table_id].gameList[game_id].scoreList[0].name
+			this.t_team = this.tableList[table_id].gameList[game_id].scoreList[1].name
+			this.select_team = this.tableList[table_id].gameList[game_id].scoreList[score_id].name
+			this.league = this.sportData[table_id].M_League
+			this.title = this.tableList[table_id].gameList[game_id].titletext[num_id + 1].text1
+			this.rate = this.tableList[table_id].gameList[game_id].scoreList[score_id].nums[num_id]
+			console.log( this.rate)
+			if (this.rate.num==0 || this.rate.num==null) this.openModal = false
+			else this.openModal = true
+		},
 		closeModal() {
 			this.openModal = false
 		}
