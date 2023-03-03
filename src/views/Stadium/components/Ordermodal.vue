@@ -90,6 +90,8 @@ export default {
     m_team: "",
     t_team: "",
     select_team: "",
+    line: 0,
+    g_type: "",
     title: "",
     rate: 0,
     league: ""
@@ -117,13 +119,16 @@ export default {
     },
     async bet() {
       try {
-        console.log(this.userData)
         let url = config.api.BET_FT;
         let data = {
-          userId : this.userData.id,
+          id : this.userData.id,
           gold : this.value_n,
-          mid : this.mid
+          gid : this.mid,
+          type : this.g_type,
+          line_type : this.line,
+          active : 1
         }
+        console.log(data);
         if(this.input_value != ''){
           const response = (await axios.post(url, data)).data
           console.log(response)
