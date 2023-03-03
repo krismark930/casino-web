@@ -483,6 +483,7 @@ export default defineComponent({
 							{
 								name: this.sportData[i].M_League,
 								gameList: [{
+									mid: this.sportData[i].MID,
 									titletext: [...titleTextTemp],
 									scoreList: [...scoreList],
 									tepe: [...tepe]
@@ -517,7 +518,7 @@ export default defineComponent({
 			if (num_id == 2) this.line = 11
 			if (num_id == 3) this.line = 14			
 			this.g_type = this.tableList[table_id].gameList[game_id].scoreList[score_id].nums[num_id].type
-			this.mid = this.tableList[table_id].gameList[game_id].scoreList[score_id].mid
+			this.mid = this.tableList[table_id].gameList[game_id].mid
 			this.m_team = this.tableList[table_id].gameList[game_id].scoreList[0].name
 			this.t_team = this.tableList[table_id].gameList[game_id].scoreList[1].name
 			this.select_team = this.tableList[table_id].gameList[game_id].scoreList[score_id].name
@@ -536,7 +537,7 @@ export default defineComponent({
 			// if (k == 1 ) this.line = 7
 			if (key == 0) this.g_type = "H"			
 			if (key == 1) this.g_type = "C"			
-			this.mid = this.tableList[table_id].gameList[0].scoreList[0].mid
+			this.mid = this.tableList[table_id].gameList[0].mid
 			this.m_team = this.tableList[table_id].fullCourt1.data[0].name
 			this.t_team = this.tableList[table_id].fullCourt1.data[1].name
 			this.select_team = this.tableList[table_id].fullCourt1.data[key].name
@@ -556,7 +557,7 @@ export default defineComponent({
 			// if (k == 1 ) this.line = 5
 			if (key == 0) this.g_type = "H"			
 			if (key == 1) this.g_type = "C"			
-			this.mid = this.tableList[table_id].gameList[0].scoreList[0].mid
+			this.mid = this.tableList[table_id].gameList[0].mid
 			this.m_team = this.tableList[table_id].fullCourt1.data[0].name
 			this.t_team = this.tableList[table_id].fullCourt1.data[1].name
 			this.select_team = this.tableList[table_id].fullCourt1.data[key].name
