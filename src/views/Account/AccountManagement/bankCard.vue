@@ -1,17 +1,16 @@
 <template>
     
-    <div v-for="(item, index) in backList" :key="index"
+    <div 
+        v-if="user.Bank_Account"
         class="bg-white flex justify-between items-center mt-[10px] px-3 py-[15px]">
         <div class="image-text_1 flex justify-between items-center">
-            <img class="w-[25px]" referrerpolicy="no-referrer" :src="item.img" />
-            <span class="text-[12px] pl-1">{{ item.name }}</span>
+            <img class="w-[25px]" referrerpolicy="no-referrer" src="@/assets/images/my/bank-mark.png" />
+            <span class="text-[12px] pl-1">{{ user.Bank_Address }}</span>
         </div>
-        <span class="text-[13px] text-bold">{{ item.number }}</span>
-        <span class="text-[12px] text-[#4EABFF]" @click="editBank(item)">{{
-            item.control
-        }}</span>
+        <span class="text-[13px] text-bold">{{ user.Bank_Account.substring(0, 7)+'*******'+ user.Bank_Account.substring(user.Bank_Account.length-7,user.Bank_Account.length) }}</span>
+        <span class="text-[12px] text-[#4EABFF]" @click="editBank(item)">编辑</span>
     </div>
-    <div v-if="backList.length === 0">
+    <div v-if="user.Bank_Account === null || user.Bank_Account === ''">
         <img class="p-4" referrerpolicy="no-referrer" src="@/assets/images/my/bg-account.png" />
     </div>
     <button
@@ -28,15 +27,15 @@
 </template>
 <script setup lang="ts">
 import router from '@/router';
-import {ref} from 'vue';
-const backList = ref([
-    {
-        img: new URL('@/assets/images/my/bank-mark.png', import.meta.url).href,
-        name: '农业银行',
-        number: '622848******888',
-        control: '编辑'
-    }
-]);
+import {ref, onMounted} from 'vue';
+import {useAuthStore} from '@/stores/auth';
+import { storeToRefs } from 'pinia';
+onMounted(()=>{
+
+})
+const {user} = storeToRefs(useAuthStore());
+console.log(user.value.id)
+
 
 const addBank = () => {
 	router.push({ name: 'addBank' })
