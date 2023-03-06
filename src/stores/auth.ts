@@ -37,7 +37,7 @@ export const useAuthStore = defineStore({
         console.log("reponese", response)
         if (response) {
           showToast('登录 成功!')
-          router.push({ name: 'myhome' })
+          router.push({ name: 'my' })
         }
         else {
           showToast('用户名和密码不匹配')

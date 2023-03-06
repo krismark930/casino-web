@@ -38,7 +38,7 @@ console.log(user.value.id)
 
 
 const addBank = () => {
-	router.push({ name: 'addBank' })
+	router.push({ name: 'addBank2' })
 }
 const editBank = (item: any) => {
     router.push({name: 'editBankCard'});

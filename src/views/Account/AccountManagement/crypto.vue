@@ -6,7 +6,7 @@
             <div class="text-[12px] text-bold">{{ item.bank.split('-')[1] }}</div>
         </div>
         <span class="text-[13px] text-bold">{{ item.bank_address.substring(0, 7)+'*******'+ item.bank_address.substring(item.bank_address.length-7,item.bank_address.length) }}</span>
-        <span class="text-[12px] text-[#4EABFF]">编辑</span>
+        <span class="text-[12px] text-[#4EABFF]" @click="editCryptoAccount(item)">编辑</span>
     </div>
     <div v-if="bankList.length === 0">
         <img class="p-4" referrerpolicy="no-referrer" src="@/assets/images/my/bg-account.png" />
@@ -33,12 +33,17 @@ import { useBankAccountStore} from '@/stores/bankAccount';
 import { storeToRefs } from 'pinia';
 const bankList = ref([]);
 const { banks } = storeToRefs(useBankAccountStore());
-
+const { setEditBank } = useBankAccountStore();
 onMounted( async ()=>{
     bankList.value = banks.value
 });
 
 const addCrypto = () => {
+    router.push({ name: 'addCrypto' })
+}
+
+const editCryptoAccount = (item: any) => {
+    setEditBank(item);
     router.push({ name: 'addCrypto' })
 }
 </script>
