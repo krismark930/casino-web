@@ -24,7 +24,7 @@
          </section>
 
         <section class="modal-body">
-            {{this.m_team}} {{this.rate.text}} @ {{this.rate.num}}
+            {{this.select_team}} {{this.rate.text}} @ {{this.rate.num}}
          </section>
         <section class="modal-body">
             <div class="list_input">
@@ -78,13 +78,20 @@
   </template>
   
 <script>
-
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
+import axios from "axios";
+import config from "@/config"
 export default {
   name: 'Modal',
   props: {
+    mid: 0,
     type: "",
     m_team: "",
     t_team: "",
+    select_team: "",
+    line: 0,
+    g_type: "",
     title: "",
     rate: 0,
     league: ""
@@ -95,17 +102,43 @@ export default {
         openKeyboard: false,
         value_s: '',
         vaiue_n: 0,
-        is_status: true
+        is_status: true,
+        userData: []
     }
+  },
+  mounted() {
+      const {
+          getToken,
+          getUser,
+      } = storeToRefs(useAuthStore());
+      this.userData=getUser.value;
   },
   methods: {
     close() {
       this.$emit('close');
     },
-    bet() {
-      if(this.input_value != '')
-        alert(this.input_value + " really?")
-    },
+    async bet() {
+      try {
+        let url = config.api.BET_FT;
+        let data = {
+          id : this.userData.id,
+          gold : this.value_n,
+          gid : this.mid,
+          type : this.g_type,
+          line_type : this.line,
+          active : 1
+        }
+        console.log(data);
+        if(this.input_value != ''){
+          const response = (await axios.post(url, data)).data
+          console.log(response)
+          this.userData.Money = response.data
+          return response;
+        }
+      }catch (e) {
+        return e;
+      }
+     },
     showpanel() {
       this.openKeyboard = true;
       document.onkeydown = function (e) 
