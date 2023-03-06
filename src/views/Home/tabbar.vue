@@ -56,7 +56,7 @@ const tabList = ref([
   },
   {
     name: "我的",
-    path: "/myhome",
+    path: "/my",
     icon: {
       active: new URL("@/assets/images/tabbar/my-o.png", import.meta.url).href,
       inactive: new URL("@/assets/images/tabbar/my.png", import.meta.url).href,

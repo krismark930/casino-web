@@ -6,12 +6,22 @@ import type {
  } from "@/interface";
 
 export const useWithdrawStore = defineStore({
-  id:"deposit",
+  id:"withdraw",
   state:() =>({
+    historyList : [],
+    historyDetail: {} as any
   }),
   getters:{
+    getHistoryList: (state) => state.historyList,
+    getHistoryDetail: (state) => state.historyDetail,
   },
   actions:{
+    setHistoryList(historyList:Array<any>){
+      this.historyList = historyList;
+    },
+    setHistoryDetail(historyDetail: any){
+      this.historyDetail = historyDetail;
+    },
     async sumbitWithdraw(userId: number, amount: number, bankAddress: string, bankAccount: string) {
       try{
         const url = config.api.QUICK_WITHDRAW;
@@ -21,11 +31,19 @@ export const useWithdrawStore = defineStore({
           Bank_Address : bankAddress,
           Bank_Account: bankAccount,
         };
-        console.log(data)
         const response = (await axios.post(url, data)).data;
         return response;
       }catch(e){
         
+      }
+    },
+    async getTransactionHistory(userName: string, type: number, type2: number){
+      try{
+        const url = config.api.GET_TRANSACTION_HISTORY;
+        const response = await axios.get(url+`?username=${userName}&type=${type}&type2=${type2}`);
+        this.setHistoryList(response.data.historyList as any);
+        return response.data;
+      }catch(e){
       }
     }
   },

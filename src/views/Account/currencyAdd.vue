@@ -97,14 +97,15 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import router from '@/router';
 import { useBankAccountStore } from '@/stores/bankAccount';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
+
 const { user } = storeToRefs(useAuthStore());
-const { banks } = storeToRefs(useBankAccountStore());
-const { addCryptoAccount } = useBankAccountStore();
+const { editBank } = storeToRefs(useBankAccountStore());
+const { addCryptoAccount , editCryptoAccount} = useBankAccountStore();
 const bankAccount = ref('');
 const bankAddress = ref('');
 const verifyCode = ref('');
@@ -113,15 +114,29 @@ const onClick_1 = () => {
 
 }
 const onClick_2 = async () => {
-    
     if(bankAccount.value  && bankAddress.value){
-       const result = await addCryptoAccount(user.value.id? user.value.id:2263 , 'USDT-'+cryptoType.value, bankAccount.value, bankAddress.value );
-       if(result.success){
-            router.push({name: 'myAccount'});
-       }
+        if(editBank.value.id){
+            const result = await editCryptoAccount(user.value.id , editBank.value.id,  'USDT-'+cryptoType.value, bankAccount.value, bankAddress.value );
+            if(result.success){
+                router.push({name: 'myAccount'});
+            }
+        }else{
+            const result = await addCryptoAccount(user.value.id , 'USDT-'+cryptoType.value, bankAccount.value, bankAddress.value );
+            if(result.success){
+                router.push({name: 'myAccount'});
+            }
+        }
     }
 }
 const onClickLeft = () => {
     router.go(-1);
 };
+onMounted( async () => {
+    if(editBank.value.id){
+        console.log(editBank.value)
+        bankAccount.value = editBank.value.bank_account;
+        bankAddress.value = editBank.value.bank_address;
+        cryptoType.value = editBank.value.bank.split('-')[1];
+    }
+})
 </script>
