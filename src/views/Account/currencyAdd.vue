@@ -104,7 +104,7 @@ import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 
 const { user } = storeToRefs(useAuthStore());
-const { editBank } = storeToRefs(useBankAccountStore());
+const { editCrypto } = storeToRefs(useBankAccountStore());
 const { addCryptoAccount , editCryptoAccount} = useBankAccountStore();
 const bankAccount = ref('');
 const bankAddress = ref('');
@@ -115,8 +115,8 @@ const onClick_1 = () => {
 }
 const onClick_2 = async () => {
     if(bankAccount.value  && bankAddress.value){
-        if(editBank.value.id){
-            const result = await editCryptoAccount(user.value.id , editBank.value.id,  'USDT-'+cryptoType.value, bankAccount.value, bankAddress.value );
+        if(editCrypto.value.id){
+            const result = await editCryptoAccount(user.value.id , editCrypto.value.id,  'USDT-'+cryptoType.value, bankAccount.value, bankAddress.value );
             if(result.success){
                 router.push({name: 'myAccount'});
             }
@@ -132,11 +132,11 @@ const onClickLeft = () => {
     router.go(-1);
 };
 onMounted( async () => {
-    if(editBank.value.id){
-        console.log(editBank.value)
-        bankAccount.value = editBank.value.bank_account;
-        bankAddress.value = editBank.value.bank_address;
-        cryptoType.value = editBank.value.bank.split('-')[1];
+    console.log(editCrypto.value)
+    if(editCrypto.value.id){
+        bankAccount.value = editCrypto.value.bank_account;
+        bankAddress.value = editCrypto.value.bank_address;
+        cryptoType.value = editCrypto.value.bank.split('-')[1];
     }
 })
 </script>

@@ -14,7 +14,7 @@
                 <div>
                     <label for="name" class="px-2 block font-semibold text-[#454558]">持卡人姓名</label>
                     <div class=" px-2 mt-[7px]  pb-[12px]">
-                        <input type="text" v-model="alias" placeholder="请输入持卡人姓名，仅支持中文、英文、符号“.”" name="name" id="name"
+                        <input type="text" v-model="bankCardOwner" placeholder="请输入持卡人姓名，仅支持中文、英文、符号“.”" name="name" id="name"
                             class=" text-[13px] block w-full border-0 border-b border-transparent placeholder-[#CBCBCB]" />
                     </div>
                     <p class="px-2 py-[5px] text-[12px] text-red-500 bg-gray-100">
@@ -25,7 +25,7 @@
                 <div class="px-2 mt-[10px]">
                     <span class="font-semibold text-[#454558]">银行卡类型</span>
                     <div class="flex">
-                        <div v-for="(item, index) in bankList" :key="index" @click="setBank(item.id)"
+                        <div v-for="(item, index) in bankList" :key="index" @click="setBank(item)"
                             :class="[active === item.id? 'border border-blue-600':'border border-gray-300']"
                             class="relative flex justify-center items-center mr-1 mt-[6px] w-[90px] px-[6px] py-[7px]  rounded-sm">
                             <img :src="item.img" class="w-[18px] mr-1" alt="bank"/>
@@ -40,17 +40,17 @@
                 </div>
                 <div class="px-2 mt-[14px]">
                     <label for="name" class="block font-semibold text-[#454558] ">所属银行</label>
-                    <div class="mt-[5px] border-b border-gray-300 focus-within:border-gray-500 pb-[5px] flex justify-between items-center">
-                        <input type="text" v-model="bankName" placeholder="请选择银行" name="name" id="name"
+                    <div class="mt-[5px] border-b border-gray-300 focus-within:border-gray-500 pb-[5px] flex justify-between items-center" @click="selectBank">
+                        <input type="text" v-model="bankType" placeholder="请选择银行" name="name" id="name"
                             class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB]" />
-                            <img class="w-[10px] h-[13px] mr-2" src="@/assets/images/my/arrow-right.png" alt="arrow" @click="selectBank"/>
+                            <img class="w-[10px] h-[13px] mr-2" src="@/assets/images/my/arrow-right.png" alt="arrow" />
                     </div>
                 </div>
                 
                 <div class="px-2 mt-[14px]">
                     <label for="name" class="block font-semibold text-[#454558] ">银行卡号</label>
                     <div class="mt-[7px] border-b border-gray-300 focus-within:border-gray-500 pb-[5px] flex justify-between items-center">
-                        <input type="text" v-model="bankAddress" placeholder="请输入银行卡号" name="name" id="name"
+                        <input type="text" v-model="bankAccount" placeholder="请输入银行卡号" name="name" id="name"
                             class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB]" />
                         <img class="w-[10px] h-[13px] mr-2" src="@/assets/images/my/arrow-right.png" alt="arrow"/>
                     </div>
@@ -61,8 +61,8 @@
             </div>
             <div class="mx-2 mt-6">
                 <button
-                    :class="[[ alias && bankName && bankAddress ?'bg-blue-400': 'bg-blue-200'], ' text-white px-2 py-[10px] w-full text-[17px]']"
-                    @click="onClick_2">
+                    :class="[[ bankCardOwner && bankType && bankAccount ?'bg-blue-400': 'bg-blue-200'], ' text-white px-2 py-[10px] w-full text-[17px]']"
+                    @click="goNextStep">
                     下一步
                 </button>
             </div>
@@ -74,18 +74,20 @@
         <van-popup v-model:show="show" position="bottom" class="rounded-t-md">
 			<div class="rounded-t-md">
 				<div class="text-[16px] p-2 flex justify-between">
-					<span class="text-blue-400">取消</span>
+					<span class="text-blue-400" @click="() => show = false">取消</span>
 					<span class="font-bold">选择所属银行</span>
                     <span></span>
 				</div>
 				<p class="bg-gray-400 h-[1px] "></p>
                 <div class="px-2 relative">
-                    <input class="rounded-full h-[30px] bg-gray-300 flex justify-center w-full pl-4 my-1" placeholder="请输入银行名称">
+                    <input v-model="search" class="rounded-full h-[30px] bg-gray-300 flex justify-center w-full pl-4 my-1 placeholder:text-[15px] placeholder:pb-1 items-center" placeholder="">
                     <img src="@/assets/images/account/icon-search.png" class="w-[20px] absolute top-[5px] left-3"/>
                 </div>
-                <div v-for="(item, index) in bankCardList" :key="index" class="flex px-2 items-center">
-                    <img :src="item.img" class="w-[20px]"/>
-                    <p class="pl-1 text-[14px] font-bold py-1">{{ item.name }}</p>
+                <div v-for="(item, index) in bankCardList" :key="index" class="flex px-2 items-center" @click="selectBankType(item)">
+                    <div v-if="search === '' || search===item.name" class="flex px-2 items-center">
+                        <img :src="item.img" class="w-[20px]"/>
+                        <p class="pl-1 text-[14px] font-bold py-1">{{ item.name }}</p>
+                    </div>
                 </div>
 			</div>
 		</van-popup>
@@ -93,14 +95,19 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import router from '@/router'
-const alias = ref('');
-const bankName = ref('');
-const bankAddress = ref('');
+import router from '@/router';
+import { useBankAccountStore } from '@/stores/bankAccount';
+const { setBankAdd } = useBankAccountStore();
+const bankCardOwner = ref('');
+const bankType = ref('');
+const bankAccount = ref('');
+const bankCardType = ref('储蓄卡');
 const verifyCode = ref('');
+const search = ref('');
 const active = ref(1);
 const show = ref(false);
 const selectBank = () => {
+    search.value = '';
     show.value = true
 }
 const cancel = () => {
@@ -189,15 +196,21 @@ const bankCardList = ref([
         name: '兴业银行',
     }
 ])
-const setBank = (id:number) => {
-    active.value = id;
+const setBank = (item:any) => {
+    active.value = item.id;
+    bankCardType.value = item.name
 }
-const onClick_2 = () => {
-    if( alias.value !== "" && bankName.value !== "" && bankAddress.value !== ""){
-        router.push({ name: 'addBank3' })
+const goNextStep = () => {
+    if( bankCardOwner.value !== "" && bankType.value !== "" && bankAccount.value !== ""){
+        setBankAdd({bankCardOwner:bankCardOwner, bankCardType: bankCardType,  bankType:bankType,bankAccount:bankAccount ,bankAddress:''})
+        router.push({ name: 'addBank3' });
     }
 }
 const onClickLeft = () => {
     router.go(-1);
 };
+const selectBankType = (item:any) => {
+    show.value = false
+    bankType.value = item.name;
+}
 </script>
