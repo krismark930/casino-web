@@ -19,6 +19,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/vue-fontawesome": "^3.0.2",
+    "@vant/area-data": "^1.4.0",
     "amfe-flexible": "^2.2.1",
     "animate.css": "3.5.1",
     "core-js": "^3.27.1",

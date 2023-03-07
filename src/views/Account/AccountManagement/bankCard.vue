@@ -1,6 +1,14 @@
 <template>
-    
-    <div 
+    <div v-for="(item, index) in bankList" :key="index"
+        class="bg-white flex justify-between items-center mt-[10px] px-3 py-[15px]">
+        <div class="flex w-[90px]">
+            <img class="w-[25px] h-[24px]" src="@/assets/images/my/bank-mark.png" />
+            <div class="text-[12px] text-bold pl-1">{{ item.bank_type }}</div>
+        </div>
+        <span class="text-[13px] text-bold">{{ item.bank_account.substring(0, 7)+'*******'+ item.bank_account.substring(item.bank_account.length-7,item.bank_account.length) }}</span>
+        <span class="text-[12px] text-[#4EABFF]" @click="editBank(item)">编辑</span>
+    </div>
+    <!-- <div 
         v-if="user.Bank_Account"
         class="bg-white flex justify-between items-center mt-[10px] px-3 py-[15px]">
         <div class="image-text_1 flex justify-between items-center">
@@ -9,7 +17,7 @@
         </div>
         <span class="text-[13px] text-bold">{{ user.Bank_Account.substring(0, 7)+'*******'+ user.Bank_Account.substring(user.Bank_Account.length-7,user.Bank_Account.length) }}</span>
         <span class="text-[12px] text-[#4EABFF]" @click="editBank(item)">编辑</span>
-    </div>
+    </div> -->
     <div v-if="user.Bank_Account === null || user.Bank_Account === ''">
         <img class="p-4" referrerpolicy="no-referrer" src="@/assets/images/my/bg-account.png" />
     </div>
@@ -30,17 +38,21 @@ import router from '@/router';
 import {ref, onMounted} from 'vue';
 import {useAuthStore} from '@/stores/auth';
 import { storeToRefs } from 'pinia';
-onMounted(()=>{
-
-})
+import { useBankAccountStore } from '@/stores/bankAccount';
 const {user} = storeToRefs(useAuthStore());
-console.log(user.value.id)
-
+const { getBankList, bankAccounts, setEditBank } = useBankAccountStore();
+const bankList = ref([])
+onMounted(async ()=>{
+    const result = await getBankList(user.value.id);
+    bankList.value = bankAccounts;
+    console.log(bankAccounts)
+})
 
 const addBank = () => {
 	router.push({ name: 'addBank2' })
 }
 const editBank = (item: any) => {
+    setEditBank(item);
     router.push({name: 'editBankCard'});
 }
 </script>

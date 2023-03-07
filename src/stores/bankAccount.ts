@@ -6,30 +6,56 @@ import type {
  } from "@/interface";
 
 export const useBankAccountStore = defineStore({
-  id:"deposit",
+  id:"bankAccount",
   state:() =>({
-    banks: [],
+    bankAdd: {},
+    cryptoAccounts: [],
+    bankAccounts: [],
+    editCrypto: {},
     editBank: {}
   }),
   getters:{
-    getBanks: (state) => state.banks,
-    getEditBank: (state) => state.editBank
+    getBankAccounts: (state) => state.bankAccounts,
+    getCryptoAccounts: (state) => state.cryptoAccounts,
+    getEditBank: (state) => state.editBank,
+    getEditCrypto: (state) => state.editCrypto,
+    getBankAdd : (state) => state.bankAdd
   },
   actions:{
-    setBanks(banks:Array<any>){
-        this.banks = banks;
+    setCryptoAccounts(cryptoAccounts:Array<any>){
+        this.cryptoAccounts = cryptoAccounts;
+    },
+    setBankAccounts(bankAccounts:Array<any>){
+      this.bankAccounts = bankAccounts;
+    },
+    setEditCrypto(editCrypto:any){
+      
+      this.editCrypto = editCrypto;
     },
     setEditBank(editBank:any){
       this.editBank = editBank;
     },
+    setBankAdd(bankAdd: any){
+      this.bankAdd = bankAdd;
+    },
     async getBankList(userId:number){
         try{
-            const url = config.api.GET_BANK_LIST_BY_USER_ID;
+            const url = config.api.GET_BANK_ACCOUNT_LIST_BY_USER_ID;
             const response = (await axios.get(url+`?userId=${userId}`)).data;
-            this.setBanks(response.bankList);
+            this.setBankAccounts(response.bankList);
+            return response;
         }catch(e){
 
         }
+    },
+    async getCryptoList(userId:number){
+      try{
+          const url = config.api.GET_CRYPTO_ACCOUNT_LIST_BY_USER_ID;
+          const response = (await axios.get(url+`?userId=${userId}`)).data;
+          this.setCryptoAccounts(response.bankList);
+      }catch(e){
+
+      }
     },
     async addCryptoAccount(userId: number ,bank: string, bankAccount: string, bankAddress: string) {
       try{
@@ -44,7 +70,7 @@ export const useBankAccountStore = defineStore({
         
         const response = (await axios.post(url, data)).data;
         if(response.success){
-            this.setBanks(response.bankList);
+            this.setCryptoAccounts(response.bankList);
         }
         console.log(response.bankList)
         return response;
@@ -65,7 +91,46 @@ export const useBankAccountStore = defineStore({
         console.log(data)
         const response = (await axios.post(url, data)).data;
         if(response.success){
-            this.setBanks(response.bankList);
+            this.setCryptoAccounts(response.bankList);
+        }
+        console.log(response.bankList)
+        return response;
+      }catch(e){
+      }
+    },
+    async addBankAccount(userId:number) {
+      try{
+        const url = config.api.ADD_BANK_ACCOUNT;
+        let data = {
+          userId : userId,
+          bank_card_owner : this.bankAdd.bankCardOwner,
+          bank_card_type : this.bankAdd.bankCardType,
+          bank_type : this.bankAdd.bankType,
+          bank_account: this.bankAdd.bankAccount,
+          bank_address : this.bankAdd.bankAddress,
+        };
+        const response = (await axios.post(url, data)).data;
+        if(response.success){
+            this.setBankAccounts(response.bankList);
+        }
+        this.setBankAdd({});
+        return response;
+      }catch(e){
+      }
+    },
+    async editBankAccount(userId: number , bank_id: string,  bank_card_owner: string , bank_type: string, bankAccount: string) {
+      try{
+        const url = config.api.Edit_BANK_ACCOUNT;
+        let data = {
+          userId : userId,
+          bank_id : bank_id,
+          bank_card_owner : bank_card_owner,
+          bank_type : bank_type,
+          bank_account: bankAccount,
+        };
+        const response = (await axios.post(url, data)).data;
+        if(response.success){
+            this.setBankAccounts(response.bankList);
         }
         console.log(response.bankList)
         return response;

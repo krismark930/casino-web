@@ -45,12 +45,12 @@ import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 const bankList = ref([]);
 const { user } = useAuthStore();
-const { getBankList } = useBankAccountStore();
-const { banks } = storeToRefs(useBankAccountStore());
+const { getCryptoList } = useBankAccountStore();
+const { cryptoAccounts } = storeToRefs(useBankAccountStore());
 
 onMounted( async ()=>{
-    await getBankList(user.id);
-    bankList.value = banks.value
+    await getCryptoList(user.id);
+    bankList.value = cryptoAccounts.value;
 });
 
 const active = ref(1);

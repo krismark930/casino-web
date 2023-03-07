@@ -38,7 +38,7 @@
             <div class="mt-6 mb-3">
                 <button
                     :class="[{ 'bg-blue-200': !verifyCode }, 'bg-blue-400 text-white px-2 py-[10px] w-full text-[17px]']"
-                    @click="onClick_2">
+                    @click="submit">
                     提交
                 </button>
             </div>
@@ -50,15 +50,27 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import router from '@/router'
+import router from '@/router';
+import { useBankAccountStore } from '@/stores/bankAccount';
+import { useAuthStore } from '@/stores/auth';
+import { showToast } from 'vant';
+const { user } = useAuthStore(); 
+const { bankAdd, addBankAccount } = useBankAccountStore();
 const alias = ref('');
 const cryptoAccount = ref('888888');
 const verifyCode = ref('');
 const onClick_1 = () => {
-
 }
-const onClick_2 = () => {
-    router.push({ name: 'addBank2' })
+const submit = async () => {
+    if(verifyCode.value){
+        const result = await addBankAccount(user.id);
+        if(result.success){
+            showToast("result.message");
+            router.push({ name: 'myAccount' })
+        }else{
+            showToast(result.message);
+        }
+    }
 }
 const onClickLeft = () => {
     router.go(-1);
