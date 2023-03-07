@@ -14,14 +14,14 @@
                 <div class="">
                     <label for="name" class="block font-semibold text-[#454558]">别名</label>
                     <div class="mt-[7px] border-b border-gray-300 focus-within:border-gray-500 pb-[12px]">
-                        <input type="text" v-model="alias" placeholder="别名能便于区分您名下的虚拟币账户" name="name" id="name"
+                        <input type="text" v-model="bankAccount" placeholder="别名能便于区分您名下的虚拟币账户" name="name" id="name"
                             class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB]" />
                     </div>
                 </div>
                 <div class="mt-[14px]">
                     <label for="name" class="block font-semibold text-[#454558]">虚拟币账户</label>
                     <div class="mt-[7px] border-b border-gray-300 focus-within:border-gray-500 pb-[12px]">
-                        <input type="text" v-model="cryptoAccount" placeholder="别名能便于区分您名下的虚拟币账户" name="name" id="name"
+                        <input type="text" v-model="bankAddress" placeholder="别名能便于区分您名下的虚拟币账户" name="name" id="name"
                             class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB]" />
                     </div>
                 </div>
@@ -44,17 +44,23 @@
                     <span class="font-semibold text-[#454558]">虚拟币种类</span>
                     <div class="flex">
                         <div
-                            class="relative flex justify-center items-center mr-3 mt-[6px] w-[90px] px-[6px] py-[3px] border border-blue-600 rounded-sm">
+                            @click="() => cryptoType = 'TRC20'"
+                            :class="[cryptoType === 'TRC20'?'border-blue-600':'border-gray-300 ']"
+                            class="relative flex justify-center items-center mr-3 mt-[6px] w-[90px] px-[6px] py-[3px] border  rounded-sm">
                             <span class="text-blue-700">TRC20</span>
-                            <div class="absolute right-0 bottom-0 image-text_1">
+                            <div v-if="cryptoType === 'TRC20'" class="absolute right-0 bottom-0 image-text_1">
                                 <img class="w-[15px] h-[15px]" referrerpolicy="no-referrer"
                                     src="https://lanhu.oss-cn-beijing.aliyuncs.com/psar0m8wrggrj43h4jglt2a1pbq77if1jnf79e9304-f10e-4ff2-9724-bb196a573e26" />
                             </div>
                         </div>
                         <div
-                            class="relative flex justify-center items-center mt-[6px] w-[90px] px-[6px] py-[3px] border border-gray-300 rounded-sm">
+                            @click="() => cryptoType = 'ERC20'"
+                            :class="[cryptoType === 'ERC20'?'border-blue-600':'border-gray-300 ']"
+                            class="relative flex justify-center items-center mt-[6px] w-[90px] px-[6px] py-[3px] border rounded-sm">
                             <span class="text-blue-700">ERC20</span>
-                            <div class="absolute right-0 bottom-0 image-text_1">
+                            <div v-if="cryptoType === 'ERC20'" class="absolute right-0 bottom-0 image-text_1">
+                                <img class="w-[15px] h-[15px]" referrerpolicy="no-referrer"
+                                    src="https://lanhu.oss-cn-beijing.aliyuncs.com/psar0m8wrggrj43h4jglt2a1pbq77if1jnf79e9304-f10e-4ff2-9724-bb196a573e26" />
                             </div>
                         </div>
                     </div>
@@ -79,7 +85,7 @@
             </div>
             <div class="my-6">
                 <button
-                    :class="[{ 'bg-blue-200': !alias || !verifyCode || !cryptoAccount }, 'bg-blue-500 text-white px-2 py-[10px] w-full text-[17px]']"
+                    :class="[{ 'bg-blue-200': !bankAccount  || !bankAddress }, 'bg-blue-500 text-white px-2 py-[10px] w-full text-[17px]']"
                     @click="onClick_2">
                     提交
                 </button>
@@ -91,18 +97,46 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-import router from '@/router'
-const alias = ref('');
-const cryptoAccount = ref('');
+import { ref, onMounted } from 'vue';
+import router from '@/router';
+import { useBankAccountStore } from '@/stores/bankAccount';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
+
+const { user } = storeToRefs(useAuthStore());
+const { editBank } = storeToRefs(useBankAccountStore());
+const { addCryptoAccount , editCryptoAccount} = useBankAccountStore();
+const bankAccount = ref('');
+const bankAddress = ref('');
 const verifyCode = ref('');
+const cryptoType = ref('TRC20');
 const onClick_1 = () => {
 
 }
-const onClick_2 = () => {
-
+const onClick_2 = async () => {
+    if(bankAccount.value  && bankAddress.value){
+        if(editBank.value.id){
+            const result = await editCryptoAccount(user.value.id , editBank.value.id,  'USDT-'+cryptoType.value, bankAccount.value, bankAddress.value );
+            if(result.success){
+                router.push({name: 'myAccount'});
+            }
+        }else{
+            const result = await addCryptoAccount(user.value.id , 'USDT-'+cryptoType.value, bankAccount.value, bankAddress.value );
+            if(result.success){
+                router.push({name: 'myAccount'});
+            }
+        }
+    }
 }
 const onClickLeft = () => {
     router.go(-1);
 };
+onMounted( async () => {
+    if(editBank.value.id){
+        console.log(editBank.value)
+        bankAccount.value = editBank.value.bank_account;
+        bankAddress.value = editBank.value.bank_address;
+        cryptoType.value = editBank.value.bank.split('-')[1];
+    }
+})
 </script>

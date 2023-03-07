@@ -13,7 +13,11 @@ export default defineComponent({
 			rate: 0,
 			m_team: "",
 			t_team: "",
+			select_team: "",
 			league: "",
+      		mid: 0,
+			line: 0,
+			g_type: '',
 			openModal: false,
 			sportData: [],
 			tableList: [
@@ -43,22 +47,22 @@ export default defineComponent({
 								name: '日本',
 
 								nums: [{
-									type: 1,
+									type: 'H',
 									text: '',
 									num: '1.00'
 								},
 								{
-									type: 1,
+									type: 'H',
 									text: '大1/1.5',
 									num: '1.95'
 								},
 								{
-									type: 1,
+									type: 'H',
 									text: '',
 									num: '5.9'
 								},
 								{
-									type: 1,
+									type: 'H',
 									text: '第一个',
 									num: '4.35'
 								}
@@ -68,22 +72,22 @@ export default defineComponent({
 								goalsScored: 1,
 								name: '加拿大',
 								nums: [{
-									type: 1,
+									type: 'C',
 									text: '0.5',
 									num: '1.86'
 								},
 								{
-									type: 1,
+									type: 'C',
 									text: '小1/1.5',
 									num: '1.95'
 								},
 								{
-									type: 1,
+									type: 'C',
 									text: '',
 									num: '1.92'
 								},
 								{
-									type: 1,
+									type: 'C',
 									text: '第一个',
 									num: '1.64'
 								}
@@ -94,12 +98,12 @@ export default defineComponent({
 								nums: [{},
 								{},
 								{
-									type: 1,
+									type: 'N',
 									text: '和',
 									num: '2.47'
 								},
 								{
-									type: 1,
+									type: 'N',
 									text: '无',
 									num: '3.35'
 								}
@@ -109,11 +113,11 @@ export default defineComponent({
 							tepe: [
 								{
 									name: '让球&大/小',
-									type: 1
+									type: 'H'
 								},
 								{
 									name: '角球',
-									type: 1
+									type: 'H'
 								}
 							]
 						},
@@ -140,22 +144,22 @@ export default defineComponent({
 									name: '瓜达卢佩',
 
 									nums: [{
-										type: 1,
+										type: "H",
 										text: '',
 										num: '1.96'
 									},
 									{
-										type: 1,
+										type: "H",
 										text: '大1/1.5',
 										num: '1.95'
 									},
 									{
-										type: 1,
+										type: "H",
 										text: '',
 										num: '5.9'
 									},
 									{
-										type: 1,
+										type: "H",
 										text: '第一个',
 										num: '4.35'
 									}
@@ -166,22 +170,22 @@ export default defineComponent({
 									goalsScored: 1,
 									name: '朋塔雷纳斯',
 									nums: [{
-										type: 1,
+										type: '',
 										text: '0.5',
 										num: '1.86'
 									},
 									{
-										type: 1,
+										type: '',
 										text: '小1/1.5',
 										num: '1.95'
 									},
 									{
-										type: 1,
+										type: '',
 										text: '',
 										num: '1.92'
 									},
 									{
-										type: 1,
+										type: '',
 										text: '第一个',
 										num: '1.84'
 									}
@@ -193,12 +197,12 @@ export default defineComponent({
 									nums: [{},
 									{},
 									{
-										type: 1,
+										type: '',
 										text: '和',
 										num: '2.47'
 									},
 									{
-										type: 1,
+										type: '',
 										text: '无',
 										num: '3.35'
 									}
@@ -329,25 +333,26 @@ export default defineComponent({
 					let scoreList = [
 						{
 							goalsScored: 1,
+							mid: this.sportData[i].MID,
 							name: this.sportData[i].MB_Team,
 							nums: [
 								{
-									type: 1,
+									type: "H",
 									text: this.sportData[i].M_LetB_H,
 									num: this.sportData[i].MB_LetB_Rate_H
 								},
 								{
-									type: 1,
+									type: "H",
 									text: this.sportData[i].MB_Dime_H,
 									num: this.sportData[i].MB_Dime_Rate_H
 								},
 								{
-									type: 1,
+									type: "H",
 									text: ' ',
 									num: this.sportData[i].MB_Win_Rate_H
 								},
 								{
-									type: 1,
+									type: "H",
 									text: ' ',
 									num: this.sportData[i].o
 								},
@@ -355,25 +360,26 @@ export default defineComponent({
 						},
 						{
 							goalsScored: 1,
+							mid: this.sportData[i].MID,
 							name: this.sportData[i].TG_Team,
 							nums: [
 								{
-									type: 1,
+									type: "C",
 									text: this.sportData[i].M_LetB_H,
 									num: this.sportData[i].MB_LetB_Rate_H
 								},
 								{
-									type: 1,
+									type: "C",
 									text: this.sportData[i].TG_Dime_H,
 									num: this.sportData[i].TG_Dime_Rate_H
 								},
 								{
-									type: 1,
+									type: "C",
 									text: this.sportData[i].M_LetB_H,
 									num: this.sportData[i].TG_Win_Rate_H
 								},
 								{
-									type: 1,
+									type: "C",
 									text: this.sportData[i].M_LetB_H,
 									num: this.sportData[i].e
 								},
@@ -385,12 +391,12 @@ export default defineComponent({
 								{},
 								{},
 								{
-									type: 1,
+									type: "N",
 									text: '和',
 									num: this.sportData[i].M_Flat_Rate_H
 								},
 								{
-									type: 1,
+									type: "N",
 									text: '无',
 									num: '3.35'
 								}
@@ -400,11 +406,11 @@ export default defineComponent({
 					let tepe = [
 						{
 							name: '让球&大/小',
-							type: 1
+							type: 'H'
 						},
 						{
 							name: '角球',
-							type: 1
+							type: 'H'
 						}
 					]
 					let fullCourt1 = {
@@ -477,6 +483,7 @@ export default defineComponent({
 							{
 								name: this.sportData[i].M_League,
 								gameList: [{
+									mid: this.sportData[i].MID,
 									titletext: [...titleTextTemp],
 									scoreList: [...scoreList],
 									tepe: [...tepe]
@@ -505,14 +512,61 @@ export default defineComponent({
 			}
 		},
 		handleModal(table_id: number, game_id: number, score_id: number, num_id: number) {
-			console.log(this.sportData[table_id])
-			this.m_team = this.sportData[table_id].MB_Team
-			this.t_team = this.sportData[table_id].TG_Team
+			console.log(this.tableList[table_id])
+			if (num_id == 0) this.line = 12
+			if (num_id == 1) this.line = 13
+			if (num_id == 2) this.line = 11
+			if (num_id == 3) this.line = 14			
+			this.g_type = this.tableList[table_id].gameList[game_id].scoreList[score_id].nums[num_id].type
+			this.mid = this.tableList[table_id].gameList[game_id].mid
+			this.m_team = this.tableList[table_id].gameList[game_id].scoreList[0].name
+			this.t_team = this.tableList[table_id].gameList[game_id].scoreList[1].name
+			this.select_team = this.tableList[table_id].gameList[game_id].scoreList[score_id].name
 			this.league = this.sportData[table_id].M_League
 			this.title = this.tableList[table_id].gameList[game_id].titletext[num_id + 1].text1
 			this.rate = this.tableList[table_id].gameList[game_id].scoreList[score_id].nums[num_id]
-			console.log(this.rate)
-			if (this.rate.num == 0 || this.rate.num == null) this.openModal = false
+			console.log( this.rate)
+			if (this.rate.num==0 || this.rate.num==null) this.openModal = false
+			else this.openModal = true
+		},
+		handleModal1(table_id: number, key: number, k: number) {
+			console.log(this.tableList[table_id])
+			console.log(this.tableList[table_id].fullCourt1.data[key])
+			this.line = 2
+			// if (k == 0 ) this.line = 2
+			// if (k == 1 ) this.line = 7
+			if (key == 0) this.g_type = "H"			
+			if (key == 1) this.g_type = "C"			
+			this.mid = this.tableList[table_id].gameList[0].mid
+			this.m_team = this.tableList[table_id].fullCourt1.data[0].name
+			this.t_team = this.tableList[table_id].fullCourt1.data[1].name
+			this.select_team = this.tableList[table_id].fullCourt1.data[key].name
+			console.log(this.select_team)
+			this.league = this.sportData[table_id].M_League
+			this.title = this.tableList[table_id].fullCourt1.title
+			this.rate = this.tableList[table_id].fullCourt1.data[key].nums[k]
+			console.log( this.rate)
+			if (this.rate.num==0 || this.rate.num==null) this.openModal = false
+			else this.openModal = true
+		},
+		handleModal2(table_id: number, key: number, k: number) {
+			console.log(this.tableList[table_id])
+			console.log(this.tableList[table_id].fullCourt2.data[key])
+			this.line = 3
+			// if (k == 0 ) this.line = 3
+			// if (k == 1 ) this.line = 5
+			if (key == 0) this.g_type = "H"			
+			if (key == 1) this.g_type = "C"			
+			this.mid = this.tableList[table_id].gameList[0].mid
+			this.m_team = this.tableList[table_id].fullCourt1.data[0].name
+			this.t_team = this.tableList[table_id].fullCourt1.data[1].name
+			this.select_team = this.tableList[table_id].fullCourt1.data[key].name
+			console.log(this.select_team)
+			this.league = this.sportData[table_id].M_League
+			this.title = this.tableList[table_id].fullCourt2.title
+			this.rate = this.tableList[table_id].fullCourt2.data[key].nums[k]
+			console.log( this.rate)
+			if (this.rate.num==0 || this.rate.num==null) this.openModal = false
 			else this.openModal = true
 		},
 		closeModal() {
@@ -616,7 +670,7 @@ export default defineComponent({
 						<img v-if="datalist.Collection" src="@/assets/images/stadiums/store_in.png" alt="">
 					</div>
 					<div class="table_text_r" v-for="(num, idx_sub) in datalist.nums" :key="idx_sub + 200">
-						<div v-if="num.type == 1" @click="handleModal(index, indexs, idx, idx_sub)">
+						<div v-if="num.type == 'H' || num.type == 'C' || num.type == 'N'" @click="handleModal(index, indexs, idx, idx_sub)">
 							<span v-if="num.text">{{ num.text }}</span>
 							<span v-if="num.num">{{ num.num }}</span>
 						</div>
@@ -641,7 +695,7 @@ export default defineComponent({
 							<span>{{ summary.goalsScored }}</span>
 							<span>{{ summary.name }}</span>
 						</div>
-						<div class="summary_item_r" v-for="(summaryitem, k) in summary.nums" :key="k + 650">
+						<div class="summary_item_r" v-for="(summaryitem, k) in summary.nums" :key="k + 650" @click="handleModal1(index, key, k)">
 							<span>{{ summaryitem.text }}</span>
 							<span>{{ summaryitem.num }}</span>
 						</div>
@@ -650,7 +704,7 @@ export default defineComponent({
 				<div class="summary_center">
 					<div class="summary_title">{{ item.fullCourt2.title }}</div>
 					<div class="summary_item" v-for="(summary2, s) in item.fullCourt2.data" :key="s + 700">
-						<div class="summary_item_r summary_bottom" v-for="(h, k) in summary2.nums" :key="k + 750">
+						<div class="summary_item_r summary_bottom" v-for="(h, k) in summary2.nums" :key="k + 750" @click="handleModal2(index, s , k)">
 
 							<span>{{ h.text }}</span>
 							<span>{{ h.num }}</span>
@@ -664,7 +718,7 @@ export default defineComponent({
 
 		</div>
 		<OrderModal v-if="openModal" :type="this.type" :title="this.title" :m_team="this.m_team" :t_team="this.t_team"
-			:league="this.league" :rate="this.rate" @close="closeModal" />
+			:league="this.league" :rate="this.rate" :mid="this.mid" :select_team="this.select_team" :line="this.line" :g_type="this.g_type" @close="closeModal" />
 	</div>
 </template>
 

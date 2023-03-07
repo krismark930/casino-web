@@ -17,6 +17,7 @@
             // if(!getUser.value.id){
             //     router.push({name:'my'})
             // }
+
         },
         
     })
