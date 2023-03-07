@@ -63,13 +63,21 @@ import { ref } from 'vue';
 import { defineComponent } from 'vue';
 import axios from "axios";
 import config from "@/config";
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
 export default defineComponent({
 	data() {
 		return {
-			bettingList : []
+			bettingList : [],
+			userData : []
 		}
 	},
 	mounted() {
+		const {
+          getToken,
+          getUser,
+		} = storeToRefs(useAuthStore());
+		this.userData=getUser.value;
 		this.get_gameList()
 	},
 	methods: {
@@ -77,7 +85,7 @@ export default defineComponent({
 			try {
 				let url = config.api.GET_BETTING_RECORDS;
 				let data = {
-					m_name: 'antonio1006'
+					m_name: this.userData.UserName
 				}
 				const response = (await axios.post(url, data)).data;
 				console.log(response.data[1])
