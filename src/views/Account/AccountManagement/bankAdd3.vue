@@ -63,7 +63,7 @@ const setBank = (id:number) => {
     active.value = id;
 }
 const onClick_2 = () => {
-    show.value = true;
+    router.push({name:'addBank'});
 }
 const onClickLeft = () => {
     router.go(-1);

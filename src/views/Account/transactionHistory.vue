@@ -18,7 +18,7 @@
             </template>
             <template #right> </template>
         </van-nav-bar>
-        <div class="pt-[55px] pb-[60px] h-screen bg-gray-50">
+        <div class="pt-[55px] pb-[60px] h-screen bg-gray-50 overflow-y-scroll">
             <van-dropdown-menu>
                 <van-dropdown-item title="存款" ref="item">
                     <div
@@ -29,11 +29,11 @@
                             :key="index"
                             :class="[
                                 'rounded-[50px] border border-[#cccccc] text-[14px] col-span-1  py-[4px] flex justify-center items-center',
-                                active === item.id
+                                active.id === item.id
                                     ? 'bg-blue-400 text-white'
                                     : 'bg-whie text-[#cccccc]'
                             ]"
-                            @click="setActive(item.id)"
+                            @click="selectCategory(item)"
                         >
                             {{ item.title }}
                         </div>
@@ -118,15 +118,13 @@
                     </div>
                 </van-dropdown-item>
             </van-dropdown-menu>
-            <div v-if="true">
-                <div class="px-2 text-[15px] font-bold py-[15px]">
-                    <p>2022年11月13日</p>
+            <div v-for="(item, index) in historyList" :key="index">
+                <div v-if="index === 0 || item.AddDate !== historyList[index-1].AddDate" class="px-2 text-[16px] font-bold py-[15px]">
+                    <p>{{new Date(item.AddDate).getFullYear() +'年'+ (new Date(item.AddDate).getMonth()+1) + '月'+new Date(item.AddDate).getDate()+'日' }}</p>
                 </div>
                 <div
-                    v-for="(item, index) in historyList"
-                    :key="index"
                     class="flex justify-between text-[15px] px-2 items-center pt-2 bg-white"
-                    @click="gotoDetail(item.name)"
+                    @click="gotoDetail(item)"
                 >
                     <div class="w-[40px]">
                         <img
@@ -140,53 +138,16 @@
                     >
                         <div class="flex items-center">
                             <div class="pl-1">
-                                <p>{{ item.name }}</p>
-                                <p class="text-gray-300">{{ item.time }}</p>
+                                <p>{{ (item.Type === 'T' && item.Type2 === 1)? '取款':''  }}</p>
+                                <p class="text-gray-300">{{ item.Date.replace(item.AddDate, '') }}</p>
                             </div>
                         </div>
                         <div class="flex items-center">
                             <div>
-                                <p class="text-gray-800">{{ item.value }}</p>
+                                <p class="text-gray-800">{{ item.Gold }}</p>
                                 <p class="text-gray-300">
-                                    {{ '成功' }}
+                                    {{ item.Checked === 0 ?'待办的':'成功' }}
                                 </p>
-                            </div>
-                            <img
-                                class="w-[7px] h-[13px] ml-2"
-                                src="@/assets/images/my/arrow-right.png"
-                                alt="arrow"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div class="px-2 text-[15px] font-bold py-[15px]">
-                    <p>2022年11月08日</p>
-                </div>
-                <div
-                    v-for="(item, index) in [1]"
-                    :key="index"
-                    class="flex justify-between text-[15px] px-2 items-center pt-2 bg-white"
-                >
-                    <div class="w-[40px]">
-                        <img
-                            class="w-[30px] h-[30px] mb-1"
-                            referrerpolicy="no-referrer"
-                            src="@/assets/images/withdraw/icon-circle-wallet.png"
-                        />
-                    </div>
-                    <div
-                        class="flex justify-between w-full border-b-gray-200 border-b-2 pb-1"
-                    >
-                        <div class="flex items-center">
-                            <div class="pl-1">
-                                <p>存款</p>
-                                <p class="text-gray-300">14:05:59</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <div>
-                                <p class="text-gray-800">2,000.0</p>
-                                <p class="text-gray-300">成功</p>
                             </div>
                             <img
                                 class="w-[7px] h-[13px] ml-2"
@@ -205,9 +166,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import router from '@/router';
+import { useAuthStore } from '@/stores/auth';
+import { useWithdrawStore } from '@/stores/withdraw';
+import { storeToRefs } from 'pinia';
 const item = ref(null);
+const { user } = useAuthStore();
+const { getTransactionHistory,  setHistoryDetail } = useWithdrawStore();
+const { historyList } = storeToRefs(useWithdrawStore());
+onMounted(async ()=>{
+  await getTransactionHistory(user.UserName, 'S', 1);
+})
 
 const DateList = ref([
     {
@@ -235,77 +205,96 @@ const DateList = ref([
 const categoryList = ref([
     {
         id: 1,
-        title: '存款'
+        title: '存款',
+        type: 'S',
+        type2: 1
     },
     {
         id: 2,
-        title: '取款'
+        title: '取款',
+        type: 'T',
+        type2: 1
     },
     {
         id: 3,
-        title: '转账'
+        title: '转账',
+        type: 'transfer',
+        type2: 3
     },
     {
         id: 4,
-        title: '红利'
+        title: '红利',
+        type: '',
+        type2: 1
+        
     },
     {
         id: 5,
-        title: '返水'
+        title: '返水',
+        type: '',
+        type2: 1
     },
     {
         id: 6,
-        title: '加币'
+        title: '加币',
+        type: '',
+        type2: 1
     },
     {
         id: 7,
-        title: '减币'
+        title: '减币',
+        type: '',
+        type2: 1
     },
     {
         id: 8,
-        title: '调整'
+        title: '调整',
+        type: '',
+        type2: 1
     },
     {
         id: 9,
-        title: '买料'
+        title: '买料',
+        type: '',
+        type2: 1
     },
     {
         id: 10,
-        title: '礼物'
+        title: '礼物',
+        type: '',
+        type2: 1
     },
     {
         id: 11,
-        title: '其他'
+        title: '其他',
+        type: '',
+        type2: 1
     }
 ]);
 
-const historyList = ref([
-    {
-        name: '存款',
-        time: '14:05:59',
-        status: '1',
-        value: '2,000.00'
-    },
-    {
-        name: '存款',
-        time: '14:05:59',
-        status: '2',
-        value: '2,000.00'
-    }
-]);
-const active = ref(1);
+const active = ref(categoryList.value[0]);
 const dateActive = ref(1);
 
-const setActive = (value: number) => {
-    active.value = value;
-};
+const selectCategory = async (item : any) => {
+    active.value = item;
+    await getTransactionHistory(user.UserName, item.type, item.type2);
+    //if(item.type === 'deposit'){
+        //await getTransactionHistory(user.UserName, 'T', 1);
+    //}else if(item.type === 'withdraw'){
+        //await getTransactionHistory(user.UserName, 'T', 1);
+    //}else if(item.type === 'transfer'){
+
+    //}
+}
+
 const setDateActive = (value: number) => {
     dateActive.value = value;
 };
 const onClickLeft = () => {
     router.go(-1);
 };
-const gotoDetail = (value:string) => {
+const gotoDetail = (item:string) => {
+    setHistoryDetail(item)
     router.push("transactionDetail");
 }
 const currentDate = ref(['2021', '01', '01']);

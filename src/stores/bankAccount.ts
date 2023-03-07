@@ -8,14 +8,19 @@ import type {
 export const useBankAccountStore = defineStore({
   id:"deposit",
   state:() =>({
-    banks: Array<any>
+    banks: [],
+    editBank: {}
   }),
   getters:{
     getBanks: (state) => state.banks,
+    getEditBank: (state) => state.editBank
   },
   actions:{
     setBanks(banks:Array<any>){
         this.banks = banks;
+    },
+    setEditBank(editBank:any){
+      this.editBank = editBank;
     },
     async getBankList(userId:number){
         try{
@@ -45,7 +50,28 @@ export const useBankAccountStore = defineStore({
         return response;
       }catch(e){
       }
-    }
+    },
+    async editCryptoAccount(userId: number , bankId: number , bank: string, bankAccount: string, bankAddress: string) {
+      try{
+        const url = config.api.Edit_CRYPTO_ACCOUNT;
+        let data = {
+          userId : userId,
+          bank_id : bankId,
+          bank : bank,
+          bank_account: bankAccount,
+          bank_address : bankAddress,
+          bank_type: 1,
+        };
+        console.log(data)
+        const response = (await axios.post(url, data)).data;
+        if(response.success){
+            this.setBanks(response.bankList);
+        }
+        console.log(response.bankList)
+        return response;
+      }catch(e){
+      }
+    },
   },
   persist:{
     enabled:true
