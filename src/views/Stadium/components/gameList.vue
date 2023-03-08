@@ -57,25 +57,98 @@
 	</div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+import axios from 'axios';
 import { ref } from 'vue';
-const bettingList = ref([
-	{
-		title: '足球',
-		type: '滚球',
-		text: '日本VS加拿大',
-		score: 1,
-		typeName: '让球',
-		winner: '日本',
-		Odds: 1.96,
-		money: 50.00,
-		winMoney: 41.00,
-		number: 'OU16046542166',
-		time: '02:01:19',
-		place: '欧洲盘',
-		all: 50.00
+import { defineComponent } from 'vue';
+import axios from "axios";
+import config from "@/config";
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
+export default defineComponent({
+	data() {
+		return {
+			bettingList : [],
+			userData : []
+		}
+	},
+	mounted() {
+		const {
+          getToken,
+          getUser,
+		} = storeToRefs(useAuthStore());
+		this.userData=getUser.value;
+		this.get_gameList()
+	},
+	methods: {
+		async get_gameList() {
+			try {
+				let url = config.api.GET_BETTING_RECORDS;
+				let data = {
+					m_name: this.userData.UserName
+				}
+				const response = (await axios.post(url, data)).data;
+				console.log(response.data[1])
+				let result = []
+				for (let i = 0; i< response.count; i++) {
+					let winner;
+					let w_type = response.data[i].Mtype.substr(response.data[i].Mtype.length-1)
+					switch (w_type) {
+						case 'H': 
+							winner = response.data[i].sport.MB_Team
+							break;
+						case 'C':
+							winner = response.data[i].sport.MB_Team
+							break;
+						default:
+							winner = "和局"
+
+					}
+
+					result = [
+						...result,
+						{
+							title: '足球',
+							type: '滚球',
+							text: response.data[i].sport.MB_Team + "VS" + response.data[i].sport.TG_Team,
+							score: response.data[i].sport.GetScore,
+							typeName: response.data[i].BetType,
+							winner: winner,
+							Odds: response.data[i].M_Rate,
+							money: response.data[i].BetScore,
+							winMoney: response.data[i].Gwin,
+							number: response.data[i].OrderID,
+							time: '02:01:19',
+							place: '欧洲盘',
+							all: response.data[i].BetScore
+						}
+					]
+				}
+				this.bettingList = [...result]
+				console.log(this.bettingList) 
+			} catch (e) {
+				return e;
+			}
+		}
 	}
-])
+})
+// const bettingList = ref([
+// 	{
+// 		title: '足球',
+// 		type: '滚球',
+// 		text: '日本VS加拿大',
+// 		score: 1,
+// 		typeName: '让球',
+// 		winner: '日本',
+// 		Odds: 1.96,
+// 		money: 50.00,
+// 		winMoney: 41.00,
+// 		number: 'OU16046542166',
+// 		time: '02:01:19',
+// 		place: '欧洲盘',
+// 		all: 50.00
+// 	}
+// ])
 </script>
 
 <style scoped lang="scss">

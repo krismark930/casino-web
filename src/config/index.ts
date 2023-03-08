@@ -19,7 +19,8 @@ const config = {
     GET_BANK_ACCOUNT_LIST_BY_USER_ID : SERVER_API + "/api/account/get-bank-list",
     GET_SYSCONFIG: SERVER_API + "/api/transfer/getSysConfig",
     GET_SPORTS_DATA: SERVER_API + "/api/get_item_date",
-    BET_FT : SERVER_API + "/api/sport/bet_ft"
+    BET_FT : SERVER_API + "/api/sport/bet_ft",
+    GET_BETTING_RECORDS : SERVER_API + "/api/sport/get_betting_records"
   },
 };
 

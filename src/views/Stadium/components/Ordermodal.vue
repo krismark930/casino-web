@@ -62,14 +62,14 @@
                   :disabled="this.is_status"
                   @click="bet"
                 >
-                  Bet
+                确定交易
                 </button>
                 <button
                   type="button"
                   class="btn-green"
-                  @click="close"
+                  @click="addSlip"
                 >
-                  Close
+                加单
                 </button>
             </div>
         </footer>
@@ -82,6 +82,8 @@ import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import axios from "axios";
 import config from "@/config"
+import { showToast } from 'vant';
+
 export default {
   name: 'Modal',
   props: {
@@ -101,7 +103,7 @@ export default {
         input_value: '',
         openKeyboard: false,
         value_s: '',
-        vaiue_n: 0,
+        value_n: 0,
         is_status: true,
         userData: []
     }
@@ -119,26 +121,43 @@ export default {
     },
     async bet() {
       try {
-        let url = config.api.BET_FT;
-        let data = {
-          id : this.userData.id,
-          gold : this.value_n,
-          gid : this.mid,
-          type : this.g_type,
-          line_type : this.line,
-          active : 1
-        }
-        console.log(data);
-        if(this.input_value != ''){
-          const response = (await axios.post(url, data)).data
-          console.log(response)
-          this.userData.Money = response.data
-          return response;
+        console.log(this.userData)
+        if (this.value_n > this.userData.Money) {
+          showToast('下注金额不可大于信用额度。')
+          this.value_n = 0
+          this.value_s = '0'
+          this.input_value = '0'
+        } else {
+          let url = config.api.BET_FT;
+          let data = {
+            id : this.userData.id,
+            gold : this.value_n,
+            gid : this.mid,
+            type : this.g_type,
+            line_type : this.line,
+            active : 1
+          }
+          console.log(data);
+          if(this.input_value != '' && this.openKeyboard == false){
+            const response = (await axios.post(url, data)).data
+            console.log(response)
+            this.userData.Money = response.data
+            return response;
+          }
         }
       }catch (e) {
         return e;
       }
-     },
+    },
+    async addSlip() {
+      try {
+        if(this.input_value != '' && this.openKeyboard == false) {
+          showToast('添加成功。')
+        }
+      } catch (e) {
+        return e
+      }
+    },
     showpanel() {
       this.openKeyboard = true;
       document.onkeydown = function (e) 
