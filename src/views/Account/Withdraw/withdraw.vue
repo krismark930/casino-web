@@ -148,15 +148,15 @@
                     <van-radio-group v-model="bankAccount" direction="horizontal" class="block">
                         <van-radio v-for="(item, index) in bankList" 
                         :key="index" :name="item"
-                        class="bg-white flex justify-start items-center mt-[10px] px-3 py-[15px] w-full"
+                        class="bg-white flex justify-start items-center mt-[10px] px-2 py-[15px] w-full"
                         >
                             <div class="flex justify-between w-[290px]">
-                                <div class="text-center">
-                                    <img class="w-[60px] h-[24px] px-2" src="@/assets/images/my/bank-mark.png" />
-                                    <div class="text-[12px] text-bold">{{ item.bank.split('-')[1] }}</div>
+                                <div class="text-center flex w-[90px]">
+                                    <img class="w-[25px] h-[24px]" src="@/assets/images/my/bank-mark.png" />
+                                    <div class="text-[12px] text-bold pl-1">{{ item.bank_type}}</div>
                                 </div>
-                                <span class="text-[13px] text-bold">{{ item.bank_address.substring(0, 7)+'*******'+ item.bank_address.substring(item.bank_address.length-7,item.bank_address.length) }}</span>
-                                <span class="text-[12px] text-[#4EABFF]">编辑</span>
+                                <span class="text-[13px] text-bold">{{ item.bank_account.substring(0, 7)+'*******'+ item.bank_account.substring(item.bank_account.length-7,item.bank_account.length) }}</span>
+                                <span class="text-[12px] text-[#4EABFF]" @click="editBank(item)">编辑</span>
                             </div>
                         </van-radio>
                     </van-radio-group>
@@ -206,13 +206,13 @@
                         :key="index" :name="item"
                         class="bg-white flex justify-start items-center mt-[10px] px-3 py-[15px] w-full"
                         >
-                            <div class="flex justify-between w-[290px]">
-                                <div class="text-center">
+                            <div class="flex justify-between w-[290px] items-center">
+                                <div class="text-center w-[55px]">
                                     <img class="w-[55px] h-[24px] px-2" src="@/assets/images/my/crypto.png" />
                                     <div class="text-[12px] text-bold">{{ item.bank.split('-')[1] }}</div>
                                 </div>
                                 <span class="text-[13px] text-bold">{{ item.bank_address.substring(0, 7)+'*******'+ item.bank_address.substring(item.bank_address.length-7,item.bank_address.length) }}</span>
-                                <span class="text-[12px] text-[#4EABFF]">编辑</span>
+                                <span class="text-[12px] text-[#4EABFF]" @click="editCrypto(item)">编辑</span>
                             </div>
                         </van-radio>
                     </van-radio-group>
@@ -262,34 +262,8 @@ import { useBankAccountStore} from '@/stores/bankAccount';
 const {
     user,
 } = storeToRefs(useAuthStore());
-const { banks } = storeToRefs(useBankAccountStore());
-const { getBankList } = useBankAccountStore();
-const cryptoBankList = ref([]);
-const cryptoAccount = ref();
-
-const bankList = ref([]);
-const bankAccount = ref();
-
-onMounted(async ()=>{
-    await getBankList(user.value.id);
-    let bankTemp = [] as any;
-    let cryptoTemp = [] as any;
-    banks.value.map((item : any, index: number) => {
-        if(item.bank_type === 2){
-            bankTemp.push(item);
-        }else{
-            cryptoTemp.push(item);
-        }
-        item.bank_type
-    })
-    cryptoBankList.value = cryptoTemp;
-    cryptoAccount.value = cryptoBankList.value[0]?cryptoBankList.value[0]:null;
-
-    bankList.value = bankTemp;
-    bankAccount.value = bankList.value[0]?bankList.value[0]:null;
-});
-
-
+const { cryptoAccounts, bankAccounts } = storeToRefs(useBankAccountStore());
+const { getBankList, getCryptoList, setEditBank, setEditCrypto } = useBankAccountStore();
 const {
     sumbitWithdraw,test
 } = useWithdrawStore();
@@ -300,13 +274,29 @@ const {
     sysConfig
 } = storeToRefs(useSysConfigStore());
 
-onMounted( async ()=>{
+const cryptoBankList = ref([]);
+const cryptoAccount = ref();
+
+const bankList = ref([]);
+const bankAccount = ref();
+
+onMounted(async ()=>{
     if(!sysConfig.value.AG)
         await getSysConfigValue();
-})
+
+    await getBankList(user.value.id);
+    await getCryptoList(user.value.id)
+    cryptoBankList.value = cryptoAccounts.value;
+    cryptoAccount.value = cryptoBankList.value[0]?cryptoBankList.value[0]:null;
+
+    bankList.value = bankAccounts.value;
+    bankAccount.value = bankList.value[0]?bankList.value[0]:null;
+    console.log(bankAccounts.value)
+});
+
 const tokenActive = ref(1);
 const active = ref(1);
-const mainActive = ref(1);
+const mainActive = ref(2);
 const amount = ref(0);
 const tokenList = ref([
     {
@@ -391,8 +381,14 @@ const selectTime = (id:number) => {
     active.value = id;
 }
 const editBank = (item: any) => {
+    setEditBank(item);
     router.push({name: 'editBankCard'});
 }
+const editCrypto = (item: any) => {
+    setEditCrypto(item);
+    router.push({ name: 'addCrypto' })
+}
+
 const submitResult = async () => {
     const result = VerifyData();
     if(mainActive.value === 2){

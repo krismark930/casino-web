@@ -13,6 +13,8 @@ const config = {
     ADD_BANK_ACCOUNT : SERVER_API + "/api/account/add-bank-account",
     Edit_CRYPTO_ACCOUNT : SERVER_API + "/api/account/edit-crypto-account",
     Edit_BANK_ACCOUNT : SERVER_API + "/api/account/edit-bank-account",
+    DELETE_BANK_ACCOUNT : SERVER_API + "/api/account/delete-bank-account",
+    DELETE_CRYPTO_ACCOUNT : SERVER_API + "/api/account/delete-crypto-account",
     GET_CRYPTO_ACCOUNT_LIST_BY_USER_ID: SERVER_API + "/api/account/get-crypto-list",
     GET_BANK_ACCOUNT_LIST_BY_USER_ID : SERVER_API + "/api/account/get-bank-list",
     GET_SYSCONFIG: SERVER_API + "/api/transfer/getSysConfig",

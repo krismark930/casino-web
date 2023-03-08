@@ -65,7 +65,7 @@ const submit = async () => {
     if(verifyCode.value){
         const result = await addBankAccount(user.id);
         if(result.success){
-            showToast("result.message");
+            showToast(result.message);
             router.push({ name: 'myAccount' })
         }else{
             showToast(result.message);

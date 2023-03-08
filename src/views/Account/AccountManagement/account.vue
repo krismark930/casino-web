@@ -49,8 +49,9 @@ const { getCryptoList } = useBankAccountStore();
 const { cryptoAccounts } = storeToRefs(useBankAccountStore());
 
 onMounted( async ()=>{
-    await getCryptoList(user.id);
-    bankList.value = cryptoAccounts.value;
+    const response = await getCryptoList(user.id);
+    console.log(response)
+    bankList.value = response.bankList;
 });
 
 const active = ref(1);

@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import config from "@/config"
+import router from "@/router";
 import type { 
   IUser,
  } from "@/interface";
@@ -53,6 +54,7 @@ export const useBankAccountStore = defineStore({
           const url = config.api.GET_CRYPTO_ACCOUNT_LIST_BY_USER_ID;
           const response = (await axios.get(url+`?userId=${userId}`)).data;
           this.setCryptoAccounts(response.bankList);
+          return response;
       }catch(e){
 
       }
@@ -137,6 +139,34 @@ export const useBankAccountStore = defineStore({
       }catch(e){
       }
     },
+    async deleteBank(id:number,userId:number){
+      try{
+        const url = config.api.DELETE_BANK_ACCOUNT;
+        const response = (await axios.delete(url+`?bank_id=${id}&user_id=${userId}`)).data;
+        if(response.success){
+            this.setBankAccounts(response.bankList);
+            this.setEditBank({});
+            router.go(-1);
+        }
+        console.log(response.bankList)
+        return response;
+      }catch(e){
+      }
+    },
+    async deleteCrypto(id:number,userId:number){
+      try{
+        const url = config.api.DELETE_CRYPTO_ACCOUNT;
+        const response = (await axios.delete(url+`?crypto_id=${id}&user_id=${userId}`)).data;
+        if(response.success){
+            this.setBankAccounts(response.bankList);
+            this.setEditBank({});
+            router.go(-1);
+        }
+        console.log(response.bankList)
+        return response;
+      }catch(e){
+      }
+    }
   },
   persist:{
     enabled:true
