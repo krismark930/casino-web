@@ -27,10 +27,10 @@
             <div class="bg-white flex justify-between items-center px-2 py-[15px]">
                 <div class="flex w-[90px]">
                     <img class="w-[25px] h-[24px]" src="@/assets/images/my/bank-mark.png" />
-                    <div class="text-[12px] text-bold pl-1">{{ editBank.bank_type }}</div>
+                    <div class="text-[12px] text-bold pl-1">{{ bankItem.bank_type }}</div>
                 </div>
-                <span class="text-[13px] text-bold">{{ editBank.bank_account.substring(0, 7)+'*******'+ editBank.bank_account.substring(editBank.bank_account.length-7,editBank.bank_account.length) }}</span>
-                <img class="w-[12px]" referrerpolicy="no-referrer" src="@/assets/images/account/icon-delete.png" @click="deleteBank"/>
+                <span class="text-[13px] text-bold">{{bankItem.bank_account? bankItem.bank_account.substring(0, 7)+'*******'+ bankItem.bank_account.substring(bankItem.bank_account.length-7,bankItem.bank_account.length) :''}}</span>
+                <img class="w-[12px]" referrerpolicy="no-referrer" src="@/assets/images/account/icon-delete.png" @click="deleteItem"/>
             </div>
             
             <div class="px-2  bg-white py-1 ">
@@ -42,15 +42,15 @@
                 </div>
                 <p class="w-full h-[1px] bg-[#CBCBCB]"></p>
             </div>
-            <div class="px-2 mt-[14px] text-[12px]">
-                <label for="name" class="block font-semibold text-[#454558] ">所属银行</label>
+            <div class="px-2 text-[12px] bg-white">
+                <label for="name" class="block text-[#454558] ">所属银行</label>
                 <div class="mt-[5px] border-b border-gray-300 focus-within:border-gray-500 pb-[5px] flex justify-between items-center" @click="selectBank">
                     <input type="text" v-model="bankType" placeholder="请选择银行" name="name" id="name"
                         class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB]" />
                         <img class="w-[10px] h-[13px] " src="@/assets/images/my/arrow-right.png" alt="arrow" />
                 </div>
             </div>
-            <p class="w-full h-[0.5px] bg-[#CBCBCB]"></p>
+            <!-- <p class="w-full h-[0.5px] bg-[#CBCBCB]"></p> -->
             <div class="px-2  bg-white py-1 ">
                 <div class="text-[12px] text-[#454558] pb-1">银行卡号</div>
                 <div class="text-[15px] flex justify-between">
@@ -94,6 +94,17 @@
                 </div>
 			</div>
 		</van-popup>
+        <van-overlay :show="deleteShow">
+			<div class="wrapper" @click.stop>
+				<div class="wrapper_box rounded">
+					<p class="text-center w-full py-2 border-b">您确定要删除吗？</p>
+					<div class="flex items-center justify-between w-full h-full ">
+						<button @click="() => deleteShow = false" class="border-r h-full w-full">取消</button>
+						<button @click="commit" class="w-full text-blue-500">确定</button>
+					</div>
+				</div>
+			</div>
+		</van-overlay>
     </div>
 </template>
 <script setup lang="ts">
@@ -103,13 +114,16 @@ import { showToast } from 'vant';
 import { useBankAccountStore } from '@/stores/bankAccount';
 import { useAuthStore } from '@/stores/auth';
 const {user} = useAuthStore();
-const { editBank , editBankAccount} = useBankAccountStore();
+const bankItem = ref({});
+const { editBank , editBankAccount, deleteBank } = useBankAccountStore();
 const bank_account = ref('');
 const bank_card_owner = ref('黄川');
 const bankType = ref('');
-const show = ref(false)
+const show = ref(false);
+const deleteShow = ref(false);
 const search = ref('');
 onMounted(() => {
+    bankItem.value = editBank;
     bank_card_owner.value = editBank.bank_card_owner;
     bank_account.value = editBank.bank_account;
     bankType.value = editBank.bank_type;
@@ -117,8 +131,8 @@ onMounted(() => {
 const onClickLeft = () => {
     router.go(-1);
 };
-const deleteBank = () => {
-    show.value = true;
+const deleteItem = () => {
+    deleteShow.value = true;
 }
 const submit = async () => {
     if(bank_card_owner.value !== '' && bankType.value !== '' && bank_account.value !== ''){
@@ -134,13 +148,18 @@ const submit = async () => {
 const cancel = () => {
 	show.value = false
 }
-const commit = () => {
-	show.value = false
-	showToast({
-        message: "删除成功",
-        icon: new URL('@/assets/images/account/icon-success.png', import.meta.url).href,
-    })
+const commit = async () => {
+    const response = await deleteBank(editBank.id, user.id);
+    if(response.success){
+        showToast({
+            message: "删除成功",
+            icon: new URL('@/assets/images/account/icon-success.png', import.meta.url).href,
+        })
+    }else{
+        showToast(response.message)
+    }
 }
+
 const bankCardList = ref([
     {
         id: 1,
@@ -213,6 +232,7 @@ const selectBank = () => {
     search.value = '';
     show.value = true
 }
+
 const selectBankType = (item:any) => {
     show.value = false
     bankType.value = item.name;

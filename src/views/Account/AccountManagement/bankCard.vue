@@ -21,17 +21,32 @@
     <div v-if="user.Bank_Account === null || user.Bank_Account === ''">
         <img class="p-4" referrerpolicy="no-referrer" src="@/assets/images/my/bg-account.png" />
     </div>
-    <button
+
+    <div  :class="[bankList && bankList.length > 3 ? 'mt-1':'absolute top-[450px]']">
+        <button
+            class="flex justify-center w-[335px] bg-white py-2 ml-2 rounded-sm focus:border focus:border-gray-900 focus:rounded-none"
+            @click="addBank">
+            <div class="w-full flex justify-center items-center">
+                <img class="w-[15px] h-[15px]" referrerpolicy="no-referrer" src="@/assets/images/my/icon-plus.png" />
+                <span class="text-[15px] pl-1 text-[#454558]">添加银行卡</span>
+            </div>
+        </button>
+        <div class="mt-[30px]  text-[#C0C4CD] bg-transparent text-[13px]  w-full flex justify-center">
+            最多支持添加10张银行卡
+        </div>
+    </div>
+
+    <!-- <button
         class="absolute top-[350px] flex justify-center w-[335px] bg-white py-2 ml-2 rounded-sm focus:border focus:border-gray-900 focus:rounded-none"
         @click="addBank">
         <div class="w-full flex justify-center items-center">
             <img class="w-[15px] h-[15px]" referrerpolicy="no-referrer" src="@/assets/images/my/icon-plus.png" />
             <span class="text-[15px] pl-1 text-[#454558]">添加银行卡</span>
         </div>
-    </button>
-    <div class="text-[#C0C4CD] text-[13px] absolute top-[450px] w-full flex justify-center">
+    </button> -->
+    <!-- <div class="text-[#C0C4CD] text-[13px] absolute top-[450px] w-full flex justify-center">
         最多支持添加10张银行卡
-    </div>
+    </div> -->
 </template>
 <script setup lang="ts">
 import router from '@/router';
@@ -44,8 +59,7 @@ const { getBankList, bankAccounts, setEditBank } = useBankAccountStore();
 const bankList = ref([])
 onMounted(async ()=>{
     const result = await getBankList(user.value.id);
-    bankList.value = bankAccounts;
-    console.log(bankAccounts)
+    bankList.value = result.bankList;
 })
 
 const addBank = () => {
