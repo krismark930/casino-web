@@ -148,9 +148,12 @@
                     <div class="bg-white flex justify-between items-center mt-[10px] px-3 py-[15px]">
                         <div class="image-text_1 flex justify-between items-center">
                             <img class="w-[25px]" referrerpolicy="no-referrer" src="@/assets/images/my/bank-mark.png" />
-                            <span class="text-[12px] pl-1">农业银行</span>
+                            <span class="text-[12px] pl-1">{{user.Bank_Address}}</span>
+                            <!-- <span class="text-[12px] pl-1">农业银行</span> -->
+
                         </div>
-                        <span class="text-[13px] text-bold">622848******888</span>
+                        <span class="text-[13px] text-bold">{{user.Bank_Account}}</span>
+                        <!-- <span class="text-[13px] text-bold">622848******888</span> -->
                         <span class="text-[12px] text-[#4EABFF]" @click="editBank()">编辑</span>
                     </div>
                 </div>
