@@ -6,6 +6,9 @@
           <slot v-if="this.type=='FT'" :name="header">
             足球 {{this.title}}
           </slot>
+          <slot v-if="this.type=='BK'" :name="header">
+            篮球 {{this.title}}
+          </slot>
           <button
             type="button"
             class="btn-close"
@@ -31,7 +34,8 @@
 						<input type="text" placeholder="输入投注金额" v-model="input_value" @focus="showpanel">
 						<div>
 							<span v-if="input_value" class="grey">可赢额</span>
-							<span v-if="input_value<=20000" class="win_text green">{{Number(input_value)*Number(this.rate.num)}}</span>
+              <span v-if="input_value<=20000 && (this.num==2 || this.rate.type =='N')" class="win_text green">{{Number(input_value)*(Number(this.rate.num)-1)}}</span>
+							<span v-else="input_value<=20000" class="win_text green">{{Number(input_value)*Number(this.rate.num)}}</span>
 							<span v-if="input_value==20000" class="max">最大投注金额 20000</span>
 						</div>
 					</div>
@@ -62,14 +66,14 @@
                   :disabled="this.is_status"
                   @click="bet"
                 >
-                  Bet
+                确定交易
                 </button>
                 <button
                   type="button"
                   class="btn-green"
-                  @click="close"
+                  @click="addTemp"
                 >
-                  Close
+                加单
                 </button>
             </div>
         </footer>
@@ -82,6 +86,8 @@ import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import axios from "axios";
 import config from "@/config"
+import { showToast } from 'vant';
+
 export default {
   name: 'Modal',
   props: {
@@ -94,16 +100,18 @@ export default {
     g_type: "",
     title: "",
     rate: 0,
-    league: ""
+    league: "",
+    num: 0
   },
   data() {
     return {
         input_value: '',
         openKeyboard: false,
         value_s: '',
-        vaiue_n: 0,
+        value_n: 0,
         is_status: true,
-        userData: []
+        userData: [],
+        m_win:0
     }
   },
   mounted() {
@@ -119,26 +127,65 @@ export default {
     },
     async bet() {
       try {
-        let url = config.api.BET_FT;
-        let data = {
-          id : this.userData.id,
-          gold : this.value_n,
-          gid : this.mid,
-          type : this.g_type,
-          line_type : this.line,
-          active : 1
-        }
-        console.log(data);
-        if(this.input_value != ''){
-          const response = (await axios.post(url, data)).data
-          console.log(response)
-          this.userData.Money = response.data
-          return response;
+        console.log(this.userData)
+        if (this.value_n > this.userData.Money) {
+          showToast('下注金额不可大于信用额度。')
+          this.value_n = 0
+          this.value_s = '0'
+          this.input_value = '0'
+        } else {
+          let url = config.api.BET_FT;
+          let data = {
+            id : this.userData.id,
+            gold : this.value_n,
+            gid : this.mid,
+            type : this.g_type,
+            line_type : this.line,
+            active : 1
+          }
+          console.log(data);
+          if(this.input_value != '' && this.openKeyboard == false){
+            const response = (await axios.post(url, data)).data
+            console.log(response)
+            this.userData.Money = response.data
+            return response;
+          }
         }
       }catch (e) {
         return e;
       }
-     },
+    },
+    async addTemp() {
+      try {
+        if (this.num==2 || this.rate.type =='N') {this.m_win = Number(this.input_value)*(Number(this.rate.num) -1)}
+        else this.m_win = Number(this.input_value)*Number(this.rate.num)
+        if(this.input_value != '' && this.openKeyboard == false) {
+          let data = {
+            type : this.type,
+            title : this.title,
+            league : this.league,
+            m_team : this.m_team,
+            t_team : this.t_team,
+            select_team : this.select_team,
+            text : this.rate.text,
+            rate : this.rate.num,
+            gold : this.value_n,
+            m_win : this.m_win,
+            uid : this.userData.id,
+            gid : this.mid,
+            g_type : this.g_type,
+            line_type : this.line,
+            active : 1
+          }
+          console.log(data)
+          let url = config.api.ADD_TEMP;
+          const response = (await axios.post(url, data)).data
+          if (response.success == true) showToast('添加成功。')
+        }
+      } catch (e) {
+        return e
+      }
+    },
     showpanel() {
       this.openKeyboard = true;
       document.onkeydown = function (e) 

@@ -18,6 +18,7 @@ export default defineComponent({
       		mid: 0,
 			line: 0,
 			g_type: '',
+			num: 0,
 			openModal: false,
 			sportData: [],
 			tableList: [
@@ -518,14 +519,17 @@ export default defineComponent({
 			if (num_id == 2) this.line = 11
 			if (num_id == 3) this.line = 14			
 			this.g_type = this.tableList[table_id].gameList[game_id].scoreList[score_id].nums[num_id].type
-			this.mid = this.tableList[table_id].gameList[game_id].mid
+			this.mid = this.tableList[table_id].gameList[game_id].scoreList[0].mid
 			this.m_team = this.tableList[table_id].gameList[game_id].scoreList[0].name
 			this.t_team = this.tableList[table_id].gameList[game_id].scoreList[1].name
 			this.select_team = this.tableList[table_id].gameList[game_id].scoreList[score_id].name
+			if (this.select_team == null) this.select_team = "无"
 			this.league = this.sportData[table_id].M_League
 			this.title = this.tableList[table_id].gameList[game_id].titletext[num_id + 1].text1
 			this.rate = this.tableList[table_id].gameList[game_id].scoreList[score_id].nums[num_id]
+			this.num = num_id
 			console.log( this.rate)
+			console.log( this.num)
 			if (this.rate.num==0 || this.rate.num==null) this.openModal = false
 			else this.openModal = true
 		},
@@ -541,6 +545,7 @@ export default defineComponent({
 			this.m_team = this.tableList[table_id].fullCourt1.data[0].name
 			this.t_team = this.tableList[table_id].fullCourt1.data[1].name
 			this.select_team = this.tableList[table_id].fullCourt1.data[key].name
+			if (this.select_team == null) this.select_team = "无"
 			console.log(this.select_team)
 			this.league = this.sportData[table_id].M_League
 			this.title = this.tableList[table_id].fullCourt1.title
@@ -561,6 +566,7 @@ export default defineComponent({
 			this.m_team = this.tableList[table_id].fullCourt1.data[0].name
 			this.t_team = this.tableList[table_id].fullCourt1.data[1].name
 			this.select_team = this.tableList[table_id].fullCourt1.data[key].name
+			if (this.select_team == null) this.select_team = "无"
 			console.log(this.select_team)
 			this.league = this.sportData[table_id].M_League
 			this.title = this.tableList[table_id].fullCourt2.title
@@ -718,7 +724,8 @@ export default defineComponent({
 
 		</div>
 		<OrderModal v-if="openModal" :type="this.type" :title="this.title" :m_team="this.m_team" :t_team="this.t_team"
-			:league="this.league" :rate="this.rate" :mid="this.mid" :select_team="this.select_team" :line="this.line" :g_type="this.g_type" @close="closeModal" />
+			:league="this.league" :rate="this.rate" :mid="this.mid" :select_team="this.select_team" :line="this.line" 
+			:g_type="this.g_type" :num="this.num" @close="closeModal" />
 	</div>
 </template>
 

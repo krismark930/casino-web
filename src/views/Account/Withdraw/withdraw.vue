@@ -143,8 +143,43 @@
                     </div>
                 </div>
             </div>
-            <div v-if="mainActive === 1">
-                <div v-if="user.Bank_Address">
+            <div v-if="mainActive === 2">
+                <div v-if="bankList.length > 0">
+                    <van-radio-group v-model="bankAccount" direction="horizontal" class="block">
+                        <van-radio v-for="(item, index) in bankList" 
+                        :key="index" :name="item"
+                        class="bg-white flex justify-start items-center mt-[10px] px-2 py-[15px] w-full"
+                        >
+                            <div class="flex justify-between w-[290px]">
+                                <div class="text-center flex w-[90px]">
+                                    <img class="w-[25px] h-[24px]" src="@/assets/images/my/bank-mark.png" />
+                                    <div class="text-[12px] text-bold pl-1">{{ item.bank_type}}</div>
+                                </div>
+                                <span class="text-[13px] text-bold">{{ item.bank_account.substring(0, 7)+'*******'+ item.bank_account.substring(item.bank_account.length-7,item.bank_account.length) }}</span>
+                                <span class="text-[12px] text-[#4EABFF]" @click="editBank(item)">编辑</span>
+                            </div>
+                        </van-radio>
+                    </van-radio-group>
+
+                    <!-- <div class="bg-white flex justify-between items-center mt-[10px] px-3 py-[15px]">
+                        <div class="image-text_1 flex justify-between items-center">
+                            <img class="w-[25px]" referrerpolicy="no-referrer" src="@/assets/images/my/bank-mark.png" />
+                            <span class="text-[12px] pl-1">农业银行</span>
+                        </div>
+                        <span class="text-[13px] text-bold">622848******888</span>
+                        <span class="text-[12px] text-[#4EABFF]" @click="editBank()">编辑</span>
+                    </div> -->
+                </div>
+                <div v-else>
+                    <div class=" px-2  flex  text-[10px] mt-2">
+                        <p>请先绑定一张银行卡，用于收款 </p>
+                    </div>
+                    <div class=" px-2  flex  text-[10px] mt-2 flex justify-center">
+                        <p>取款遇到问题？联系<span class="text-blue-500">人工客服</span>解决</p>
+                    </div>
+                </div>
+
+                <!-- <div v-if="user.Bank_Address">
                     <div class="bg-white flex justify-between items-center mt-[10px] px-3 py-[15px]">
                         <div class="image-text_1 flex justify-between items-center">
                             <img class="w-[25px]" referrerpolicy="no-referrer" src="@/assets/images/my/bank-mark.png" />
@@ -164,7 +199,7 @@
                     <div class=" px-2  flex  text-[10px] mt-2 flex justify-center">
                         <p>取款遇到问题？联系<span class="text-blue-500">人工客服</span>解决</p>
                     </div>
-                </div>
+                </div> -->
             </div>
             
             <div v-else>
@@ -174,13 +209,13 @@
                         :key="index" :name="item"
                         class="bg-white flex justify-start items-center mt-[10px] px-3 py-[15px] w-full"
                         >
-                            <div class="flex justify-between w-[290px]">
-                                <div class="text-center">
+                            <div class="flex justify-between w-[290px] items-center">
+                                <div class="text-center w-[55px]">
                                     <img class="w-[55px] h-[24px] px-2" src="@/assets/images/my/crypto.png" />
                                     <div class="text-[12px] text-bold">{{ item.bank.split('-')[1] }}</div>
                                 </div>
                                 <span class="text-[13px] text-bold">{{ item.bank_address.substring(0, 7)+'*******'+ item.bank_address.substring(item.bank_address.length-7,item.bank_address.length) }}</span>
-                                <span class="text-[12px] text-[#4EABFF]">编辑</span>
+                                <span class="text-[12px] text-[#4EABFF]" @click="editCrypto(item)">编辑</span>
                             </div>
                         </van-radio>
                     </van-radio-group>
@@ -230,17 +265,8 @@ import { useBankAccountStore} from '@/stores/bankAccount';
 const {
     user,
 } = storeToRefs(useAuthStore());
-const { banks } = storeToRefs(useBankAccountStore());
-const { getBankList } = useBankAccountStore();
-const cryptoBankList = ref([]);
-
-onMounted( async ()=>{
-    await getBankList(user.value.id);
-    cryptoBankList.value = banks.value
-    cryptoAccount.value = cryptoBankList.value[0]?cryptoBankList.value[0]:null
-});
-
-const cryptoAccount = ref();
+const { cryptoAccounts, bankAccounts } = storeToRefs(useBankAccountStore());
+const { getBankList, getCryptoList, setEditBank, setEditCrypto } = useBankAccountStore();
 const {
     sumbitWithdraw,test
 } = useWithdrawStore();
@@ -251,13 +277,29 @@ const {
     sysConfig
 } = storeToRefs(useSysConfigStore());
 
-onMounted( async ()=>{
+const cryptoBankList = ref([]);
+const cryptoAccount = ref();
+
+const bankList = ref([]);
+const bankAccount = ref();
+
+onMounted(async ()=>{
     if(!sysConfig.value.AG)
         await getSysConfigValue();
-})
+
+    await getBankList(user.value.id);
+    await getCryptoList(user.value.id)
+    cryptoBankList.value = cryptoAccounts.value;
+    cryptoAccount.value = cryptoBankList.value[0]?cryptoBankList.value[0]:null;
+
+    bankList.value = bankAccounts.value;
+    bankAccount.value = bankList.value[0]?bankList.value[0]:null;
+    console.log(bankAccounts.value)
+});
+
 const tokenActive = ref(1);
 const active = ref(1);
-const mainActive = ref(1);
+const mainActive = ref(2);
 const amount = ref(0);
 const tokenList = ref([
     {
@@ -320,11 +362,11 @@ const itemList = ref([
 const selectList = ref([
     {
         name: '极速取款',
-        id: 1
+        id: 2
     },
     {
         name: 'USDT提币',
-        id: 2
+        id: 1
     }
 ]);
 
@@ -342,14 +384,19 @@ const selectTime = (id:number) => {
     active.value = id;
 }
 const editBank = (item: any) => {
+    setEditBank(item);
     router.push({name: 'editBankCard'});
 }
+const editCrypto = (item: any) => {
+    setEditCrypto(item);
+    router.push({ name: 'addCrypto' })
+}
+
 const submitResult = async () => {
     const result = VerifyData();
-    console.log(mainActive.value)
-    if(mainActive.value === 1){
-        if(result && amount.value > 0 && user.value.Bank_Address &&user.value.Bank_Account){
-            const result = await sumbitWithdraw(user.value.id, amount.value, user.value.Bank_Address, user.value.Bank_Account);
+    if(mainActive.value === 2){
+        if(result && amount.value > 0 && bankAccount.value){
+            const result = await sumbitWithdraw(user.value.id, amount.value, bankAccount.value.bank_address, bankAccount.value.bank_account);
             showToast(result.message);
             if(result.success){
                 router.push({name: 'my'});

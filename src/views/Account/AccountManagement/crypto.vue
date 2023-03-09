@@ -32,10 +32,10 @@ import { ref, onMounted } from 'vue';
 import { useBankAccountStore} from '@/stores/bankAccount';
 import { storeToRefs } from 'pinia';
 const bankList = ref([]);
-const { banks } = storeToRefs(useBankAccountStore());
-const { setEditBank } = useBankAccountStore();
+const { cryptoAccounts } = storeToRefs(useBankAccountStore());
+const { setEditCrypto } = useBankAccountStore();
 onMounted( async ()=>{
-    bankList.value = banks.value
+    bankList.value = cryptoAccounts.value
 });
 
 const addCrypto = () => {
@@ -43,7 +43,7 @@ const addCrypto = () => {
 }
 
 const editCryptoAccount = (item: any) => {
-    setEditBank(item);
+    setEditCrypto(item);
     router.push({ name: 'addCrypto' })
 }
 </script>

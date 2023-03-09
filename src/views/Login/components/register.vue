@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import verification from "./verification.vue";
-import { ref } from "vue";
+import { ref , toRefs} from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
 import axios from "axios";
@@ -56,7 +56,8 @@ const {
 const {
   signUp
 } = useAuthStore();
-
+const state = defineProps<{inviter_id:string}>();
+const { inviter_id } = toRefs(state)
 
 const isVerification = ref(false);
 const checked = ref(false);
@@ -79,8 +80,9 @@ const clearPsssword = () => {
 }
 
 const register = async () => {   ///register
+  console.log(inviter_id.value);
   console.log("UserName", username.value, password.value)
-  await signUp(username.value, password.value)
+  await signUp(username.value, password.value, inviter_id.value?inviter_id.value:'');
 }
 
 </script>

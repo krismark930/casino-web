@@ -5,9 +5,11 @@
                 <img class="w-1" referrerpolicy="no-referrer" src="@/assets/images/my/arrow-left.png" />
             </template>
             <template #title>
-                <span class="pt-[10px] text-[#454558]">添加虚拟币账户</span>
+                <span class="pt-[10px] text-[#454558]">{{editCrypto.id?'编辑虚拟币账户':'添加虚拟币账户'}}</span>
             </template>
-            <template #right> </template>
+            <template #right>
+                <img class="w-[12px]" referrerpolicy="no-referrer" src="@/assets/images/account/icon-delete.png" @click="deleteItem"/>
+            </template>
         </van-nav-bar>
         <div class="p-3 pt-[46px] pb-[60px]">
             <div class="pt-3 text-[16px]">
@@ -94,6 +96,17 @@
                 请认真校对虚拟币账户地址，账号错误资金将无法到账。<br />基本分布式云加密的虚拟币系统，全面报账您的资金安全。
             </div>
         </div>
+        <van-overlay :show="deleteShow">
+			<div class="wrapper" @click.stop>
+				<div class="wrapper_box rounded">
+					<p class="text-center w-full py-2 border-b">您确定要删除吗？</p>
+					<div class="flex items-center justify-between w-full h-full ">
+						<button @click="() => deleteShow = false" class="border-r h-full w-full">取消</button>
+						<button @click="commit" class="w-full text-blue-500">确定</button>
+					</div>
+				</div>
+			</div>
+		</van-overlay>
     </div>
 </template>
 <script setup lang="ts">
@@ -102,21 +115,22 @@ import router from '@/router';
 import { useBankAccountStore } from '@/stores/bankAccount';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
-
+import { showToast } from 'vant';
 const { user } = storeToRefs(useAuthStore());
-const { editBank } = storeToRefs(useBankAccountStore());
-const { addCryptoAccount , editCryptoAccount} = useBankAccountStore();
+const { editCrypto } = storeToRefs(useBankAccountStore());
+const { addCryptoAccount , editCryptoAccount,  deleteCrypto} = useBankAccountStore();
 const bankAccount = ref('');
 const bankAddress = ref('');
 const verifyCode = ref('');
 const cryptoType = ref('TRC20');
+const deleteShow = ref(false);
 const onClick_1 = () => {
 
 }
 const onClick_2 = async () => {
     if(bankAccount.value  && bankAddress.value){
-        if(editBank.value.id){
-            const result = await editCryptoAccount(user.value.id , editBank.value.id,  'USDT-'+cryptoType.value, bankAccount.value, bankAddress.value );
+        if(editCrypto.value.id){
+            const result = await editCryptoAccount(user.value.id , editCrypto.value.id,  'USDT-'+cryptoType.value, bankAccount.value, bankAddress.value );
             if(result.success){
                 router.push({name: 'myAccount'});
             }
@@ -131,12 +145,79 @@ const onClick_2 = async () => {
 const onClickLeft = () => {
     router.go(-1);
 };
+const deleteItem = () => {
+    deleteShow.value = true;
+}
+const commit = async () => {
+    const response = await deleteCrypto(editCrypto.value.id, user.value.id);
+    if(response.success){
+        deleteShow.value = false
+        showToast({
+            message: "删除成功",
+            icon: new URL('@/assets/images/account/icon-success.png', import.meta.url).href,
+        })
+    }else{
+        deleteShow.value = false
+        showToast(response.message)
+    }
+}
 onMounted( async () => {
-    if(editBank.value.id){
-        console.log(editBank.value)
-        bankAccount.value = editBank.value.bank_account;
-        bankAddress.value = editBank.value.bank_address;
-        cryptoType.value = editBank.value.bank.split('-')[1];
+    console.log(editCrypto.value)
+    if(editCrypto.value.id){
+        bankAccount.value = editCrypto.value.bank_account;
+        bankAddress.value = editCrypto.value.bank_address;
+        cryptoType.value = editCrypto.value.bank.split('-')[1];
     }
 })
 </script>
+<style scoped lang="scss">
+.wrapper {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	.wrapper_box {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+        justify-content: flex-start;
+		font-size: 16px;
+		width: 280px;
+		height: 150px;
+		background-color: #FFFFFF;
+		margin-top: 250px;
+        padding-left: 0px;
+        padding-top: 10px;
+        padding-bottom: 0px;
+        border-radius: 10px;
+
+		span {
+			line-height: 45px;
+			width: 100%;
+			border-bottom: 1px solid #e9e9e9;
+			text-align: start;
+		}
+
+		.button {
+			width: 100%;
+			height: 100px;
+			display: flex;
+			align-items: center;
+
+			button {
+				color: #4EABFF;
+				width: 50%;
+				height: 100%;
+				background-color: #FFFFFF;
+				padding: 0;
+				margin: 0;
+				border: 0;
+			}
+
+			.bt1 {
+                color: rgb(60, 58, 58);
+				border-right: 1px solid #e9e9e9;
+			}
+		}
+	}
+}
+</style>

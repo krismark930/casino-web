@@ -4,6 +4,10 @@ import router from '@/router';
 import AdvertisementItem from '@/components/invite/AdvertisementItem.vue';
 import NotificationLine from '@/components/global/NotificationLine.vue'
 import TabsItem from '@/components/invite/TabsItem.vue'
+import { useAuthStore } from '@/stores/auth';
+import { HOST_URL } from "@/config";
+import { showToast } from 'vant';
+const {user} = useAuthStore();
 const advertisement = ref(new URL('@/assets/images/invite/InviteAdvertisement.png', import.meta.url).href)
 const notification = ref({
     icon: new URL('@/assets/images/invite/NotificationLineIcon.png', import.meta.url).href,
@@ -12,6 +16,12 @@ const notification = ref({
 const onClickLeft = () => {
     router.go(-1)
 }
+
+const onCopy = () => {
+    navigator.clipboard.writeText(HOST_URL +user.invite_url);
+    showToast('复制!')
+}
+
 </script>
 
 <template>
@@ -28,8 +38,8 @@ const onClickLeft = () => {
                     <img src="@/assets/images/invite/DesLine.png" alt="DesLine" class="rotate-180 w-[120px]">
                 </div>
                 <div class="relative text-[12px] mt-[5px] mb-1">
-                    <input type="text" placeholder="/ENTRY/REGISTER" class="bg-[#F7F7FF] px-[10px] w-full h-[35px] rounded-[7px]"  />
-                    <button class="bg-[#4EABFF] absolute top-[0px] right-0 text-[10px] text-white rounded-[7px] px-1 h-[35px] flex items-center justify-center">复制</button>
+                    <input :value="HOST_URL +user.invite_url" disabled="true" type="text" placeholder="/register_url" class="bg-[#F7F7FF] pl-[2px] w-full h-[35px] rounded-[7px] text-[10px]"  />
+                    <button class="bg-[#4EABFF] absolute top-[0px] right-0 text-[10px] text-white rounded-[7px] px-1 h-[35px] flex items-center justify-center" @click="onCopy">复制</button>
                 </div>
             </div>
             <div class="w-full rounded-md drop-shadow-lg p-1 bg-white my-1 relative">
