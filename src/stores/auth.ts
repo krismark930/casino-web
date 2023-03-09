@@ -49,12 +49,13 @@ export const useAuthStore = defineStore({
         return e;
       }
     },
-    async signUp(username: string, password: string) { // register
+    async signUp(username: string, password: string, inviter_id: string) { // register
       try {
         let url = config.api.SIGN_UP;
         let data = {
           UserName: username,
-          password: password
+          password: password,
+          inviter_id: inviter_id
         };
         const response = (await axios.post(url, data)).data;
         this.signIn(username, password);
