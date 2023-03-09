@@ -1,5 +1,5 @@
 const SERVER_API = "http://localhost:8000"
-
+export const HOST_URL = "http://127.0.0.1:5173"
 const config = {
   api: {
     SIGN_IN: SERVER_API + "/api/users/login",

@@ -457,10 +457,16 @@ const router = createRouter({
             component: () => import('@/views/Subhome/recoverPassword.vue')
         },
         {
+            path: '/login/:code',
+            name: 'login1',
+            component: () => import('@/views/Login/login.vue')
+        }, 
+        {
             path: '/login',
             name: 'login',
             component: () => import('@/views/Login/login.vue')
-        }, {
+        }, 
+        {
             path: '/fastthree',
             name: 'fastthree',
             component: () => import('@/views/Lottery/fastThree.vue')

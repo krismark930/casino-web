@@ -21,7 +21,7 @@
       </div>
       <div class="form_box">
         <login v-if="select == 1"></login>
-        <register v-if="select == 2"></register>
+        <register v-if="select == 2" :inviter_id="inviter_id"></register>
       </div>
     </div>
   </div>
@@ -30,10 +30,22 @@
 <script setup lang="ts">
 import login from "./components/login.vue";
 import register from "./components/register.vue";
-import { ref } from "vue";
+import { ref , onMounted} from "vue";
 import router from "@/router";
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const select = ref(1);
+const inviter_id = ref('');
+
+onMounted(() => {
+  const code = route.params.code;
+  console.log(code);
+  if(code){
+    select.value = 2;
+    inviter_id.value = code;
+  }
+})
 
 const selectList = ref([
   {
