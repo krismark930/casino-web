@@ -6,6 +6,9 @@
           <slot v-if="this.type=='FT'" :name="header">
             足球 {{this.title}}
           </slot>
+          <slot v-if="this.type=='BK'" :name="header">
+            篮球 {{this.title}}
+          </slot>
           <button
             type="button"
             class="btn-close"
@@ -31,7 +34,8 @@
 						<input type="text" placeholder="输入投注金额" v-model="input_value" @focus="showpanel">
 						<div>
 							<span v-if="input_value" class="grey">可赢额</span>
-							<span v-if="input_value<=20000" class="win_text green">{{Number(input_value)*Number(this.rate.num)}}</span>
+              <span v-if="input_value<=20000 && (this.num==2 || this.rate.type =='N')" class="win_text green">{{Number(input_value)*(Number(this.rate.num)-1)}}</span>
+							<span v-else="input_value<=20000" class="win_text green">{{Number(input_value)*Number(this.rate.num)}}</span>
 							<span v-if="input_value==20000" class="max">最大投注金额 20000</span>
 						</div>
 					</div>
@@ -67,7 +71,7 @@
                 <button
                   type="button"
                   class="btn-green"
-                  @click="addSlip"
+                  @click="addTemp"
                 >
                 加单
                 </button>
@@ -96,7 +100,8 @@ export default {
     g_type: "",
     title: "",
     rate: 0,
-    league: ""
+    league: "",
+    num: 0
   },
   data() {
     return {
@@ -105,7 +110,8 @@ export default {
         value_s: '',
         value_n: 0,
         is_status: true,
-        userData: []
+        userData: [],
+        m_win:0
     }
   },
   mounted() {
@@ -149,10 +155,32 @@ export default {
         return e;
       }
     },
-    async addSlip() {
+    async addTemp() {
       try {
+        if (this.num==2 || this.rate.type =='N') {this.m_win = Number(this.input_value)*(Number(this.rate.num) -1)}
+        else this.m_win = Number(this.input_value)*Number(this.rate.num)
         if(this.input_value != '' && this.openKeyboard == false) {
-          showToast('添加成功。')
+          let data = {
+            type : this.type,
+            title : this.title,
+            league : this.league,
+            m_team : this.m_team,
+            t_team : this.t_team,
+            select_team : this.select_team,
+            text : this.rate.text,
+            rate : this.rate.num,
+            gold : this.value_n,
+            m_win : this.m_win,
+            uid : this.userData.id,
+            gid : this.mid,
+            g_type : this.g_type,
+            line_type : this.line,
+            active : 1
+          }
+          console.log(data)
+          let url = config.api.ADD_TEMP;
+          const response = (await axios.post(url, data)).data
+          if (response.success == true) showToast('添加成功。')
         }
       } catch (e) {
         return e

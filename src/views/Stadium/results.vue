@@ -6,7 +6,7 @@
 				<span>{{selectList[index].name}}</span>
 			</div>
 			<div class="title_text">
-				1.000.00RMB
+				{{resultList.allMoney.toFixed(2)}} RMB
 			</div>
 			<div class="select_title delete">
 				<van-icon name="delete-o" @click="deleteResult" color="#FFFFFF" />
@@ -39,7 +39,7 @@
 						<input type="text" placeholder="输入投注金额" v-model="item.money">
 						<div>
 							<span v-if="item.money" class="grey">可赢额</span>
-							<span v-if="item.money" class="win_text green">{{Number(item.money)*0.82}}</span>
+							<span v-if="item.money" class="win_text green">{{Number(item.money)*(item.rate)}}</span>
 							<span v-if="!item.money" class="max">最大投注金额</span>
 						</div>
 					</div>
@@ -82,7 +82,7 @@
 					<span class="green">{{selectList.length==0?(resultList.allMoney*4.7).toFixed(2):'0.00'}} RMB</span>
 				</div>
 			</div>
-			<div v-if="selectList" class="btn">
+			<div v-if="selectList" class="btn" @click="multiBetting">
 				<span>下注</span>
 				<span>{{resultList.allMoney.toFixed(2)}} RMB</span>
 			</div>
@@ -94,87 +94,139 @@
 	</div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+import config from "@/config"
+import axios from 'axios';
 import { showConfirmDialog } from 'vant';
-import {ref} from 'vue';
-import {
-	Dialog
-} from 'vant';
 
-const openSelect = ref(false);
-const index = ref(0);
-const selectList = ref([{
-		name: '注单1',
-		id: 1
-	},
-	{
-		name: '注单2',
-		id: 2
-	},
-	{
-		name: '注单3',
-		id: 3
-	}
-]);
-const resultList = ref({
-	allMoney: 1000.00,
-	aloneMoney: '',
-	allOdds: 5.71,
-	list: [{
-			game: '足球',
-			type: '让球',
-			gameName: '国际友谊联赛',
-			ranks: '日本VS加拿大',
-			win: '日本',
-			size: '',
-			scoro: 1,
-			Odds: '1.96',
-			money: '1000.00'
-		},
-		{
-			game: '足球',
-			type: '大/小',
-			gameName: '国际友谊联赛',
-			ranks: '日本VS加拿大',
-			win: '小',
-			size: '1.5/2',
-			scoro: 1,
-			Odds: '1.96',
-			money: ''
-		},
-		{
-			game: '足球',
-			type: '大/小',
-			gameName: '国际友谊联赛',
-			ranks: '日本VS加拿大',
-			win: '大',
-			size: '1.5/2',
-			scoro: 1,
-			Odds: '1.96',
-			money: ''
+export default {
+	data () {
+		return {
+			openSelect : false,
+			index : 0,
+			all_money: 0,
+			show: true,
+			selectList : [
+				{
+					name: '注单1',
+					id: 1
+				},
+				{
+					name: '注单2',
+					id: 2
+				},
+				{
+					name: '注单3',
+					id: 3
+				}
+			],
+			resultList : {
+				allMoney: 1000.00,
+				aloneMoney: '',
+				allOdds: 5.71,
+				list: []
+			}
 		}
-	]
-});
-
-const selectResult =() => {
-	openSelect.value = !openSelect.value
-}
-
-const select = (value:number) => {
-	index.value = value
-	openSelect.value = !openSelect.value
-}
-
-const deleteResult = () => {
-	showConfirmDialog({
-			message: '是否确认删除该注单？',
-		})
-		.then(() => {
-			// on confirm
-		})
-		.catch(() => {
-			// on cancel
-		});
+	},
+	mounted() {
+		this.get_temps()
+	},
+	methods: {
+		async get_temps() {
+			try {
+				let url = config.api.GET_TEMPS
+				const response = (await axios.get(url)).data.data
+				console.log(response)
+				let list = []
+				let game = ""
+				for (let i = 0; i< response.length; i++)
+				{
+					this.all_money += response[i].gold
+					if (response[i].type == 'FT') {game = '足球'}
+					if (response[i].type == 'BK') {game = '篮球'}
+					let data = {
+						game: game,
+						type: response[i].title,
+						gameName: response[i].league,
+						ranks: response[i].m_team + 'VS' + response[i].t_team,
+						win: response[i].select_team,
+						size: response[i].text,
+						scoro: 1,
+						Odds: response[i].rate,
+						rate: Number(response[i].m_win)/(response[i].gold),
+						money: response[i].gold
+					}
+					list.push(data)
+					this.resultList = {
+						allMoney: this.all_money,
+						aloneMoney: '',
+						allOdds: 5.71,
+						list: [...list]
+					}
+				}
+				console.log(this.resultList)
+			} catch (e) {
+				return e
+			}
+		},
+		selectResult() {
+			this.openSelect = !this.openSelect
+		},
+		select (value:number) {
+			this.index = value
+			this.openSelect = !this.openSelect
+		},
+		deleteResult () {
+			showConfirmDialog({
+					message: '是否确认删除该注单？',
+				})
+				.then(() => {
+					// on confirm
+					this.deleteList ();
+				})
+				.catch(() => {
+					// on cancel
+				});
+		},
+		async deleteList(){
+			try {
+					let url = config.api.DELETE_TEMPS
+					const response = (await axios.get(url)).data.message
+					console.log(response)
+			} catch(e) {
+				return e
+			}
+		},
+		async multiBetting() {
+			try {
+				let url = config.api.MULTI_BET_FT
+				const response = (await axios.get(config.api.GET_TEMPS)).data.data
+				let list = []
+				console.log(response)
+				for (let i = 0; i< response.length; i++) {
+					let temp = {
+						gold : response[i].gold,
+						id : response[i].uid,
+						gid : response[i].gid,
+						line_type : response[i].line_type,
+						type : response[i].g_type,
+						active : response[i].active,
+					}
+					list.push(temp)
+				}
+				let data = {
+					data : list,
+					count : list.length
+				}
+				console.log(data)
+				const response1 = (await axios.post(url, data)).data.data
+				console.log(response1)
+				await axios.get(config.api.GET_TEMPS)
+			} catch(e) {
+				return e
+			}
+		}
+	}
 }
 </script>
 
