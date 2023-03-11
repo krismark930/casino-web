@@ -5,12 +5,13 @@
 			<span>兴趣赛事</span>
 		</div>
 		<div class="game_box">
-			<div :class="{ gameSelect: aelect == game.id }" v-for="(game,idx) in gameType" @click="SelectGame(game.id)">
+			<div :class="{ gameSelect: aelect == game.id }" v-for="(game, idx) in gameType" @click="selectGame(game.id)">
 				{{ game.name }}
 			</div>
 		</div>
 		<div class="select_box" v-if="aelect == 1">
-			<div :class="{ selects: aelectId == select.id }" v-for="(select, idx) in selectList" @click="Select(select.id)">
+			<div :class="{ selects: aelectId == select.id }" v-for="(select, idx) in selectList"
+				@click="selectSwitch(select.id)">
 				{{ select.name }}
 			</div>
 		</div>
@@ -35,7 +36,7 @@
 
 <script setup lang="ts">
 import Basketball from './components/Basketball.vue'
-import Football from './components/Football.vue'
+import Football from './components/Football_InPlay.vue'
 import other from './components/other.vue'
 import { ref } from 'vue';
 const list = ref([]);
@@ -62,10 +63,10 @@ const gameType = ref([
 		id: 2
 	}
 ]);
-const Select = (id: number) => {
+const selectSwitch = (id: number) => {
 	aelectId.value = id
 }
-const SelectGame = (id: number) => {
+const selectGame = (id: number) => {
 	aelect.value = id
 }
 </script>
