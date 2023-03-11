@@ -31,10 +31,10 @@ import { ref, computed } from 'vue';
 const active = ref(2);
 const value1 = ref(0);
 const gameList = ref([
-	{
-		text: '所有体育',
-		value: 0
-	},
+	// {
+	// 	text: '所有体育',
+	// 	value: 0
+	// },
 	{
 		text: '篮球',
 		value: 1
@@ -93,6 +93,7 @@ const typetext = computed(() => {
 			background-color: #00ADFF;
 		}
 	}
+
 	.game_box {
 		display: flex;
 		background-color: #00ADFF;

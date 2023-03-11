@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/chile</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/chile">
+            <g id="chile">
+                <circle id="Oval" fill="#F5F5F5" fill-rule="nonzero" cx="12" cy="12" r="12"></circle>
+                <path d="M23.8,11.9802902 C23.8,18.5633641 18.51696,23.9 12,23.9 C5.48303995,23.9 0.2,18.5633641 0.2,11.9802902 C0.2,5.396513 12,11.9802902 12,11.9802902 L23.8,11.9802902 Z" id="Path" fill="#FF4B55" fill-rule="nonzero"></path>
+                <path d="M0.2,12 C0.2,5.48303995 5.48303995,0.2 12,0.2 L12,12 L0.2,12 Z" id="Path" fill="#41479B" fill-rule="nonzero"></path>
+                <polygon id="Path" fill="#EEEEEE" fill-rule="nonzero" points="7.14375 4.171875 7.921875 6.5625 10.434375 6.5625 8.4 8.04375 9.178125 10.434375 7.14375 8.9578125 5.109375 10.434375 5.8875 8.04375 3.853125 6.5625 6.365625 6.5625"></polygon>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,224 +1,3 @@
-<script lang="ts">
-    import { defineComponent } from 'vue';
-	import axios from "axios";
-	import config from "@/config";
-	import {ref} from 'vue';
-    export default defineComponent({
-        data() {
-            return {
-                sportData: [],
-				sportCount: [],
-				projectList:[
-					[{
-						url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
-						name: '足球',
-						num: 0,
-						id: 1
-					},
-					{
-						url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
-						name: '篮球',
-						num: 0,
-						id: 2
-					},
-					{
-						url: new URL("@/assets/images/stadiums/tennis.png", import.meta.url).href,
-						name: '网球',
-						num: 0,
-						id: 3
-					},
-					{
-						url: new URL("@/assets/images/stadiums/pingpong.png", import.meta.url).href,
-						name: '乒乓球',
-						num: 0,
-						id: 4
-					},
-					{
-						url: new URL("@/assets/images/stadiums/snooker.png", import.meta.url).href,
-						name: '斯诺克英式台球',
-						num: 0,
-						id: 5
-					}
-					],
-					[{
-						url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
-						name: '足球',
-						num: 0,
-						id: 1
-					},
-					{
-						url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
-						name: '篮球',
-						num: 0,
-						id: 2
-					},
-					{
-						url: new URL("@/assets/images/stadiums/tennis.png", import.meta.url).href,
-						name: '网球',
-						num: 0,
-						id: 3
-					},
-					{
-						url: new URL("@/assets/images/stadiums/pingpong.png", import.meta.url).href,
-						name: '乒乓球',
-						num: 0,
-						id: 4
-					},
-					{
-						url: new URL("@/assets/images/stadiums/snooker.png", import.meta.url).href,
-						name: '斯诺克英式台球',
-						num: 4,
-						id: 5
-					}
-					],
-					[{
-						url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
-						name: '足球',
-						num: 132,
-						id: 1
-					},
-					{
-						url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
-						name: '篮球',
-						num: 165,
-						id: 2
-					},
-					{
-						url: new URL("@/assets/images/stadiums/tennis.png", import.meta.url).href,
-						name: '网球',
-						num: 132,
-						id: 3
-					},
-					{
-						url: new URL("@/assets/images/stadiums/pingpong.png", import.meta.url).href,
-						name: '乒乓球',
-						num: 79,
-						id: 4
-					}
-					],
-					[{
-						url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
-						name: '足球',
-						num: 132,
-						id: 1
-					},
-					{
-						url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
-						name: '篮球',
-						num: 165,
-						id: 2
-					}
-					],
-					[{
-						url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
-						name: '足球',
-						num: 132,
-						id: 1
-					},
-					{
-						url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
-						name: '篮球',
-						num: 165,
-						id: 2
-					},
-					{
-						url: new URL("@/assets/images/stadiums/tennis.png", import.meta.url).href,
-						name: '网球',
-						num: 132,
-						id: 3
-					},
-					{
-						url: new URL("@/assets/images/stadiums/pingpong.png", import.meta.url).href,
-						name: '乒乓球',
-						num: 79,
-						id: 4
-					}
-					],
-					[{
-						url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
-						name: '足球',
-						num: 132,
-						id: 1
-					},
-					{
-						url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
-						name: '篮球',
-						num: 165,
-						id: 2
-					},
-					{
-						url: new URL("@/assets/images/stadiums/tennis.png", import.meta.url).href,
-						name: '网球',
-						num: 132,
-						id: 3
-					},
-					]
-				],
-				dataList: [{
-					id: 1,
-					name: '今日',
-					num: 0
-				},
-				{
-					id: 2,
-					name: '滚球中',
-					num: 0
-				},
-				{
-					id: 3,
-					name: '早盘',
-					num: 0
-				},
-				{
-					id: 4,
-					name: '热门',
-					num: 0
-				},
-				{
-					id: 5,
-					name: '冠军',
-					num: 0
-				}],
-            }
-        },
-        mounted() {	
-			this.get_sports_data();
-			
-        },
-		methods:{
-			async get_sports_data() {
-				try {
-					console.log('conutOfSports_Success');
-					let url = config.api.GET_SPORTS_DATA;
-					let data = {
-					type: '',
-					m_date: '',
-					get_type: '',
-					}
-					let header;
-					const response = (await axios.post(url, data, header)).data;
-					const cateData: Cate[] = response;
-					this.sportData['FT'] = cateData.filter((Cate) => Cate.Type == 'FT')
-					console.log('sport_FT_data', cateData.filter((Cate) => Cate.M_date == '2021-07-10').length);
-
-					this.sportData['BK'] = cateData.filter((Cate) => Cate.Type == 'BK')
-					this.dataList[0].num = cateData.filter((Cate) => Cate.M_Date == '2021-07-11').length //add current date
-					//other sports
-					// this.sportData['VB'] = cateData.filter((Cate) => Cate.Type == 'VB')
-					// this.sportData['TN'] = cateData.filter((Cate) => Cate.Type == 'TN')
-					// this.sportData['OP'] = cateData.filter((Cate) => Cate.Type == 'OP')
-					this.projectList[0][0].num = this.sportData['FT'].length
-					this.projectList[0][1].num = this.sportData['BK'].length
-					
-					return response;
-				} catch (e) {
-					console.log(e);
-					return e;
-				}
-			},
-		}
-	});
-</script>
 <template>
 	<div class="stadium_bottom animated fadeInLeft">
 		<div class="broadcast">
@@ -262,7 +41,12 @@
 
 <script setup lang="ts">
 import router from '@/router';
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue';
+import { stadiumStore } from '@/stores/stadium';
+import { storeToRefs } from 'pinia';
+
+const { getSportCount } = storeToRefs(stadiumStore());
+const { getSportsCountData } = stadiumStore()
 
 const active = ref(0)
 const gameList = ref([{
@@ -281,185 +65,190 @@ const gameList = ref([{
 	icon: new URL("@/assets/images/stadiums/icon3.png", import.meta.url).href
 }
 ])
-// const dataList = ref([{
-// 	id: 1,
-// 	name: '今日',
-// 	num: 543
-// },
-// {
-// 	id: 2,
-// 	name: '滚球中',
-// 	num: 85
-// },
-// {
-// 	id: 3,
-// 	name: '早盘',
-// 	num: 697
-// },
-// {
-// 	id: 4,
-// 	name: '热门',
-// 	num: 30
-// },
-// {
-// 	id: 5,
-// 	name: '冠军',
-// 	num: 241
-// }
-// ])
-// const projectList = ref([
-// 	[{
-// 		url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
-// 		name: '足球',
-// 		num: 132,
-// 		id: 1
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
-// 		name: '篮球',
-// 		num: 165,
-// 		id: 2
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/tennis.png", import.meta.url).href,
-// 		name: '网球',
-// 		num: 132,
-// 		id: 3
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/pingpong.png", import.meta.url).href,
-// 		name: '乒乓球',
-// 		num: 79,
-// 		id: 4
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/snooker.png", import.meta.url).href,
-// 		name: '斯诺克英式台球',
-// 		num: 4,
-// 		id: 5
-// 	}
-// 	],
-// 	[{
-// 		url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
-// 		name: '足球',
-// 		num: 132,
-// 		id: 1
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
-// 		name: '篮球',
-// 		num: 165,
-// 		id: 2
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/tennis.png", import.meta.url).href,
-// 		name: '网球',
-// 		num: 132,
-// 		id: 3
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/pingpong.png", import.meta.url).href,
-// 		name: '乒乓球',
-// 		num: 79,
-// 		id: 4
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/snooker.png", import.meta.url).href,
-// 		name: '斯诺克英式台球',
-// 		num: 4,
-// 		id: 5
-// 	}
-// 	],
-// 	[{
-// 		url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
-// 		name: '足球',
-// 		num: 132,
-// 		id: 1
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
-// 		name: '篮球',
-// 		num: 165,
-// 		id: 2
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/tennis.png", import.meta.url).href,
-// 		name: '网球',
-// 		num: 132,
-// 		id: 3
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/pingpong.png", import.meta.url).href,
-// 		name: '乒乓球',
-// 		num: 79,
-// 		id: 4
-// 	}
-// 	],
-// 	[{
-// 		url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
-// 		name: '足球',
-// 		num: 132,
-// 		id: 1
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
-// 		name: '篮球',
-// 		num: 165,
-// 		id: 2
-// 	}
-// 	],
-// 	[{
-// 		url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
-// 		name: '足球',
-// 		num: 132,
-// 		id: 1
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
-// 		name: '篮球',
-// 		num: 165,
-// 		id: 2
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/tennis.png", import.meta.url).href,
-// 		name: '网球',
-// 		num: 132,
-// 		id: 3
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/pingpong.png", import.meta.url).href,
-// 		name: '乒乓球',
-// 		num: 79,
-// 		id: 4
-// 	}
-// 	],
-// 	[{
-// 		url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
-// 		name: '足球',
-// 		num: 132,
-// 		id: 1
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
-// 		name: '篮球',
-// 		num: 165,
-// 		id: 2
-// 	},
-// 	{
-// 		url: new URL("@/assets/images/stadiums/tennis.png", import.meta.url).href,
-// 		name: '网球',
-// 		num: 132,
-// 		id: 3
-// 	},
-// 	]
-// ])
+const dataList = ref([{
+	id: 1,
+	name: '今日',
+	num: 543
+},
+{
+	id: 2,
+	name: '滚球中',
+	num: 85
+},
+{
+	id: 3,
+	name: '早盘',
+	num: 697
+},
+{
+	id: 4,
+	name: '热门',
+	num: 30
+},
+{
+	id: 5,
+	name: '冠军',
+	num: 241
+}
+])
+const projectList = ref([
+	[{
+		url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
+		name: '足球',
+		num: 0,
+		id: 1
+	},
+	{
+		url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
+		name: '篮球',
+		num: 0,
+		id: 2
+	},
+	{
+		url: new URL("@/assets/images/stadiums/tennis.png", import.meta.url).href,
+		name: '网球',
+		num: 0,
+		id: 3
+	},
+	{
+		url: new URL("@/assets/images/stadiums/pingpong.png", import.meta.url).href,
+		name: '乒乓球',
+		num: 0,
+		id: 4
+	},
+	{
+		url: new URL("@/assets/images/stadiums/snooker.png", import.meta.url).href,
+		name: '斯诺克英式台球',
+		num: 0,
+		id: 5
+	}
+	],
+	[{
+		url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
+		name: '足球',
+		num: 0,
+		id: 1
+	},
+	{
+		url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
+		name: '篮球',
+		num: 0,
+		id: 2
+	},
+	{
+		url: new URL("@/assets/images/stadiums/tennis.png", import.meta.url).href,
+		name: '网球',
+		num: 0,
+		id: 3
+	},
+	{
+		url: new URL("@/assets/images/stadiums/pingpong.png", import.meta.url).href,
+		name: '乒乓球',
+		num: 0,
+		id: 4
+	},
+	{
+		url: new URL("@/assets/images/stadiums/snooker.png", import.meta.url).href,
+		name: '斯诺克英式台球',
+		num: 0,
+		id: 5
+	}
+	],
+	[{
+		url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
+		name: '足球',
+		num: 0,
+		id: 1
+	},
+	{
+		url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
+		name: '篮球',
+		num: 0,
+		id: 2
+	},
+	{
+		url: new URL("@/assets/images/stadiums/tennis.png", import.meta.url).href,
+		name: '网球',
+		num: 132,
+		id: 3
+	},
+	{
+		url: new URL("@/assets/images/stadiums/pingpong.png", import.meta.url).href,
+		name: '乒乓球',
+		num: 79,
+		id: 4
+	}
+	],
+	[{
+		url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
+		name: '足球',
+		num: 132,
+		id: 1
+	},
+	{
+		url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
+		name: '篮球',
+		num: 165,
+		id: 2
+	}
+	],
+	[{
+		url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
+		name: '足球',
+		num: 132,
+		id: 1
+	},
+	{
+		url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
+		name: '篮球',
+		num: 165,
+		id: 2
+	},
+	{
+		url: new URL("@/assets/images/stadiums/tennis.png", import.meta.url).href,
+		name: '网球',
+		num: 132,
+		id: 3
+	},
+	{
+		url: new URL("@/assets/images/stadiums/pingpong.png", import.meta.url).href,
+		name: '乒乓球',
+		num: 79,
+		id: 4
+	}
+	],
+	[{
+		url: new URL("@/assets/images/stadiums/football.png", import.meta.url).href,
+		name: '足球',
+		num: 132,
+		id: 1
+	},
+	{
+		url: new URL("@/assets/images/stadiums/basketball.png", import.meta.url).href,
+		name: '篮球',
+		num: 165,
+		id: 2
+	},
+	{
+		url: new URL("@/assets/images/stadiums/tennis.png", import.meta.url).href,
+		name: '网球',
+		num: 132,
+		id: 3
+	},
+	]
+])
 const selectTab = (id: number) => {
 	active.value = id
 }
 const goDetail = () => {
 	router.push({ name: 'stadiumsDetail' })
-}
-
+};
+onMounted(async () => {
+	await getSportsCountData();
+	console.log(getSportCount.value);
+	projectList.value[0][0].num = getSportCount.value.ft_number;
+	projectList.value[0][1].num = getSportCount.value.bk_number;
+}) 
 </script>
 
 <style lang="scss" scoped>

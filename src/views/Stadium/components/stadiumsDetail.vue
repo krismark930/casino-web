@@ -1,38 +1,39 @@
 <template>
 	<div class="animated fadeInLeft">
 		<div class="tab_box">
-			<van-tabs v-model="active" color='#4EABFF' title-active-color="#4EABFF">
+			<van-tabs v-model:active="active" color='#4EABFF' title-active-color="#4EABFF">
 				<van-tab v-for="(item, index) in tabList" :key="index" :title="item.name"></van-tab>
 			</van-tabs>
 		</div>
 		<div>
 			<van-dropdown-menu>
-				<van-dropdown-item v-model="value1" :options="option1" />
+				<van-dropdown-item v-model="sportOptionValue" :options="sportOption" />
 			</van-dropdown-menu>
 
 		</div>
-		<div class="select_box" v-if="value1 == 1">
-			<div :class="{ selects: selectId == select.id }" v-for="(select, idx) in selectList" @click="Select(select.id)">
+		<div class="select_box" v-if="sportOptionValue == 1">
+			<div :class="{ selects: selectId == select.id }" v-for="(select, idx) in selectList"
+				@click="selectSwitch(select.id)">
 				{{ select.name }}
 			</div>
 		</div>
 		<div class="center_box">
-			<Basketball v-if="value1 == 0"></Basketball>
-			<Football v-if="value1 == 1 && selectId == 1" />
-			<other v-if="value1 == 1 && selectId == 2"></other>
+			<Basketball v-if="sportOptionValue == 0"></Basketball>
+			<Football_Inplay v-if="sportOptionValue == 1 && selectId == 1 && active == 0" />
+			<other v-if="sportOptionValue == 1 && selectId == 2"></other>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import Basketball from './Basketball.vue'
-import Football from './Football.vue'
+import Football_Inplay from './Football_InPlay.vue'
 import other from './other.vue'
 import { ref } from 'vue'
 
 const active = ref('0')
-const value1 = ref(1)
-const selectId = ref(2)
+const sportOptionValue = ref(1)
+const selectId = ref(1)
 const selectList = ref([
 	{
 		name: '主要玩法',
@@ -43,7 +44,7 @@ const selectList = ref([
 		id: 2
 	}
 ])
-const option1 = ref([{
+const sportOption = ref([{
 	text: '篮球',
 	value: 0
 },
@@ -52,26 +53,27 @@ const option1 = ref([{
 	value: 1
 },
 ])
-const tabList = ref([{
-	name: '所有体育',
-},
-{
-	name: '今日',
-},
-{
-	name: '滚球中',
-},
-{
-	name: '早盘',
-},
-{
-	name: '冠军',
-},
-{
-	name: '串关',
-}
+const tabList = ref([
+	// {
+	// 	name: '所有体育',
+	// },
+	{
+		name: '滚球中',
+	},
+	{
+		name: '今日',
+	},
+	{
+		name: '早盘',
+	},
+	{
+		name: '冠军',
+	},
+	{
+		name: '串关',
+	}
 ])
-const Select = (id: number) => {
+const selectSwitch = (id: number) => {
 	selectId.value = id
 }
 </script>
@@ -116,5 +118,4 @@ const Select = (id: number) => {
 		color: #FFFFFF;
 	}
 }
-
 </style>
