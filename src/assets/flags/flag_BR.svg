@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/brazil</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/brazil">
+            <g id="brazil">
+                <circle id="Oval" fill="#6DA544" fill-rule="nonzero" cx="12" cy="12" r="11.75"></circle>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+                <polygon id="Path" fill="#FFDA44" fill-rule="nonzero" points="12 4.696875 21.9140625 12 12 19.303125 2.0859375 12"></polygon>
+                <circle id="Oval" fill="#EEEEEE" fill-rule="nonzero" cx="12" cy="12" r="4.171875"></circle>
+                <path d="M9.9140625,11.7375 C9.20661965,11.7374952 8.50328187,11.8449715 7.828125,12.05625 C7.85056932,13.8689199 9.04104534,15.4596375 10.7738287,15.9923079 C12.5066121,16.5249784 14.3850725,15.8776746 15.421875,14.390625 C14.0875247,12.710851 12.0593203,11.7321345 9.9140625,11.7328121 L9.9140625,11.7375 Z M16.096875,12.8015625 C16.1475126,12.537397 16.1726282,12.268974 16.1718914,12 C16.172589,10.0190685 14.7801683,8.31077385 12.8397858,7.91201842 C10.8994033,7.513263 8.94615481,8.53401087 8.165625,10.3546875 C8.74067469,10.2342616 9.32653952,10.173005 9.9140625,10.171875 C12.3375,10.171875 14.53125,11.1796875 16.096875,12.796875 L16.096875,12.8015625 Z" id="Shape" fill="#0052B4" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

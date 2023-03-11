@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/bahamas</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/bahamas">
+            <g id="bahamas">
+                <circle id="Oval" fill="#FFE15A" fill-rule="nonzero" cx="11.9533074" cy="12" r="11.9533074"></circle>
+                <path d="M7.27470817,7.87911951 L23.1642023,7.87911951 C21.7486735,4.09233864 18.4862499,1.28080936 14.5074619,0.418813425 C10.528674,-0.443182505 6.38107854,0.76298192 3.50194553,3.61933345 L7.27470817,7.87911951 L7.27470817,7.87911951 Z M7.27470817,16.1208795 L23.1642023,16.1208795 C21.7486735,19.9076604 18.4862499,22.7191896 14.5074619,23.5811856 C10.528674,24.4431815 6.38107854,23.2370171 3.50194553,20.3806655 L7.27470817,16.1208795 Z" id="Shape" fill="#82AFFF" fill-rule="nonzero"></path>
+                <path d="M3.6433736,3.54863813 C-0.9453832,8.21648842 -0.9453832,15.7835116 3.6433736,20.4513619 L11.953308,12 L3.6433736,3.54863813 Z" id="Path" fill="#464655" fill-rule="nonzero"></path>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

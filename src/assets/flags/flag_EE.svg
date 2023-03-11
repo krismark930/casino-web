@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/estonia</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/estonia">
+            <g id="estonia">
+                <path d="M0,11.9766082 C0,13.4409357 0.261988304,14.8444444 0.748538012,16.1403509 L11.9766082,16.6643275 L23.2046784,16.1403509 C24.2032762,13.4543332 24.2032762,10.4988831 23.2046784,7.8128655 L11.9766082,7.28888889 L0.748538012,7.8128655 C0.253450554,9.14523551 0,10.5552281 0,11.9766082 L0,11.9766082 Z" id="Path" fill="#333333" fill-rule="nonzero"></path>
+                <path d="M11.9766082,0 C6.96853811,0.000611310722 2.48962485,3.11718846 0.748538012,7.8128655 L23.2046784,7.8128655 C21.4635915,3.11718846 16.9846783,0.000611310722 11.9766082,0 Z" id="Path" fill="#0052B4" fill-rule="nonzero"></path>
+                <path d="M23.2046784,16.1403509 L0.748538012,16.1403509 C2.49092342,20.8344758 6.96954165,23.9492758 11.9766082,23.9492758 C16.9836747,23.9492758 21.4622929,20.8344758 23.2046784,16.1403509 Z" id="Path" fill="#EEEEEE" fill-rule="nonzero"></path>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

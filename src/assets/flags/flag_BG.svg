@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/bulgaria</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/bulgaria">
+            <g id="bulgaria">
+                <path d="M23.9533074,11.9533074 C23.9533074,10.4918288 23.6918288,9.09105058 23.2062257,7.79766537 L12,7.27470817 L0.793774319,7.79766537 C-0.202464603,10.4785321 -0.202464603,13.4280827 0.793774319,16.1089494 L12,16.6319066 L23.2062257,16.1089494 C23.6918288,14.8155642 23.9533074,13.414786 23.9533074,11.9533074 Z" id="Path" fill="#496E2D" fill-rule="nonzero"></path>
+                <path d="M12,23.9066148 C16.9983267,23.9060047 21.4685262,20.7954909 23.2062257,16.1089494 L0.793774319,16.1089494 C2.53147383,20.7954909 7.00167325,23.9060047 12,23.9066148 Z" id="Path" fill="#D80027" fill-rule="nonzero"></path>
+                <path d="M0.793774319,7.79766537 L23.2062257,7.79766537 C21.4672301,3.11267303 16.9973252,0.0039329092 12,0.0039329092 C7.00267484,0.0039329092 2.53276988,3.11267303 0.793774319,7.79766537 Z" id="Path" fill="#EEEEEE" fill-rule="nonzero"></path>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>
