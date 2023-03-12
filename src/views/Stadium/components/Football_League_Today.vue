@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<van-loading color="#1989fa" class="loading-position" v-if="loading" size="40" />
 		<div class="game-list" v-for="(item, index) in changedFTDataList" :key="index">
 			<div class="divide-background"></div>
 			<div class="center-title" @click="showDetail(item['lid'])">
@@ -134,12 +133,6 @@ import { stadiumStore } from "@/stores/stadium";
 import { storeToRefs } from "pinia";
 export default defineComponent({
 	name: "Football",
-	setup() {
-		const { getFTInPlayDataList } = stadiumStore();
-		const { getFTInPlayDatas } = storeToRefs(stadiumStore());
-		const ftDataList = getFTInPlayDatas.value;
-		return { getFTInPlayDataList, ftDataList }
-	},
 	components: {
 		OrderModal
 	},
@@ -148,7 +141,6 @@ export default defineComponent({
 			conditionItem: {
 				type: "FT"
 			},
-			loading: true,
 			title: "",
 			rate: 0,
 			m_team: "",
@@ -164,6 +156,10 @@ export default defineComponent({
 		}
 	},
 	computed: {
+		ftDataList: function () {
+			const { getFTInPlayDatas } = storeToRefs(stadiumStore());
+			return getFTInPlayDatas.value;
+		}
 	},
 	watch: {
 		changedFTDataList: function (newDataList: any) {
@@ -334,11 +330,11 @@ export default defineComponent({
 		}
 	},
 	async created() {
-		this.$socket.emit("sendFTInPlayMessage");
-		await this.getFTInPlayDataList(this.conditionItem);
-		console.log(this.ftDataList);
+		const { getFTInPlayDataList } = stadiumStore();
+		await getFTInPlayDataList(this.conditionItem);
 		this.ftDataChange(this.ftDataList);
-		this.loading = false;
+	},
+	mounted() {
 		this.$socket.emit('userJoined', 'user');
 	},
 	methods: {
@@ -792,16 +788,13 @@ export default defineComponent({
 		closeModal: function () {
 			this.openModal = false;
 		},
+		showData: function () {
+			this.title = "ok";
+		}
 	}
 })
 </script>
 <style scoped lang="scss">
-.loading-position {
-	margin-top: 200px;
-	position: absolute;
-	left: 50%;
-}
-
 .detail_show {
 	display: block;
 }

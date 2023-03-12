@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/switzerland</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/switzerland">
+            <g id="switzerland">
+                <circle id="Oval" fill="#D80027" fill-rule="nonzero" cx="12" cy="12" r="11.5"></circle>
+                <polygon id="Path" fill="#EEEEEE" fill-rule="nonzero" points="18.2625 9.9140625 14.090625 9.9140625 14.090625 5.7421875 9.9140625 5.7421875 9.9140625 9.9140625 5.7421875 9.9140625 5.7421875 14.0859375 9.9140625 14.0859375 9.9140625 18.2578125 14.0859375 18.2578125 14.0859375 14.0859375 18.2578125 14.0859375"></polygon>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>
