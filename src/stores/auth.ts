@@ -25,6 +25,9 @@ export const useAuthStore = defineStore({
     setUser(user: any) {
       this.user = user;
     },
+    setUserMoney(money: number) {
+      this.user["Money"] = this.user["Money"] - money;
+    },
     async signIn(username: string, password: string) { ////login
       try {
         let url = config.api.SIGN_IN;
@@ -42,7 +45,8 @@ export const useAuthStore = defineStore({
         else {
           showToast('用户名和密码不匹配')
         }
-        this.setToken(response.data.token as string);
+        this.setToken(response.token as string);
+        localStorage.setItem("token", response.token);
         this.setUser(response.data as any)
         return response;
       } catch (e) {
@@ -64,6 +68,9 @@ export const useAuthStore = defineStore({
         return e;
       }
     },
+    dispatchUserMoney(money: number) {
+      this.setUserMoney(money);
+    }
   },
 
   persist: {

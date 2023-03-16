@@ -1,6 +1,9 @@
-import { defineStore } from "pinia";
 import axios from "axios";
-import { BASE_URL, MATCH_SPORT, GET_IN_PLAY_DATA, GET_SPORTS_COUNT_DATA, GET_SCORE_IN_PLAY_DATA } from "@/config";
+import { defineStore } from "pinia";
+import { BASE_URL } from "@/config";
+import { GET_IN_PLAY_DATA } from "@/config";
+import { GET_SPORTS_COUNT_DATA } from "@/config";
+import { GET_SCORE_IN_PLAY_DATA } from "@/config";
 
 export const stadiumStore = defineStore({
     id: "stadium",
