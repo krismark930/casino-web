@@ -6,6 +6,8 @@ export const GET_FT_DATA = "/ft-data";
 export const GET_SPORTS_COUNT_DATA = "/user/match-sport/get-count";
 export const GET_IN_PLAY_DATA = "/third-party/match-sport/ft-in-play-data";
 export const GET_SCORE_IN_PLAY_DATA = "/third-party/match-sport/ft-correct-score-inplay-data"
+export const SINGLE_FT_BETTING = "/user/betting/single-ft-re";
+
 const config = {
   api: {
     SIGN_IN: BASE_URL + "/users/login",

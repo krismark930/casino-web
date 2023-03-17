@@ -1,27 +1,3 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { storeToRefs } from 'pinia';
-import { useAuthStore } from '@/stores/auth';
-export default defineComponent({
-	data() {
-		return {
-			userData: []
-		}
-	},
-	mounted() {
-		const {
-			getToken,
-			getUser,
-		} = storeToRefs(useAuthStore());
-		this.userData = getUser.value;
-		// if(!getUser.value.id){
-		//     router.push({name:'my'})
-		// }
-
-	},
-
-})
-</script>
 <template>
 	<div class="header">
 		<img @click="onClickLeft" class="back_icon" src="@/assets/images/stadiums/back.png" alt="">
@@ -37,8 +13,12 @@ export default defineComponent({
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from "vue";
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
 import router from '@/router'
-import { useRoute } from 'vue-router'
+import { useRoute } from 'vue-router';
+
 const emit = defineEmits(['openPopup'])
 const route = useRoute()
 const onClickLeft = () => {
@@ -48,12 +28,12 @@ const onClickLeft = () => {
 		router.go(-1)
 	}
 }
-
+const { getUser } = storeToRefs(useAuthStore());
+// const userData = ref(getUser);
+const userData = computed(() => getUser.value)
 const openPopup = () => {
-
 	emit('openPopup')
 }
-
 const goSubHome = () => {
 	router.push({ name: 'Subhome' })
 }

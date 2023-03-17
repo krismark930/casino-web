@@ -28,16 +28,16 @@
 		</div>
 		<div>
 			<Basketball v-if="aelect == 2"></Basketball>
-			<Football v-if="aelect == 1 && aelectId == 1" />
-			<other v-if="aelect == 1 && aelectId == 2"></other>
+			<FT_InPlay_Main v-if="aelect == 1 && aelectId == 1" />
+			<FT_Inplay_Score v-if="aelect == 1 && aelectId == 2"></FT_Inplay_Score>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import Basketball from './components/Basketball.vue'
-import Football from './components/Football_InPlay.vue'
-import other from './components/other.vue'
+import FT_InPlay_Main from './components/FT_InPlay_Main.vue'
+import FT_Inplay_Score from './components/FT_Inplay_Score.vue'
 import { ref } from 'vue';
 const list = ref([]);
 const value1 = ref(1);

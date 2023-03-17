@@ -3,36 +3,36 @@
   <div class="modal-backdrop">
     <div class="modal">
       <header class="modal-header">
-        <slot v-if="this.type == 'FT'" :name="header">
-          足球 {{ this.title }}
+        <slot v-if="this.bettingOrderData['gameType'] == 'FT'" :name="header">
+          足球 {{ this.bettingOrderData['title'] }}
         </slot>
-        <slot v-if="this.type == 'BK'" :name="header">
-          篮球 {{ this.title }}
+        <slot v-if="this.bettingOrderData['gameType'] == 'BK'" :name="header">
+          篮球 {{ this.bettingOrderData['title'] }}
         </slot>
         <button type="button" class="btn-close" @click="close">
           x
         </button>
       </header>
-
+      <van-loading color="#1989fa" class="loading-position" v-if="loading" size="40" />
       <section class="modal-body">
-        {{ this.league }}
+        {{ this.bettingOrderData['league'] }}
       </section>
 
       <section class="modal-body">
-        {{ this.m_team }} VS {{ this.t_team }}
+        {{ this.bettingOrderData['mbTeam'] }} VS {{ this.bettingOrderData['tgTeam'] }}
       </section>
 
       <section class="modal-body">
-        {{ this.select_team }} {{ this.title }} @ {{ this.rate }}
+        {{ this.bettingOrderData['selectedTeam'] }} {{ this.bettingOrderData['title'] }} @ {{
+          this.bettingOrderData['rate'] }}
       </section>
       <section class="modal-body">
         <div class="list_input">
-          <input type="text" placeholder="输入投注金额" v-model="input_value" @focus="showpanel">
+          <input type="text" placeholder="输入投注金额" v-model="bettingValue" @focus="showpanel">
           <div>
-            <span v-if="input_value" class="grey">可赢额</span>
-            <span v-if="input_value <= 20000" class="win_text green">{{ (Number(input_value) * (Number(this.rate) -
-              1)).toFixed(2) }}</span>
-            <span v-if="input_value == 20000" class="max">最大投注金额 20000</span>
+            <span v-if="bettingValue" class="grey">可赢额</span>
+            <span v-if="bettingValue <= 20000" class="win_text green">{{ winValue }}</span>
+            <span v-if="bettingValue == 20000" class="max">最大投注金额 20000</span>
           </div>
         </div>
       </section>
@@ -55,11 +55,10 @@
       </div>
       <footer class="modal-footer">
         <div class="footer_btns">
-
-          <button type="button" class="btn-green" :disabled="this.is_status" @click="bet">
+          <button type="button" class="btn-green" @click="bettingOrder">
             确定交易
           </button>
-          <button type="button" class="btn-green" @click="addTemp">
+          <button type="button" class="btn-green" @click="saveTempData">
             加单
           </button>
         </div>
@@ -71,105 +70,120 @@
 <script>
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
-import axios from "axios";
-import config from "@/config"
+import { bettingStore } from '@/stores/betting';
+import router from "@/router";
 import { showToast } from 'vant';
 export default {
   name: 'Modal',
+  setup() {
+    const { getToken, getUser } = storeToRefs(useAuthStore());
+    const { getSuccess } = storeToRefs(bettingStore());
+    const { dispatchUserMoney } = useAuthStore();
+    const { dispatchBettingOrder, dispatchBettingTemp } = bettingStore();
+    const user = getUser.value;
+    const token = getToken.value;
+    const success = getSuccess.value;
+    return { user, dispatchBettingOrder, token, success, dispatchUserMoney, dispatchBettingTemp };
+  },
   props: {
-    mid: 0,
-    type: "",
-    m_team: "",
-    t_team: "",
-    select_team: "",
-    line: 0,
-    g_type: "",
-    title: "",
-    rate: 0,
-    league: "",
-    num: 0
+    bettingOrderData: {},
   },
   data() {
     return {
-      input_value: '',
+      bettingValue: "",
       openKeyboard: false,
-      value_s: '',
-      value_n: 0,
-      is_status: true,
-      userData: [],
-      m_win: 0
+      winValue: "",
+      loading: false
     }
   },
   mounted() {
-    const {
-      getToken,
-      getUser,
-    } = storeToRefs(useAuthStore());
-    this.userData = getUser.value;
+    console.log(this.bettingOrderData);
+  },
+  computed: {
+    successValue: function () {
+      return this.success;
+    }
+  },
+  watch: {
+    bettingValue: function (value) {
+      let changedRate = Number(this.bettingOrderData["rate"]) >= 2 ? Number(this.bettingOrderData["rate"]) : Number(this.bettingOrderData["rate"]) + 1
+      if (value == 0) {
+        this.winValue = "";
+        this.bettingValue = "";
+      } else if (value >= 20000) {
+        this.bettingValue = 20000;
+      }
+      this.winValue = (value * (changedRate - 1)).toFixed(2);
+    }
   },
   methods: {
     close() {
       this.$emit('close');
     },
-    async bet() {
-      try {
-        console.log(this.userData)
-        if (this.value_n > this.userData.Money) {
-          showToast('下注金额不可大于信用额度。')
-          this.value_n = 0
-          this.value_s = '0'
-          this.input_value = '0'
-        } else {
-          let url = config.api.BET_FT;
-          let data = {
-            id: this.userData.id,
-            gold: this.value_n,
-            gid: this.mid,
-            type: this.g_type,
-            line_type: this.line,
-            active: 1
-          }
-          console.log(data);
-          if (this.input_value != '' && this.openKeyboard == false) {
-            const response = (await axios.post(url, data)).data
-            console.log(response)
-            this.userData.Money = response.data
-            return response;
-          }
+    async bettingOrder() {
+      console.log(this.bettingOrderData)
+      if (!this.user) {
+        showToast('你必须先登录。')
+        router.push("login")
+        return;
+      }
+      if (this.bettingValue > this.user.Money) {
+        showToast('下注金额不可大于信用额度。')
+      } else {
+        this.loading = true;
+        let data = {
+          id: this.user.id,
+          gold: Number(this.bettingValue),
+          m_id: this.bettingOrderData['mID'],
+          type: this.bettingOrderData["selectedType"],
+          line_type: this.bettingOrderData['lineType'],
+          odd_f_type: this.bettingOrderData['oddFType'],
+          active: this.bettingOrderData['active'],
+          order_rate: Number(this.bettingOrderData['rate']),
+          r_type: this.bettingOrderData['r_type']
         }
-      } catch (e) {
-        return e;
+        if (this.bettingValue != 0 && this.openKeyboard == false) {
+          await this.dispatchBettingOrder(data, this.token);
+          console.log(this.successValue);
+          if (this.successValue) {
+            this.dispatchUserMoney(this.bettingValue);
+            showToast('操作成功。')
+          } else {
+            showToast('操作失败')
+          }
+          this.loading = false;
+          this.$emit('close');
+        }
       }
     },
-    async addTemp() {
-      try {
-        if (this.num == 2 || this.rate.type == 'N') { this.m_win = Number(this.input_value) * (Number(this.rate.num) - 1) }
-        else this.m_win = Number(this.input_value) * Number(this.rate.num)
-        if (this.input_value != '' && this.openKeyboard == false) {
-          let data = {
-            type: this.type,
-            title: this.title,
-            league: this.league,
-            m_team: this.m_team,
-            t_team: this.t_team,
-            select_team: this.select_team,
-            text: this.rate.text,
-            rate: this.rate.num,
-            gold: this.value_n,
-            m_win: this.m_win,
-            uid: this.userData.id,
-            gid: this.mid,
-            g_type: this.g_type,
-            line_type: this.line,
-            active: 1
-          }
-          console.log(data)
-          let url = config.api.ADD_TEMP;
-          const response = (await axios.post(url, data)).data
-          if (response.success == true) showToast('添加成功。')
+    async saveTempData() {
+      if (this.bettingValue != 0 && this.openKeyboard == false) {
+        this.loading = true;
+        let data = {
+          type: this.bettingOrderData["selectedType"],
+          title: this.bettingOrderData["title"],
+          league: this.bettingOrderData["league"],
+          m_team: this.bettingOrderData["mbTeam"],
+          t_team: this.bettingOrderData["tgTeam"],
+          select_team: this.bettingOrderData["selectedTeam"],
+          text: this.bettingOrderData["text"],
+          rate: this.bettingOrderData["rate"],
+          gold: this.bettingValue,
+          m_win: this.winValue,
+          uid: this.user.id,
+          gid: this.bettingOrderData["mID"],
+          g_type: this.bettingOrderData["gameType"],
+          line_type: this.bettingOrderData["lineType"],
+          active: 1
         }
-      } catch (e) {
-        return e
+        await this.dispatchBettingTemp(data);
+        if (this.successValue) {
+          showToast('添加成功。');
+        } else {
+          showToast('添加失败。');
+        }
+        this.loading = false;
+        this.$emit('close');
       }
     },
     showpanel() {
@@ -180,38 +194,22 @@ export default {
     },
     setValue() {
       this.openKeyboard = false;
-      if (this.input_value != '') {
-        this.is_status = false;
-      }
     },
     backSpace() {
-      this.value_s = this.value_s.substr(0, this.value_s.length - 1)
-      this.value_n = Number(this.value_s)
-      this.input_value = this.value_s
+      this.bettingValue = Number(this.bettingValue.toString().substr(0, this.bettingValue.length - 1));
     },
     addValue(e) {
       switch (e.target.value) {
         case '100':
-          this.value_n += 100
-          this.value_s = String(this.value_n)
-          this.input_value = this.value_s
+          this.bettingValue += 100
           break
 
         case '1000':
-          this.value_n += 1000
-          this.value_s = String(this.value_n)
-          this.input_value = this.value_s
+          this.bettingValue += 1000
           break
 
         default:
-          this.value_s += e.target.value
-          this.value_n = Number(this.value_s)
-          this.input_value = this.value_s
-      }
-      if (this.value_n > 20000) {
-        this.value_n = 20000
-        this.value_s = '20000'
-        this.input_value = '20000'
+          this.bettingValue += e.target.value
       }
     }
   },
@@ -219,6 +217,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.loading-position {
+  margin-top: 100px;
+  position: absolute;
+  left: 50%;
+}
+
 .modal-backdrop {
   position: sticky;
   font-size: 12px;

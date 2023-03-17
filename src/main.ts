@@ -14,6 +14,9 @@ import piniaPersist from "pinia-plugin-persist";
 import VueSocketIO from 'vue-3-socket.io';
 import { SOCKET_URL } from "@/config";
 import { Collapse, CollapseItem } from 'vant';
+import { Cell, CellGroup } from 'vant';
+import { Icon } from 'vant';
+import { Col, Row } from 'vant';
 
 import { i18n } from '@/i18n'
 
@@ -38,6 +41,11 @@ app.use(DatePicker);
 app.use(Loading);
 app.use(Collapse);
 app.use(CollapseItem);
+app.use(Cell);
+app.use(CellGroup);
+app.use(Icon);
+app.use(Col);
+app.use(Row);
 app.use(
     new VueSocketIO({
         debug: true,
