@@ -17,6 +17,7 @@ import { Collapse, CollapseItem } from 'vant';
 import { Cell, CellGroup } from 'vant';
 import { Icon } from 'vant';
 import { Col, Row } from 'vant';
+import { Popup } from 'vant';
 
 import { i18n } from '@/i18n'
 
@@ -46,6 +47,7 @@ app.use(CellGroup);
 app.use(Icon);
 app.use(Col);
 app.use(Row);
+app.use(Popup);
 app.use(
     new VueSocketIO({
         debug: true,

@@ -1,7 +1,8 @@
 <template>
 	<div>
-		<div v-if="bettingList" class="game_list">
-			<div class="game_list_item" v-for="(item, index) in bettingList" :key="index + 200">
+		<van-loading color="#1989fa" class="loading-position" v-if="loading" size="40" />
+		<div v-if="getBetHistoryList.length > 0" class="game_list">
+			<div class="game_list_item" v-for="(item, index) in betHistoryList" :key="index + 200">
 				<div class="game_title">
 					<div class="black">
 						<span>{{ item.title }}</span>
@@ -9,7 +10,7 @@
 					</div>
 					<div>
 						<span>{{ item.text }}</span>
-						<span class="score">{{ item.score }}</span>
+						<span class="score">&nbsp;{{ item.score }}</span>
 					</div>
 				</div>
 				<div class="Betting">
@@ -41,117 +42,55 @@
 						</div>
 					</div>
 				</div>
-				<div class="total">
-					<span>
-						总共：
-					</span>
-					<span>
-						{{ item.all }}
-					</span>
-				</div>
+			</div>
+			<div class="total">
+				<span>
+					总共：
+				</span>
+				<span>
+					{{ totalBetScore }}
+				</span>
 			</div>
 		</div>
-		<div v-if="!bettingList" class="not">
+		<div v-if="getBetHistoryList.length === 0" class="not">
 			<img src="@/assets/images/stadiums/not.png" alt="">
 		</div>
 	</div>
 </template>
 
-<script lang="ts">
-import axios from 'axios';
-import { ref } from 'vue';
-import { defineComponent } from 'vue';
-import axios from "axios";
-import config from "@/config";
+<script setup lang="ts">
+import { ref, onMounted, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
-export default defineComponent({
-	data() {
-		return {
-			bettingList : [],
-			userData : []
-		}
-	},
-	mounted() {
-		const {
-          getToken,
-          getUser,
-		} = storeToRefs(useAuthStore());
-		this.userData=getUser.value;
-		this.get_gameList()
-	},
-	methods: {
-		async get_gameList() {
-			try {
-				let url = config.api.GET_BETTING_RECORDS;
-				let data = {
-					m_name: this.userData.UserName
-				}
-				const response = (await axios.post(url, data)).data;
-				console.log(response.data[1])
-				let result = []
-				for (let i = 0; i< response.count; i++) {
-					let winner;
-					let w_type = response.data[i].Mtype.substr(response.data[i].Mtype.length-1)
-					switch (w_type) {
-						case 'H': 
-							winner = response.data[i].sport.MB_Team
-							break;
-						case 'C':
-							winner = response.data[i].sport.MB_Team
-							break;
-						default:
-							winner = "和局"
-
-					}
-
-					result = [
-						...result,
-						{
-							title: '足球',
-							type: '滚球',
-							text: response.data[i].sport.MB_Team + "VS" + response.data[i].sport.TG_Team,
-							score: response.data[i].sport.GetScore,
-							typeName: response.data[i].BetType,
-							winner: winner,
-							Odds: response.data[i].M_Rate,
-							money: response.data[i].BetScore,
-							winMoney: response.data[i].Gwin,
-							number: response.data[i].OrderID,
-							time: '02:01:19',
-							place: '欧洲盘',
-							all: response.data[i].BetScore
-						}
-					]
-				}
-				this.bettingList = [...result]
-				console.log(this.bettingList) 
-			} catch (e) {
-				return e;
-			}
-		}
-	}
+import { bettingStore } from '@/stores/betting';
+const { getToken, getUser } = storeToRefs(useAuthStore());
+const { dispatchBetSlip } = bettingStore();
+const { getBetHistoryList, getSuccess } = storeToRefs(bettingStore());
+const loading = ref(false);
+const totalBetScore = ref(0);
+const betHistoryList = computed(() => {
+	console.log(getBetHistoryList);
+	getBetHistoryList.value.map(item => {
+		totalBetScore.value += item["money"];
+	})
+	return getBetHistoryList.value;
 })
-// const bettingList = ref([
-// 	{
-// 		title: '足球',
-// 		type: '滚球',
-// 		text: '日本VS加拿大',
-// 		score: 1,
-// 		typeName: '让球',
-// 		winner: '日本',
-// 		Odds: 1.96,
-// 		money: 50.00,
-// 		winMoney: 41.00,
-// 		number: 'OU16046542166',
-// 		time: '02:01:19',
-// 		place: '欧洲盘',
-// 		all: 50.00
-// 	}
-// ])
+onMounted(async () => {
+	loading.value = true;
+	await dispatchBetSlip({ m_name: getUser.value.UserName }, getToken.value);
+	console.log(getBetHistoryList.value);
+	loading.value = false;
+})
 </script>
 
 <style scoped lang="scss">
+.loading-position {
+	margin-top: 200px;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
 .not {
 	background-color: #F3FAFF;
 	width: 100%;
@@ -166,6 +105,17 @@ export default defineComponent({
 }
 
 .game_list {
+
+	.total {
+		width: 100%;
+		height: 46px;
+		padding: 0 23px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		background-color: #FFFFFF;
+	}
+
 	font-size: 13px;
 
 	.game_list_item {
@@ -219,16 +169,6 @@ export default defineComponent({
 					margin: 0 8px;
 				}
 			}
-		}
-
-		.total {
-			width: 100%;
-			height: 46px;
-			padding: 0 23px;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			background-color: #FFFFFF;
 		}
 	}
 }
