@@ -52,21 +52,25 @@ export default defineComponent({
 		},
 		receivedBKLeagueEarlyMessage(data: any) {
 			this.loading = false;
-			this.coupon = [];
+			// this.coupon = [];
 			this.region = [];
 			console.log(data);
 			if (data == null) return;
 			if (data["code"]["_text"] === "error") return;
 			console.log(data["coupons"]);
-			if (!Array.isArray(data["coupons"]["coupon"])) {
-				this.coupon.push(data["coupons"]["coupon"]);
-			} else {
-				this.coupon = data["coupons"]["coupon"];
+			if (data["coupons"] != undefined) {
+				if (!Array.isArray(data["coupons"]["coupon"])) {
+					this.coupon.push(data["coupons"]["coupon"]);
+				} else {
+					this.coupon = data["coupons"]["coupon"];
+				}
 			}
-			if (!Array.isArray(data["classifier"]["region"])) {
-				this.region.push(data["classifier"]["region"]);
-			} else {
-				this.region = data["classifier"]["region"];
+			if (data["classifier"] != undefined) {
+				if (!Array.isArray(data["classifier"]["region"])) {
+					this.region.push(data["classifier"]["region"]);
+				} else {
+					this.region = data["classifier"]["region"];
+				}
 			}
 			this.region.map(item => {
 				item["show"] = false;
