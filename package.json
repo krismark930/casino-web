@@ -24,6 +24,7 @@
     "animate.css": "3.5.1",
     "core-js": "^3.27.1",
     "mockjs": "^1.1.0",
+    "moment": "^2.29.4",
     "pinia": "^2.0.29",
     "pinia-plugin-persist": "^1.0.0",
     "postcss-pxtorem": "^6.0.0",

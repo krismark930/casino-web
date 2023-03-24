@@ -76,17 +76,34 @@ import { showToast } from 'vant';
 export default {
   name: 'Modal',
   setup() {
-    const { getToken, getUser } = storeToRefs(useAuthStore());
-    const { getSuccess } = storeToRefs(bettingStore());
     const { dispatchUserMoney } = useAuthStore();
-    const { dispatchBettingOrder, dispatchBettingTemp } = bettingStore();
-    const user = getUser.value;
-    const token = getToken.value;
-    const success = getSuccess.value;
-    return { user, dispatchBettingOrder, token, success, dispatchUserMoney, dispatchBettingTemp };
+    const {
+      dispatchBettingInplay,
+      setBetSlip,
+      dispatchBettingToday,
+      dispatchBettingChampion,
+      dispatchBKBettingInplay,
+      setBKBetSlip,
+      dispatchBKBettingToday,
+      dispatchBKBettingChampion,
+      dispatchBettingTemp } = bettingStore();
+
+    return {
+      dispatchBettingInplay,
+      dispatchBettingToday,
+      setBetSlip,
+      dispatchBettingChampion,
+      dispatchUserMoney,
+      dispatchBettingTemp,
+      dispatchBKBettingInplay,
+      dispatchBKBettingToday,
+      setBKBetSlip,
+      dispatchBKBettingChampion,
+    };
   },
   props: {
     bettingOrderData: {},
+    bettingType: ""
   },
   data() {
     return {
@@ -100,8 +117,17 @@ export default {
     console.log(this.bettingOrderData);
   },
   computed: {
-    successValue: function () {
-      return this.success;
+    success: function () {
+      const { getSuccess } = bettingStore();
+      return getSuccess;
+    },
+    token: function () {
+      const { getToken } = useAuthStore();
+      return getToken;
+    },
+    user: function () {
+      const { getUser } = useAuthStore();
+      return getUser;
     }
   },
   watch: {
@@ -121,8 +147,7 @@ export default {
       this.$emit('close');
     },
     async bettingOrder() {
-      console.log(this.bettingOrderData)
-      if (!this.user) {
+      if (this.user.id == undefined) {
         showToast('你必须先登录。')
         router.push("login")
         return;
@@ -130,7 +155,6 @@ export default {
       if (this.bettingValue > this.user.Money) {
         showToast('下注金额不可大于信用额度。')
       } else {
-        this.loading = true;
         let data = {
           id: this.user.id,
           gold: Number(this.bettingValue),
@@ -143,9 +167,39 @@ export default {
           r_type: this.bettingOrderData['r_type']
         }
         if (this.bettingValue != 0 && this.openKeyboard == false) {
-          await this.dispatchBettingOrder(data, this.token);
-          console.log(this.successValue);
-          if (this.successValue) {
+          this.loading = true;
+          if (this.bettingOrderData['gameType'] === "BK") {
+            switch (this.bettingType) {
+              case "Inplay":
+                await this.dispatchBKBettingInplay(data, this.token);
+                break;
+              case "Today":
+                await this.dispatchBKBettingToday(data, this.token);
+                break;
+              case "Early":
+                await this.dispatchBKBettingToday(data, this.token);
+                break;
+              case "Champion":
+                await this.dispatchBKBettingChampion(data, this.token);
+                break;
+            }
+          } else {
+            switch (this.bettingType) {
+              case "Inplay":
+                await this.dispatchBettingInplay(data, this.token);
+                break;
+              case "Today":
+                await this.dispatchBettingToday(data, this.token);
+                break;
+              case "Early":
+                await this.dispatchBettingToday(data, this.token);
+                break;
+              case "Champion":
+                await this.dispatchBettingChampion(data, this.token);
+                break;
+            }
+          }
+          if (this.success) {
             this.dispatchUserMoney(this.bettingValue);
             showToast('操作成功。')
           } else {
@@ -157,34 +211,44 @@ export default {
       }
     },
     async saveTempData() {
-      if (this.bettingValue != 0 && this.openKeyboard == false) {
-        this.loading = true;
-        let data = {
-          type: this.bettingOrderData["selectedType"],
-          title: this.bettingOrderData["title"],
-          league: this.bettingOrderData["league"],
-          m_team: this.bettingOrderData["mbTeam"],
-          t_team: this.bettingOrderData["tgTeam"],
-          select_team: this.bettingOrderData["selectedTeam"],
-          text: this.bettingOrderData["text"],
-          rate: this.bettingOrderData["rate"],
-          gold: this.bettingValue,
-          m_win: this.winValue,
-          uid: this.user.id,
-          gid: this.bettingOrderData["mID"],
-          g_type: this.bettingOrderData["gameType"],
-          line_type: this.bettingOrderData["lineType"],
-          active: 1
-        }
-        await this.dispatchBettingTemp(data);
-        if (this.successValue) {
-          showToast('添加成功。');
-        } else {
-          showToast('添加失败。');
-        }
-        this.loading = false;
-        this.$emit('close');
+      this.loading = true;
+      let data = {
+        showType: this.bettingType,
+        type: this.bettingOrderData["selectedType"],
+        title: this.bettingOrderData["title"],
+        league: this.bettingOrderData["league"],
+        m_team: this.bettingOrderData["mbTeam"],
+        t_team: this.bettingOrderData["tgTeam"],
+        select_team: this.bettingOrderData["selectedTeam"],
+        odd_f_type: this.bettingOrderData['oddFType'],
+        text: this.bettingOrderData["text"],
+        gold: this.bettingValue,
+        m_win: this.winValue,
+        id: this.user.id,
+        m_id: this.bettingOrderData["mID"],
+        g_type: this.bettingOrderData["gameType"],
+        line_type: this.bettingOrderData["lineType"],
+        active: this.bettingOrderData['active'],
+        order_rate: Number(this.bettingOrderData['rate']),
+        r_type: this.bettingOrderData['r_type'],
+        m_date: this.bettingOrderData['m_date'],
+        m_start: this.bettingOrderData['m_start'],
+        m_ball: this.bettingOrderData["m_ball"],
+        t_ball: this.bettingOrderData["t_ball"]
       }
+      // await this.dispatchBettingTemp(data);
+      // if (this.success) {
+      //   showToast('添加成功。');
+      // } else {
+      //   showToast('添加失败。');
+      // }
+      // if (this.bettingOrderData["gameType"] === "BK") {
+      //   this.setBKBetSlip(data);
+      // } else {
+      this.setBetSlip(data);
+      // }
+      this.loading = false;
+      this.$emit('close');
     },
     showpanel() {
       this.openKeyboard = true;
@@ -203,11 +267,9 @@ export default {
         case '100':
           this.bettingValue += 100
           break
-
         case '1000':
           this.bettingValue += 1000
           break
-
         default:
           this.bettingValue += e.target.value
       }

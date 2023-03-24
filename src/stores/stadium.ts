@@ -11,14 +11,24 @@ export const stadiumStore = defineStore({
         ftInPlayLists: [] as Array<any>,
         ftScoreInPlayLists: [] as Array<any>,
         sportCount: Object,
-        success: false
+        success: false,
+        active: 0,
+        sportOptionValue: 0
     }),
     getters: {
         getFTInPlayDatas: (state) => state.ftInPlayLists,
         getFTScoreInPlayLists: (state) => state.ftScoreInPlayLists,
-        getSportCount: (state) => state.sportCount
+        getSportCount: (state) => state.sportCount,
+        getActive: (state) => state.active,
+        getSportOption: (state) => state.sportOptionValue
     },
     actions: {
+        setActive(active: number) {
+            this.active = active;
+        },
+        setSportOption(value: number) {
+            this.sportOptionValue = value;
+        },
         setFTInPlayDatas(ftDatas: Array<any>) {
             this.ftInPlayLists = ftDatas;
         },

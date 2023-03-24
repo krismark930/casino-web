@@ -29,7 +29,7 @@
 			</div>
 		</div>
 		<div class="tab_list animated fadeInLeft">
-			<div class="tab_list_item" v-for="(item, index) in projectList[active]" @click="goDetail">
+			<div class="tab_list_item" v-for="(item, index) in projectList[active]" @click="goDetail(index)">
 				<img class="tab_back" :src="item.url" alt="">
 				<img class="collection" src="@/assets/images/stadiums/collection.png" alt="">
 				<span class="tab_text1">{{ item.name }}</span>
@@ -46,7 +46,7 @@ import { stadiumStore } from '@/stores/stadium';
 import { storeToRefs } from 'pinia';
 
 const { getSportCount } = storeToRefs(stadiumStore());
-const { getSportsCountData } = stadiumStore()
+const { getSportsCountData, setSportOption } = stadiumStore()
 
 const active = ref(0)
 const gameList = ref([{
@@ -240,7 +240,8 @@ const projectList = ref([
 const selectTab = (id: number) => {
 	active.value = id
 }
-const goDetail = () => {
+const goDetail = (index: number) => {
+	setSportOption(index);
 	router.push({ name: 'stadiumsDetail' })
 };
 onMounted(async () => {
