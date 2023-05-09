@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/thailand</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/thailand">
+            <g id="thailand">
+                <g id="Group" transform="translate(0.500000, 0.500000)" fill-rule="nonzero">
+                    <circle id="Oval" fill="#EEEEEE" cx="11.4556454" cy="11.4552692" r="11.4552529"></circle>
+                    <path d="M22.1949451,7.47277895 L0.716345833,7.47277895 C-0.238781944,10.0418712 -0.238781944,12.8686672 0.716345833,15.4377595 L22.1949451,15.4377595 C23.1500728,12.8686672 23.1500728,10.0418712 22.1949451,7.47277895 Z" id="Path" fill="#0052B4"></path>
+                    <path d="M11.4556454,2.68229883e-13 C8.11941814,-0.00320970451 4.94835327,1.45155717 2.77471159,3.98250657 L20.1365793,3.98250657 C17.964421,1.44958888 14.7923971,-0.00561796491 11.4556454,2.68229883e-13 L11.4556454,2.68229883e-13 Z M20.1365793,18.9280319 L2.77471159,18.9280319 C4.87334972,21.3667478 7.9832719,22.9105221 11.4556454,22.9105221 C14.928019,22.9105221 18.0379412,21.3667478 20.1365793,18.9280319 Z" id="Shape" fill="#D80027"></path>
+                </g>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

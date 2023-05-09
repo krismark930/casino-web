@@ -1,60 +1,62 @@
 <template>
 	<div>
 		<div class="results_title">
-			<div class="select_title" @click="selectResult">
+			<div class="select_title" @click="goBeforePage">
 				<van-icon class="select_icon" name="arrow-down" />
-				<span>{{selectList[index].name}}</span>
+				<span>注单</span>
 			</div>
-			<div class="title_text">
-				1.000.00RMB
-			</div>
-			<div class="select_title delete">
-				<van-icon name="delete-o" @click="deleteResult" color="#FFFFFF" />
-			</div>
-			<div class="select_box" v-show="openSelect">
-				<span v-for="(item,index) in selectList" @click="select(index)">{{item.name}}</span>
+			<!-- <div class="title_text">
+				100.00 RMB
+			</div> -->
+			<div class="select_title delete" v-if="betSlipList.length > 0">
+				<van-icon name="delete-o" @click="deleteBetSlip" color="#FFFFFF" />
 			</div>
 		</div>
+		<van-loading color="#1989fa" class="loading-position" v-if="loading" size="40" />
 		<div class="results_center">
-			<div v-if="selectList">
-				<div class="center_list" v-for="(item,index) in resultList.list" :key="index">
+			<div v-if="betSlipList.length > 0">
+				<div class="center_list" v-for="(item, index) in betSlipList" :key="index">
 					<div>
-						<span class="grey">{{item.game}}</span>
-						<span class="grey">{{item.type}}</span>
+						<span class="grey" v-if="item.g_type === 'FT'">足球</span>
+						<span class="grey" v-if="item.g_type === 'BK'">篮球</span>
+						<span class="grey">{{ item.title }}</span>
+						<van-icon name="cross" size="25" style="position:absolute; right: 20px"
+							@click="deleteBetSlipByIndex(item['m_id'])" />
 					</div>
 					<div>
-						<span>{{item.gameName}}</span>
+						<span>{{ item.league }}</span>
 					</div>
 					<div>
-						<span class="grey">{{item.ranks}}</span>
-						<span class="orange">{{item.scoro}}</span>
+						<span class="grey">{{ item.m_team + ' VS ' + item.t_team }}</span>
+						<span class="orange">1</span>
 					</div>
 					<div>
-						<span>{{item.win}}</span>
-						<span class="orange">{{item.win}}</span>
+						<span>{{ item.select_team }}</span>
+						<span class="orange">{{ item.select_team }}</span>
 						<p>@</p>
-						<span class="orange">{{item.Odds}}</span>
+						<span class="orange">{{ item.order_rate }}</span>
 					</div>
 					<div class="list_input">
-						<input type="text" placeholder="输入投注金额" v-model="item.money">
+						<input type="text" placeholder="输入投注金额" @input="goldHandler($event, index)" v-model="item.gold">
 						<div>
-							<span v-if="item.money" class="grey">可赢额</span>
-							<span v-if="item.money" class="win_text green">{{Number(item.money)*0.82}}</span>
-							<span v-if="!item.money" class="max">最大投注金额</span>
+							<span v-if="item.gold" class="grey">可赢额</span>
+							<span v-if="item.gold" class="win_text green">{{ item.order_rate > 1 ? (Number(item.gold) *
+								(item.order_rate
+									- 1)).toFixed(2) : (Number(item.gold) * (item.order_rate)).toFixed(2) }}</span>
+							<span v-if="!item.gold" class="max">最大投注金额</span>
 						</div>
 					</div>
 				</div>
-				<div class="center_list_b">
-					<span class="input_top">综合过关 @ {{resultList.allOdds}}</span>
+				<div class="center_list_b" v-if="betSlipList.length > 2">
+					<span class="input_top">综合过关 @ {{ allOdds.toFixed(2) }}</span>
 					<div class="list_input">
 						<div class="list_input_left">
-							<input type="text" placeholder="输入投注金额" v-model="resultList.allMoney">
-							<span>×1</span>
+							<input type="text" placeholder="输入投注金额" v-model="parlayGold">
 						</div>
 						<div>
-							<span v-if="resultList.allMoney" class="grey">可赢额</span>
-							<span v-if="resultList.allMoney" class="win_text green">{{resultList.allMoney*0.82}}</span>
-							<span v-if="!resultList.allMoney" class="max">最大投注金额</span>
+							<span class="grey">可赢额</span>
+							<span class="win_text green">{{ (parlayGold * allOdds).toFixed(2) }}</span>
+							<!-- <span class="max">最大投注金额</span> -->
 						</div>
 					</div>
 				</div>
@@ -62,335 +64,445 @@
 					<span class="input_top">单注</span>
 					<div class="list_input">
 						<div class="list_input_left">
-							<input type="text" placeholder="输入投注金额" v-model="resultList.aloneMoney">
-							<span>×1</span>
+							<input type="text" placeholder="输入投注金额" v-model="singleGold">
 						</div>
 					</div>
 				</div>
 			</div>
-			<div v-if="!selectList" class="notList">
+			<div v-if="betSlipList.length === 0" class="notList">
 				<img src="@/assets/images/stadiums/notList.png" alt="">
 				<span>您的投注单为空</span>
 			</div>
-			<div class="estimate" :class="{notlist_s:!selectList}">
+			<div class="estimate" :class="{ notlist_s: betSlipList.length === 0 }">
 				<div>
 					<span>下注总额</span>
-					<span>{{selectList.length==0?resultList.allMoney.toFixed(2):'0.00'}} RMB</span>
+					<span>{{ totalGold.toFixed(2) }} RMB</span>
 				</div>
 				<div>
 					<span>预估可赢</span>
-					<span class="green">{{selectList.length==0?(resultList.allMoney*4.7).toFixed(2):'0.00'}} RMB</span>
+					<span class="green">{{ totalWiningGold.toFixed(2) }}
+						RMB</span>
 				</div>
 			</div>
-			<div v-if="selectList" class="btn">
+			<button class="btn" @click="multiBetSlip">
 				<span>下注</span>
-				<span>{{resultList.allMoney.toFixed(2)}} RMB</span>
-			</div>
-			<div v-if="!selectList" class="btn n_btn">
-				<span>下注</span>
-				<span>0.00 RMB</span>
-			</div>
+				<span>{{ totalWiningGold.toFixed(2) }} RMB</span>
+			</button>
 		</div>
 	</div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+import router from "@/router";
 import { showConfirmDialog } from 'vant';
-import {ref} from 'vue';
-import {
-	Dialog
-} from 'vant';
+import { bettingStore } from "@/stores/betting";
+import { useAuthStore } from '@/stores/auth';
+import { showToast } from 'vant';
 
-const openSelect = ref(false);
-const index = ref(0);
-const selectList = ref([{
-		name: '注单1',
-		id: 1
+export default {
+	setup() {
+		const { dispatchUserMoney } = useAuthStore();
+		const { deleteAllBetSlip, settingGold, deleteBetSlip, dispatchMultiBetSlip, dispatchBetSlipParlay } = bettingStore();
+		return {
+			dispatchUserMoney,
+			deleteAllBetSlip,
+			settingGold,
+			deleteBetSlip,
+			dispatchMultiBetSlip,
+			dispatchBetSlipParlay
+		};
 	},
-	{
-		name: '注单2',
-		id: 2
-	},
-	{
-		name: '注单3',
-		id: 3
-	}
-]);
-const resultList = ref({
-	allMoney: 1000.00,
-	aloneMoney: '',
-	allOdds: 5.71,
-	list: [{
-			game: '足球',
-			type: '让球',
-			gameName: '国际友谊联赛',
-			ranks: '日本VS加拿大',
-			win: '日本',
-			size: '',
-			scoro: 1,
-			Odds: '1.96',
-			money: '1000.00'
-		},
-		{
-			game: '足球',
-			type: '大/小',
-			gameName: '国际友谊联赛',
-			ranks: '日本VS加拿大',
-			win: '小',
-			size: '1.5/2',
-			scoro: 1,
-			Odds: '1.96',
-			money: ''
-		},
-		{
-			game: '足球',
-			type: '大/小',
-			gameName: '国际友谊联赛',
-			ranks: '日本VS加拿大',
-			win: '大',
-			size: '1.5/2',
-			scoro: 1,
-			Odds: '1.96',
-			money: ''
+	data() {
+		return {
+			totalGold: 0,
+			totalWiningGold: 0,
+			allOdds: 1,
+			parlayGold: "",
+			singleGold: "",
+			itemSingleGold: 0,
+			itemWinGold: 0,
+			loading: false,
 		}
-	]
-});
-
-const selectResult =() => {
-	openSelect.value = !openSelect.value
-}
-
-const select = (value:number) => {
-	index.value = value
-	openSelect.value = !openSelect.value
-}
-
-const deleteResult = () => {
-	showConfirmDialog({
-			message: '是否确认删除该注单？',
-		})
-		.then(() => {
-			// on confirm
-		})
-		.catch(() => {
-			// on cancel
-		});
+	},
+	computed: {
+		success: function () {
+			const { getSuccess } = bettingStore();
+			return getSuccess;
+		},
+		token: function () {
+			const { getToken } = useAuthStore();
+			return getToken;
+		},
+		user: function () {
+			const { getUser } = useAuthStore();
+			return getUser;
+		},
+		totalGold: {
+			get: function () {
+				let totalGold = 0;
+				if (this.itemSingleGold !== 0) {
+					let parlayGold = this.parlayGold === "" ? 0 : this.parlayGold;
+					totalGold = Number(parlayGold) + this.itemSingleGold;
+				} else {
+					let parlayGold = this.parlayGold === "" ? 0 : this.parlayGold;
+					let singleGold = this.singleGold === "" ? 0 : this.singleGold;
+					totalGold = Number(parlayGold) + (Number(singleGold) * this.betSlipList.length);
+				}
+				this.totalDisplayGold = totalGold
+				return totalGold
+			}
+		},
+		totalWiningGold: function () {
+			let totalWinGold = 0;
+			if (this.itemWinGold !== 0) {
+				let parlayGold = this.parlayGold === "" ? 0 : this.parlayGold;
+				totalWinGold = Number(parlayGold) * this.allOdds + this.itemWinGold;
+			} else {
+				let parlayGold = this.parlayGold === "" ? 0 : this.parlayGold;
+				let singleGold = this.singleGold === "" ? 0 : this.singleGold;
+				let singleWinGold = 0;
+				this.betSlipList.map(item => {
+					let order_rate = item["order_rate"] > 1 ? item["order_rate"] : item["order_rate"] + 1
+					singleWinGold += singleGold * (order_rate - 1);
+				})
+				totalWinGold = Number(parlayGold) * this.allOdds + singleWinGold;
+			}
+			this.totalWiningDisplayGold = totalWinGold.toFixed(2);
+			return totalWinGold;
+		},
+		betSlipList: function () {
+			const { getBetSlipList } = bettingStore();
+			getBetSlipList.map(item => {
+				let order_rate = item["order_rate"] > 1 ? Number(item["order_rate"]) : Number(item["order_rate"]) + 1
+				console.log(item["order_rate"] > 1);
+				this.allOdds *= (order_rate - 1);
+			})
+			return getBetSlipList.reverse()
+		}
+	},
+	watch: {
+		singleGold: function (newValue) {
+			this.itemSingleGold = 0;
+			this.itemWinGold = 0;
+			this.settingGold(newValue);
+		},
+		betSlipList: function (newList) {
+			console.log(newList);
+			this.itemSingleGold = 0;
+			this.itemWinGold = 0;
+			newList.map(item => {
+				this.itemSingleGold += Number(item["gold"]);
+				let order_rate = Number(item["order_rate"]) > 1 ? Number(item["order_rate"]) : Number(item["order_rate"]) + 1
+				this.itemWinGold += Number(item["gold"]) * (order_rate - 1);
+			})
+		}
+	},
+	mounted() {
+		this.settingGold("");
+	},
+	methods: {
+		deleteBetSlipByIndex(m_id) {
+			this.deleteBetSlip(m_id);
+		},
+		goldHandler(event, index) {
+			this.itemSingleGold = 0;
+			this.itemWinGold = 0;
+			this.betSlipList.map(item => {
+				this.itemSingleGold += Number(item["gold"]);
+				let order_rate = Number(item["order_rate"]) > 1 ? Number(item["order_rate"]) : Number(item["order_rate"]) + 1
+				this.itemWinGold += Number(item["gold"]) * (order_rate - 1);
+			})
+		},
+		goBeforePage() {
+			router.go(-1)
+		},
+		deleteBetSlip() {
+			showConfirmDialog({
+				message: '是否确认删除该注单？',
+			}).then(() => {
+				// on confirm
+				this.deleteAllBetSlip();
+			}).catch(() => {
+				// on cancel
+			});
+		},
+		async multiBetSlip() {
+			this.loading = true;
+			await this.dispatchMultiBetSlip(this.betSlipList, this.token);
+			if (this.parlayGold !== "" && this.parlayGold !== 0) {
+				Number(this.parlayGold) * this.allOdds
+				let data = {
+					id: this.user.id,
+					gold: this.parlayGold,
+					m_id: "",
+					type: "",
+					line_type: "",
+					order_rate: "",
+					r_type: "",
+					text: "",
+					league: "",
+					m_team: "",
+					t_team: "",
+					selected_team: "",
+					m_date: "",
+					m_start: "",
+					m_ball: "",
+					t_ball: "",
+					title: "",
+					odd_f_type: "E",
+					g_type: "",
+					g_win: (Number(this.parlayGold) * this.allOdds).toFixed(2),
+					bettingCount: this.betSlipList.length,
+					active: 1
+				}
+				this.betSlipList.map(item => {
+					data["m_id"] += item["m_id"] + ","
+					data["type"] += item["type"] + ","
+					data["line_type"] += item["line_type"] + ","
+					data["order_rate"] += item["order_rate"] + ","
+					data["r_type"] += item["r_type"] + ","
+					data["text"] += item["text"] + ","
+					data["m_team"] += item["m_team"] + ","
+					data["t_team"] += item["t_team"] + ","
+					data["selected_team"] += item["select_team"] + ","
+					data["m_date"] += item["m_date"] + ","
+					data["m_start"] += item["m_start"] + ","
+					data["m_ball"] += item["m_ball"] + ","
+					data["t_ball"] += item["t_ball"] + ","
+					data["league"] += item["league"] + ","
+					data["title"] += item["title"] + ","
+					data["g_type"] += item["g_type"] + ","
+				})
+				await this.dispatchBetSlipParlay(data, this.token);
+			}
+			if (this.success) {
+				this.dispatchUserMoney(this.totalDisplayGold);
+				showToast('操作成功。')
+			} else {
+				showToast('操作失败')
+			}
+			this.loading = false;
+		}
+	}
 }
 </script>
 
 <style scoped lang="scss">
-	.results_title {
-		font-size: 17px;
-		height: 43px;
-		padding: 0 19px;
+.loading-position {
+	position: absolute;
+	left: 50%;
+	bottom: 20%;
+}
+
+.results_title {
+	font-size: 17px;
+	height: 43px;
+	padding: 0 19px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background-color: #4EABFF;
+	position: relative;
+
+	.select_title {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-		background-color: #4EABFF;
-		position: relative;
+		width: 75px;
 
-		.select_title {
-			display: flex;
-			align-items: center;
-			width: 75px;
-
-			.select_icon {
-				margin-right: 8px;
-				font-size: 20px;
-				font-weight: 600;
-				// transform:rotate(270deg);
-			}
-		}
-
-		.delete {
-			display: flex;
-			justify-content: flex-end;
-		}
-
-		.title_text {
-			color: #FFFFFF;
-			// width: 50%;
-		}
-
-		.select_box {
-			position: absolute;
-			top: 41px;
-			left: 0px;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			background-color: #FFFFFF;
-			border: 1px solid #4EABFF;
-			z-index: 2;
-
-			span {
-				width: 94px;
-				text-align: center;
-				line-height: 30px;
-				border-bottom: 1px solid #4EABFF;
-			}
+		.select_icon {
+			margin-right: 8px;
+			font-size: 20px;
+			font-weight: 600;
+			// transform:rotate(270deg);
 		}
 	}
 
-	.results_center {
-		background-color: #F1FAFF;
-		min-height: 80vh;
+	.delete {
+		display: flex;
+		justify-content: flex-end;
+	}
 
-		.orange {
-			color: #FF0000;
+	.title_text {
+		color: #FFFFFF;
+		// width: 50%;
+	}
+
+	.select_box {
+		position: absolute;
+		top: 41px;
+		left: 0px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		background-color: #FFFFFF;
+		border: 1px solid #4EABFF;
+		z-index: 2;
+
+		span {
+			width: 94px;
+			text-align: center;
+			line-height: 30px;
+			border-bottom: 1px solid #4EABFF;
 		}
+	}
+}
 
-		.grey {
-			color: #5C546A;
-		}
+.results_center {
+	background-color: #F1FAFF;
+	min-height: 80vh;
 
-		.green {
-			color: #005C2B;
-		}
+	.orange {
+		color: #FF0000;
+	}
 
-		.center_list {
+	.grey {
+		color: #5C546A;
+	}
+
+	.green {
+		color: #005C2B;
+	}
+
+	.center_list {
+		display: flex;
+		flex-direction: column;
+		font-size: 13px;
+		padding: 18px 24px 11px 20px;
+		border-bottom: 11px solid #F1FAFF;
+
+		div {
 			display: flex;
-			flex-direction: column;
-			font-size: 13px;
-			padding: 18px 24px 11px 20px;
-			border-bottom: 11px solid #F1FAFF;
-
-			div {
-				display: flex;
-				align-items: center;
-				margin-bottom: 9px;
-			}
-
-			span {
-				margin-right: 8px;
-			}
-
-			p {
-				margin-right: 8px;
-			}
-
-		}
-
-		.center_list_b {
-			padding: 12px 24px 10px 20px;
-			background-color: #CCE1F5;
-
-			.input_top {
-				font-size: 17px;
-				color: #000000;
-			}
-		}
-
-		.center_list_b:first-child {
-			border-bottom: 2px solid #F1FAFF;
-		}
-
-		.notList {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
 			align-items: center;
-			padding-top: 105px;
-
-			span {
-				color: #5C546A;
-				font-size: 13px;
-			}
-
-			img {
-				width: 230px;
-				height: 196px;
-				margin-bottom: 38px;
-			}
+			margin-bottom: 9px;
 		}
 
-		.estimate {
-			padding: 12px 24px 10px 20px;
-			background-color: #FFFFFF;
-
-			div {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				font-size: 17px;
-			}
-
-			div:first-child {
-				margin-bottom: 8px;
-			}
+		span {
+			margin-right: 8px;
 		}
 
-		.notlist_s {
-			position: fixed;
-			bottom: 53px;
-			background-color: #FFFFFF;
-			z-index: 100;
-			width: -moz-calc(100% - (24px + 20px));
-			width: -webkit-calc(100% - (24px + 20px));
-			width: calc(100% - (24px + 20px));
-
+		p {
+			margin-right: 8px;
 		}
 
-		.btn {
-			width: 100%;
-			height: 53px;
+	}
+
+	.center_list_b {
+		padding: 12px 24px 10px 20px;
+		background-color: #CCE1F5;
+
+		.input_top {
 			font-size: 17px;
-			color: #FFFFFF;
+			color: #000000;
+		}
+	}
+
+	.center_list_b:first-child {
+		border-bottom: 2px solid #F1FAFF;
+	}
+
+	.notList {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		padding-top: 105px;
+
+		span {
+			color: #5C546A;
+			font-size: 13px;
+		}
+
+		img {
+			width: 230px;
+			height: 196px;
+			margin-bottom: 38px;
+		}
+	}
+
+	.estimate {
+		padding: 12px 24px 10px 20px;
+		background-color: #FFFFFF;
+
+		div {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			font-size: 17px;
+		}
+
+		div:first-child {
+			margin-bottom: 8px;
+		}
+	}
+
+	.notlist_s {
+		position: fixed;
+		bottom: 53px;
+		background-color: #FFFFFF;
+		z-index: 100;
+		width: 100%;
+	}
+
+	.btn {
+		width: 100%;
+		height: 53px;
+		font-size: 17px;
+		color: #FFFFFF;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background-color: #4EABFF;
+		position: fixed;
+		bottom: 0;
+		z-index: 100;
+	}
+
+	.n_btn {
+		background-color: #949494;
+	}
+
+	.list_input {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 8px;
+		margin-bottom: 0;
+
+		input {
+			width: 152px;
+			padding: 13px 0 13px 7px;
+			background: #FFFFFF;
+			border: 1px solid #E3E3E3;
+			border-radius: 5px;
+			font-size: 17px;
+		}
+
+		div {
 			display: flex;
 			flex-direction: column;
-			justify-content: center;
 			align-items: center;
-			background-color: #4EABFF;
-			position: fixed;
-			bottom: 0;
-			z-index: 100;
+			margin: 0;
+			font-size: 13px;
+
+			.win_text {
+				margin-top: 8px;
+			}
+
+			.max {
+				color: #4EABFF;
+			}
 		}
 
-		.n_btn {
-			background-color: #949494;
-		}
-
-		.list_input {
-			display: flex;
-			justify-content: space-between;
+		.list_input_left {
+			flex-direction: row;
 			align-items: center;
-			margin-top: 8px;
-			margin-bottom: 0;
 
-			input {
-				width: 152px;
-				padding: 13px 0 13px 7px;
-				background: #FFFFFF;
-				border: 1px solid #E3E3E3;
-				border-radius: 5px;
+			span {
 				font-size: 17px;
-			}
-
-			div {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				margin: 0;
-				font-size: 13px;
-
-				.win_text {
-					margin-top: 8px;
-				}
-
-				.max {
-					color: #4EABFF;
-				}
-			}
-
-			.list_input_left {
-				flex-direction: row;
-				align-items: center;
-
-				span {
-					font-size: 17px;
-					margin-left: 5px;
-				}
+				margin-left: 5px;
 			}
 		}
 	}
+}
 </style>

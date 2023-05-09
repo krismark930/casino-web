@@ -10,7 +10,7 @@
             <template #right> </template>
         </van-nav-bar>
 
-        <div class="pt-[46px] pb-[60px] bg-[#f7f7ff] h-screen relative">
+        <div class="pt-[46px] pb-[60px] bg-[#f7f7ff] h-screen relative overflow-auto">
             <div class="flex justify-start text-[15px] px-1 pt-1 mt-1 bg-white text-[#454558]">
                 <div v-for="(item, index) in selectList" :key="index" @click="selectCategory(item.id)" class="px-2">
                     {{ item.name }}
@@ -31,7 +31,7 @@
                 </div> -->
             </div>
             <Bank v-if="active === 1"></Bank>
-            <Crypto v-if="active === 2"></Crypto>
+            <Crypto v-if="active === 2" :bank-list="bankList"></Crypto>
         </div>
     </div>
 </template>
@@ -39,7 +39,21 @@
 import router from '@/router';
 import Bank from './bankCard.vue';
 import Crypto from './crypto.vue';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useBankAccountStore} from '@/stores/bankAccount';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
+const bankList = ref([]);
+const { user } = useAuthStore();
+const { getCryptoList } = useBankAccountStore();
+const { cryptoAccounts } = storeToRefs(useBankAccountStore());
+
+onMounted( async ()=>{
+    const response = await getCryptoList(user.id);
+    console.log(response)
+    bankList.value = response.bankList;
+});
+
 const active = ref(1);
 
 const selectList = ref([

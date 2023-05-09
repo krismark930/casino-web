@@ -4,14 +4,15 @@
 		<div class="record_box animated fadeInLeft">
 			<div class="select_box">
 				<div v-for="(item, index) in selectList" :ket='index' :class="{ select: active == item.id }"
-					@click="selectType(item.id)">{{ item.name }}
+					@click="selectType(item.id)">
+					{{ item.name }}
 				</div>
 			</div>
 			<div class="game_box">
 				<div class="game_title">{{ typetext }}</div>
 				<div class="game_item">
 					<van-dropdown-menu>
-						<van-dropdown-item v-model="value1" :options="gameList" />
+						<van-dropdown-item v-model="sportValue" :options="gameList" />
 					</van-dropdown-menu>
 				</div>
 			</div>
@@ -29,18 +30,14 @@ import History from './components/History.vue'
 
 import { ref, computed } from 'vue';
 const active = ref(2);
-const value1 = ref(0);
+const sportValue = ref(1);
 const gameList = ref([
 	{
-		text: '所有体育',
-		value: 0
-	},
-	{
-		text: '篮球',
+		text: '足球',
 		value: 1
 	},
 	{
-		text: '足球',
+		text: '篮球',
 		value: 2
 	},
 ]);
@@ -93,6 +90,7 @@ const typetext = computed(() => {
 			background-color: #00ADFF;
 		}
 	}
+
 	.game_box {
 		display: flex;
 		background-color: #00ADFF;

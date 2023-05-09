@@ -13,8 +13,8 @@
             <div class=" pt-1 bg-white">
                 <div class="px-2 mt-[14px]">
                     <label for="name" class="block font-semibold text-[#454558] ">开户行地址</label>
-                    <div class="mt-[7px] border-b border-gray-300 focus-within:border-gray-500 pb-[15px] flex justify-between items-center">
-                        <input type="text" v-model="banckAccount" placeholder="请选择开户行地址" name="name" id="name"
+                    <div class="mt-[7px] border-b border-gray-300 focus-within:border-gray-500 pb-[15px] flex justify-between items-center" @click="() => show = true">
+                        <input type="text" v-model="bankAddress" placeholder="请选择开户行地址" name="name" id="name"
                             class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB]" />
                         <img class="w-[10px] h-[13px] mr-2" src="@/assets/images/my/arrow-right.png" alt="arrow"/>
                     </div>
@@ -25,8 +25,8 @@
             </div>
             <div class="mx-2 mt-8">
                 <button
-                    :class="[[banckAccount ?'bg-blue-400': 'bg-blue-200'], ' text-white px-2 py-[10px] w-full text-[17px]']"
-                    @click="onClick_2">
+                    :class="[[bankAddress ?'bg-blue-400': 'bg-blue-200'], ' text-white px-2 py-[10px] w-full text-[17px]']"
+                    @click="goNextStep">
                     下一步
                 </button>
             </div>
@@ -34,16 +34,20 @@
                 如需帮助，请
                 <span class="text-blue-400">联系客服</span>
             </div>
-        </div>
+        </div>{{ addressValue }}
         <van-popup v-model:show="show" position="bottom" class="rounded-t-md">
-            <van-picker title="" :columns="columns" class=""/>
+            <van-area  v-model="addressValue" @cancel="cancel" @confirm="selectBankAddress" cancel-button-text="取消" confirm-button-text="确定" :area-list="areaList" />
 		</van-popup>
     </div>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import router from '@/router'
-const banckAccount = ref('');
+import router from '@/router';
+import { areaList } from '@vant/area-data';
+import { useBankAccountStore } from '@/stores/bankAccount';
+const { setBankAdd, bankAdd } = useBankAccountStore();
+const bankAddress = ref('');
+const addressValue = ref('');
 const verifyCode = ref('');
 const active = ref(1);
 const show = ref(false);
@@ -59,45 +63,26 @@ const bankList = ref([
         name: 'TRC20',
     }
 ])
-const setBank = (id:number) => {
-    active.value = id;
+const selectBankAddress = ({selectedOptions}:any) => {
+    let temp = '';
+    selectedOptions.map((item:any) => {
+        temp = temp + item.text + ' '
+    })
+    bankAddress.value = temp.trim();
+    show.value = false;
 }
-const onClick_2 = () => {
-    show.value = true;
+const cancel = () => {
+    show.value = false;
+}
+const goNextStep = () => {
+    if(bankAddress.value !== '' && bankAdd.bankCardOwner){
+        setBankAdd({bankCardOwner:bankAdd.bankCardOwner, bankCardType: bankAdd.bankCardType,  bankType:bankAdd.bankType, bankAccount:bankAdd.bankAccount, bankAddress:bankAddress })
+        router.push({name:'addBank'});
+    }
 }
 const onClickLeft = () => {
     router.go(-1);
 };
-const columns = [
-      {
-        text: '北京市',
-        value: 'beijing',
-        children: [
-          {
-            text: '北京市',
-            value: 'Hangzhou',
-            children: [
-              { text: '和平区', value: 'Xihu' },
-              { text: '河西区', value: 'Yuhang' },
-            ],
-          },
-        ],
-      },
-      {
-        text: '天津市',
-        value: 'Fujian',
-        children: [
-          {
-            text: '天津市',
-            value: 'Fuzhou',
-            children: [
-              { text: '和平区', value: 'Gulou' },
-              { text: '南开区', value: 'Taijiang' },
-            ],
-          },
-        ],
-      },
-    ];
 </script>
 <style>
 .van-picker__cancel{

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/sweden</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/sweden">
+            <g id="sweden">
+                <g id="Group" transform="translate(0.500000, 0.500000)" fill-rule="nonzero">
+                    <circle id="Oval" fill="#FFDA44" cx="11.5" cy="11.5000219" r="11.5"></circle>
+                    <path d="M8.99785156,9.99963123 L22.9011719,9.99963123 C22.1482224,4.27785073 17.2711095,0.000288319617 11.5,-5.15143483e-14 C10.6586189,-0.00161559156 9.81958185,0.0887654173 8.99785156,0.269553105 L8.99785156,9.99963123 Z M6.0015625,9.99963123 L6.0015625,1.39709217 C2.7726344,3.15690952 0.579070331,6.3537704 0.098828125,9.99963123 L6.0015625,9.99963123 L6.0015625,9.99963123 Z M6.0015625,13.0004125 L0.098828125,13.0004125 C0.579070331,16.6462733 2.7726344,19.8431342 6.0015625,21.6029515 L6.0015625,13.0004125 Z M8.99785156,13.0004125 L8.99785156,22.7259984 C9.81941519,22.9082966 10.6584542,23.0001842 11.5,23.0000221 C17.2711095,22.9997554 22.1482224,18.722193 22.9011719,13.0004125 L8.99785156,13.0004125 Z" id="Shape" fill="#0052B4"></path>
+                </g>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

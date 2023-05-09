@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/finland</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/finland">
+            <g id="finland">
+                <circle id="Oval" fill="#EEEEEE" fill-rule="nonzero" cx="12" cy="12" r="12"></circle>
+                <path d="M23.896875,10.434375 L9.3890625,10.434375 L9.3890625,0.2859375 C8.29705701,0.527943009 7.24454676,0.922437104 6.2625,1.4578125 L6.2625,10.434375 L0.103125,10.434375 C-0.032461052,11.4737217 -0.032461052,12.5262783 0.103125,13.565625 L6.2625,13.565625 L6.2625,22.5421875 C7.24454676,23.0775629 8.29705701,23.472057 9.3890625,23.7140625 L9.3890625,13.565625 L23.896875,13.565625 C24.0322496,12.5262645 24.0322496,11.4737355 23.896875,10.434375 Z" id="Path" fill="#0052B4" fill-rule="nonzero"></path>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

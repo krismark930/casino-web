@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/romania</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/romania">
+            <g id="romania">
+                <g id="Group" transform="translate(0.500000, 0.500000)" fill-rule="nonzero">
+                    <path d="M11.4962162,-7.81597009e-14 C10.0901616,-7.81597009e-14 8.7425053,0.2515625 7.49816936,0.71875 L0.400513114,11.5 L7.49816936,22.28125 C8.77749238,22.7567285 10.1313913,23 11.4962162,23 C12.9022709,23 14.2499272,22.7484375 15.4942631,22.28125 L22.5919194,11.5 L15.4942631,0.71875 C14.2149147,0.243364509 12.8610327,-7.81597009e-14 11.4962162,-7.81597009e-14 Z" id="Path" fill="#FFDA44"></path>
+                    <path d="M22.9962162,11.5 C22.9956293,6.69122568 20.0030761,2.39055042 15.4942631,0.71875 L15.4942631,22.28125 C20.0030761,20.6094496 22.9956293,16.3087743 22.9962162,11.5 Z" id="Path" fill="#D80027"></path>
+                    <path d="M7.49816936,22.28125 L7.49816936,0.71875 C2.99084682,2.39179732 4.4408921e-16,6.69218929 4.4408921e-16,11.5 C4.4408921e-16,16.3078107 2.99084682,20.6082027 7.49816936,22.28125 Z" id="Path" fill="#0052B4"></path>
+                </g>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

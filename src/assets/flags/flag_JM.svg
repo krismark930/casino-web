@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/jamaica</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/jamaica">
+            <g id="jamaica" transform="translate(-0.000000, 0.000000)">
+                <circle id="Oval" fill="#FFDA44" fill-rule="nonzero" cx="12" cy="12" r="12"></circle>
+                <path d="M19.30575,2.480625 C17.2822969,0.925265625 14.7494062,0 12,0 C9.25059375,0 6.71765625,0.9253125 4.69420312,2.480625 L12,9.786375 L19.30575,2.480625 Z" id="Path" fill="#6DA544" fill-rule="nonzero"></path>
+                <path d="M2.48057812,4.69425 C0.9253125,6.71770312 0,9.25059375 0,12 C0,14.7494062 0.9253125,17.2823437 2.480625,19.3058438 L9.78642187,12 L2.48057812,4.69425 Z" id="Path" fill="#000000" fill-rule="nonzero"></path>
+                <path d="M4.69420312,21.519375 C6.71770312,23.0747344 9.25059375,24 12,24 C14.7494063,24 17.2822969,23.0746875 19.3057969,21.519375 L12,14.213625 L4.69420312,21.519375 Z" id="Path" fill="#6DA544" fill-rule="nonzero"></path>
+                <path d="M21.519375,19.30575 C23.0747344,17.2822969 24,14.7494062 24,12 C24,9.25059375 23.0747344,6.71770312 21.519375,4.69425 L14.213625,12 L21.519375,19.30575 Z" id="Path" fill="#000000" fill-rule="nonzero"></path>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

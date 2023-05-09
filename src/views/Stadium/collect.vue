@@ -5,12 +5,13 @@
 			<span>兴趣赛事</span>
 		</div>
 		<div class="game_box">
-			<div :class="{ gameSelect: aelect == game.id }" v-for="(game,idx) in gameType" @click="SelectGame(game.id)">
+			<div :class="{ gameSelect: select == game.id }" v-for="(game, idx) in gameType" @click="selectGame(game.id)">
 				{{ game.name }}
 			</div>
 		</div>
-		<div class="select_box" v-if="aelect == 1">
-			<div :class="{ selects: aelectId == select.id }" v-for="(select, idx) in selectList" @click="Select(select.id)">
+		<div class="select_box" v-if="select == 1">
+			<div :class="{ selects: selectId == select.id }" v-for="(select, idx) in selectList"
+				@click="selectSwitch(select.id)">
 				{{ select.name }}
 			</div>
 		</div>
@@ -26,22 +27,22 @@
 			</div>
 		</div>
 		<div>
-			<Basketball v-if="aelect == 2"></Basketball>
-			<Football v-if="aelect == 1 && aelectId == 1" />
-			<other v-if="aelect == 1 && aelectId == 2"></other>
+			<BK_Main v-if="select == 2" />
+			<FT_Favorite_Main v-if="select == 1 && selectId == 1" />
+			<FT_Favorite_Score v-if="select == 1 && selectId == 2" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import Basketball from './components/Basketball.vue'
-import Football from './components/Football.vue'
-import other from './components/other.vue'
+import BK_Main from './components/bk_components/BK_Main.vue'
+import FT_Favorite_Main from './components/fk_components/FT_Favorite_Main.vue'
+import FT_Favorite_Score from './components/fk_components/FT_Favorite_Score.vue'
 import { ref } from 'vue';
 const list = ref([]);
 const value1 = ref(1);
-const aelectId = ref(2);
-const aelect = ref(1);
+const selectId = ref(1);
+const select = ref(1);
 const selectList = ref([
 	{
 		name: '主要玩法',
@@ -62,11 +63,11 @@ const gameType = ref([
 		id: 2
 	}
 ]);
-const Select = (id: number) => {
-	aelectId.value = id
+const selectSwitch = (id: number) => {
+	selectId.value = id
 }
-const SelectGame = (id: number) => {
-	aelect.value = id
+const selectGame = (id: number) => {
+	select.value = id
 }
 </script>
 

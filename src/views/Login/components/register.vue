@@ -9,7 +9,7 @@
     </div>
     <div class="form_item">
       <img class="form_icon" src="@/assets/images/login/password.png" alt="" />
-      <input v-model="password" :type="!passwordType ? 'password' : 'number'" placeholder="请输入密码" />
+      <input v-model="password" :type="!passwordType ? 'password' : 'string'" placeholder="请输入密码" />
       <div>
         <img v-if="password" src="@/assets/images/login/see.png" @click="seePassword" alt="" />
         <img v-if="password" src="@/assets/images/login/clear.png" @click="clearPsssword" alt="" />
@@ -17,7 +17,7 @@
     </div>
     <div class="form_item">
       <img class="form_icon" src="@/assets/images/login/password.png" alt="" />
-      <input v-model="passwords" :type="!passwordType ? 'password' : 'number'" placeholder="再次输入密码" />
+      <input v-model="passwords" :type="!passwordType ? 'password' : 'string'" placeholder="再次输入密码" />
       <div>
         <img v-if="passwords" src="@/assets/images/login/see.png" @click="seePassword" alt="" />
         <img v-if="passwords" src="@/assets/images/login/clear.png" @click="clearPsssword" alt="" />
@@ -32,17 +32,17 @@
       和
       <span>隐私政策</span>
     </div>
-    <button v-if="!username || !password || !isVerification || !passwords" class="submit_btn" @click="register">
+    <button v-if="!username || !password || !passwords" class="submit_btn" @click="register">
       登录
     </button>
-    <button v-else class="submit_btn2">登录</button>
+    <button v-else class="submit_btn2" @click="register">登录</button>
     <p class="venture">合营咨询</p>
   </div>
 </template>
 
 <script setup lang="ts">
 import verification from "./verification.vue";
-import { ref } from "vue";
+import { ref , toRefs} from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
 import axios from "axios";
@@ -56,7 +56,8 @@ const {
 const {
   signUp
 } = useAuthStore();
-
+const state = defineProps<{inviter_id:string}>();
+const { inviter_id } = toRefs(state)
 
 const isVerification = ref(false);
 const checked = ref(false);
@@ -78,28 +79,12 @@ const clearPsssword = () => {
   password.value = "";
 }
 
-const register = async () => {
-  try {
-        console.log("auth_resgisger", username)
-        let url = config.api.SIGN_UP;
-        let data = {
-          UserName:username.value,
-          password:password.value
-        };
-        const response = (await axios.post(url, data)).data;
-        router.push({name:'home'})
-        return response;
-      } catch (e) {
-        return e;
-      }
+const register = async () => {   ///register
+  console.log(inviter_id.value);
+  console.log("UserName", username.value, password.value)
+  await signUp(username.value, password.value, inviter_id.value?inviter_id.value:'');
 }
 
-// const register = async () =>{
-//   await signUp(username.value, password.value)
-//   console.log(getToken.value)
-//   console.log(getUser.value)
-//   // router.push({name:'home'})
-// }
 </script>
 
 <style scoped lang="scss">

@@ -63,7 +63,7 @@
                     />
                     <van-popup v-model:show="showPicker" round position="bottom" class="text-center text-[15px]">
                         <div v-if="user.AG && sysConfig.AG" class="py-1" @click="() => selectType('AGIN', '我的钱包-->AG馆')">我的钱包-->AG馆</div>
-                        <div v-if="user.OG && sysConfig.OG"  class="py-1" @click="() => selectType('OGIN', '我的钱包-->OG馆')">我的钱包-->OG馆</div>
+                        <div v-if="user.OG && sysConfig.OG"  class="py-1" @click="() => selectType('OGIN', '我的钱包-->OG馆')">我的钱包-->OG馆 </div>
                         <div v-if="user.BBIN && sysConfig.BBIN"  class="py-1" @click="() => selectType('BBIN', '我的钱包-->BBIN馆')">我的钱包-->BBIN馆</div>
                         <div v-if="user.MG && sysConfig.MG"  class="py-1" @click="() => selectType('MGIN', '我的钱包-->MG馆')">我的钱包-->MG馆</div>
                         <div v-if="user.PT && sysConfig.PT"  class="py-1" @click="() => selectType('PTIN', '我的钱包-->PT馆')">我的钱包-->PT馆</div>
@@ -96,7 +96,7 @@
                 <!-- <button class="button_1 flex w-full justify-center  py-1 border-2 border-blue-500 rounded-sm" @click="deleteResult">
                     <p class="text-blue-500">取消存款申请</p>
                 </button> -->
-                <button :class="[amount && type.value ? 'bg-blue-500 border-blue-500':'bg-blue-200 border-blue-200']" class="button_1 flex w-full justify-center  py-1 border-2  rounded-sm " @click="submitResult">
+                <button :class="[amount && type ? 'bg-blue-500 border-blue-500':'bg-blue-200 border-blue-200']" class="button_1 flex w-full justify-center  py-1 border-2  rounded-sm " @click="submitResult">
                     <p class="text-white text-[12px]">确定</p>
                 </button>
             </div>
@@ -145,11 +145,8 @@ const {
     sumbitTransfer
 } = useTransferStore();
 onMounted( async ()=>{
-    await signIn('test1', 'test1123');
-    console.log(user.value)
-    await getSysConfigValue();
-    console.log(sysConfig.value)
-    console.log(user.value.AG&&sysConfig.value.AG ? "true":"false")
+    if(!sysConfig.value.AG)
+        await getSysConfigValue();
 })
 
 const amountChange = () => {
@@ -248,11 +245,14 @@ const selectType = (value:string, title:string) => {
 };
 
 const submitResult = async () => {
-    //const result = verifyData();
-    //if(result){
-        const response = await sumbitTransfer(user.value.ID, amount.value, type.value.value);
-        showToast(response.message);
-    //}
+    if(amount.value && type.value ){
+        console.log(amount.value && type.value)
+        const result = verifyData();
+        if(result){
+            const response = await sumbitTransfer(user.value.id, amount.value, type.value.value);
+            showToast(response.message);
+        }
+    }
 }
 const verifyData = () => {
     console.log(user.value.Money )

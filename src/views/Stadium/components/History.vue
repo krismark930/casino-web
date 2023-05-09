@@ -1,18 +1,19 @@
 <template>
 	<div>
-		<div v-if="historyList">
+		<van-loading color="#1989fa" class="loading-position" v-if="loading" size="40" />
+		<div>
 			<div class="time_box">
-				<div @click="getstartTime">
+				<div @click="showFromDatePicker">
 					<span>从</span>
-					<span>{{ startTime }}</span>
+					<span>{{ fromDate }}</span>
 				</div>
-				<div @click="getendTime">
-					<span>从</span>
-					<span>{{ endTime }}</span>
+				<div @click="showEndDatePicker">
+					<span>直到</span>
+					<span>{{ endDate }}</span>
 				</div>
-				<img src="@/assets/images/stadiums/searchs.png" alt="">
+				<img src="@/assets/images/stadiums/searchs.png" alt="" @click="searchHistoryByDate">
 			</div>
-			<div class="history_list">
+			<div class="history_list" v-if="historyList.length !== 0">
 				<div class="history_title">
 					<div class="history_data">
 						<p>日期</p>
@@ -24,102 +25,109 @@
 				<div class="history_center">
 					<div class="history_item" v-for="(item, index) in historyList" :key="index">
 						<div class="history_data">
-							<p>{{ item.date }}</p>
+							<p>{{ item.m_date }}</p>
 							<p>{{ item.week }}</p>
 						</div>
-						<span>{{ item.amount }}</span>
-						<span>{{ item.eAmount }}</span>
-						<span>{{ item.lose }}</span>
+						<span>{{ item.betscore }}</span>
+						<span>{{ item.m_result }}</span>
+						<span>{{ item.bet_result }}</span>
 					</div>
 				</div>
 				<div class="history_footer">
 					<div class="history_data">
 						<p>总共</p>
 					</div>
-					<span></span>
-					<span></span>
+					<span>{{ totalBetScore }}</span>
+					<span>{{ totalMResult }}</span>
 					<span></span>
 				</div>
 			</div>
 		</div>
-		<div v-if="!historyList" class="not">
+		<div v-if="historyList.length == 0" class="not">
 			<img src="@/assets/images/stadiums/not.png" alt="">
 		</div>
 		<div>
-			<van-popup position='bottom' v-model="startTimeType">
-				<van-datetime-picker v-model="currentDate" type="date" title="选择年月日" :min-date="minDate"
-					:max-date="maxDate" @confirm='startconfirm' />
+			<van-popup position='bottom' v-model:show="fromDateType" :style="{ height: '50%' }">
+				<van-date-picker v-model="fromDatePicker" title="选择年月日" :min-date="minDate" :max-date="maxDate"
+					@confirm='startConfirm' />
 			</van-popup>
-			<van-popup position='bottom' v-model="endTimeType">
-				<van-datetime-picker v-model="currentDate1" type="date" title="选择年月日" :min-date="minDate1"
-					:max-date="maxDate1" @confirm='endconfirm' />
+			<van-popup position='bottom' v-model:show="endDateType" :style="{ height: '50%' }">
+				<van-date-picker v-model="endDatePicker" title="选择年月日" :min-date="minDate" :max-date="maxDate"
+					@confirm='endConfirm' />
 			</van-popup>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-
-import { date } from '@/utils/util';
-import { ref } from 'vue';
-const startTime = ref(date('Y-m-d', new Date().getTime() / 1000));
-const endTime = ref(date('Y-m-d', new Date().getTime() / 1000));
-const startTimeType = ref(false);
-const endTimeType = ref(false);
-const minDate = ref(new Date(2020, 0, 1));
-const maxDate = ref(new Date(2025, 10, 1));
-const currentDate = ref(new Date().getTime());
-const currentDate1 = ref(new Date().getTime());
-const minDate1 = ref(new Date(2020, 0, 1));
-const maxDate1 = ref(new Date(2025, 10, 1));
-const historyList = ref([
-	{
-		date: '11月18日',
-		week: '星期五',
-		amount: '50.00',
-		eAmount: '50.00',
-		lose: '输'
-	},
-	{
-		date: '11月17日',
-		week: '星期四',
-		amount: '50.00',
-		eAmount: '50.00',
-		lose: '赢'
-	},
-	{
-		date: '11月16日',
-		week: '星期三',
-		amount: '50.00',
-		eAmount: '50.00',
-		lose: '输'
-	},
-	{
-		date: '11月15日',
-		week: '星期二',
-		amount: '50.00',
-		eAmount: '50.00',
-		lose: '输'
-	}
-])
-const getstartTime = () => {
-	startTimeType.value = true
+import moment from 'moment';
+import { ref, onBeforeMount, computed } from 'vue';
+import { bettingStore } from '@/stores/betting';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
+const { dispatchBetHistory } = bettingStore();
+const { getToken } = storeToRefs(useAuthStore());
+const { getHistoryList, getSuccess } = storeToRefs(bettingStore());
+const fromDateType = ref(false);
+const endDateType = ref(false);
+const fromDate = ref(moment().format("YYYY-MM-DD"));
+const endDate = ref(moment().format("YYYY-MM-DD"));
+const fromDatePicker = ref(['2022', '01', '01']);
+const endDatePicker = ref(['2023', '01', '01'])
+const minDate = new Date(2020, 0, 1);
+const maxDate = new Date(2025, 12, 31);
+const loading = ref(false);
+const totalBetScore = ref(0);
+const totalMResult = ref(0);
+const dayOfWeek = ref(["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"])
+const searchHistoryByDate = async () => {
+	loading.value = true;
+	await dispatchBetHistory({ fromDate: fromDate.value, endDate: endDate.value }, getToken.value);
+	loading.value = false
+}
+const historyList = computed(() => {
+	getHistoryList.value.map(item => {
+		totalBetScore.value += Number(item["betscore"]);
+		totalMResult.value += Number(item["m_result"]);
+		let day = moment(item['m_date']).day();
+		item["week"] = dayOfWeek.value[day - 1];
+	})
+	return getHistoryList.value;
+})
+const success = computed(() => {
+	return getSuccess.value;
+})
+const showFromDatePicker = () => {
+	fromDateType.value = true
 };
-const getendTime = () => {
-	startTimeType.value = true
+const showEndDatePicker = () => {
+	endDateType.value = true
 };
-const startconfirm = (time:Date) => {
-	startTimeType.value = false
-	startTime.value = date('Y-m-d', time.getTime() / 1000)
+const startConfirm = (result: any) => {
+	fromDatePicker.value = result.selectedValues;
+	fromDateType.value = false;
+	fromDate.value = result.selectedValues[0] + "-" + result.selectedValues[1] + "-" + result.selectedValues[2]
 };
-const endconfirm = (time:Date) => {
-	endTimeType.value = false
-	endTime.value = date('Y-m-d', time.getTime() / 1000)
+const endConfirm = (result: any) => {
+	endDateType.value = false
+	endDatePicker.value = result.selectedValues;
+	endDate.value = result.selectedValues[0] + "-" + result.selectedValues[1] + "-" + result.selectedValues[2]
 };
-
+onBeforeMount(async () => {
+	loading.value = true;
+	await dispatchBetHistory({ fromDate: fromDate.value, endDate: endDate.value }, getToken.value);
+	loading.value = false;
+})
 </script>
 
 <style scoped lang="scss">
+.loading-position {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
 .time_box {
 	display: flex;
 	align-items: center;

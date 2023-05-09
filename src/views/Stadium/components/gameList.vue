@@ -1,7 +1,8 @@
 <template>
 	<div>
-		<div v-if="bettingList" class="game_list">
-			<div class="game_list_item" v-for="(item, index) in bettingList" :key="index + 200">
+		<van-loading color="#1989fa" class="loading-position" v-if="loading" size="40" />
+		<div v-if="getBetHistoryList.length > 0" class="game_list">
+			<div class="game_list_item" v-for="(item, index) in betHistoryList" :key="index + 200">
 				<div class="game_title">
 					<div class="black">
 						<span>{{ item.title }}</span>
@@ -9,7 +10,7 @@
 					</div>
 					<div>
 						<span>{{ item.text }}</span>
-						<span class="score">{{ item.score }}</span>
+						<span class="score">&nbsp;{{ item.score }}</span>
 					</div>
 				</div>
 				<div class="Betting">
@@ -41,44 +42,55 @@
 						</div>
 					</div>
 				</div>
-				<div class="total">
-					<span>
-						总共：
-					</span>
-					<span>
-						{{ item.all }}
-					</span>
-				</div>
+			</div>
+			<div class="total">
+				<span>
+					总共：
+				</span>
+				<span>
+					{{ totalBetScore }}
+				</span>
 			</div>
 		</div>
-		<div v-if="!bettingList" class="not">
+		<div v-if="getBetHistoryList.length === 0" class="not">
 			<img src="@/assets/images/stadiums/not.png" alt="">
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-const bettingList = ref([
-	{
-		title: '足球',
-		type: '滚球',
-		text: '日本VS加拿大',
-		score: 1,
-		typeName: '让球',
-		winner: '日本',
-		Odds: 1.96,
-		money: 50.00,
-		winMoney: 41.00,
-		number: 'OU16046542166',
-		time: '02:01:19',
-		place: '欧洲盘',
-		all: 50.00
-	}
-])
+import { ref, onMounted, computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
+import { bettingStore } from '@/stores/betting';
+const { getToken, getUser } = storeToRefs(useAuthStore());
+const { dispatchBetSlip } = bettingStore();
+const { getBetHistoryList, getSuccess } = storeToRefs(bettingStore());
+const loading = ref(false);
+const totalBetScore = ref(0);
+const betHistoryList = computed(() => {
+	console.log(getBetHistoryList);
+	getBetHistoryList.value.map(item => {
+		totalBetScore.value += item["money"];
+	})
+	return getBetHistoryList.value;
+})
+onMounted(async () => {
+	loading.value = true;
+	await dispatchBetSlip({ m_name: getUser.value.UserName }, getToken.value);
+	console.log(getBetHistoryList.value);
+	loading.value = false;
+})
 </script>
 
 <style scoped lang="scss">
+.loading-position {
+	margin-top: 200px;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
 .not {
 	background-color: #F3FAFF;
 	width: 100%;
@@ -93,6 +105,17 @@ const bettingList = ref([
 }
 
 .game_list {
+
+	.total {
+		width: 100%;
+		height: 46px;
+		padding: 0 23px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		background-color: #FFFFFF;
+	}
+
 	font-size: 13px;
 
 	.game_list_item {
@@ -146,16 +169,6 @@ const bettingList = ref([
 					margin: 0 8px;
 				}
 			}
-		}
-
-		.total {
-			width: 100%;
-			height: 46px;
-			padding: 0 23px;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			background-color: #FFFFFF;
 		}
 	}
 }

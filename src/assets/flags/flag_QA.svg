@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/qatar</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/qatar">
+            <g id="qatar">
+                <g id="Group" transform="translate(0.500000, 0.500000)" fill-rule="nonzero">
+                    <circle id="Oval" fill="#EEEEEE" cx="11.4775828" cy="11.4776488" r="11.4775828"></circle>
+                    <path d="M22.9551657,11.4776488 C22.9551657,7.29936948 20.6846078,3.45115635 17.02722,1.4308761 C13.3698321,-0.589404148 8.90349298,-0.462553055 5.36666667,1.76205425 L7.89083821,2.82462735 L4.49688109,4.26380864 L7.89083821,5.70747335 L4.49688109,7.15113807 L7.89083821,8.59031936 L4.49688109,10.0339841 L7.89083821,11.4731654 L4.49688109,12.9168301 L7.89083821,14.3560114 L4.49688109,15.7996761 L7.89083821,17.2388574 L4.49688109,18.6825221 L7.89083821,20.1217034 L5.37563353,21.1932433 C8.91205012,23.4130424 13.3749808,23.5372544 17.0293899,21.5175899 C20.6837989,19.4979254 22.9531382,15.6530226 22.9551657,11.4776488 Z" id="Path" fill="#751A46"></path>
+                </g>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

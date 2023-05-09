@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -169,7 +171,7 @@ const router = createRouter({
                         ),
                     meta: {
                         title: 'depositInformation'
-                    }, 
+                    },
                     props: true,
                 },
                 {
@@ -455,27 +457,82 @@ const router = createRouter({
             component: () => import('@/views/Subhome/recoverPassword.vue')
         },
         {
+            path: '/login/:code',
+            name: 'login1',
+            component: () => import('@/views/Login/login.vue')
+        }, 
+        {
             path: '/login',
             name: 'login',
             component: () => import('@/views/Login/login.vue')
-        },{
+        }, 
+        {
             path: '/fastthree',
             name: 'fastthree',
             component: () => import('@/views/Lottery/fastThree.vue')
-        },{
+        }, {
             path: '/alwayscolor',
             name: 'alwayscolor',
             component: () => import('@/views/Lottery/alwaysColor.vue')
-        },{
+        }, {
             path: '/pk10',
             name: 'pk10',
             component: () => import('@/views/Lottery/PK10.vue')
-        },{
+        }, {
             path: '/choosefive',
             name: 'choosefive',
             component: () => import('@/views/Lottery/chooseFive.vue')
         }
     ]
 });
+
+router.beforeEach(async (to, from, next) => {
+    const {
+        getToken,
+        getUser,
+    } = storeToRefs(useAuthStore());
+
+    console.log("getUser", getUser.value.id);
+
+    if (!getUser.value.id && to.name === "myhome") {
+        next({ name: "my" });
+    }
+    if (!getUser.value.id && to.name == "transfer") {
+        next({ name: "login" });
+    }
+    if (!getUser.value.id && to.name == "withdraw") {
+        next({ name: "login" });
+    }
+    if (!getUser.value.id && to.name == "deposit") {
+        next({ name: "login" });
+    }
+    if (!getUser.value.id && to.name == "records") {
+        next({ name: "login" });
+    }
+    if (!getUser.value.id && to.name == "results") {
+        next({ name: "login" });
+    }
+    if (!getUser.value.id && to.name == "collect") {
+        next({ name: "login" });
+    }
+    if (!getUser.value.id && to.name == "myAccount") {
+        next({ name: "login" });
+    }
+    if (!getUser.value.id && to.name == "contact") {
+        next({ name: "login" });
+    }
+    if (!getUser.value.id && to.name == "transaction") {
+        next({ name: "login" });
+    }
+    if (!getUser.value.id && to.name == "invite") {
+        next({ name: "login" });
+    }
+    if (!getUser.value.id && to.name == 'results') {
+        next({ name: 'login' })
+    }
+    else {
+        next();
+    }
+})
 
 export default router;
