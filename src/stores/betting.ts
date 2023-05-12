@@ -20,23 +20,29 @@ export const bettingStore = defineStore({
     id: "betting",
     state: () => ({
         success: false,
+        errMessage: "",
         betSlipList: [],
+        selectedBetSlipList: [],
         favoriteList: [],
         historyList: [],
         betHistoryList: [],
         favoriteBKList: [],
         historyBKList: [],
         betHistoryBKList: [],
+        betSlipCount: 0
     }),
     getters: {
         getSuccess: (state) => state.success,
         getBetSlipList: (state) => state.betSlipList,
+        getSelectedBetSlipList: (state) => state.selectedBetSlipList,
         getFavoriteList: (state) => state.favoriteList,
         getHistoryList: (state) => state.historyList,
         getBetHistoryList: (state) => state.betHistoryList,
         getFavoriteBKList: (state) => state.favoriteBKList,
         getHistoryBKList: (state) => state.historyBKList,
-        getBetHistoryBKList: (state) => state.betHistoryBKList
+        getBetHistoryBKList: (state) => state.betHistoryBKList,
+        getErrMessage: (state) => state.errMessage,
+        getBetSlipCount: (state) => state.betSlipCount
     },
     actions: {
         setSuccess(success: boolean) {
@@ -45,6 +51,9 @@ export const bettingStore = defineStore({
         setFavoriteList(favoriteItem: any) {
             this.favoriteList.push(favoriteItem);
         },
+        setErrorMessage(message: string) {
+            this.errMessage = message;
+        },
         removeFavoriteList(gid: number) {
             console.log(gid);
             this.favoriteList = this.favoriteList.filter(item => item.gid != gid)
@@ -52,6 +61,7 @@ export const bettingStore = defineStore({
         },
         setFavoriteBKList(favoriteBKItem: any) {
             this.favoriteBKList.push(favoriteBKItem);
+            // this.favoriteBKList = [];
         },
         removeFavoriteBKList(gid: number) {
             console.log(gid);
@@ -64,11 +74,13 @@ export const bettingStore = defineStore({
         setBetHistoryBKList(betHistoryBKList: Array<any>) {
             this.betHistoryBKList = betHistoryBKList;
         },
-        deleteAllBetSlip() {
-            this.betSlipList = [];
+        deleteAllBetSlip(g_type: string) {
+            this.betSlipList = this.betSlipList.filter(item => item["g_type"] !== g_type);
+            this.selectedBetSlipList = [];
         },
-        deleteBetSlip(m_id) {
+        dispatchDeleteBetSlip(m_id: number, g_type: string) {
             this.betSlipList = this.betSlipList.filter(item => item["m_id"] !== m_id);
+            this.selectedBetSlipList = this.betSlipList.filter(item => item["g_type"] === g_type);
         },
         settingGold(gold: number) {
             this.betSlipList.map(item => {
@@ -95,11 +107,17 @@ export const bettingStore = defineStore({
                 this.betSlipList.push(betSlip);
             }
         },
+        setBetSlipCount(betSlipCount: number) {
+            this.betSlipCount = betSlipCount;
+        },
         setHistoryList(historyList: Array<any>) {
             this.historyList = historyList;
         },
         setBetHistoryList(betHistoryList: Array<any>) {
             this.betHistoryList = betHistoryList;
+        },
+        dispatchBetSlipListSelect(g_type: string) {
+            this.selectedBetSlipList = this.betSlipList.filter(item => item["g_type"] === g_type);
         },
         async dispatchBettingInplay(data: object, token: any) {
             try {
@@ -115,8 +133,13 @@ export const bettingStore = defineStore({
                     this.setSuccess(true);
                     console.log("ok");
                 }
-            } catch (e) {
-                return e;
+            } catch (err) {
+                console.log(err.response);
+                if (err.response.status === 400) {
+                    if (err.response.data.message === 'The schedule has been closed!') {
+                        this.setErrorMessage("日程已经关闭！");
+                    }
+                }
             }
         },
         async dispatchBettingToday(data: object, token: any) {
@@ -133,8 +156,13 @@ export const bettingStore = defineStore({
                     this.setSuccess(true);
                     console.log("ok");
                 }
-            } catch (e) {
-                return e;
+            } catch (err: any) {
+                console.log(err.response);
+                if (err.response.status === 400) {
+                    if (err.response.data.message === 'The schedule has been closed!') {
+                        this.setErrorMessage("日程已经关闭！");
+                    }
+                }
             }
         },
         async dispatchBettingChampion(data: object, token: any) {
@@ -169,8 +197,13 @@ export const bettingStore = defineStore({
                     this.setSuccess(true);
                     console.log("ok");
                 }
-            } catch (e) {
-                return e;
+            } catch (err) {
+                console.log(err.response);
+                if (err.response.status === 400) {
+                    if (err.response.data.message === 'The schedule has been closed!') {
+                        this.setErrorMessage("日程已经关闭！");
+                    }
+                }
             }
         },
         async dispatchBettingTemp(data: object, token: any) {
@@ -298,39 +331,8 @@ export const bettingStore = defineStore({
                 const response = await axios.post(`${BASE_URL}${FT_BET_SLIP}`, userName, config);
                 if (response.status === 200) {
                     this.setSuccess(true);
-                    let betSlipHistoryList = [];
-                    response.data.data.map(item => {
-                        let winner = "";
-                        let w_type = item.ShowType.split(",")
-                        switch (w_type) {
-                            case 'H':
-                                winner = item.sport.MB_Team
-                                break;
-                            case 'C':
-                                winner = item.sport.TG_Team
-                                break;
-                            default:
-                                winner = "和局"
-                                break;
-                        }
-                        betSlipHistoryList.push(
-                            {
-                                title: "足球",
-                                type: '', // "Inplay", "Today", "Early", "Champion", "Parlay"
-                                text: item.sport.MB_Team + " VS " + item.sport.TG_Team,
-                                score: item.sport.GetScore,
-                                typeName: item.BetType,
-                                winner: winner,
-                                Odds: item.M_Rate,
-                                money: item.BetScore,
-                                winMoney: item.Gwin,
-                                number: item.OrderID,
-                                time: item.BetTime.split(" ")[1],
-                                place: item.sport.M_League,
-                            }
-                        )
-                    })
-                    this.setBetHistoryList(betSlipHistoryList);
+                    this.setBetSlipCount(response.data.total_count);
+                    this.setBetHistoryList(response.data.data);
                 }
             } catch (e) {
                 return e;

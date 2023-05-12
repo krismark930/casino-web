@@ -7,25 +7,24 @@
 			<div class="center-title">
 				<span>最火</span>
 			</div>
-			<van-cell :title=couponItem.name._text v-for="(couponItem, couponIndex) in coupon" :key="couponIndex"
-				@click="showCouponDetail(couponItem.lid._text, couponIndex)" />
+			<van-cell :title=couponItem.name v-for="(couponItem, couponIndex) in coupon" :key="couponIndex"
+				@click="showCouponDetail(couponItem.lid, couponIndex)" />
 		</div>
 		<div class="region">
 			<div v-for="(regionItem, regionIndex) in region" :key="regionIndex">
 				<div class="divide-background"></div>
-				<div class="center-title" @click="showItem(regionIndex, regionItem._attributes.id)">
-					<span>{{ regionItem._attributes.name }}</span>
-					<img :src="`../../../../../src/assets/flags/${regionItem._attributes.flag_class.split(' ')[1]}.svg`"
-						v-if="regionItem._attributes.flag_class.split(' ')[1] != ''">
+				<div class="center-title" @click="showItem(regionIndex, regionItem.id)">
+					<span>{{ regionItem.name }}</span>
+					<img :src="`https://www.hga030.com/images/flag/${regionItem.flag_class.split(' ')[1]}.svg`"
+						v-if="regionItem.flag_class.split(' ')[1] != ''">
 				</div>
 				<div v-if="regionItem['show']">
 					<div v-if="Array.isArray(regionItem.league)">
-						<van-cell :title=leagueItem._attributes.name v-for="(leagueItem, leagueIndex) in regionItem.league"
-							:key="leagueIndex" @click="showLIDDetail(leagueItem._attributes.id)" />
+						<van-cell :title=leagueItem.name v-for="(leagueItem, leagueIndex) in regionItem.league"
+							:key="leagueIndex" @click="showLIDDetail(leagueItem.id)" />
 					</div>
 					<div v-else>
-						<van-cell :title=regionItem.league._attributes.name
-							@click="showLIDDetail(regionItem.league._attributes.id)" />
+						<van-cell :title=regionItem.league.name @click="showLIDDetail(regionItem.league.id)" />
 					</div>
 				</div>
 			</div>
@@ -52,12 +51,10 @@ export default defineComponent({
 		},
 		receivedBKLeagueEarlyMessage(data: any) {
 			this.loading = false;
-			// this.coupon = [];
+			this.coupon = [];
 			this.region = [];
 			console.log(data);
-			if (data == null) return;
-			if (data["code"]["_text"] === "error") return;
-			console.log(data["coupons"]);
+			if (data == null || data["code"] === "error") return;
 			if (data["coupons"] != undefined) {
 				if (!Array.isArray(data["coupons"]["coupon"])) {
 					this.coupon.push(data["coupons"]["coupon"]);

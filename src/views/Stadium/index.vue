@@ -110,20 +110,20 @@ const checkList = ref([
 		id: 7
 	}
 ])
-const openPopup = () =>{
+const openPopup = () => {
 	show.value = true
 }
-const toggle = (index:number) =>{
+const toggle = (index: number) => {
 
 }
-const toggles = (index:number) =>{
+const toggles = (index: number) => {
 
 }
-const change = () =>{
-  console.log(result.value)
+const change = () => {
+	console.log(result.value)
 }
-const changeAll = () =>{
-  console.log(resultAll.value)
+const changeAll = () => {
+	console.log(resultAll.value)
 }
 // export default {
 // 	methods: {
@@ -140,7 +140,7 @@ const changeAll = () =>{
 <style scoped lang="scss">
 .content_box {
 	padding-top: 43px;
-	padding-bottom: 80px;
+	padding-bottom: 60px;
 }
 
 .search {

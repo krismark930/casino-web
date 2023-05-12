@@ -336,13 +336,10 @@ export default defineComponent({
 				} else {
 					data["show"] = false;
 				}
-				if (ftData[0]["FLAG_CLASS"] != null && ftData[0]["FLAG_CLASS"].includes("flag_GB")) {
-					data["icon"] = new URL('@/assets/flags/flag_GB.svg', import.meta.url).href;
-				} else if (ftData[0]["FLAG_CLASS"] == null) {
+				if (ftData[0]["FLAG_CLASS"] == null || ftData[0]["FLAG_CLASS"] == "") {
 					data["icon"] = "";
 				} else {
-					let flag_url = `../../../../../src/assets/flags/${ftData[0]["FLAG_CLASS"]}.svg`;
-					data["icon"] = new URL(flag_url, import.meta.url).href;
+					data["icon"] = `https://www.hga030.com/images/flag/${ftData[0]["FLAG_CLASS"]}.svg`;
 				}
 				let gameList = [];
 				ftData.forEach(item => {
@@ -368,13 +365,11 @@ export default defineComponent({
 								colorChangeDOwn: false,
 								other: item["UP5"],
 								state: item["UP5"] == 0 ? 2 : 1,
-								type: 2,
 								score: [
 									[
 										{
 											lineType: 4,
-											rType: "MB1TG0",
-											type: 1,
+											rType: "H1C0",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '1-0',
@@ -383,8 +378,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB0TG0",
-											type: 1,
+											rType: "H0C0",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '0-0',
@@ -393,8 +387,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB0TG1",
-											type: 1,
+											rType: "H0C1",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '0-1',
@@ -405,8 +398,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB2TG0",
-											type: 1,
+											rType: "H2C0",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '2-0',
@@ -415,8 +407,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB1TG1",
-											type: 1,
+											rType: "H1C1",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '1-1',
@@ -425,8 +416,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB0TG2",
-											type: 1,
+											rType: "H0C2",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '0-2',
@@ -437,8 +427,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB2TG1",
-											type: 1,
+											rType: "H2C1",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '2-1',
@@ -447,8 +436,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB2TG2",
-											type: 1,
+											rType: "H2C2",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '2-2',
@@ -457,8 +445,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB1TG2",
-											type: 1,
+											rType: "H1C2",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '1-2',
@@ -469,8 +456,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB3TG0",
-											type: 1,
+											rType: "H3C0",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '3-0',
@@ -479,8 +465,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB3TG3",
-											type: 1,
+											rType: "H3C3",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '3-3',
@@ -489,8 +474,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB0TG3",
-											type: 1,
+											rType: "H0C3",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '0-3',
@@ -501,8 +485,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB3TG1",
-											type: 1,
+											rType: "H3C1",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '3-1',
@@ -511,8 +494,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB4TG4",
-											type: 1,
+											rType: "H4C4",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '4-4',
@@ -521,8 +503,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB1TG3",
-											type: 1,
+											rType: "H1C3",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '1-3',
@@ -533,8 +514,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB3TG2",
-											type: 2,
+											rType: "H3C2",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '3-2',
@@ -544,8 +524,7 @@ export default defineComponent({
 										{},
 										{
 											lineType: 4,
-											rType: "MB2TG3",
-											type: 2,
+											rType: "H2C3",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '2-3',
@@ -556,8 +535,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB4TG0",
-											type: 2,
+											rType: "H4C0",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '4-0',
@@ -567,8 +545,7 @@ export default defineComponent({
 										{},
 										{
 											lineType: 4,
-											rType: "MB1TG3",
-											type: 2,
+											rType: "H1C3",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '1-3',
@@ -579,8 +556,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB4TG1",
-											type: 2,
+											rType: "H4C1",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '4-1',
@@ -590,8 +566,7 @@ export default defineComponent({
 										{},
 										{
 											lineType: 4,
-											rType: "MB1TG4",
-											type: 2,
+											rType: "H1C4",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '1-4',
@@ -602,8 +577,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB4TG2",
-											type: 2,
+											rType: "H4C2",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '4-2',
@@ -613,8 +587,7 @@ export default defineComponent({
 										{},
 										{
 											lineType: 4,
-											rType: "MB2TG4",
-											type: 2,
+											rType: "H2C4",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '2-4',
@@ -625,8 +598,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB4TG3",
-											type: 2,
+											rType: "H4C3",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: '4-3',
@@ -636,19 +608,17 @@ export default defineComponent({
 										{},
 										{
 											lineType: 4,
-											rType: "MB3TG1",
-											type: 2,
+											rType: "H3C4",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: '3-1',
-											num: item["MB3TG1"],
-											state: item["MB3TG1"] == 0 ? 2 : 1
+											text: '3-4',
+											num: item["MB3TG4"],
+											state: item["MB3TG4"] == 0 ? 2 : 1
 										}
 									]
 								]
 							}
-						]
-
+						],
 					}
 
 					gameList.push(gameData);

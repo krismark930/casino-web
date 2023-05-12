@@ -5,13 +5,15 @@
             <div class="w-5 text-[10px]">
                 {{ item.title }}
             </div>
-            <div class="w-full  gap-[4px] px-[5px]" :class="[colNumber === 3? 'grid grid-cols-3':'grid grid-cols-4']">
+            <div class="w-full  gap-[4px] px-[5px]" :class="[colNumber === 3 ? 'grid grid-cols-3' : 'grid grid-cols-4']">
                 <div v-for="(subItem, index) in item.buttonList" :key="index" class="">
                     <div v-if="isPK10">
-                        <lottery-red-color-item  :item="subItem" :isImg="false" :isActive="false" :class="[subItem.value? 'bg-white text-blue-500':'bg-white text-blue-500']"/>
+                        <lottery-red-color-item :item="subItem" :isImg="false" :isActive="false"
+                            :class="[subItem.value ? 'bg-white text-blue-500' : 'bg-white text-blue-500']" />
                     </div>
                     <div v-else>
-                        <lottery-always-color-item :item="subItem" :isImg="false" :isActive="false" :class="[subItem.value? 'bg-white text-gray-800':'bg-white text-blue-500']"/>
+                        <lottery-always-color-item :item="subItem" :isImg="false" :isActive="false"
+                            :class="[subItem.value ? 'bg-white text-gray-800' : 'bg-white text-blue-500']" />
                     </div>
                 </div>
             </div>
@@ -30,13 +32,12 @@
 </template>
 
 <script setup lang="ts">
-import {ref, toRefs} from 'vue';
-import LotteryAlwaysColorItem from '@/components/global/lotteryAlwaysColorItem.vue';
+import { ref, toRefs } from 'vue';
+import LotteryAlwaysColorItem from '@/components/global/LotteryAlwaysColorItem.vue';
 import lotteryRedColorItem from '@/components/global/lotteryRedColorItem.vue';
-const state = defineProps<{data:Array<any>, colNumber:number, isPK10:boolean}>();
-const { data , colNumber, isPK10} = toRefs(state);
+const state = defineProps<{ data: Array<any>, colNumber: number, isPK10: boolean }>();
+const { data, colNumber, isPK10 } = toRefs(state);
 
 </script>
 
-<style>
-</style>
+<style></style>

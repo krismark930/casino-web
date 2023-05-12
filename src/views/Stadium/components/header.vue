@@ -12,31 +12,54 @@
 	</div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed } from "vue";
-import { storeToRefs } from 'pinia';
+<script lang="ts">
 import { useAuthStore } from '@/stores/auth';
 import router from '@/router'
 import { useRoute } from 'vue-router';
 
-const emit = defineEmits(['openPopup'])
-const route = useRoute()
-const onClickLeft = () => {
-	if (route.name == 'stadiumshomepage') {
-		router.push({ name: 'home' })
-	} else {
-		router.go(-1)
+export default ({
+	name: "Header",
+	setup() {
+		const route = useRoute();
+		const { dispatchSetMoney } = useAuthStore();
+		return {
+			route,
+			dispatchSetMoney
+		}
+	},
+	data() {
+		return {
+
+		}
+	},
+	sockets: {
+		connect: function () {
+			console.log('socket to notification channel connected')
+		},
+		receivedMoney(money: any) {
+			console.log(money);
+			this.dispatchSetMoney(money);
+		}
+	},
+	methods: {
+		onClickLeft: function () {
+			if (this.route.name == 'stadiumshomepage') {
+				router.push({ name: 'home' })
+			} else {
+				router.go(-1)
+			}
+		},
+		goSubHome: function () {
+			router.push({ name: 'Subhome' })
+		}
+	},
+	computed: {
+		userData: function () {
+			const { getUser } = useAuthStore();
+			return getUser;
+		}
 	}
-}
-const { getUser } = storeToRefs(useAuthStore());
-// const userData = ref(getUser);
-const userData = computed(() => getUser.value)
-const openPopup = () => {
-	emit('openPopup')
-}
-const goSubHome = () => {
-	router.push({ name: 'Subhome' })
-}
+})
 </script>
 
 <style scoped lang="scss">

@@ -1,39 +1,28 @@
 <template>
     <div class="relative w-screen mt-[16px]">
         <div>
-            <div
-                class="flex z-20 h-[37px] bg-[#e8f6ff] px-2 pb-[1.5px] shadow-md text-[12px] overflow-y-none  gap-[9px]"
-            >
-                <button
-                    :class="[
-                        item.id === trendButtonActive
-                            ? 'bg-[#2674ff] text-white'
-                            : 'bg-white text-[#2674ff]'
-                    ]"
+            <div class="flex z-20 h-[37px] bg-[#e8f6ff] px-2 pb-[1.5px] shadow-md text-[12px] overflow-y-none  gap-[9px]">
+                <button :class="[
+                    item.id === trendButtonActive
+                        ? 'bg-[#2674ff] text-white'
+                        : 'bg-white text-[#2674ff]'
+                ]"
                     class="text-white rounded-sm px-[10px] my-[4px] border-blue-300 border w-[80px] whitespace-nowrap"
-                    v-for="(item, index) in buttonList"
-                    :key="index"
-                    @click="selectButton"
-                >
+                    v-for="(item, index) in buttonList" :key="index" @click="selectButton">
                     {{ item.name }}
                 </button>
             </div>
-            <div
-                class="absolute top-0 right-0 flex bg-[#e8f3ff] items-center justify-center px-[12px] h-[37px] pr-[20px] shadow-[-5px_0px_5px_-3px_rgba(0,0,0,0.3)]"
-                @click="selectButton"
-            >
-                <img
-                    src="@/assets/images/fastthree/icon-7.png"
-                    class="w-[20px] h-[20px] mr-[5px] mb-[2px]"
-                />
+            <div class="absolute top-0 right-0 flex bg-[#e8f3ff] items-center justify-center px-[12px] h-[37px] pr-[20px] shadow-[-5px_0px_5px_-3px_rgba(0,0,0,0.3)]"
+                @click="selectButton">
+                <img src="@/assets/images/fastthree/icon-7.png" class="w-[20px] h-[20px] mr-[5px] mb-[2px]" />
                 <p class="text-[8px] text-[#2674ff]">全部<br />玩法</p>
             </div>
         </div>
-        <winning-numbers v-if="trendButtonActive === 1"/>
-        <number-distribution v-if="trendButtonActive === 2"/>
-        <and-value-form v-if="trendButtonActive === 3"/>
+        <winning-numbers v-if="trendButtonActive === 1" />
+        <number-distribution v-if="trendButtonActive === 2" />
+        <and-value-form v-if="trendButtonActive === 3" />
         <value-form v-if="trendButtonActive === 4" />
-        <fish-shrimp-crab  v-if="trendButtonActive === 5" />
+        <fish-shrimp-crab v-if="trendButtonActive === 5" />
 
     </div>
 </template>

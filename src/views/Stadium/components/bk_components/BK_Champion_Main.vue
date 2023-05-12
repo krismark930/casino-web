@@ -57,7 +57,7 @@ export default defineComponent({
 				selectedType: "H", // "H", "C", "N"
 				gameType: "BK",
 				oddFType: "H",
-				active: 1,
+				active: 2,
 				r_type: "",
 				m_date: "",
 				m_start: "",

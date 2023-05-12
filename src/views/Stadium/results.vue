@@ -5,9 +5,14 @@
 				<van-icon class="select_icon" name="arrow-down" />
 				<span>注单</span>
 			</div>
-			<!-- <div class="title_text">
-				100.00 RMB
-			</div> -->
+			<div class="game_box">
+				<div class="game_title">{{ typetext }}</div>
+				<div class="game_item">
+					<van-dropdown-menu>
+						<van-dropdown-item v-model="sportValue" :options="gameList" />
+					</van-dropdown-menu>
+				</div>
+			</div>
 			<div class="select_title delete" v-if="betSlipList.length > 0">
 				<van-icon name="delete-o" @click="deleteBetSlip" color="#FFFFFF" />
 			</div>
@@ -32,12 +37,13 @@
 					</div>
 					<div>
 						<span>{{ item.select_team }}</span>
-						<span class="orange">{{ item.select_team }}</span>
+						<span class="orange">{{ item.title }}</span>
 						<p>@</p>
 						<span class="orange">{{ item.order_rate }}</span>
 					</div>
 					<div class="list_input">
-						<input type="text" placeholder="输入投注金额" @input="goldHandler($event, index)" v-model="item.gold">
+						<input type="text" placeholder="输入投注金额" @input="goldHandler($event, index)" v-model="item.gold"
+							@mousedown="showSingleNumberKey(item['m_id'])">
 						<div>
 							<span v-if="item.gold" class="grey">可赢额</span>
 							<span v-if="item.gold" class="win_text green">{{ item.order_rate > 1 ? (Number(item.gold) *
@@ -51,7 +57,7 @@
 					<span class="input_top">综合过关 @ {{ allOdds.toFixed(2) }}</span>
 					<div class="list_input">
 						<div class="list_input_left">
-							<input type="text" placeholder="输入投注金额" v-model="parlayGold">
+							<input type="text" placeholder="输入投注金额" v-model="parlayGold" @mousedown="showParlayNumberKey">
 						</div>
 						<div>
 							<span class="grey">可赢额</span>
@@ -64,7 +70,7 @@
 					<span class="input_top">单注</span>
 					<div class="list_input">
 						<div class="list_input_left">
-							<input type="text" placeholder="输入投注金额" v-model="singleGold">
+							<input type="text" placeholder="输入投注金额" v-model="singleGold" @mousedown="showTotalNumberKey">
 						</div>
 					</div>
 				</div>
@@ -89,6 +95,9 @@
 				<span>{{ totalWiningGold.toFixed(2) }} RMB</span>
 			</button>
 		</div>
+		<van-number-keyboard v-model="singleValue" :show="singleShow" :maxlength="20" @blur="singleShow = false" />
+		<van-number-keyboard v-model="parlayGold" :show="parlayShow" :maxlength="20" @blur="parlayShow = false" />
+		<van-number-keyboard v-model="singleGold" :show="totalShow" :maxlength="20" @blur="totalShow = false" />
 	</div>
 </template>
 
@@ -102,18 +111,33 @@ import { showToast } from 'vant';
 export default {
 	setup() {
 		const { dispatchUserMoney } = useAuthStore();
-		const { deleteAllBetSlip, settingGold, deleteBetSlip, dispatchMultiBetSlip, dispatchBetSlipParlay } = bettingStore();
+		const { deleteAllBetSlip, settingGold, dispatchBetSlipListSelect, dispatchDeleteBetSlip, dispatchMultiBetSlip, dispatchBetSlipParlay } = bettingStore();
 		return {
 			dispatchUserMoney,
+			dispatchBetSlipListSelect,
 			deleteAllBetSlip,
 			settingGold,
-			deleteBetSlip,
+			dispatchDeleteBetSlip,
 			dispatchMultiBetSlip,
 			dispatchBetSlipParlay
 		};
 	},
 	data() {
 		return {
+			sportValue: 1,
+			gameList: [
+				{
+					text: '足球',
+					value: 1
+				},
+				{
+					text: '篮球',
+					value: 2
+				},
+			],
+			singleShow: false,
+			totalShow: false,
+			parlayShow: false,
 			totalGold: 0,
 			totalWiningGold: 0,
 			allOdds: 1,
@@ -122,6 +146,8 @@ export default {
 			itemSingleGold: 0,
 			itemWinGold: 0,
 			loading: false,
+			singleValue: "",
+			selectedMID: 0,
 		}
 	},
 	computed: {
@@ -162,7 +188,7 @@ export default {
 				let singleGold = this.singleGold === "" ? 0 : this.singleGold;
 				let singleWinGold = 0;
 				this.betSlipList.map(item => {
-					let order_rate = item["order_rate"] > 1 ? item["order_rate"] : item["order_rate"] + 1
+					let order_rate = item["order_rate"] > 1 ? Number(item["order_rate"]) : Number(item["order_rate"]) + 1
 					singleWinGold += singleGold * (order_rate - 1);
 				})
 				totalWinGold = Number(parlayGold) * this.allOdds + singleWinGold;
@@ -171,13 +197,14 @@ export default {
 			return totalWinGold;
 		},
 		betSlipList: function () {
-			const { getBetSlipList } = bettingStore();
-			getBetSlipList.map(item => {
+			this.allOdds = 1;
+			const { getSelectedBetSlipList } = bettingStore();
+			getSelectedBetSlipList.map(item => {
 				let order_rate = item["order_rate"] > 1 ? Number(item["order_rate"]) : Number(item["order_rate"]) + 1
-				console.log(item["order_rate"] > 1);
-				this.allOdds *= (order_rate - 1);
+				this.allOdds *= order_rate;
 			})
-			return getBetSlipList.reverse()
+			this.allOdds -= 1
+			return getSelectedBetSlipList.reverse()
 		}
 	},
 	watch: {
@@ -195,14 +222,44 @@ export default {
 				let order_rate = Number(item["order_rate"]) > 1 ? Number(item["order_rate"]) : Number(item["order_rate"]) + 1
 				this.itemWinGold += Number(item["gold"]) * (order_rate - 1);
 			})
+		},
+		singleValue: function (newValue) {
+			console.log(newValue);
+			this.betSlipList.map(item => {
+				if (item["m_id"] === this.selectedMID) {
+					console.log(this.selectedMID);
+					item.gold = newValue;
+				}
+			})
+		},
+		sportValue: function (newValue: number) {
+			let g_type = newValue == 1 ? "FT" : "BK";
+			console.log(g_type);
+			this.dispatchBetSlipListSelect(g_type);
 		}
 	},
 	mounted() {
 		this.settingGold("");
+		let g_type = this.sportValue == 1 ? "FT" : "BK";
+		this.dispatchBetSlipListSelect(g_type);
 	},
 	methods: {
-		deleteBetSlipByIndex(m_id) {
-			this.deleteBetSlip(m_id);
+		showParlayNumberKey() {
+			this.parlayShow = true;
+		},
+		showTotalNumberKey() {
+			this.totalShow = true;
+		},
+		showSingleNumberKey(mid) {
+			if (this.selectedMID != mid) {
+				this.singleValue = "";
+			}
+			this.selectedMID = mid;
+			this.singleShow = true;
+		},
+		deleteBetSlipByIndex(m_id: number) {
+			let g_type = this.sportValue == 1 ? "FT" : "BK";
+			this.dispatchDeleteBetSlip(m_id, g_type);
 		},
 		goldHandler(event, index) {
 			this.itemSingleGold = 0;
@@ -221,7 +278,8 @@ export default {
 				message: '是否确认删除该注单？',
 			}).then(() => {
 				// on confirm
-				this.deleteAllBetSlip();
+				let g_type = this.sportValue == 1 ? "FT" : "BK";
+				this.deleteAllBetSlip(g_type);
 			}).catch(() => {
 				// on cancel
 			});
@@ -236,7 +294,7 @@ export default {
 					gold: this.parlayGold,
 					m_id: "",
 					type: "",
-					line_type: "",
+					line_type: 8,
 					order_rate: "",
 					r_type: "",
 					text: "",
@@ -250,29 +308,51 @@ export default {
 					t_ball: "",
 					title: "",
 					odd_f_type: "E",
-					g_type: "",
+					g_type: "FT",
 					g_win: (Number(this.parlayGold) * this.allOdds).toFixed(2),
 					bettingCount: this.betSlipList.length,
-					active: 1
+					active: 1,
+					m_type: ""
+				}
+				if (this.betSlipList.length > 10) {
+					showToast("不接受" + this.betSlipList.length + "串过关投注!!");
+					return;
 				}
 				this.betSlipList.map(item => {
 					data["m_id"] += item["m_id"] + ","
 					data["type"] += item["type"] + ","
-					data["line_type"] += item["line_type"] + ","
 					data["order_rate"] += item["order_rate"] + ","
 					data["r_type"] += item["r_type"] + ","
-					data["text"] += item["text"] + ","
+					if (item["text"].substring(0, 2) === "大 ") {
+						item["text"] = "O" + item["text"].split("大 ")[1];
+						data["text"] += item["text"] + ","
+					} else if (item["text"].substring(0, 2) === "小 ") {
+						item["text"] = "U" + item["text"].split("小 ")[1];
+						data["text"] += item["text"] + ","
+					} else if (item["text"].substring(0, 1) == "+" || item["text"].substring(0, 1) == "-") {
+						data["text"] += item["text"].substring(1, item["text"].length) + ","
+					} else {
+						data["text"] += item["text"] + ",";
+					}
 					data["m_team"] += item["m_team"] + ","
 					data["t_team"] += item["t_team"] + ","
 					data["selected_team"] += item["select_team"] + ","
-					data["m_date"] += item["m_date"] + ","
-					data["m_start"] += item["m_start"] + ","
+					data["m_date"] = item["m_date"]
+					data["m_start"] = item["m_start"]
 					data["m_ball"] += item["m_ball"] + ","
 					data["t_ball"] += item["t_ball"] + ","
 					data["league"] += item["league"] + ","
-					data["title"] += item["title"] + ","
-					data["g_type"] += item["g_type"] + ","
+					data["g_type"] = item["g_type"]
+					data["active"] = item["active"]
+					if (item["r_type"] != undefined && item["r_type"] != "") {
+						data["m_type"] += item["r_type"] + ","
+					} else {
+						data["m_type"] += item["m_type"] + ","
+					}
 				})
+
+				data["title"] = this.betSlipList.length + "串1";
+
 				await this.dispatchBetSlipParlay(data, this.token);
 			}
 			if (this.success) {
@@ -292,6 +372,30 @@ export default {
 	position: absolute;
 	left: 50%;
 	bottom: 20%;
+}
+
+.game_box {
+	display: flex;
+	background-color: #00ADFF;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 24px;
+	font-size: 17px;
+	height: 40px;
+
+	.game_item {
+		::v-deep .van-dropdown-menu {
+			width: 106px;
+			height: 31px;
+			border-radius: 31px;
+
+			.van-dropdown-menu__bar {
+				width: 106px;
+				height: 31px;
+				border-radius: 31px;
+			}
+		}
+	}
 }
 
 .results_title {

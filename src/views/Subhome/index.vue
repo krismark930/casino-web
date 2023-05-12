@@ -1,5 +1,8 @@
 <template>
 	<div class="sub_box animated fadeInLeft">
+		<div style="position: absolute; top: 20px; left: 30px;">
+			<van-icon name="arrow-left" size="1rem" @click="goBeforePage" />
+		</div>
 		<div class="user_box">
 			<img src="@/assets/images/stadiums/user.png" alt="">
 			<span>你好，中国赌王</span>
@@ -8,41 +11,44 @@
 		<div class="money">
 			<div>
 				<span>余额</span>
-				<span>RMB 106.33</span>
+				<span>RMB {{ getUser != undefined ? getUser.Money.toFixed(2) : 0 }}</span>
 			</div>
 			<div>
 				<span>未结算注单</span>
-				<span>RMB 0.00</span>
+				<span>RMB {{ Number(notBetScore).toFixed(2) }}</span>
 			</div>
 		</div>
 		<div class="configure">
-			<div v-for="(item, index) in configureList" :key="index" class="flex text-[13px] px-2 py-1 items-center bg-white border-b">
-                <img class="w-[20px] h-[20px]" referrerpolicy="no-referrer"
-                                :src="item.icon" />
-                <div  class="w-full">
-                    <div class="pl-2 flex w-full justify-between items-center">
-                        <p class="">{{item.name}} <span v-if="item.name === '语言'" class="text-orange-100">（{{lang.title}}）</span></p>
-                        <!-- <img class="w-[8px] h-[13px]" src="@/assets/images/my/arrow-right.png"> -->
-                        <div class="relative">
-                            <div class="" @click="openSelectLang(item)">
-                                <img class="w-[8px] h-[13px]" src="@/assets/images/my/arrow-right.png">
-                                <!-- <van-icon class="" name="arrow-down" /> -->
-                            </div>
-                            <div v-if="item.name === '语言'" class="absolute top-3 right-0 bg-gray-500 text-white rounded-sm z-50" v-show="show">
-                                <div v-for="(item,index) in langList" :key="index" @click="selectLang(item)" :class="[lang.id === item.id? ' bg-blue-400 ':'']" class="flex text-[13px] px-2 py-1 items-center w-[280px] rounded-sm">
-                                    <img class="w-[30px] h-[30px]" referrerpolicy="no-referrer"
-                                                    :src="item.icon" />
-                                    <div class="w-full pl-2">
-                                        <p class="text-[15px]">{{item.title}}</p>
-                                        <p class="text-[10px]">{{item.name}}</p>
-                                    </div>
-                                </div>
-                                <p class="bg-gray-400 h-[0.5px]"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+			<div v-for="(item, index) in configureList" :key="index"
+				class="flex text-[13px] px-2 py-1 items-center bg-white border-b">
+				<img class="w-[20px] h-[20px]" referrerpolicy="no-referrer" :src="item.icon" />
+				<div class="w-full">
+					<div class="pl-2 flex w-full justify-between items-center">
+						<p class="">{{ item.name }} <span v-if="item.name === '语言'" class="text-orange-100">（{{ lang.title
+						}}）</span></p>
+						<!-- <img class="w-[8px] h-[13px]" src="@/assets/images/my/arrow-right.png"> -->
+						<div class="relative">
+							<div class="" @click="openSelectLang(item)">
+								<img class="w-[8px] h-[13px]" src="@/assets/images/my/arrow-right.png">
+								<!-- <van-icon class="" name="arrow-down" /> -->
+							</div>
+							<div v-if="item.name === '语言'"
+								class="absolute top-3 right-0 bg-gray-500 text-white rounded-sm z-50" v-show="show">
+								<div v-for="(item, index) in langList" :key="index" @click="selectLang(item)"
+									:class="[lang.id === item.id ? ' bg-blue-400 ' : '']"
+									class="flex text-[13px] px-2 py-1 items-center w-[280px] rounded-sm">
+									<img class="w-[30px] h-[30px]" referrerpolicy="no-referrer" :src="item.icon" />
+									<div class="w-full pl-2">
+										<p class="text-[15px]">{{ item.title }}</p>
+										<p class="text-[10px]">{{ item.name }}</p>
+									</div>
+								</div>
+								<p class="bg-gray-400 h-[0.5px]"></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<!-- <van-cell is-link @click="goDetail((item as any).path, item.name)" v-for="(item, index) in configureList"
 				:key="index">
 				<template #title>
@@ -86,9 +92,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from "vue";
-import router from "@/router"
+import { ref, inject, onMounted, computed } from "vue";
+import router from "@/router";
+import { storeToRefs } from 'pinia';
 import { useI18n } from "vue-i18n";
+import { useAuthStore } from "@/stores/auth";
+import { subHomeStore } from "@/stores/subHome";
+
+const { getUser, getToken } = storeToRefs(useAuthStore());
+const { getNotBetScore } = storeToRefs(subHomeStore());
 
 const t = useI18n()
 const i18n = inject('i18n')
@@ -142,38 +154,38 @@ const configureList = ref([
 ]);
 
 const selectLang = (item: any) => {
-    show.value = false;
-    lang.value = item;
+	show.value = false;
+	lang.value = item;
 }
 const lang = ref({
-        id: 1,
-        icon: new URL("@/assets/images/subhome/select1.png", import.meta.url).href,
-        title: '简体中文',
-        name: '简体中文',
-        lang: 'cn'
-    });
+	id: 1,
+	icon: new URL("@/assets/images/subhome/select1.png", import.meta.url).href,
+	title: '简体中文',
+	name: '简体中文',
+	lang: 'cn'
+});
 const langList = ref([
-    {
-        id: 1,
-        icon: new URL("@/assets/images/subhome/select1.png", import.meta.url).href,
-        title: '简体中文',
-        name: '简体中文',
-        lang: 'cn'
-    },
-    {
-        id: 2,
-        icon: new URL("@/assets/images/subhome/select2.png", import.meta.url).href,
-        title: '繁軆中文',
-        name: '繁軆中文',
-        lang: 'tc'
-    },
-    {
-        id: 3,
-        icon: new URL("@/assets/images/subhome/select3.png", import.meta.url).href,
-        title: 'English',
-        name: '英文（美国',
-        lang: 'en'
-    }
+	{
+		id: 1,
+		icon: new URL("@/assets/images/subhome/select1.png", import.meta.url).href,
+		title: '简体中文',
+		name: '简体中文',
+		lang: 'cn'
+	},
+	{
+		id: 2,
+		icon: new URL("@/assets/images/subhome/select2.png", import.meta.url).href,
+		title: '繁軆中文',
+		name: '繁軆中文',
+		lang: 'tc'
+	},
+	{
+		id: 3,
+		icon: new URL("@/assets/images/subhome/select3.png", import.meta.url).href,
+		title: 'English',
+		name: '英文（美国',
+		lang: 'en'
+	}
 ])
 // const goDetail = (path: string, subName: string) => {
 // 	if (path) {
@@ -184,9 +196,15 @@ const langList = ref([
 // 		}
 // 	}
 // }
-const openSelectLang = (item:any) => {
-	if(item.name === '语言')
-	show.value = true;
+const notBetScore = computed(() => {
+	return getNotBetScore.value;
+})
+const goBeforePage = () => {
+	router.go(-1);
+}
+const openSelectLang = (item: any) => {
+	if (item.name === '语言')
+		show.value = true;
 }
 const Language = (item: any) => {
 	console.log(item)
@@ -196,6 +214,12 @@ const Language = (item: any) => {
 	console.log(t.t('yes'))
 	show.value = false
 }
+onMounted(async () => {
+	const { dispatchNotBetScore } = subHomeStore();
+	if (getUser != undefined) {
+		await dispatchNotBetScore(getToken.value);
+	}
+})
 </script>
 
 <style scoped lang="scss">
