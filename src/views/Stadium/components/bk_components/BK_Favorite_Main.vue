@@ -34,8 +34,7 @@
 					</div>
 				</div>
 				<div class="store_up">
-					<img v-if="data.collection" src="@/assets/images/stadiums/store_in.png" alt=""
-						@click="removeFavorite(item.lid, data.id)">
+					<img src="@/assets/images/stadiums/store_in.png" alt="" @click="removeFavorite(item.lid, data.id)">
 				</div>
 			</div>
 		</div>
@@ -79,7 +78,7 @@ export default defineComponent({
 				selectedType: "H", // "H", "C"
 				gameType: "BK",
 				oddFType: "H",
-				active: 1,
+				active: 2,
 				r_type: "",
 				text: "",
 				m_date: "",
@@ -90,11 +89,13 @@ export default defineComponent({
 			changedBKDataList: [],
 			tempBKDataList: [],
 		}
-	}, sockets: {
+	},
+	sockets: {
 		connect: function () {
 			console.log('socket to notification channel connected')
 		},
 		receivedBKFavoriteMessage: function (data: any) {
+			this.changedBKDataList = [];
 			this.loading = false;
 			console.log('receivedBKEarlyMessage', data);
 			if (data == null || data.length == 0) return;
@@ -134,11 +135,6 @@ export default defineComponent({
 					} else if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][2].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][2].num) < 0) {
 						this.changedBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][2].colorChangeUp = true;
 					}
-					if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].num) > 0) {
-						this.changedBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].colorChangeDown = true;
-					} else if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].num) < 0) {
-						this.changedBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].colorChangeUp = true;
-					}
 
 					if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][0].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][0].num) > 0) {
 						this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][0].colorChangeDown = true;
@@ -155,11 +151,6 @@ export default defineComponent({
 					} else if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][2].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][2].num) < 0) {
 						this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][2].colorChangeUp = true;
 					}
-					if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].num) > 0) {
-						this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].colorChangeDown = true;
-					} else if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].num) < 0) {
-						this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].colorChangeUp = true;
-					}
 
 				}
 			}
@@ -167,9 +158,9 @@ export default defineComponent({
 		}
 	},
 	computed: {
-		favoriteList: function () {
-			const { getFavoriteList } = bettingStore();
-			return getFavoriteList;
+		favoriteBKList: function () {
+			const { getFavoriteBKList } = bettingStore();
+			return getFavoriteBKList;
 		}
 	},
 	watch: {
@@ -179,7 +170,7 @@ export default defineComponent({
 			this.loading = true;
 			console.log(id);
 			this.removeFavoriteBKList(id);
-			this.$socket.emit("sendBKFavoriteMessage", this.favoriteList);
+			this.$socket.emit("sendBKFavoriteMessage", this.favoriteBKList);
 		},
 		showDetail: function (lid) {
 			console.log(lid);
@@ -192,7 +183,6 @@ export default defineComponent({
 		},
 		bkDataChange: function (bkDataList) {
 			this.tempBKDataList = this.changedBKDataList;
-			this.changedBKDataList = [];
 			bkDataList.forEach(bkData => {
 				let data = {} as object;
 				data["lid"] = bkData[0]["LID"];
@@ -209,14 +199,13 @@ export default defineComponent({
 				if (bkData[0]["FLAG_CLASS"] == null) {
 					data["icon"] = "";
 				} else {
-					let flag_url = `../../../../../src/assets/flags/${bkData[0]["FLAG_CLASS"]}.svg`;
-					data["icon"] = new URL(flag_url, import.meta.url).href;
+					data["icon"] = `https://www.hga030.com/images/flag/${bkData[0]["FLAG_CLASS"]}.svg`;
 				}
 				let gameList = [];
 				bkData.forEach(item => {
 					let titleList = [
 						{
-							text: item["M_Start"]
+							text: ""
 						},
 						{
 							text: '让球'
@@ -225,115 +214,293 @@ export default defineComponent({
 							text: '总分'
 						},
 						{
-							text: '第一队得分'
+							text: '单/双'
 						},
-						{
-							text: '第二队得分'
-						}
+						// {
+						// 	text: '第一队得分'
+						// },
+						// {
+						// 	text: '第二队得分'
+						// }
 					];
-					let gameData = {
-						id: item["MID"],
-						ecid: item["ECID"],
-						m_date: item["M_Date"],
-						m_start: item["M_Start"],
-						titleList: titleList,
-						collection: false,
-						scoreList: [
-							{
-								goalsScored: item["MB_Ball"],
-								name: item["MB_Team"],
-								nums: [
-									{
-										lineType: 1,
-										bettingType: "H",
-										oddFType: "H",
-										type: item["MB_LetB_Rate"] == 0 ? 2 : 1,
-										colorChangeUp: false,
-										colorChangeDOwn: false,
-										text: (Number(item["MB_LetB_Rate"])) > (Number(item["TG_LetB_Rate"])) ? "-" + item["M_LetB"] : "+" + item["M_LetB"],
-										num: item["MB_LetB_Rate"] == 0 ? 0 : (Number(item["MB_LetB_Rate"])).toFixed(2)
-									},
-									{
-										lineType: 2,
-										bettingType: "H",
-										oddFType: "H",
-										type: item["MB_Dime_Rate"] == 0 ? 2 : 1,
-										colorChangeUp: false,
-										colorChangeDOwn: false,
-										text: item['MB_Dime'],
-										num: item["MB_Dime_Rate"] == 0 ? 0 : (Number(item['MB_Dime_Rate'])).toFixed(2)
-									},
-									{
-										lineType: 3,
-										bettingType: "H",
-										oddFType: "E",
-										type: item["MB_Points_Rate_1"] == 0 ? 2 : 1,
-										colorChangeUp: false,
-										colorChangeDOwn: false,
-										text: item["MB_Points_1"],
-										num: (Number(item["MB_Points_Rate_1"])).toFixed(2)
-									},
-									{
-										lineType: 4,
-										bettingType: "H",
-										oddFType: "E",
-										type: item["MB_Points_Rate_2"] == 0 ? 2 : 1,
-										colorChangeUp: false,
-										colorChangeDOwn: false,
-										text: item["MB_Points_2"],
-										num: (Number(item["MB_Points_Rate_2"])).toFixed(2)
-									},
-								]
-							},
-							{
-								goalsScored: item["TG_Ball"],
-								name: item["TG_Team"],
-								nums: [
-									{
-										lineType: 1,
-										bettingType: "C",
-										oddFType: "H",
-										type: item["TG_LetB_Rate"] == 0 ? 2 : 1,
-										colorChangeUp: false,
-										colorChangeDOwn: false,
-										text: (Number(item["MB_LetB_Rate"])) < (Number(item["TG_LetB_Rate"])) ? "-" + item["M_LetB"] : "+" + item["M_LetB"],
-										num: item["TG_LetB_Rate"] == 0 ? 0 : (Number(item["TG_LetB_Rate"])).toFixed(2)
-									},
-									{
-										lineType: 2,
-										bettingType: "C",
-										oddFType: "H",
-										type: item["TG_Dime_Rate"] == 0 ? 2 : 1,
-										colorChangeUp: false,
-										colorChangeDOwn: false,
-										text: item['TG_Dime'],
-										num: item["TG_Dime_Rate"] == 0 ? 0 : (Number(item['TG_Dime_Rate'])).toFixed(2)
-									},
-									{
-										lineType: 3,
-										bettingType: "C",
-										oddFType: "E",
-										type: item["TG_Points_Rate_1"] == 0 ? 2 : 1,
-										colorChangeUp: false,
-										colorChangeDOwn: false,
-										text: item["TG_Points_1"],
-										num: Number(item["TG_Points_Rate_1"]).toFixed(2)
-									},
-									{
-										lineType: 4,
-										bettingType: "C",
-										oddFType: "E",
-										type: item["TG_Points_Rate_2"] == 0 ? 2 : 1,
-										colorChangeUp: false,
-										colorChangeDOwn: false,
-										text: item["TG_Points_2"],
-										num: Number(item["TG_Points_Rate_2"]).toFixed(2)
-									},
-								]
-							},
-						],
+					if (item["showType"] === "rb") {
+
+						switch (item["NOW_SESSION"]) {
+							case "Q1":
+								titleList[0].text = "第一节 " + item["Retime"];
+								break;
+							case "Q2":
+								titleList[0].text = "第二节 " + item["Retime"];
+								break;
+							case "Q3":
+								titleList[0].text = "第三节 " + item["Retime"];
+								break;
+							case "Q4":
+								titleList[0].text = "第四节 " + item["Retime"];
+								break;
+							case "HT":
+								titleList[0].text = "半场 " + item["Retime"];
+								break;
+
+						}
+						let gameData = {
+							showType: item["showType"],
+							id: item["MID"],
+							ecid: item["ECID"],
+							m_date: item["M_Date"],
+							m_start: item["M_Start"],
+							titleList: titleList,
+							scoreList: [
+								{
+									goalsScored: item["MB_Ball"],
+									name: item["MB_Team"],
+									nums: [
+										{
+											lineType: 9,
+											mType: "RRH",
+											bettingType: "H",
+											oddFType: "H",
+											type: item["MB_LetB_Rate_RB"] == 0 ? 2 : 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: (Number(item["MB_LetB_Rate_RB"])) > (Number(item["TG_LetB_Rate_RB"])) ? "-" + item["M_LetB_RB"] : "+" + item["M_LetB_RB"],
+											num: item["MB_LetB_Rate_RB"] == 0 ? 0 : (Number(item["MB_LetB_Rate_RB"])).toFixed(2)
+										},
+										{
+											lineType: 10,
+											mType: "ROUH",
+											bettingType: "H",
+											oddFType: "H",
+											type: item["MB_Dime_Rate_RB"] == 0 ? 2 : 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["MB_Dime_RB"] == "" ? "" : "大 " + item["MB_Dime_RB"].split("O")[1],
+											num: item["MB_Dime_Rate_RB"] == 0 ? 0 : (Number(item['MB_Dime_Rate_RB'])).toFixed(2)
+										},
+										{
+											lineType: 5,
+											r_type: "ODD",
+											mType: "",
+											bettingType: "H",
+											type: item["S_Single_Rate"] == 0 ? 2 : 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: "单",
+											num: item["S_Single_Rate"] == 0 ? 0 : (Number(item["S_Single_Rate"])).toFixed(2)
+										},
+										// {
+										// 	lineType: 11,
+										// 	bettingType: "H",
+										// 	oddFType: "E",
+										// 	type: item["MB_Points_Rate_RB_1"] == 0 ? 2 : 1,
+										// 	colorChangeUp: false,
+										// 	colorChangeDOwn: false,
+										// 	text: item["MB_Points_RB_1"],
+										// 	num: (Number(item["MB_Points_Rate_RB_1"])).toFixed(2)
+										// },
+										// {
+										// 	lineType: 12,
+										// 	bettingType: "H",
+										// 	oddFType: "E",
+										// 	type: item["MB_Points_Rate_RB_2"] == 0 ? 2 : 1,
+										// 	colorChangeUp: false,
+										// 	colorChangeDOwn: false,
+										// 	text: item["MB_Points_RB_2"],
+										// 	num: (Number(item["MB_Points_Rate_RB_2"])).toFixed(2)
+										// },
+									]
+								},
+								{
+									goalsScored: item["TG_Ball"],
+									name: item["TG_Team"],
+									nums: [
+										{
+											lineType: 9,
+											mType: "RRC",
+											bettingType: "H",
+											oddFType: "H",
+											type: item["TG_LetB_Rate_RB"] == 0 ? 2 : 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: (Number(item["MB_LetB_Rate_RB"])) < (Number(item["TG_LetB_Rate_RB"])) ? "-" + item["M_LetB_RB"] : "+" + item["M_LetB_RB"],
+											num: item["TG_LetB_Rate_RB"] == 0 ? 0 : (Number(item["TG_LetB_Rate_RB"])).toFixed(2)
+										},
+										{
+											lineType: 10,
+											mType: "ROUC",
+											bettingType: "H",
+											oddFType: "H",
+											type: item["TG_Dime_Rate_RB"] == 0 ? 2 : 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["TG_Dime_RB"] == "" ? "" : "小 " + item["TG_Dime_RB"].split("U")[1],
+											num: item["TG_Dime_Rate_RB"] == 0 ? 0 : (Number(item['TG_Dime_Rate_RB'])).toFixed(2)
+										},
+										{
+											lineType: 5,
+											mType: "",
+											r_type: "EVEN",
+											bettingType: "H",
+											type: item["S_Double_Rate"] == 0 ? 2 : 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: "双",
+											num: item["S_Double_Rate"] == 0 ? 0 : (Number(item["S_Double_Rate"])).toFixed(2)
+										},
+										// {
+										// 	lineType: 11,
+										// 	bettingType: "H",
+										// 	oddFType: "E",
+										// 	type: item["TG_Points_Rate_RB_1"] == 0 ? 2 : 1,
+										// 	colorChangeUp: false,
+										// 	colorChangeDOwn: false,
+										// 	text: item["TG_Points_RB_1"],
+										// 	num: Number(item["TG_Points_Rate_RB_1"]).toFixed(2)
+										// },
+										// {
+										// 	lineType: 12,
+										// 	bettingType: "H",
+										// 	oddFType: "E",
+										// 	type: item["TG_Points_Rate_RB_2"] == 0 ? 2 : 1,
+										// 	colorChangeUp: false,
+										// 	colorChangeDOwn: false,
+										// 	text: item["TG_Points_RB_2"],
+										// 	num: Number(item["TG_Points_Rate_RB_2"]).toFixed(2)
+										// },
+									]
+								},
+							],
+						}
+						gameList.push(gameData);
+					} else {
+						titleList[0].text = item["M_Start"];
+						let gameData = {
+							showType: item["showType"],
+							id: item["MID"],
+							ecid: item["ECID"],
+							m_date: item["M_Date"],
+							m_start: item["M_Start"],
+							titleList: titleList,
+							scoreList: [
+								{
+									goalsScored: item["MB_Ball"],
+									name: item["MB_Team"],
+									nums: [
+										{
+											lineType: 2,
+											mType: "RH",
+											bettingType: "H",
+											type: item["MB_LetB_Rate"] == 0 ? 2 : 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["M_LetB"] !== "" ? "+" + item["M_LetB"] : "",
+											num: item["MB_LetB_Rate"] == 0 ? 0 : (Number(item["MB_LetB_Rate"])).toFixed(2)
+										},
+										{
+											lineType: 3,
+											mType: "OUH",
+											bettingType: "H",
+											type: item["MB_Dime_Rate"] == 0 ? 2 : 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["MB_Dime"] == "" ? "" : "大 " + item["MB_Dime"].split("O")[1],
+											num: item["MB_Dime_Rate"] == 0 ? 0 : (Number(item['MB_Dime_Rate'])).toFixed(2)
+										},
+										{
+											lineType: 5,
+											r_type: "ODD",
+											mType: "",
+											bettingType: "H",
+											type: item["S_Single_Rate"] == 0 ? 2 : 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: "单",
+											num: item["S_Single_Rate"] == 0 ? 0 : (Number(item["S_Single_Rate"])).toFixed(2)
+										},
+										// {
+										// 	lineType: 3,
+										// 	bettingType: "H",
+										// 	oddFType: "E",
+										// 	type: item["MB_Points_Rate_1"] == 0 ? 2 : 1,
+										// 	colorChangeUp: false,
+										// 	colorChangeDOwn: false,
+										// 	text: item["MB_Points_1"],
+										// 	num: (Number(item["MB_Points_Rate_1"])).toFixed(2)
+										// },
+										// {
+										// 	lineType: 4,
+										// 	bettingType: "H",
+										// 	oddFType: "E",
+										// 	type: item["MB_Points_Rate_2"] == 0 ? 2 : 1,
+										// 	colorChangeUp: false,
+										// 	colorChangeDOwn: false,
+										// 	text: item["MB_Points_2"],
+										// 	num: (Number(item["MB_Points_Rate_2"])).toFixed(2)
+										// },
+									]
+								},
+								{
+									goalsScored: item["TG_Ball"],
+									name: item["TG_Team"],
+									nums: [
+										{
+											lineType: 2,
+											mType: "RC",
+											bettingType: "H",
+											type: item["TG_LetB_Rate"] == 0 ? 2 : 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["M_LetB"] !== "" ? "-" + item["M_LetB"] : "",
+											num: item["TG_LetB_Rate"] == 0 ? 0 : (Number(item["TG_LetB_Rate"])).toFixed(2)
+										},
+										{
+											lineType: 3,
+											mType: "OUC",
+											bettingType: "H",
+											type: item["TG_Dime_Rate"] == 0 ? 2 : 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["TG_Dime"] == "" ? "" : "小 " + item["TG_Dime"].split("U")[1],
+											num: item["TG_Dime_Rate"] == 0 ? 0 : (Number(item['TG_Dime_Rate'])).toFixed(2)
+										},
+										{
+											lineType: 5,
+											mType: "",
+											r_type: "EVEN",
+											bettingType: "H",
+											type: item["S_Double_Rate"] == 0 ? 2 : 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: "双",
+											num: item["S_Double_Rate"] == 0 ? 0 : (Number(item["S_Double_Rate"])).toFixed(2)
+										},
+										// {
+										// 	lineType: 3,
+										// 	bettingType: "H",
+										// 	oddFType: "E",
+										// 	type: item["TG_Points_Rate_1"] == 0 ? 2 : 1,
+										// 	colorChangeUp: false,
+										// 	colorChangeDOwn: false,
+										// 	text: item["TG_Points_1"],
+										// 	num: Number(item["TG_Points_Rate_1"]).toFixed(2)
+										// },
+										// {
+										// 	lineType: 4,
+										// 	bettingType: "H",
+										// 	oddFType: "E",
+										// 	type: item["TG_Points_Rate_2"] == 0 ? 2 : 1,
+										// 	colorChangeUp: false,
+										// 	colorChangeDOwn: false,
+										// 	text: item["TG_Points_2"],
+										// 	num: Number(item["TG_Points_Rate_2"]).toFixed(2)
+										// },
+									]
+								},
+							],
+						}
+						gameList.push(gameData);
+
 					}
-					gameList.push(gameData);
 				})
 				data["gameList"] = gameList;
 				this.changedBKDataList.push(data);
@@ -341,20 +508,27 @@ export default defineComponent({
 		},
 		handleModal: function (leagueData, gameData, dataList, rateData, numIndex) {
 			console.log(numIndex);
+			if (gameData["showType"] === "rb") {
+				this.bettingType = "Inplay"
+			} else {
+				this.bettingType = "Today";
+			}
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["m_date"] = gameData["m_date"];
 			this.bettingOrderData["m_start"] = gameData["m_start"];
+			this.bettingOrderData["gameType"] = "BK";
 			this.bettingOrderData["m_ball"] = gameData.scoreList[0].goalsScored;
 			this.bettingOrderData["t_ball"] = gameData.scoreList[1].goalsScored;
 			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
 			this.bettingOrderData["tgTeam"] = gameData.scoreList[1].name;
 			this.bettingOrderData["rate"] = rateData.num;
+			this.bettingOrderData['r_type'] = rateData.r_type;
 			this.bettingOrderData["lineType"] = rateData.lineType;
+			this.bettingOrderData["mType"] = rateData.mType;
 			this.bettingOrderData['selectedType'] = rateData.bettingType;
 			this.bettingOrderData["league"] = leagueData.name;
 			this.bettingOrderData["title"] = gameData.titleList[numIndex + 1].text;
 			this.bettingOrderData["selectedTeam"] = dataList.name;
-			this.bettingOrderData["oddFType"] = rateData.oddFType;
 			this.bettingOrderData["text"] = rateData.text
 			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
 			else this.openModal = true;
@@ -364,8 +538,12 @@ export default defineComponent({
 		},
 	},
 	mounted() {
-		this.loading = true;
-		this.$socket.emit("sendBKFavoriteMessage", this.favoriteList);
+		console.log(this.favoriteBKList);
+		if (this.favoriteBKList.length > 0) {
+			this.$socket.emit("sendBKFavoriteMessage", this.favoriteBKList);
+		} else {
+			this.loading = false;
+		}
 	},
 	unmounted() {
 		this.$socket.emit("stopBKFavoriteMessage");
@@ -464,7 +642,7 @@ export default defineComponent({
 		}
 
 		div:first-child {
-			width: 83px;
+			width: 120px;
 			margin-right: 13px;
 			text-align: left;
 		}

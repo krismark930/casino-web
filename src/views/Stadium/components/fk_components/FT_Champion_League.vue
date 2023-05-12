@@ -5,19 +5,19 @@
 		<div class="region">
 			<div v-for="(regionItem, regionIndex) in region" :key="regionIndex">
 				<div class="divide-background"></div>
-				<div class="center-title" @click="showItem(regionIndex, regionItem._attributes.id)">
-					<span>{{ regionItem._attributes.name }}</span>
-					<img :src="`../../../../../src/assets/flags/${regionItem._attributes.flag_class.split(' ')[1]}.svg`"
-						v-if="regionItem._attributes.flag_class.split(' ')[1] != ''">
+				<div class="center-title" @click="showItem(regionIndex, regionItem.id)">
+					<span>{{ regionItem.name }}</span>
+					<img :src="`https://www.hga030.com/images/flag/${regionItem.flag_class.split(' ')[1]}.svg`"
+						v-if="regionItem.flag_class.split(' ')[1] != ''">
 				</div>
 				<div v-if="regionItem['show']">
 					<div v-if="Array.isArray(regionItem.league)">
-						<van-cell :title=leagueItem._attributes.name v-for="(leagueItem, leagueIndex) in regionItem.league"
-							:key="leagueIndex" @click="showLIDDetail(leagueItem._attributes.id, regionItem.name)" />
+						<van-cell :title=leagueItem.name v-for="(leagueItem, leagueIndex) in regionItem.league"
+							:key="leagueIndex" @click="showLIDDetail(leagueItem.id, regionItem.name)" />
 					</div>
 					<div v-else>
-						<van-cell :title=regionItem.league._attributes.name
-							@click="showLIDDetail(regionItem.league._attributes.id, regionItem.name)" />
+						<van-cell :title=regionItem.league.name
+							@click="showLIDDetail(regionItem.league.id, regionItem.name)" />
 					</div>
 				</div>
 			</div>
@@ -44,9 +44,14 @@ export default defineComponent({
 		},
 		receivedLeagueChampionMessage(data: any) {
 			this.loading = false;
-			if (data == null) return;
-			if (data["code"]["_text"] === "error") return;
-			this.region = data["classifier"]["region"];
+			if (data == null || data["code"] === "error") return;
+			if (data["classifier"] != undefined) {
+				if (!Array.isArray(data["classifier"]["region"])) {
+					this.region.push(data["classifier"]["region"]);
+				} else {
+					this.region = data["classifier"]["region"];
+				}
+			}
 			this.region.map(item => {
 				item["show"] = false;
 			})

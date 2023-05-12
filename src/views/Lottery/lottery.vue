@@ -21,48 +21,20 @@
 			<div class="user_box">
 				<div class="user_left">
 					<span class="s1">欢迎您，</span>
-					<span class="s1">AC123456</span>
+					<span class="s1">{{ user.UserName }}</span>
 				</div>
 				<div class="user_right">
 					<span class="t1">￥</span>
-					<span class="t2">0.00</span>
+					<span class="t2">{{ user.Money == undefined ? "0.00" : user.Money }}</span>
 					<img src="@/assets/images/lottery/looding.png" alt="">
 				</div>
 			</div>
-			<div class="tab_box">
-				<div class="tab_left">
-					<div class="tab_item" v-for="(item) in tabList" @click="getTab(item.id)" :key='item.name'>
-						<img class="icon_img" :src="active == item.id ? item.activeImg : item.img" alt="">
-						<span :class="{ select: active == item.id }">{{ item.name }}</span>
-						<img class="back_img" :src="active == item.id ? backImg : backImgo" alt="">
-
-					</div>
-				</div>
-				<div class="tab_right">
-					<div class="tab_right_box">
-						<div class="tab_right_item" v-for="(item, index) in tabItemList[active - 1]" :key='index' @click="goDetail(item.path)">
+			<div class="hall_box animated fadeInLeft">
+				<div class="tab_bottom">
+					<div class="tab_bottom_box">
+						<div class="tab_bottom_item" v-for="(item, index) in tabItemList" :key='index' @click="goDetail(item.path)">
 							<span v-if="item.name">{{ item.name }}</span>
-							<img v-if="item.img" class="item_icon" :src="item.img" alt="">
-						</div>
-					</div>
-					<img @click="goHall" class="hall" src="@/assets/images/lottery/hall.png" alt="">
-				</div>
-			</div>
-			<div class="winning_list">
-				<div class="win_title">
-					<img src="@/assets/images/lottery/win.png" alt="">
-					<h3>最新中奖榜</h3>
-				</div>
-				<div class="win_box">
-					<div class="win_box_item" v-for="(item, index) in 4" :key="index">
-						<div class="win_item_left">
-							<span class="phone">185****152</span>
-							<span>安徽快三</span>
-						</div>
-						<div class="win_item_right">
-							喜中
-							<span>1,000,00</span>
-							元
+							<img v-if="item.img" class="item_icon" :src="(item as any).img" alt="">
 						</div>
 					</div>
 				</div>
@@ -72,215 +44,178 @@
 </template>
 
 <script setup lang="ts">
-import router from "@/router";
-import { ref } from "vue";
-const active = ref(1);
-const backImg = ref(new URL("@/assets/images/lottery/back-o.png", import.meta.url).href)
-const backImgo = ref(new URL("@/assets/images/lottery/back.png", import.meta.url).href)
-const tabList = ref([
-	{
-		id: 1,
-		img: new URL("@/assets/images/lottery/kuaisan.png", import.meta.url).href,
-		activeImg: new URL("@/assets/images/lottery/kuaisan-o.png", import.meta.url).href,
-		name: '快三'
-	},
-	{
-		id: 2,
-		img: new URL("@/assets/images/lottery/shishi.png", import.meta.url).href,
-		activeImg: new URL("@/assets/images/lottery/shishi-o.png", import.meta.url).href,
-		name: '时时彩'
-	},
-	{
-		id: 3,
-		img: new URL("@/assets/images/lottery/pk10.png", import.meta.url).href,
-		activeImg: new URL("@/assets/images/lottery/pk10-o.png", import.meta.url).href,
-		name: 'PK10'
-	},
-	{
-		id: 4,
-		img: new URL("@/assets/images/lottery/xuanwu.png", import.meta.url).href,
-		activeImg: new URL("@/assets/images/lottery/xuanwu.png", import.meta.url).href,
-		name: '11选5'
-	},
-	{
-		id: 5,
-		img: new URL("@/assets/images/lottery/liuhe.png", import.meta.url).href,
-		activeImg: new URL("@/assets/images/lottery/liuhe-o.png", import.meta.url).href,
-		name: '六合彩'
-	}
-])
+import { useAuthStore } from '@/stores/auth';
+import {useRouter} from "vue-router";
+import { ref, computed } from "vue";
+import { storeToRefs } from "pinia";
+const router = useRouter();
 const tabItemList = ref([
-	[
-		{
-			name: '好运快三',
-			img: new URL("@/assets/images/lottery/kuaisan1.png", import.meta.url).href,
-			path: 'fastthree'
-		},
-		{
-			name: '欢乐快三',
-			img: new URL("@/assets/images/lottery/kuaisan2.png", import.meta.url).href,
-			path: 'fastthree'
-		},
-		{
-			name: '安徽快三',
-			img: new URL("@/assets/images/lottery/kuaisan3.png", import.meta.url).href,
-			path: 'fastthree'
-		},
-		{
-			name: '上海快三',
-			img: new URL("@/assets/images/lottery/kuaisan4.png", import.meta.url).href,
-			path: 'fastthree'
-		},
-		{
-			name: '重庆快三',
-			img: new URL("@/assets/images/lottery/kuaisan5.png", import.meta.url).href,
-			path: 'fastthree'
-		},
-		{
-			name: '江苏快三',
-			img: new URL("@/assets/images/lottery/kuaisan6.png", import.meta.url).href,
-			path: 'fastthree'
-		}
-	],
-	[
-		{
-			name: '江西时时彩',
-			img: new URL("@/assets/images/lottery/shishi1.png", import.meta.url).href,
-			path: 'alwayscolor'
-		},
-		{
-			name: '腾讯分分彩',
-			img: new URL("@/assets/images/lottery/shishi2.png", import.meta.url).href,
-			path: 'alwayscolor'
-		},
-		{
-			name: '幸运时时彩',
-			img: new URL("@/assets/images/lottery/shishi3.png", import.meta.url).href,
-			path: 'alwayscolor'
-		},
-		{
-			name: '10分时时彩',
-			img: new URL("@/assets/images/lottery/shishi4.png", import.meta.url).href,
-			path: 'alwayscolor'
-		},
-		{
-			name: '天津时时彩',
-			img: new URL("@/assets/images/lottery/shishi5.png", import.meta.url).href,
-			path: 'alwayscolor'
-		},
-		{
-			name: '五分时时彩',
-			img: new URL("@/assets/images/lottery/shishi6.png", import.meta.url).href,
-			path: 'alwayscolor'
-		}
-	],
-	[
-		{
-			name: '北京PK10',
-			img: new URL("@/assets/images/lottery/pk10-1.png", import.meta.url).href,
-			path: 'pk10'
-		},
-		{
-			name: '幸运飞艇',
-			img: new URL("@/assets/images/lottery/pk10-2.png", import.meta.url).href,
-			path: 'pk10'
-		},
-		{
-			name: '好运飞艇',
-			img: new URL("@/assets/images/lottery/pk10-3.png", import.meta.url).href,
-			path: 'pk10'
-		},
-		{
-			name: '马耳他飞艇',
-			img: new URL("@/assets/images/lottery/pk10-4.png", import.meta.url).href,
-			path: 'pk10'
-		},
-		{
-			name: '急速飞艇',
-			img: new URL("@/assets/images/lottery/pk10-5.png", import.meta.url).href,
-			path: 'pk10'
-		},
-		{
-			name: '五分PK10',
-			img: new URL("@/assets/images/lottery/pk10-6.png", import.meta.url).href,
-			path: 'pk10'
-		}
-	],
-	[
-		{
-			name: '极速11选5',
-			img: new URL("@/assets/images/lottery/xuanwu1.png", import.meta.url).href,
-			path: 'choosefive'
-		},
-		{
-			name: '幸运11选5',
-			img: new URL("@/assets/images/lottery/xuanwu2.png", import.meta.url).href,
-			path: 'choosefive'
-		},
-		{
-			name: '竞速11选5',
-			img: new URL("@/assets/images/lottery/xuanwu3.png", import.meta.url).href,
-			path: 'choosefive'
-		},
-		{
-			name: '',
-			img: '',
-			path: 'choosefive'
-		},
-		{
-			name: '',
-			img: '',
-			path: 'choosefive'
-		},
-		{
-			name: '',
-			img: '',
-			path: 'choosefive'
-		}
-	],
-	[
-		{
-			name: '极速六合彩',
-			img: new URL("@/assets/images/lottery/liuhe1.png", import.meta.url).href,
-			path: 'alwayscolor'
-		},
-		{
-			name: '5分六合彩',
-			img: new URL("@/assets/images/lottery/liuhe2.png", import.meta.url).href,
-			path: 'alwayscolor'
-		},
-		{
-			name: '香港六合彩',
-			img: new URL("@/assets/images/lottery/liuhe3.png", import.meta.url).href,
-			path: 'alwayscolor'
-		},
-		{
-			name: '澳门六合彩',
-			img: new URL("@/assets/images/lottery/liuhe4.png", import.meta.url).href,
-			path: 'alwayscolor'
-		},
-		{
-			name: '',
-			img: '',
-			path: 'alwayscolor'
-		},
-		{
-			name: '',
-			img: '',
-			path: 'alwayscolor'
-		}
-	],
+	{
+		name: '重庆时时彩',
+		img: new URL("@/assets/images/lottery/kuaisan1.png", import.meta.url).href,
+		path: "CQSSC"
+	},
+	{
+		name: '河内五分彩',
+		img: new URL("@/assets/images/lottery/kuaisan2.png", import.meta.url).href,
+		path: "FFC5"
+	},
+	// {
+	// 	name: '腾讯时时彩',
+	// 	img: new URL("@/assets/images/lottery/kuaisan3.png", import.meta.url).href,
+	// 	path: "TXSSC"
+	// },
+	// {
+	// 	name: '台湾时时彩',
+	// 	img: new URL("@/assets/images/lottery/kuaisan4.png", import.meta.url).href,
+	// 	path: "TWSSC"
+	// },
+	{
+		name: '澳洲幸运5',
+		img: new URL("@/assets/images/lottery/shishi1.png", import.meta.url).href,
+		path: "AZXY5"
+	},
+	{
+		name: '澳洲幸运10',
+		img: new URL("@/assets/images/lottery/shishi2.png", import.meta.url).href,
+		path: "AZXY10"
+	},
+	{
+		name: '幸运飞艇',
+		img: new URL("@/assets/images/lottery/shishi3.png", import.meta.url).href,
+		path: "XYFT"
+	},
+	{
+		name: '北京PK拾',
+		img: new URL("@/assets/images/lottery/shishi4.png", import.meta.url).href,
+		path: "BJPK"
+	},
+	{
+		name: '天津时时彩',
+		img: new URL("@/assets/images/lottery/pk10-1.png", import.meta.url).href,
+		path: "TJSSC"
+	},
+	{
+		name: '新疆时时彩',
+		img: new URL("@/assets/images/lottery/pk10-6.png", import.meta.url).href,
+		path: "JXSSC"
+	},
+	{
+		name: '重庆十分彩',
+		img: new URL("@/assets/images/lottery/pk10-2.png", import.meta.url).href,
+		path: "CQSF"
+	},
+	{
+		name: '广东十分彩',
+		img: new URL("@/assets/images/lottery/pk10-5.png", import.meta.url).href,
+		path: "GDSF"
+	},
+	{
+		name: '广西十分彩',
+		img: new URL("@/assets/images/lottery/xuanwu1.png", import.meta.url).href,
+		path: "GXSF"
+	},
+	{
+		name: '天津十分彩',
+		img: new URL("@/assets/images/lottery/xuanwu2.png", import.meta.url).href,
+		path: "TJSF"
+	},
+	{
+		name: '上海时时乐',
+		img: new URL("@/assets/images/lottery/xuanwu3.png", import.meta.url).href,
+		path: "SHSSL"
+	},
+	{
+		name: '广东11选5',
+		img: new URL("@/assets/images/lottery/kuaisan5.png", import.meta.url).href,
+		path: "GD11"
+	},
+	{
+		name: '福彩3D',
+		img: new URL("@/assets/images/lottery/kuaisan3.png", import.meta.url).href,
+		path: "D3"
+	},
+	{
+		name: '排列3',
+		img: new URL("@/assets/images/lottery/kuaisan4.png", import.meta.url).href,
+		path: "P3"
+	},
+	// {
+	// 	name: '江苏快三',
+	// 	img: new URL("@/assets/images/lottery/kuaisan6.png", import.meta.url).href
+	// },
+	// {
+	// 	name: '五分时时彩',
+	// 	img: new URL("@/assets/images/lottery/shishi5.png", import.meta.url).href
+	// },
+	// {
+	// 	name: '天津时时彩',
+	// 	img: new URL("@/assets/images/lottery/shishi6.png", import.meta.url).href
+	// },
+	// {
+	// 	name: '好运飞艇',
+	// 	img: new URL("@/assets/images/lottery/pk10-3.png", import.meta.url).href
+	// },
+	// {
+	// 	name: '马耳他飞艇',
+	// 	img: new URL("@/assets/images/lottery/pk10-4.png", import.meta.url).href
+	// },
+	// {
+	// 	name: '新疆快三',
+	// 	img: new URL("@/assets/images/lottery/kuaisan7.png", import.meta.url).href
+	// },
+	// {
+	// 	name: '四川快三',
+	// 	img: new URL("@/assets/images/lottery/kuaisan8.png", import.meta.url).href
+	// },
+	// {
+	// 	name: '湖北快三',
+	// 	img: new URL("@/assets/images/lottery/kuaisan9.png", import.meta.url).href
+	// },
+	// {
+	// 	name: '湖南快三',
+	// 	img: new URL("@/assets/images/lottery/kuaisan10.png", import.meta.url).href
+	// },
+	// {
+	// 	name: '河北快三',
+	// 	img: new URL("@/assets/images/lottery/kuaisan11.png", import.meta.url).href
+	// },
+	// {
+	// 	name: '广西快三',
+	// 	img: new URL("@/assets/images/lottery/kuaisan12.png", import.meta.url).href
+	// },
+	// {
+	// 	name: '甘肃快三',
+	// 	img: new URL("@/assets/images/lottery/kuaisan13.png", import.meta.url).href
+	// },
+	// {
+	// 	name: '极速六合彩',
+	// 	img: new URL("@/assets/images/lottery/liuhe1.png", import.meta.url).href
+	// },
+	// {
+	// 	name: '5分六合彩',
+	// 	img: new URL("@/assets/images/lottery/liuhe2.png", import.meta.url).href
+	// },
+	{
+		name: '香港六合彩',
+		img: new URL("@/assets/images/lottery/liuhe3.png", import.meta.url).href,
+		path: 'MarkSix'
+	},
+	{
+		name: '澳门六合彩',
+		img: new URL("@/assets/images/lottery/liuhe4.png", import.meta.url).href,
+		path: 'MacaoMarkSix'
+	},
 ])
-const getTab = (id: number) => {
-	active.value = id
-}
 const onClickLeft = () => {
 	router.push({ name: 'home' })
 }
-const goHall = () => {
-	router.push({ name: 'hall' })
-}
-const goDetail = (path:string) => {
+const user = computed(() => {
+	const { getUser } = storeToRefs(useAuthStore());
+	return getUser.value;
+})
+const goDetail = (path: string) => {
+	console.log(path);
 	router.push({ name: path })
 }
 </script>
@@ -390,163 +325,91 @@ const goDetail = (path:string) => {
 	}
 }
 
-.tab_box {
+.hall_box {
+	width: 100%;
+	padding-top: 8px;
+	padding-bottom: 10px;
 	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #EFF2F5;
+}
 
-	.tab_left {
+.tab_top {
+	display: flex;
+	margin: 11px 0 9px 0;
+	border-bottom: 4px solid #D3E4EE;
+
+	.tab_item {
+		position: relative;
 		display: flex;
-		flex-direction: column;
-		margin-left: 14px;
+		align-items: center;
+		width: 72px;
+		height: 37px;
 
-		.tab_item {
+		.icon_img {
+			width: 19px;
+			height: 14px;
 			position: relative;
-			display: flex;
-			align-items: center;
+			z-index: 2;
+			margin: 0 4px 0 7px;
+		}
+
+		.back_img {
+			position: absolute;
+			z-index: 1;
 			width: 72px;
 			height: 37px;
-
-			.icon_img {
-				width: 19px;
-				height: 14px;
-				position: relative;
-				z-index: 2;
-				margin: 0 4px 0 7px;
-			}
-
-			.back_img {
-				position: absolute;
-				z-index: 1;
-				width: 72px;
-				height: 37px;
-			}
-
-			span {
-				font-size: 12px;
-				position: relative;
-				z-index: 2;
-			}
-
-			.select {
-				color: #FFFFFF;
-			}
-		}
-	}
-
-	.tab_right {
-		margin-left: 3px;
-
-		.tab_right_box {
-			display: flex;
-			flex-wrap: wrap;
-
-			.tab_right_item {
-				background-image: url('../../assets/images/lottery/back-r.png');
-				background-size: cover;
-				width: 91px;
-				height: 74px;
-				display: flex;
-				flex-direction: column;
-				position: relative;
-
-				span {
-					font-size: 12px;
-					color: #1E2D49;
-					margin: 9px 0 0 10px;
-				}
-
-				.item_icon {
-					height: 37px;
-					width: fit-content;
-					margin-top: 10px;
-					position: absolute;
-					right: 6px;
-					bottom: 6px;
-				}
-			}
 		}
 
-		.hall {
-			width: 271px;
-			height: 128px;
+		span {
+			font-size: 12px;
+			position: relative;
+			z-index: 2;
+		}
+
+		.select {
+			color: #FFFFFF;
 		}
 	}
 }
 
-.winning_list {
-
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-top: 18px;
-	overflow: hidden;
-
-	.win_title {
-		width: 334px;
-		height: 60px;
+.tab_bottom {
+	.tab_bottom_box {
 		display: flex;
-		align-items: center;
-		background-color: #FFFFFF;
-		border-radius: 10px 10px 0 0;
-		margin-bottom: 6px;
+		justify-content: center;
+		flex-wrap: wrap;
 
-		img {
-			width: 25px;
-			height: 36px;
-			margin: 0 4px 0 11px;
-		}
+		.tab_bottom_item {
+			background-image: url('../../assets/images/lottery/back-r.png');
+			background-size: cover;
+			width: 89px;
+			height: 73px;
+			display: flex;
+			flex-direction: column;
+			position: relative;
 
-		h3 {
-			font-size: 17px;
-			color: #1E2D49;
+			span {
+				font-size: 12px;
+				color: #1E2D49;
+				margin: 9px 0 0 10px;
+			}
+
+			.item_icon {
+				height: 37px;
+				width: fit-content;
+				margin-top: 10px;
+				position: absolute;
+				right: 6px;
+				bottom: 6px;
+			}
 		}
 	}
 
-	.win_box {
-		width: 334px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		background-color: #FFFFFF;
-		border-radius: 0 0 10px 10px;
-
-		.win_box_item {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			width: 100%;
-			border-bottom: 1px solid #74A7CE;
-
-			.win_item_left {
-				display: flex;
-				flex-direction: column;
-				margin: 11px 0 13px 12px;
-
-				span {
-					font-size: 13px;
-					color: #74A7CE;
-				}
-
-				.phone {
-					margin-bottom: 9px;
-				}
-			}
-
-			.win_item_right {
-				margin-right: 13px;
-				display: flex;
-				align-items: center;
-				font-size: 13px;
-				color: #1E2D49;
-
-				span {
-					color: red;
-				}
-			}
-		}
-
-		.win_box_item:last-child {
-			border-bottom: none;
-		}
+	.hall {
+		width: 271px;
+		height: 128px;
 	}
 }
 </style>

@@ -6,8 +6,8 @@
 			</van-tabs>
 		</div>
 		<div class="calendar">
-			<van-tabs background='#F3FAFF' color='#4EABFF' title-active-color='#4EABFF' v-model:active="selectedDay"
-				@change="selectDate">
+			<van-tabs v-if="active != 0" background='#F3FAFF' color='#4EABFF' title-active-color='#4EABFF'
+				v-model:active="selectedDay" @change="selectDate">
 				<van-tab v-for="(dayItem, dayIndex) in dayList" :title="dayItem.name" :key="dayIndex"></van-tab>
 			</van-tabs>
 		</div>
@@ -33,7 +33,8 @@
 							<div class="collapse_box" v-for="(score, scoreIndex) in gameResultItem.scoreList"
 								:key="scoreIndex">
 								<p>{{ score.name }}</p>
-								<div v-for="(num, numIndex) in score.nums" :key="numIndex">
+								<p v-if="isNaN(parseFloat(score.nums[1]))">{{ score.nums[1] }}</p>
+								<div v-else v-for="(num, numIndex) in score.nums" :key="numIndex">
 									<span>{{ num === "" ? 0 : num }}</span>
 								</div>
 							</div>

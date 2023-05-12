@@ -30,9 +30,9 @@
         <div class="list_input">
           <input type="text" placeholder="输入投注金额" v-model="bettingValue" @focus="showpanel">
           <div>
-            <span v-if="bettingValue" class="grey">可赢额</span>
-            <span v-if="bettingValue <= 20000" class="win_text green">{{ winValue }}</span>
-            <span v-if="bettingValue == 20000" class="max">最大投注金额 20000</span>
+            <span class="win_text green">可贏金額： {{ winValue }}</span>
+            <span class="max">单注最高： 50000</span>
+            <span class="min">单注最低： 10</span>
           </div>
         </div>
       </section>
@@ -51,7 +51,7 @@
         <button class="item12" value="." @click="addValue($event)">.</button>
         <button class="item13" value="100" @click="addValue($event)">+100</button>
         <button class="item14" value="1000" @click="addValue($event)">+1000</button>
-        <button class="item15" @click="setValue">OK</button>
+        <button class="item15" @click="setValue">关闭</button>
       </div>
       <footer class="modal-footer">
         <div class="footer_btns">
@@ -67,7 +67,7 @@
   </div>
 </template>
   
-<script>
+<script lang="ts">
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { bettingStore } from '@/stores/betting';
@@ -128,6 +128,10 @@ export default {
     user: function () {
       const { getUser } = useAuthStore();
       return getUser;
+    },
+    errMessage: function () {
+      const { getErrMessage } = bettingStore();
+      return getErrMessage;
     }
   },
   watch: {
@@ -136,8 +140,8 @@ export default {
       if (value == 0) {
         this.winValue = "";
         this.bettingValue = "";
-      } else if (value >= 20000) {
-        this.bettingValue = 20000;
+      } else if (value >= 50000) {
+        this.bettingValue = 50000;
       }
       this.winValue = (value * (changedRate - 1)).toFixed(2);
     }
@@ -166,7 +170,7 @@ export default {
           order_rate: Number(this.bettingOrderData['rate']),
           r_type: this.bettingOrderData['r_type']
         }
-        if (this.bettingValue != 0 && this.openKeyboard == false) {
+        if (this.bettingValue > 10) {
           this.loading = true;
           if (this.bettingOrderData['gameType'] === "BK") {
             switch (this.bettingType) {
@@ -203,10 +207,14 @@ export default {
             this.dispatchUserMoney(this.bettingValue);
             showToast('操作成功。')
           } else {
-            showToast('操作失败')
+            showToast(this.errMessage);
           }
           this.loading = false;
           this.$emit('close');
+        } else if (this.bettingValue == 0 || this.bettingValue == "") {
+          showToast("请输入投注金额。")
+        } else {
+          showToast("最低投注额是 RMB 10.")
         }
       }
     },
@@ -234,7 +242,8 @@ export default {
         m_date: this.bettingOrderData['m_date'],
         m_start: this.bettingOrderData['m_start'],
         m_ball: this.bettingOrderData["m_ball"],
-        t_ball: this.bettingOrderData["t_ball"]
+        t_ball: this.bettingOrderData["t_ball"],
+        m_type: this.bettingOrderData["mType"],
       }
       // await this.dispatchBettingTemp(data);
       // if (this.success) {
@@ -381,6 +390,10 @@ export default {
 
     .max {
       color: #4EABFF;
+    }
+
+    .min {
+      color: red;
     }
   }
 

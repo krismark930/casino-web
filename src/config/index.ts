@@ -1,7 +1,12 @@
-export const BASE_URL = "http://localhost:8000/api";
-export const HOST_URL = "http://127.0.0.1:5173"
-export const SOCKET_URL = "http://localhost:3000";
-// export const SOCKET_URL = "http://27.126.187.127";
+ // export const BASE_URL = "http://localhost:8000/api";
+// export const HOST_URL = "http://127.0.0.1:5173";
+// export const SOCKET_URL = "http://localhost:3000";
+
+export const SOCKET_URL = "http://27.126.187.128";
+export const BASE_URL = "http://27.126.187.128:8000/api";
+export const HOST_URL = "http://27.126.187.128:8080";
+
+
 export const MATCH_SPORT = "/user/match-sport";
 export const GET_FT_DATA = "/ft-data";
 export const GET_SPORTS_COUNT_DATA = "/user/match-sport/get-count";
@@ -15,6 +20,7 @@ export const MULTI_BETTING_PARLAY = "/user/betting/multi-parlay";
 export const FT_BET_HISTORY = "/user/betting/ft-bet-history";
 export const FT_BET_SLIP = "/user/betting/ft-bet-slip";
 export const GET_FT_RESULT = "/user/result/get_result_ft";
+export const GET_BK_RESULT = "/user/result/get_result_bk";
 export const SINGLE_BK_BETTING_INPLAY = "/user/betting/single-bk-play";
 export const SINGLE_BK_BETTING_TODAY = "/user/betting/single-bk-today";
 export const SINGLE_BK_BETTING_CHAMPION = "/user/betting/single-bk-champion";
@@ -22,6 +28,75 @@ export const SINGLE_BK_BETTING_PARLAY = "/user/betting/single-bk-parlay";
 export const BK_BET_HISTORY = "/user/betting/bk-bet-history";
 export const BK_BET_SLIP = "/user/betting/bk-bet-slip";
 export const ADD_TEMP = "/sport/add_temp";
+export const GET_PROFILE = "/users/view-profile";
+export const NOT_BET_SCORE = "/user/betting/not-bet-score";
+
+// hong kong six mark
+export const KATAN_SAVE = "/user/ka-tan/save";
+export const KATAN_PARLAY_SAVE = "/user/ka-tan/parlay/save";
+export const KATAN_EVEN_SAVE = "/user/ka-tan/even-code/save";
+export const KATAN_ZODAIC_EVEN_SAVE = "/user/ka-tan/zodaic-even/save";
+export const KATAN_MANTISSA_EVEN_SAVE = "/user/ka-tan/mantissa-even/save";
+export const KATAN_MISS_ALL_SAVE = "/user/ka-tan/miss-all/save";
+export const KATAN_COMPATIBLE_SAVE = "/user/ka-tan/compatible/save";
+export const MAIN_BET_RESULT = "/user/ka-tan/bet-result/main";
+export const SUB_BET_RESULT = "/user/ka-tan/bet-result/sub";
+
+export const GET_KABL = "/user/ka-bl/get";
+export const GAME_STATUS = "/user/ka-kithe/game-status";
+export const GAME_VERSION = "/user/ka-kithe/game-version";
+export const GAME_RESULT = "/user/ka-kithe/game-result";
+export const BIRTH_HISTORY = "/user/ka-kithe/birth-history";
+
+// macao six mark
+export const MACAO_KATAN_SAVE = "/user/macao-ka-tan/save";
+export const MACAO_KATAN_PARLAY_SAVE = "/user/macao-ka-tan/parlay/save";
+export const MACAO_KATAN_EVEN_SAVE = "/user/macao-ka-tan/even-code/save";
+export const MACAO_KATAN_ZODAIC_EVEN_SAVE = "/user/macao-ka-tan/zodaic-even/save";
+export const MACAO_KATAN_MANTISSA_EVEN_SAVE = "/user/macao-ka-tan/mantissa-even/save";
+export const MACAO_KATAN_MISS_ALL_SAVE = "/user/macao-ka-tan/miss-all/save";
+export const MACAO_KATAN_COMPATIBLE_SAVE = "/user/macao-ka-tan/compatible/save";
+export const MACAO_MAIN_BET_RESULT = "/user/macao-ka-tan/bet-result/main";
+export const MACAO_SUB_BET_RESULT = "/user/macao-ka-tan/bet-result/sub";
+
+export const GET_MACAO_KABL = "/user/macao-ka-bl/get";
+export const MACAO_GAME_STATUS = "/user/macao-ka-kithe/game-status";
+export const MACAO_GAME_VERSION = "/user/macao-ka-kithe/game-version";
+export const MACAO_GAME_RESULT = "/user/macao-ka-kithe/game-result";
+export const MACAO_BIRTH_HISTORY = "/user/macao-ka-kithe/birth-history";
+
+// always color
+
+export const GET_B5_SCHEDULE = "/user/lottery-schedule/b5";
+export const GET_B3_SCHEDULE = "/user/lottery-schedule/b3";
+export const GET_GD11_SCHEDULE = "/user/lottery-schedule/gd11";
+export const GET_AZXY10_SCHEDULE = "/user/lottery-schedule/azxy10";
+export const GET_CQSF_SCHEDULE = "/user/lottery-schedule/cqsf";
+export const GET_GDSF_SCHEDULE = "/user/lottery-schedule/gdsf";
+export const GET_GXSF_SCHEDULE = "/user/lottery-schedule/gxsf";
+export const GET_TJSF_SCHEDULE = "/user/lottery-schedule/tjsf";
+export const GET_BJPK_SCHEDULE = "/user/lottery-schedule/bjpk";
+export const GET_XYFT_SCHEDULE = "/user/lottery-schedule/xyft";
+export const GET_LOTTERY_STATUS = "/user/lottery-schedule/status";
+
+export const GET_B5_RESULT = "/user/lottery-result/b5";
+export const GET_B3_RESULT = "/user/lottery-result/b3";
+export const GET_OTHER_RESULT = "/user/lottery-result/other";
+
+export const B5_BIRTH_HISTORY = "/user/lottery-result/b5-birth-history";
+export const B3_BIRTH_HISTORY = "/user/lottery-result/b3-birth-history";
+export const OTHER_BIRTH_HISTORY = "/user/lottery-result/other-birth-history";
+
+export const GET_B5_ODDS = "/user/lottery-odds/b5";
+export const GET_B3_ODDS = "/user/lottery-odds/b3";
+export const GET_OTHER_ODDS = "/user/lottery-odds/other";
+
+export const SAVE_B5 = "/user/lottery-save/b5";
+export const SAVE_B3 = "/user/lottery-save/b3";
+export const SAVE_OTHER = "/user/lottery-save/other";
+
+export const TOTAL_BET_RESULT = "/user/lottery-result/total-bet";
+export const ALWAYS_COLOR_SUB_BET_RESULT = "/user/lottery-result/sub-bet";
 
 const config = {
   api: {

@@ -6,7 +6,7 @@
 			<div class="divide-background"></div>
 			<div class="center_title" @click="showDetail(item['lid'])">
 				<span>{{ item.name }}</span>
-				<img :src="item.icon" alt="">
+				<img :src="item.icon" alt="" v-if="item.icon !== ''">
 			</div>
 			<div class="center_item" :class="{ detail_show: item['show'], detail_hide: !item['show'] }"
 				v-for="(data, index) in item.gameList" :key="index">
@@ -29,15 +29,15 @@
 							<span v-if="num.num">{{ num.num }}</span>
 						</div>
 						<div class="lock" v-if="num.type == 2">
-							<img v-if="!data.collection" src="@/assets/images/stadiums/store_up.png" alt=""
-								@click="saveFavorite(item.lid, data.id, data.ecid)">
-							<img v-if="data.collection" src="@/assets/images/stadiums/store_in.png" alt=""
-								@click="removeFavorite(item.lid, data.id)">
+							<img src="@/assets/images/stadiums/lock.png" alt="">
 						</div>
 					</div>
 				</div>
 				<div class="store_up">
-					<img src="@/assets/images/stadiums/store_up.png" alt="">
+					<img v-if="!data.collection" src="@/assets/images/stadiums/store_up.png" alt=""
+						@click="saveFavorite(item.lid, data.id, data.ecid)">
+					<img v-if="data.collection" src="@/assets/images/stadiums/store_in.png" alt=""
+						@click="removeFavorite(item.lid, data.id)">
 				</div>
 			</div>
 		</div>
@@ -77,7 +77,7 @@ export default defineComponent({
 				selectedType: "H", // "H", "C"
 				gameType: "BK",
 				oddFType: "H",
-				active: 1,
+				active: 2,
 				r_type: "",
 				text: "",
 				m_date: "",
@@ -87,305 +87,10 @@ export default defineComponent({
 			},
 			changedBKDataList: [],
 			tempBKDataList: [],
-			tableList: [
-				{
-					name: 'NBA美国职业篮球联赛',
-					icon: new URL("@/assets/images/stadiums/title-icon.png", import.meta.url).href,
-					gameList: [
-						{
-							titletext: [
-								{
-									text1: '第三节 11:19 '
-								},
-								{
-									text1: '让球'
-								},
-								{
-									text1: '总分'
-								},
-								{
-									text1: '第一队得分'
-								},
-								{
-									text1: '第二队得分'
-								}
-							],
-							scoreList: [
-								{
-									goalsScored: 64,
-									name: '金州勇士',
-									nums: [
-										{
-											type: 1,
-											text: '12.5',
-											num: '1.88'
-										},
-										{
-											type: 1,
-											text: '大217.5',
-											num: '1.83'
-										},
-										{
-											type: 1,
-											text: '大115.5',
-											num: '1.85'
-										},
-										{
-											type: 1,
-											text: '大100.5',
-											num: '1.85'
-										}
-									]
-								},
-								{
-									goalsScored: 52,
-									name: '纽约尼克斯',
-									nums: [
-										{
-											type: 1,
-											num: '1.88'
-										},
-										{
-											type: 1,
-											text: '小215.5',
-											num: '1.83'
-										},
-										{
-											type: 1,
-											text: '小115.5',
-											num: '1.81'
-										},
-										{
-											type: 1,
-											text: '小100.5',
-											num: '1.81'
-										}
-									]
-								}
-							],
-						},
-						{
-							titletext: [{
-								text1: '半场'
-							},
-							{
-								text1: '让球',
-								text2: '下半场'
-							},
-							{
-								text1: '总分',
-								text2: '下半场'
-							},
-							{
-								text1: '让球',
-								text2: '第4节'
-							},
-							{
-								text1: '总分',
-								text2: '第4节'
-							}
-							],
-							scoreList: [{
-								goalsScored: 64,
-								name: '洛杉矶湖人',
-								nums: [{
-									type: 2,
-									text: '12.5',
-									num: '1.88'
-								},
-								{
-									type: 2,
-									text: '大217.5',
-									num: '1.83'
-								},
-								{
-									type: 2,
-									text: '大115.5',
-									num: '1.85'
-								},
-								{
-									type: 2,
-									text: '大100.5',
-									num: '1.85'
-								}
-								]
-							},
-							{
-								goalsScored: 52,
-								name: '底特津活塞',
-								type: 2,
-								nums: [{
-									type: 2,
-									num: '1.88'
-								},
-								{
-									type: 2,
-									text: '小215.5',
-									num: '1.83'
-								},
-								{
-									type: 2,
-									text: '小115.5',
-									num: '1.81'
-								},
-								{
-									type: 2,
-									text: '小100.5',
-									num: '1.81'
-								}
-								]
-							}
-							]
-						}
-					]
-				},
-				{
-					name: 'NBA美国职业篮球联赛',
-					icon: new URL("@/assets/images/stadiums/title-icon.png", import.meta.url).href,
-					gameList: [
-						{
-							titletext: [{
-								text1: '第三节 11:19 '
-							},
-							{
-								text1: '让球'
-							},
-							{
-								text1: '总分'
-							},
-							{
-								text1: '第一队得分'
-							},
-							{
-								text1: '第二队得分'
-							}
-							],
-							scoreList: [{
-								goalsScored: 64,
-								name: '金州勇士',
-
-								nums: [{
-									type: 1,
-									text: '12.5',
-									num: '1.88'
-								},
-								{
-									type: 1,
-									text: '大217.5',
-									num: '1.83'
-								},
-								{
-									type: 1,
-									text: '大115.5',
-									num: '1.85'
-								},
-								{
-									type: 1,
-									text: '大100.5',
-									num: '1.85'
-								}
-								]
-							},
-							{
-								goalsScored: 52,
-								name: '纽约尼克斯',
-								nums: [{
-									type: 1,
-									num: '1.88'
-								},
-								{
-									type: 1,
-									text: '小215.5',
-									num: '1.83'
-								},
-								{
-									type: 1,
-									text: '小115.5',
-									num: '1.81'
-								},
-								{
-									type: 1,
-									text: '小100.5',
-									num: '1.81'
-								}
-								]
-							}
-							],
-						},
-						{
-							titletext: [{
-								text1: '第三节 11:19 '
-							},
-							{
-								text1: '让球'
-							},
-							{
-								text1: '总分'
-							},
-							{
-								text1: '第一队得分'
-							},
-							{
-								text1: '第二队得分'
-							}
-							],
-							scoreList: [{
-								goalsScored: 64,
-								name: '金州勇士',
-
-								nums: [{
-									type: 1,
-									text: '12.5',
-									num: '1.88'
-								},
-								{
-									type: 1,
-									text: '大217.5',
-									num: '1.83'
-								},
-								{
-									type: 1,
-									text: '大115.5',
-									num: '1.85'
-								},
-								{
-									type: 1,
-									text: '大100.5',
-									num: '1.85'
-								}
-								]
-							},
-							{
-								goalsScored: 52,
-								name: '纽约尼克斯',
-								nums: [{
-									type: 1,
-									num: '1.88'
-								},
-								{
-									type: 1,
-									text: '小215.5',
-									num: '1.83'
-								},
-								{
-									type: 1,
-									text: '小115.5',
-									num: '1.81'
-								},
-								{
-									type: 1,
-									text: '小100.5',
-									num: '1.81'
-								}
-								]
-							}
-							],
-						},]
-				}
-
-			]
+			tableList: []
 		}
-	}, sockets: {
+	},
+	sockets: {
 		connect: function () {
 			console.log('socket to notification channel connected')
 		},
@@ -429,11 +134,12 @@ export default defineComponent({
 					} else if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][2].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][2].num) < 0) {
 						this.changedBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][2].colorChangeUp = true;
 					}
-					if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].num) > 0) {
-						this.changedBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].colorChangeDown = true;
-					} else if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].num) < 0) {
-						this.changedBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].colorChangeUp = true;
-					}
+
+					// if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].num) > 0) {
+					// 	this.changedBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].colorChangeDown = true;
+					// } else if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].num) < 0) {
+					// 	this.changedBKDataList[i]["gameList"][j]["scoreList"][0]["nums"][3].colorChangeUp = true;
+					// }
 
 					if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][0].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][0].num) > 0) {
 						this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][0].colorChangeDown = true;
@@ -450,11 +156,12 @@ export default defineComponent({
 					} else if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][2].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][2].num) < 0) {
 						this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][2].colorChangeUp = true;
 					}
-					if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].num) > 0) {
-						this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].colorChangeDown = true;
-					} else if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].num) < 0) {
-						this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].colorChangeUp = true;
-					}
+
+					// if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].num) > 0) {
+					// 	this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].colorChangeDown = true;
+					// } else if ((this.tempBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].num - this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].num) < 0) {
+					// 	this.changedBKDataList[i]["gameList"][j]["scoreList"][1]["nums"][3].colorChangeUp = true;
+					// }
 
 				}
 			}
@@ -520,11 +227,10 @@ export default defineComponent({
 				} else {
 					data["show"] = false;
 				}
-				if (bkData[0]["FLAG_CLASS"] == null) {
+				if (bkData[0]["FLAG_CLASS"] == null || bkData[0]["FLAG_CLASS"] == "") {
 					data["icon"] = "";
 				} else {
-					let flag_url = `../../../../../src/assets/flags/${bkData[0]["FLAG_CLASS"]}.svg`;
-					data["icon"] = new URL(flag_url, import.meta.url).href;
+					data["icon"] = `https://www.hga030.com/images/flag/${bkData[0]["FLAG_CLASS"]}.svg`;
 				}
 				let gameList = [];
 				bkData.forEach(item => {
@@ -539,11 +245,8 @@ export default defineComponent({
 							text: '总分'
 						},
 						{
-							text: '第一队得分'
+							text: '单/双'
 						},
-						{
-							text: '第二队得分'
-						}
 					];
 					switch (item["NOW_SESSION"]) {
 						case "Q1":
@@ -561,6 +264,9 @@ export default defineComponent({
 						case "HT":
 							titleList[0].text = "半场 " + item["Retime"];
 							break;
+						default:
+							titleList[0].text = item["Retime"];
+							break;
 
 					}
 					let gameData = {
@@ -577,6 +283,7 @@ export default defineComponent({
 								nums: [
 									{
 										lineType: 9,
+										mType: "RRH",
 										bettingType: "H",
 										oddFType: "H",
 										type: item["MB_LetB_Rate_RB"] == 0 ? 2 : 1,
@@ -587,34 +294,46 @@ export default defineComponent({
 									},
 									{
 										lineType: 10,
+										mType: "ROUH",
 										bettingType: "H",
 										oddFType: "H",
 										type: item["MB_Dime_Rate_RB"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: item['MB_Dime_RB'],
+										text: item["MB_Dime_RB"] == "" ? "" : "大 " + item["MB_Dime_RB"].split("O")[1],
 										num: item["MB_Dime_Rate_RB"] == 0 ? 0 : (Number(item['MB_Dime_Rate_RB'])).toFixed(2)
 									},
 									{
-										lineType: 11,
+										lineType: 5,
+										r_type: "ODD",
+										mType: "",
 										bettingType: "H",
-										oddFType: "E",
-										type: item["MB_Points_Rate_RB_1"] == 0 ? 2 : 1,
+										type: item["S_Single_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: item["MB_Points_RB_1"],
-										num: (Number(item["MB_Points_Rate_RB_1"])).toFixed(2)
+										text: "单",
+										num: item["S_Single_Rate"] == 0 ? 0 : (Number(item["S_Single_Rate"])).toFixed(2)
 									},
-									{
-										lineType: 12,
-										bettingType: "H",
-										oddFType: "E",
-										type: item["MB_Points_Rate_RB_2"] == 0 ? 2 : 1,
-										colorChangeUp: false,
-										colorChangeDOwn: false,
-										text: item["MB_Points_RB_2"],
-										num: (Number(item["MB_Points_Rate_RB_2"])).toFixed(2)
-									},
+									// {
+									// 	lineType: 11,
+									// 	bettingType: "H",
+									// 	oddFType: "E",
+									// 	type: item["MB_Points_Rate_RB_1"] == 0 ? 2 : 1,
+									// 	colorChangeUp: false,
+									// 	colorChangeDOwn: false,
+									// 	text: item["MB_Points_RB_1"],
+									// 	num: (Number(item["MB_Points_Rate_RB_1"])).toFixed(2)
+									// },
+									// {
+									// 	lineType: 12,
+									// 	bettingType: "H",
+									// 	oddFType: "E",
+									// 	type: item["MB_Points_Rate_RB_2"] == 0 ? 2 : 1,
+									// 	colorChangeUp: false,
+									// 	colorChangeDOwn: false,
+									// 	text: item["MB_Points_RB_2"],
+									// 	num: (Number(item["MB_Points_Rate_RB_2"])).toFixed(2)
+									// },
 								]
 							},
 							{
@@ -623,7 +342,8 @@ export default defineComponent({
 								nums: [
 									{
 										lineType: 9,
-										bettingType: "C",
+										mType: "RRC",
+										bettingType: "H",
 										oddFType: "H",
 										type: item["TG_LetB_Rate_RB"] == 0 ? 2 : 1,
 										colorChangeUp: false,
@@ -633,34 +353,46 @@ export default defineComponent({
 									},
 									{
 										lineType: 10,
-										bettingType: "C",
+										mType: "ROUC",
+										bettingType: "H",
 										oddFType: "H",
 										type: item["TG_Dime_Rate_RB"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: item['TG_Dime_RB'],
+										text: item["TG_Dime_RB"] == "" ? "" : "小 " + item["TG_Dime_RB"].split("U")[1],
 										num: item["TG_Dime_Rate_RB"] == 0 ? 0 : (Number(item['TG_Dime_Rate_RB'])).toFixed(2)
 									},
 									{
-										lineType: 11,
-										bettingType: "C",
-										oddFType: "E",
-										type: item["TG_Points_Rate_RB_1"] == 0 ? 2 : 1,
+										lineType: 5,
+										mType: "",
+										r_type: "EVEN",
+										bettingType: "H",
+										type: item["S_Double_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: item["TG_Points_RB_1"],
-										num: Number(item["TG_Points_Rate_RB_1"]).toFixed(2)
+										text: "双",
+										num: item["S_Double_Rate"] == 0 ? 0 : (Number(item["S_Double_Rate"])).toFixed(2)
 									},
-									{
-										lineType: 12,
-										bettingType: "C",
-										oddFType: "E",
-										type: item["TG_Points_Rate_RB_2"] == 0 ? 2 : 1,
-										colorChangeUp: false,
-										colorChangeDOwn: false,
-										text: item["TG_Points_RB_2"],
-										num: Number(item["TG_Points_Rate_RB_2"]).toFixed(2)
-									},
+									// {
+									// 	lineType: 11,
+									// 	bettingType: "H",
+									// 	oddFType: "E",
+									// 	type: item["TG_Points_Rate_RB_1"] == 0 ? 2 : 1,
+									// 	colorChangeUp: false,
+									// 	colorChangeDOwn: false,
+									// 	text: item["TG_Points_RB_1"],
+									// 	num: Number(item["TG_Points_Rate_RB_1"]).toFixed(2)
+									// },
+									// {
+									// 	lineType: 12,
+									// 	bettingType: "H",
+									// 	oddFType: "E",
+									// 	type: item["TG_Points_Rate_RB_2"] == 0 ? 2 : 1,
+									// 	colorChangeUp: false,
+									// 	colorChangeDOwn: false,
+									// 	text: item["TG_Points_RB_2"],
+									// 	num: Number(item["TG_Points_Rate_RB_2"]).toFixed(2)
+									// },
 								]
 							},
 						],
@@ -676,17 +408,19 @@ export default defineComponent({
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["m_date"] = gameData["m_date"];
 			this.bettingOrderData["m_start"] = gameData["m_start"];
+			this.bettingOrderData["gameType"] = "BK";
 			this.bettingOrderData["m_ball"] = gameData.scoreList[0].goalsScored;
 			this.bettingOrderData["t_ball"] = gameData.scoreList[1].goalsScored;
 			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
 			this.bettingOrderData["tgTeam"] = gameData.scoreList[1].name;
 			this.bettingOrderData["rate"] = rateData.num;
 			this.bettingOrderData["lineType"] = rateData.lineType;
+			this.bettingOrderData["mType"] = rateData.mType;
+			this.bettingOrderData['r_type'] = rateData.r_type;
 			this.bettingOrderData['selectedType'] = rateData.bettingType;
 			this.bettingOrderData["league"] = leagueData.name;
 			this.bettingOrderData["title"] = gameData.titleList[scoreIndex + 1].text;
 			this.bettingOrderData["selectedTeam"] = dataList.name;
-			this.bettingOrderData["oddFType"] = rateData.oddFType;
 			this.bettingOrderData["text"] = rateData.text
 			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
 			else this.openModal = true;
@@ -795,7 +529,7 @@ export default defineComponent({
 		}
 
 		div:first-child {
-			width: 83px;
+			width: 130px;
 			margin-right: 13px;
 			text-align: left;
 		}

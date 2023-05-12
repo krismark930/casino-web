@@ -1315,7 +1315,7 @@ const doutbleSided = ref([
 // ]);
 </script>
 
-<style>
+<style scoped>
 .van-popup{
     z-index: 0 !important;
 }

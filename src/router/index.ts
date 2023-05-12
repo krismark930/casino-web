@@ -5,18 +5,18 @@ import { useAuthStore } from '@/stores/auth';
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
+        // {
+        //     path: '/',
+        //     redirect: 'homepage'
+        // },
         {
             path: '/',
-            redirect: 'home'
-        },
-        {
-            path: '/home',
             name: 'home',
             redirect: 'homepage',
             component: () => import('@/views/Home/index.vue'),
             children: [
                 {
-                    path: '/homepage',
+                    path: 'homepage',
                     name: 'homepage',
                     component: () => import('@/views/Home/homepage.vue'),
                     meta: {
@@ -24,7 +24,7 @@ const router = createRouter({
                     }
                 },
                 {
-                    path: '/discount',
+                    path: 'discount',
                     name: 'discount',
                     component: () => import('@/views/Home/discount.vue'),
                     meta: {
@@ -32,7 +32,7 @@ const router = createRouter({
                     }
                 },
                 {
-                    path: '/customer',
+                    path: 'customer',
                     name: 'customer',
                     component: () => import('@/views/Customer/index.vue'),
                     meta: {
@@ -40,7 +40,7 @@ const router = createRouter({
                     }
                 },
                 {
-                    path: '/my',
+                    path: 'my',
                     name: 'my',
                     component: () => import('@/views/My/myHome.vue'),
                     meta: {
@@ -48,7 +48,7 @@ const router = createRouter({
                     }
                 },
                 {
-                    path: '/myhome',
+                    path: 'myhome',
                     name: 'myhome',
                     component: () => import('@/views/My/myHome2.vue'),
                     meta: {
@@ -274,44 +274,6 @@ const router = createRouter({
             name: 'invite',
             component: () => import('@/views/Invite/index.vue')
         },
-
-        // 彩票
-        // {
-        //     path: '/lottery',
-        //     name: 'lottery',
-        //     component: () => import('@/views/Lottery/index'),
-        //     redirect: '/lotterys',
-        //     children: [
-        //         // {
-        //         // 	path: '/lotterys',
-        //         // 	name: 'lotterys',
-        //         // 	component: () => import('@/views/Lottery/lottery'),
-        //         // 	meta: {
-        //         // 		title: 'lottery'
-        //         // 	}
-        //         // },
-        //         {
-        //             path: '/record',
-        //             name: 'record',
-        //             component: () => import('@/views/Lottery/record')
-        //         },
-        //         {
-        //             path: '/trend',
-        //             name: 'trend',
-        //             component: () => import('@/views/Lottery/trend')
-        //         }
-        //         // {
-        //         // 	path: '/lotteryMy',
-        //         // 	name: 'lotteryMy',
-        //         // 	component: () => import('@/views/Lottery/my'),
-        //         // },
-        //         // {
-        //         // 	path: '/hall',
-        //         // 	name: 'hall',
-        //         // 	component: () => import('@/views/Lottery/hall'),
-        //         // }
-        //     ]
-        // },
         {
             path: '/lottery',
             name: 'lottery',
@@ -460,25 +422,135 @@ const router = createRouter({
             path: '/login/:code',
             name: 'login1',
             component: () => import('@/views/Login/login.vue')
-        }, 
+        },
         {
             path: '/login',
             name: 'login',
             component: () => import('@/views/Login/login.vue')
-        }, 
+        },
         {
             path: '/fastthree',
             name: 'fastthree',
             component: () => import('@/views/Lottery/fastThree.vue')
-        }, {
+        },
+        {
             path: '/alwayscolor',
             name: 'alwayscolor',
-            component: () => import('@/views/Lottery/alwaysColor.vue')
-        }, {
+            component: () => import('@/views/Lottery/alwaysColor.vue'),
+            children: [
+                {
+                    path: '/cqssc',
+                    name: 'CQSSC',
+                    component: () => import('@/views/Lottery/components/AlwaysColor/CQSSC.vue')
+                },
+            ]
+        },
+        {
+            path: '/alwayscolor/cqssc',
+            name: 'CQSSC',
+            component: () => import('@/views/Lottery/components/AlwaysColor/CQSSC.vue')
+        },
+        {
+            path: '/alwayscolor/azxy5',
+            name: 'AZXY5',
+            component: () => import('@/views/Lottery/components/AlwaysColor/AZXY5.vue')
+        },
+        {
+            path: '/alwayscolor/ffc5',
+            name: 'FFC5',
+            component: () => import('@/views/Lottery/components/AlwaysColor/FFC5.vue')
+        },
+        {
+            path: '/alwayscolor/jxssc',
+            name: 'JXSSC',
+            component: () => import('@/views/Lottery/components/AlwaysColor/JXSSC.vue')
+        },
+        {
+            path: '/alwayscolor/tjssc',
+            name: 'TJSSC',
+            component: () => import('@/views/Lottery/components/AlwaysColor/TJSSC.vue')
+        },
+        // {
+        //     path: '/alwayscolor/twssc',
+        //     name: 'TWSSC',
+        //     component: () => import('@/views/Lottery/components/AlwaysColor/TWSSC.vue')
+        // },
+        // {
+        //     path: '/alwayscolor/txssc',
+        //     name: 'TXSSC',
+        //     component: () => import('@/views/Lottery/components/AlwaysColor/TXSSC.vue')
+        // },
+        {
+            path: '/alwayscolor/d3',
+            name: 'D3',
+            component: () => import('@/views/Lottery/components/AlwaysColor/D3.vue')
+        },
+        {
+            path: '/alwayscolor/p3',
+            name: 'P3',
+            component: () => import('@/views/Lottery/components/AlwaysColor/P3.vue')
+        },
+        {
+            path: '/alwayscolor/shssl',
+            name: 'SHSSL',
+            component: () => import('@/views/Lottery/components/AlwaysColor/SHSSL.vue')
+        },
+        {
+            path: '/alwayscolor/gd11',
+            name: 'GD11',
+            component: () => import('@/views/Lottery/components/AlwaysColor/GD11.vue')
+        },
+        {
+            path: '/alwayscolor/gxsf',
+            name: 'GXSF',
+            component: () => import('@/views/Lottery/components/AlwaysColor/GXSF.vue')
+        },
+        {
+            path: '/alwayscolor/tjsf',
+            name: 'TJSF',
+            component: () => import('@/views/Lottery/components/AlwaysColor/TJSF.vue')
+        },
+        {
+            path: '/alwayscolor/gdsf',
+            name: 'GDSF',
+            component: () => import('@/views/Lottery/components/AlwaysColor/GDSF.vue')
+        },
+        {
+            path: '/alwayscolor/cqsf',
+            name: 'CQSF',
+            component: () => import('@/views/Lottery/components/AlwaysColor/CQSF.vue')
+        },
+        {
+            path: '/alwayscolor/azxy10',
+            name: 'AZXY10',
+            component: () => import('@/views/Lottery/components/AlwaysColor/AZXY10.vue')
+        },
+        {
+            path: '/alwayscolor/xyft',
+            name: 'XYFT',
+            component: () => import('@/views/Lottery/components/AlwaysColor/XYFT.vue')
+        },
+        {
+            path: '/alwayscolor/bjpk',
+            name: 'BJPK',
+            component: () => import('@/views/Lottery/components/AlwaysColor/BJPK.vue')
+        },
+        {
+            path: '/mark-six',
+            name: 'MarkSix',
+            component: () => import('@/views/Lottery/markSix.vue')
+        },
+        {
+            path: '/macao-mark-six',
+            name: 'MacaoMarkSix',
+            component: () => import('@/views/Lottery/MacaoSixMark.vue')
+        },
+        {
             path: '/pk10',
             name: 'pk10',
             component: () => import('@/views/Lottery/PK10.vue')
-        }, {
+        },
+        {
             path: '/choosefive',
             name: 'choosefive',
             component: () => import('@/views/Lottery/chooseFive.vue')

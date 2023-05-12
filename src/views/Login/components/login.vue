@@ -30,44 +30,58 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import verification from "./verification.vue";
 import { ref } from 'vue';
-import axios from 'axios';
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
-import router from "@/router";
 
-const {
-  getToken,
-  getUser
-} = storeToRefs(useAuthStore());
-
-const {
-  signIn
-} = useAuthStore();
-const isVerification = ref(false);
-const checked = ref(false);
-const username = ref("");
-const password = ref("");
-const passwordType = ref(false);
-
-const onValidation = (s: boolean) => {
-  isVerification.value = s;
-}
-const seePassword = () => {
-  passwordType.value = !passwordType.value;
-}
-const clearUsername = () => {
-  username.value = "";
-}
-const clearPsssword = () => {
-  password.value = "";
-}
-const login = async () => {   ///login
-  console.log("UserName", username.value, password.value)
-  await signIn(username.value, password.value)
-}
+export default ({
+  name: "Login Component",
+  setup() {
+    const { signIn } = useAuthStore();
+    return {
+      signIn
+    }
+  },
+  data() {
+    return {
+      isVerification: false,
+      checked: false,
+      username: "",
+      password: "",
+      passwordType: false,
+    }
+  },
+  methods: {
+    onValidation: function (s: boolean) {
+      this.isVerification = s;
+    },
+    seePassword: function () {
+      this.passwordType = !this.passwordType;
+    },
+    clearUsername: function () {
+      this.username = "";
+    },
+    clearPsssword: function () {
+      this.password = ""
+    },
+    login: async function () {
+      await this.signIn(this.username, this.password);
+      this.$socket.emit("join", this.user.UserName);
+    }
+  },
+  computed: {
+    token: function () {
+      const { getToken } = useAuthStore();
+      return getToken;
+    },
+    user: function () {
+      const { getUser } = useAuthStore();
+      return getUser;
+    }
+  }
+})
 </script>
 
 <style scoped lang="scss">
