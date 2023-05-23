@@ -27,7 +27,7 @@
 			</div>
 		</div>
 		<div>
-			<BK_Main v-if="select == 2" />
+			<BK_Favorite_Main v-if="select == 2" />
 			<FT_Favorite_Main v-if="select == 1 && selectId == 1" />
 			<FT_Favorite_Score v-if="select == 1 && selectId == 2" />
 		</div>
@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import BK_Main from './components/bk_components/BK_Main.vue'
+import BK_Favorite_Main from './components/bk_components/BK_Favorite_Main.vue'
 import FT_Favorite_Main from './components/fk_components/FT_Favorite_Main.vue'
 import FT_Favorite_Score from './components/fk_components/FT_Favorite_Score.vue'
 import { ref } from 'vue';

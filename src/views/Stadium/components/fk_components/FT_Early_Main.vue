@@ -51,7 +51,9 @@
 						{{ data.tepe[1].name }}
 					</button>
 				</div>
-				<div class="summary"
+				<van-loading color="#1989fa" class="summary-loading-position"
+					v-if="summaryLoading && data.tepe[0].type == 2" size="40" />
+				<div v-else class="summary"
 					:class="{ full_court_show: data.tepe[0].type == 2, full_court_hidden: data.tepe[0].type == 1 }">
 					<div class="summary-top">全场</div>
 					<div class="summary-center">
@@ -123,8 +125,37 @@
 						</div>
 					</div>
 				</div>
-				<div class="summary-over">
-					所有玩法
+				<div class="summary-over" @click="showMore(item['lid'], data.id)">
+					查看更多
+				</div>
+				<div v-if="data.moreShow" style="margin-right: 6px;">
+					<div class="table-title table-list half-table-list">
+						<div v-for="(title, index) in data.halfTitleList" :key="index">
+							<span>{{ title }}</span>
+						</div>
+					</div>
+					<div class="store-up">
+					</div>
+					<div class="table-text table-list" v-for="(halfDatalist, halfScoreIndex) in data.halfScoreList"
+						:key="halfScoreIndex">
+						<div class="table-text-l" v-if="halfDatalist.name">
+							<span>{{ halfDatalist.goalsScored }}</span>
+							<span>{{ halfDatalist.name }}</span>
+						</div>
+						<div class="store-up" v-if="!halfDatalist.name">
+						</div>
+						<div class="table-text-r" v-for="(num, numIndex) in halfDatalist.nums" :key="numIndex">
+							<div v-if="num.type == 1" @click="handleModal(item, data, halfDatalist, num, numIndex)"
+								:class="{ item_background_up: num.colorChangeUp, item_background_down: num.colorChangeDown }"
+								class="item-background">
+								<span>{{ num.text }}</span>
+								<span>{{ num.num }}</span>
+							</div>
+							<div class="lock" v-if="num.type == 2">
+								<img src="@/assets/images/stadiums/lock.png" alt="">
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -157,6 +188,7 @@ export default defineComponent({
 			},
 			value: "ok",
 			loading: true,
+			summaryLoading: false,
 			openModal: false,
 			bettingType: "Early",
 			bettingOrderData: {
@@ -178,7 +210,8 @@ export default defineComponent({
 				m_date: "",
 				m_start: "",
 				m_ball: "",
-				t_ball: ""
+				t_ball: "",
+				mType: ""
 			},
 			summaryGID: 0,
 			summaryLID: 0,
@@ -229,7 +262,7 @@ export default defineComponent({
 						nums: [
 							{
 								lineType: 22,
-								bettingType: "C",
+								bettingType: "H",
 								colorChangeUp: false,
 								colorChangeDOwn: false,
 								text: "",
@@ -237,7 +270,7 @@ export default defineComponent({
 							},
 							{
 								lineType: 23,
-								bettingType: "C",
+								bettingType: "H",
 								colorChangeUp: false,
 								colorChangeDOwn: false,
 								text: "",
@@ -245,7 +278,7 @@ export default defineComponent({
 							},
 							{
 								lineType: 24,
-								bettingType: "C",
+								bettingType: "H",
 								colorChangeUp: false,
 								colorChangeDOwn: false,
 								text: "",
@@ -253,7 +286,7 @@ export default defineComponent({
 							},
 							{
 								lineType: 25,
-								bettingType: "C",
+								bettingType: "H",
 								colorChangeUp: false,
 								colorChangeDOwn: false,
 								text: "",
@@ -310,7 +343,7 @@ export default defineComponent({
 						nums: [
 							{
 								lineType: 26,
-								bettingType: "C",
+								bettingType: "H",
 								colorChangeUp: false,
 								colorChangeDOwn: false,
 								text: "",
@@ -318,7 +351,7 @@ export default defineComponent({
 							},
 							{
 								lineType: 27,
-								bettingType: "C",
+								bettingType: "H",
 								colorChangeUp: false,
 								colorChangeDOwn: false,
 								text: "",
@@ -326,7 +359,7 @@ export default defineComponent({
 							},
 							{
 								lineType: 28,
-								bettingType: "C",
+								bettingType: "H",
 								colorChangeUp: false,
 								colorChangeDOwn: false,
 								text: "",
@@ -334,7 +367,7 @@ export default defineComponent({
 							},
 							{
 								lineType: 29,
-								bettingType: "C",
+								bettingType: "H",
 								colorChangeUp: false,
 								colorChangeDOwn: false,
 								text: "",
@@ -384,7 +417,7 @@ export default defineComponent({
 					nums: [
 						{
 							lineType: 30,
-							bettingType: "C",
+							bettingType: "H",
 							type: 2,
 							colorChangeUp: false,
 							colorChangeDOwn: false,
@@ -393,7 +426,7 @@ export default defineComponent({
 						},
 						{
 							lineType: 31,
-							bettingType: "C",
+							bettingType: "H",
 							type: 2,
 							colorChangeUp: false,
 							colorChangeDOwn: false,
@@ -402,7 +435,7 @@ export default defineComponent({
 						},
 						{
 							lineType: 32,
-							bettingType: "C",
+							bettingType: "H",
 							type: 2,
 							colorChangeUp: false,
 							colorChangeDOwn: false,
@@ -433,7 +466,6 @@ export default defineComponent({
 			cornerGID: 0,
 			cornerLID: 0,
 			cornerTitleList: ["", "角球让分", "角球大/小", "角球独赢"],
-			// titleList: ['半场', '让球', '得分大小', '独赢', '下一个进球'],
 			changedFTDataList: [],
 			tempFTDataList: []
 		}
@@ -448,7 +480,7 @@ export default defineComponent({
 		connect: function () {
 			console.log('socket to notification channel connected')
 		},
-		receivedFTTodayMessage: function (data: any) {
+		receivedFTEarlyMessage: function (data: any) {
 			this.loading = false;
 			// console.log('receivedFTTodayMessage', data);
 			if (data == null) return;
@@ -520,9 +552,8 @@ export default defineComponent({
 			}
 
 		},
-		receivedFT_HDP_OU_TODAY: function (data: any) {
-			this.loading = false;
-
+		receivedFT_HDP_OU_EARLY: function (data: any) {
+			this.summaryLoading = false;
 			for (let i = 0; i < this.changedFTDataList.length; i++) {
 				if (this.changedFTDataList[i]["lid"] === this.summaryLID) {
 					for (let j = 0; j < this.changedFTDataList[i]["gameList"].length; j++) {
@@ -594,36 +625,36 @@ export default defineComponent({
 							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][0]["nums"][1]["text"] = data["RATIO_RE_HDP_1"]
 							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][0]["nums"][1]["num"] = (Number(data["IOR_REH_HDP_1"])).toFixed(2)
 							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][0]["nums"][2]["text"] = data["RATIO_RE_HDP_2"]
-							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][0]["nums"][2]["num"] = data["IOR_REH_HDP_2"] !== undefined ? (Number(data["IOR_REH_HDP_2"])).toFixed(2) : 0;
+							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][0]["nums"][2]["num"] = data["IOR_REH_HDP_2"] !== "" ? (Number(data["IOR_REH_HDP_2"])).toFixed(2) : 0;
 							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][0]["nums"][3]["text"] = data["RATIO_RE_HDP_3"]
-							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][0]["nums"][3]["num"] = data["IOR_REH_HDP_3"] !== undefined ? (Number(data["IOR_REH_HDP_3"])).toFixed(2) : 0;
+							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][0]["nums"][3]["num"] = data["IOR_REH_HDP_3"] !== "" ? (Number(data["IOR_REH_HDP_3"])).toFixed(2) : 0;
 
 							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][1]["nums"][0]["text"] = data["RATIO_RE_HDP_0"] != null && (Number(data["IOR_REH_HDP_0"])) < (Number(data["IOR_REC_HDP_0"])) ? "-" + data["RATIO_RE_HDP_0"] : "+" + data["RATIO_RE_HDP_0"];
 							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][1]["nums"][0]["num"] = (Number(data["IOR_REC_HDP_0"])).toFixed(2)
 							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][1]["nums"][1]["text"] = data["RATIO_RE_HDP_1"]
 							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][1]["nums"][1]["num"] = (Number(data["IOR_REC_HDP_1"])).toFixed(2)
 							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][1]["nums"][2]["text"] = data["RATIO_RE_HDP_2"]
-							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][1]["nums"][2]["num"] = data["IOR_REC_HDP_2"] !== undefined ? (Number(data["IOR_REC_HDP_2"])).toFixed(2) : 0
+							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][1]["nums"][2]["num"] = data["IOR_REC_HDP_2"] !== "" ? (Number(data["IOR_REC_HDP_2"])).toFixed(2) : 0
 							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][1]["nums"][3]["text"] = data["RATIO_RE_HDP_3"]
-							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][1]["nums"][3]["num"] = data["IOR_REC_HDP_3"] !== undefined ? (Number(data["IOR_REC_HDP_3"])).toFixed(2) : 0
+							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][1]["nums"][3]["num"] = data["IOR_REC_HDP_3"] !== "" ? (Number(data["IOR_REC_HDP_3"])).toFixed(2) : 0
 
 							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][0]["nums"][0]["text"] = data["RATIO_ROUO_HDP_0"];
 							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][0]["nums"][0]["num"] = (Number(data["IOR_ROUC_HDP_0"])).toFixed(2)
 							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][0]["nums"][1]["text"] = data["RATIO_ROUO_HDP_1"]
 							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][0]["nums"][1]["num"] = (Number(data["IOR_ROUC_HDP_1"])).toFixed(2)
 							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][0]["nums"][2]["text"] = data["RATIO_ROUO_HDP_2"]
-							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][0]["nums"][2]["num"] = data["IOR_ROUC_HDP_2"] !== undefined ? (Number(data["IOR_ROUC_HDP_2"])).toFixed(2) : 0
+							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][0]["nums"][2]["num"] = data["IOR_ROUC_HDP_2"] !== "" ? (Number(data["IOR_ROUC_HDP_2"])).toFixed(2) : 0
 							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][0]["nums"][3]["text"] = data["RATIO_ROUO_HDP_3"]
-							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][0]["nums"][3]["num"] = data["IOR_ROUC_HDP_3"] !== undefined ? (Number(data["IOR_ROUC_HDP_3"])).toFixed(2) : 0
+							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][0]["nums"][3]["num"] = data["IOR_ROUC_HDP_3"] !== "" ? (Number(data["IOR_ROUC_HDP_3"])).toFixed(2) : 0
 
 							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][1]["nums"][0]["text"] = data["RATIO_ROUU_HDP_0"];
 							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][1]["nums"][0]["num"] = (Number(data["IOR_ROUH_HDP_0"])).toFixed(2)
 							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][1]["nums"][1]["text"] = data["RATIO_ROUU_HDP_1"]
 							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][1]["nums"][1]["num"] = (Number(data["IOR_ROUH_HDP_1"])).toFixed(2)
 							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][1]["nums"][2]["text"] = data["RATIO_ROUU_HDP_2"]
-							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][1]["nums"][2]["num"] = data["IOR_ROUH_HDP_2"] !== undefined ? (Number(data["IOR_ROUH_HDP_2"])).toFixed(2) : 0;
+							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][1]["nums"][2]["num"] = data["IOR_ROUH_HDP_2"] !== "" ? (Number(data["IOR_ROUH_HDP_2"])).toFixed(2) : 0;
 							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][1]["nums"][3]["text"] = data["RATIO_ROUU_HDP_3"]
-							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][1]["nums"][3]["num"] = data["IOR_ROUH_HDP_3"] !== undefined ? (Number(data["IOR_ROUH_HDP_3"])).toFixed(2) : 0;
+							this.changedFTDataList[i]["gameList"][j]["fullCourt2"]["data"][1]["nums"][3]["num"] = data["IOR_ROUH_HDP_3"] !== "" ? (Number(data["IOR_ROUH_HDP_3"])).toFixed(2) : 0;
 
 							this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][0]["name"] = this.changedFTDataList[i]["gameList"][j]["scoreList"][0]["name"];
 							// this.changedFTDataList[i]["gameList"][j]["fullCourt1"]["data"][0]["goalsScored"] = this.changedFTDataList[i]["gameList"][j]["scoreList"][0]["goalsScored"];
@@ -747,10 +778,20 @@ export default defineComponent({
 		this.$socket.emit("sendFTEarlyMessage", { lids: this.earlyGids, field: this.field });
 	},
 	unmounted() {
-		console.log("unmounted");
 		this.$socket.emit("stopFTEarlyMessage")
 	},
 	methods: {
+		showMore: function (lid, id) {
+			this.changedFTDataList.forEach(element => {
+				if (element["lid"] === lid) {
+					element["gameList"].forEach(item => {
+						if (item["id"] === id) {
+							item["moreShow"] = !item["moreShow"];
+						}
+					})
+				}
+			});
+		},
 		saveFavorite: function (lid, id, ecid) {
 			console.log(lid);
 			this.changedFTDataList.forEach(element => {
@@ -779,10 +820,11 @@ export default defineComponent({
 			this.removeFavoriteList(id);
 		},
 		showSummary: function (lid, id, ecid, summaryData) {
+			// this.summaryLoading = true;
 			console.log(summaryData);
 			this.summaryGID = id;
 			this.summaryLID = lid;
-			this.$socket.emit('sendHDP_OU_TODAY', { ecid: ecid, id: id, showtype: "early" });
+			// this.$socket.emit('sendHDP_OU_EARLY', { ecid: ecid, id: id, showtype: "early" }, { lids: this.earlyGids, field: this.field });
 			this.changedFTDataList.forEach(element => {
 				if (element["lid"] === lid) {
 					element["gameList"].forEach(item => {
@@ -853,13 +895,10 @@ export default defineComponent({
 				} else {
 					data["show"] = false;
 				}
-				if (ftData[0]["FLAG_CLASS"] != null && ftData[0]["FLAG_CLASS"].includes("flag_GB")) {
-					data["icon"] = new URL('@/assets/flags/flag_GB.svg', import.meta.url).href;
-				} else if (ftData[0]["FLAG_CLASS"] == null || ftData[0]["FLAG_CLASS"] == "") {
-					data["icon"] = "";
+				if (ftData[0]["FLAG_CLASS"] != null && ftData[0]["FLAG_CLASS"] !== "") {
+					data["icon"] = `https://www.hga030.com/images/flag/${ftData[0]["FLAG_CLASS"]}.svg`;
 				} else {
-					let flag_url = `../../../../../src/assets/flags/${ftData[0]["FLAG_CLASS"]}.svg`;
-					data["icon"] = new URL(flag_url, import.meta.url).href;
+					data["icon"] = "";
 				}
 				let gameList = [];
 				ftData.forEach(item => {
@@ -875,14 +914,195 @@ export default defineComponent({
 							})
 						})
 					}
+					if (item["HDP_OU"] === 1) {
+
+						this.fullCourt1 = {
+							title: '让球',
+							data: [
+								{
+									name: item["MB_Team"],
+									nums: [
+										{
+											lineType: 2,
+											mType: "RH",
+											bettingType: "H",
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["M_LetB"] !== "" && item["M_LetB"] !== undefined ? "+" + item["M_LetB"] : "",
+											num: item["MB_LetB_Rate"] == 0 || item["MB_LetB_Rate"] == undefined ? 0 : (Number(item["MB_LetB_Rate"])).toFixed(2),
+										},
+										{
+											lineType: 56,
+											mType: "RH",
+											bettingType: "H",
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["M_LetB_1"] !== "" && item["M_LetB_1"] !== undefined ? "+" + item["M_LetB_1"] : "",
+											num: item["MB_LetB_Rate_1"] == 0 || item["MB_LetB_Rate_1"] == undefined ? 0 : (Number(item["MB_LetB_Rate_1"])).toFixed(2),
+										},
+										{
+											lineType: 57,
+											mType: "RH",
+											bettingType: "H",
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["M_LetB_2"] !== "" && item["M_LetB_2"] !== undefined ? "+" + item["M_LetB_2"] : "",
+											num: item["MB_LetB_Rate_2"] == 0 || item["MB_LetB_Rate_2"] == undefined ? 0 : (Number(item["MB_LetB_Rate_2"])).toFixed(2),
+										},
+										{
+											lineType: 58,
+											mType: "RH",
+											bettingType: "H",
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["M_LetB_3"] !== "" && item["M_LetB_3"] !== undefined ? "+" + item["M_LetB_3"] : "",
+											num: item["MB_LetB_Rate_3"] == 0 || item["MB_LetB_Rate_3"] == undefined ? 0 : (Number(item["MB_LetB_Rate_3"])).toFixed(2),
+										},
+									]
+								},
+								{
+									name: item["TG_Team"],
+									nums: [
+										{
+											lineType: 2,
+											mType: "RC",
+											bettingType: "H",
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["M_LetB"] !== "" && item["M_LetB"] !== undefined ? "-" + item["M_LetB"] : "",
+											num: item["TG_LetB_Rate"] == 0 || item["TG_LetB_Rate"] == undefined ? 0 : (Number(item["TG_LetB_Rate"])).toFixed(2),
+										},
+										{
+											lineType: 56,
+											mType: "RC",
+											bettingType: "H",
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["M_LetB_1"] !== "" && item["M_LetB_1"] !== undefined ? "-" + item["M_LetB_1"] : "",
+											num: item["TG_LetB_Rate_1"] == 0 || item["TG_LetB_Rate_1"] == undefined ? 0 : (Number(item["TG_LetB_Rate_1"])).toFixed(2),
+										},
+										{
+											lineType: 57,
+											mType: "RC",
+											bettingType: "H",
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["M_LetB_2"] !== "" && item["M_LetB_2"] !== undefined ? "+" + item["M_LetB_2"] : "",
+											num: item["TG_LetB_Rate_2"] == 0 || item["TG_LetB_Rate_2"] == undefined ? 0 : (Number(item["TG_LetB_Rate_2"])).toFixed(2),
+										},
+										{
+											lineType: 58,
+											mType: "RC",
+											bettingType: "H",
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["M_LetB_3"] !== "" && item["M_LetB_3"] !== undefined ? "-" + item["M_LetB_3"] : "",
+											num: item["TG_LetB_Rate_3"] == 0 || item["TG_LetB_Rate_3"] == undefined ? 0 : (Number(item["TG_LetB_Rate_3"])).toFixed(2),
+										},
+									]
+								}
+							]
+						}
+
+						this.fullCourt2 = {
+							title: '得分大小',
+							data: [
+								{
+									name: item["MB_Team"],
+									nums: [
+										{
+											lineType: 3,
+											mType: "OUH",
+											bettingType: "H",
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["MB_Dime"] == "" && item["MB_Dime"] == undefined ? "" : "大 " + item["MB_Dime"].split("O")[1],
+											num: item["MB_Dime_Rate"] == 0 || item["MB_Dime_Rate"] == undefined ? 0 : (Number(item['MB_Dime_Rate'])).toFixed(2)
+										},
+										{
+											lineType: 59,
+											mType: "OUH",
+											bettingType: "H",
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["MB_Dime_1"] == "" && item["MB_Dime_1"] == undefined ? "" : "大 " + item["MB_Dime_1"].split("O")[1],
+											num: item["MB_Dime_Rate_1"] == 0 || item["MB_Dime_Rate_1"] == undefined ? 0 : (Number(item['MB_Dime_Rate_1'])).toFixed(2)
+										},
+										{
+											lineType: 60,
+											mType: "OUH",
+											bettingType: "H",
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["MB_Dime_2"] == "" && item["MB_Dime_2"] == undefined ? "" : "大 " + item["MB_Dime_2"].split("O")[1],
+											num: item["MB_Dime_Rate_2"] == 0 || item["MB_Dime_Rate_2"] == undefined ? 0 : (Number(item['MB_Dime_Rate_2'])).toFixed(2)
+										},
+										{
+											lineType: 61,
+											mType: "OUH",
+											bettingType: "H",
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["MB_Dime_3"] == "" && item["MB_Dime_3"] == undefined ? "" : "大 " + item["MB_Dime_3"].split("O")[1],
+											num: item["MB_Dime_Rate_3"] == 0 || item["MB_Dime_Rate_3"] == undefined ? 0 : (Number(item['MB_Dime_Rate_3'])).toFixed(2)
+										},
+									]
+								},
+								{
+									name: item["TG_Team"],
+									nums: [
+										{
+											lineType: 3,
+											mType: "OUC",
+											bettingType: "H",
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["TG_Dime"] == "" && item["TG_Dime"] == undefined ? "" : "小 " + item["TG_Dime"].split("U")[1],
+											num: item["TG_Dime_Rate"] == 0 || item["TG_Dime_Rate"] == undefined ? 0 : (Number(item['TG_Dime_Rate'])).toFixed(2)
+										},
+										{
+											lineType: 59,
+											mType: "OUC",
+											bettingType: "H",
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["TG_Dime_1"] == "" && item["TG_Dime_1"] == undefined ? "" : "小 " + item["TG_Dime_1"].split("U")[1],
+											num: item["TG_Dime_Rate_1"] == 0 || item["TG_Dime_Rate_1"] == undefined ? 0 : (Number(item['TG_Dime_Rate_1'])).toFixed(2)
+										},
+										{
+											lineType: 60,
+											mType: "OUC",
+											bettingType: "H",
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["TG_Dime_2"] == "" && item["TG_Dime_2"] == undefined ? "" : "小 " + item["TG_Dime_2"].split("U")[1],
+											num: item["TG_Dime_Rate_2"] == 0 || item["TG_Dime_Rate_2"] == undefined ? 0 : (Number(item['TG_Dime_Rate_2'])).toFixed(2)
+										},
+										{
+											lineType: 61,
+											mType: "OUC",
+											bettingType: "H",
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: item["TG_Dime_3"] == "" && item["TG_Dime_3"] == undefined ? "" : "小 " + item["TG_Dime_3"].split("U")[1],
+											num: item["TG_Dime_Rate_3"] == 0 || item["TG_Dime_Rate_3"] == undefined ? 0 : (Number(item['TG_Dime_Rate_3'])).toFixed(2)
+										},
+									]
+								}
+							]
+						}
+					}
 					let gameData = {
 						id: item["MID"],
 						ecid: item["ECID"],
 						m_date: item["M_Date"],
 						m_start: item["M_Start"],
 						hdpBtnShow: item["HDP_OU"] == 1 ? true : false,
-						cornerBtnShow: item["CORNER"] == 1 ? true : false,
+						// cornerBtnShow: item["CORNER"] == 1 ? true : false,
+						cornerBtnShow: false,
+						// hdpBtnShow: false,
 						titleList: [item["M_Start"], '让球', '得分大小', '独赢'],
+						halfTitleList: [item["M_Start"], '单双', '半场让球', '半场大小', '半场独赢'],
 						scoreList: [
 							{
 								// goalsScored: item["MB_Ball"],
@@ -890,6 +1110,7 @@ export default defineComponent({
 								nums: [
 									{
 										lineType: 2,
+										mType: "RH",
 										bettingType: "H",
 										type: item["MB_LetB_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
@@ -899,16 +1120,18 @@ export default defineComponent({
 									},
 									{
 										lineType: 3,
+										mType: "OUH",
 										bettingType: "H",
 										type: item["MB_Dime_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: item['MB_Dime'],
+										text: item["MB_Dime"] == "" || item["MB_Dime"] == undefined ? "" : "大 " + item["MB_Dime"].split("O")[1],
 										num: item["MB_Dime_Rate"] == 0 ? 0 : (Number(item['MB_Dime_Rate'])).toFixed(2)
 									},
 									{
 										lineType: 1,
 										bettingType: "H",
+										mType: "MH",
 										type: item["MB_Win_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -930,7 +1153,8 @@ export default defineComponent({
 								nums: [
 									{
 										lineType: 2,
-										bettingType: "C",
+										mType: "RC",
+										bettingType: "H",
 										type: item["TG_LetB_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -939,16 +1163,18 @@ export default defineComponent({
 									},
 									{
 										lineType: 3,
-										bettingType: "C",
+										mType: "OUC",
+										bettingType: "H",
 										type: item["TG_Dime_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: item['TG_Dime'],
+										text: item["TG_Dime"] == "" || item["TG_Dime"] == undefined ? "" : "小 " + item["TG_Dime"].split("U")[1],
 										num: item["TG_Dime_Rate"] == 0 ? 0 : (Number(item['TG_Dime_Rate'])).toFixed(2)
 									},
 									{
 										lineType: 1,
-										bettingType: "C",
+										mType: "MC",
+										bettingType: "H",
 										type: item["TG_Win_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -971,6 +1197,7 @@ export default defineComponent({
 									{},
 									{
 										lineType: 1,
+										mType: "MN",
 										bettingType: "N",
 										type: item["M_Flat_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
@@ -985,6 +1212,119 @@ export default defineComponent({
 									// 	text: '无',
 									// 	num: Number(item['M_Flat_Rate_RB_H']).toFixed(2)
 									// }
+								]
+							}
+						],
+						halfScoreList: [
+							{
+								name: item["MB_Team"],
+								nums: [
+									{
+										lineType: 5,
+										r_type: "ODD",
+										mType: "",
+										bettingType: "H",
+										type: item["S_Single_Rate"] == 0 ? 2 : 1,
+										colorChangeUp: false,
+										colorChangeDOwn: false,
+										text: "单",
+										num: item["S_Single_Rate"] == 0 ? 0 : (Number(item["S_Single_Rate"])).toFixed(2)
+									},
+									{
+										lineType: 12,
+										mType: "VRH",
+										bettingType: "H",
+										type: item["MB_LetB_Rate_H"] == 0 ? 2 : 1,
+										colorChangeUp: false,
+										colorChangeDOwn: false,
+										text: item["M_LetB_H"] !== "" ? "+" + item["M_LetB_H"] : "",
+										num: item["MB_LetB_Rate_H"] == 0 ? 0 : (Number(item["MB_LetB_Rate_H"])).toFixed(2)
+									},
+									{
+										lineType: 13,
+										mType: "VOUH",
+										bettingType: "H",
+										type: item["MB_Dime_Rate_H"] == 0 ? 2 : 1,
+										colorChangeUp: false,
+										colorChangeDOwn: false,
+										text: item["MB_Dime_H"] == "" ? "" : "大 " + item["MB_Dime_H"].split("O")[1],
+										num: item["MB_Dime_Rate_H"] == 0 ? 0 : (Number(item['MB_Dime_Rate_H'])).toFixed(2)
+									},
+									{
+										lineType: 11,
+										mType: "VMH",
+										bettingType: "H",
+										type: item["MB_Win_Rate_H"] == 0 ? 2 : 1,
+										colorChangeUp: false,
+										colorChangeDOwn: false,
+										text: item["MB_Win_H"],
+										num: (Number(item["MB_Win_Rate_H"])).toFixed(2)
+									},
+								]
+							},
+							{
+								goalsScored: item["TG_Ball"],
+								name: item["TG_Team"],
+								nums: [
+									{
+										lineType: 5,
+										mType: "",
+										r_type: "EVEN",
+										bettingType: "H",
+										type: item["S_Double_Rate"] == 0 ? 2 : 1,
+										colorChangeUp: false,
+										colorChangeDOwn: false,
+										text: "双",
+										num: item["S_Double_Rate"] == 0 ? 0 : (Number(item["S_Double_Rate"])).toFixed(2)
+									},
+									{
+										lineType: 12,
+										mType: "VRC",
+										bettingType: "H",
+										type: item["TG_LetB_Rate_H"] == 0 ? 2 : 1,
+										colorChangeUp: false,
+										colorChangeDOwn: false,
+										text: item["M_LetB_H"] !== "" ? "-" + item["M_LetB_H"] : "",
+										num: item["TG_LetB_Rate_H"] == 0 ? 0 : (Number(item["TG_LetB_Rate_H"])).toFixed(2)
+									},
+									{
+										lineType: 13,
+										mType: "VOUC",
+										bettingType: "H",
+										type: item["TG_Dime_Rate_H"] == 0 ? 2 : 1,
+										colorChangeUp: false,
+										colorChangeDOwn: false,
+										text: item["TG_Dime_H"] == "" ? "" : "小 " + item["TG_Dime_H"].split("U")[1],
+										num: item["TG_Dime_Rate_H"] == 0 ? 0 : (Number(item['TG_Dime_Rate_H'])).toFixed(2)
+									},
+									{
+										lineType: 11,
+										mType: "VMC",
+										bettingType: "H",
+										type: item["TG_Win_Rate_H"] == 0 ? 2 : 1,
+										colorChangeUp: false,
+										colorChangeDOwn: false,
+										text: item["TG_Win_H"],
+										num: Number(item["TG_Win_Rate_H"]).toFixed(2)
+									},
+								]
+							},
+							{
+								Collection: false,
+								nums: [
+									{},
+									{},
+									{},
+									{
+										lineType: 11,
+										mType: "VMN",
+										bettingType: "N",
+										type: item["M_Flat_Rate_H"] == 0 ? 2 : 1,
+										colorChangeUp: false,
+										colorChangeDOwn: false,
+										text: '和',
+										num: Number(item['M_Flat_Rate_H']).toFixed(2)
+									},
 								]
 							}
 						],
@@ -1019,7 +1359,9 @@ export default defineComponent({
 			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
 			this.bettingOrderData["tgTeam"] = gameData.scoreList[1].name;
 			this.bettingOrderData["rate"] = rateData.num;
+			this.bettingOrderData['r_type'] = rateData.r_type;
 			this.bettingOrderData["lineType"] = rateData.lineType;
+			this.bettingOrderData["mType"] = rateData.mType;
 			this.bettingOrderData['selectedType'] = rateData.bettingType;
 			this.bettingOrderData["league"] = leagueData.name;
 			this.bettingOrderData["title"] = gameData.titleList[scoreIndex + 1];
@@ -1083,6 +1425,12 @@ export default defineComponent({
 <style scoped lang="scss">
 .loading-position {
 	margin-top: 200px;
+	position: absolute;
+	left: 50%;
+}
+
+.summary-loading-position {
+	margin-top: 20px;
 	position: absolute;
 	left: 50%;
 }
@@ -1199,6 +1547,13 @@ export default defineComponent({
 
 		div:last-child {
 			margin-right: 0;
+		}
+	}
+
+	.half-table-list {
+
+		div:first-child {
+			width: 80px !important;
 		}
 	}
 

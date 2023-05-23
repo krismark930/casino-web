@@ -2,6 +2,7 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import { BASE_URL } from "@/config";
 import { GET_FT_RESULT } from "@/config";
+import { GET_BK_RESULT } from "@/config";
 import { formatDate } from '@/utils/util'
 
 export const gameResultStore = defineStore({
@@ -78,6 +79,57 @@ export const gameResultStore = defineStore({
                         }
                         break;
                     case 1:
+                        const response_bk = await axios.post(`${BASE_URL}${GET_BK_RESULT}`, data);
+                        if (response_bk.status === 200) {
+                            this.setSuccess(true);
+                            const tmpCollapseList = [...response_bk.data.data];
+                            const duplicatedLeagueNames = tmpCollapseList.map(item => item.M_League);
+                            const leagueNames = duplicatedLeagueNames.filter((item, index) => duplicatedLeagueNames.indexOf(item) === index);
+                            let resultList = [] as Array<any>;
+                            resultList = leagueNames.map(item => {
+                                return {
+                                    name: item,
+                                    gameResultList: []
+                                }
+                            })
+                            tmpCollapseList.map(item => {
+                                const index = leagueNames.indexOf(item.M_League);
+                                if (active === 0) {
+                                    resultList[index].gameResultList.push(
+                                        {
+                                            titletext: [item.M_Start, '上半场', '全场'],
+                                            scoreList: [{
+                                                name: item.MB_Team,
+                                                nums: [item.MB_Inball_HR, item.MB_Ball]
+                                            },
+                                            {
+                                                name: item.TG_Team,
+                                                nums: [item.TG_Inball_HR, item.TG_Ball]
+                                            },
+                                            ],
+                                        }
+                                    )
+                                } else {
+                                    resultList[index].gameResultList.push(
+                                        {
+                                            titletext: [item.M_Start, '上半场', '全场'],
+                                            scoreList: [{
+                                                name: item.MB_Team,
+                                                nums: [item.MB_Inball_HR, item.MB_Inball]
+                                            },
+                                            {
+                                                name: item.TG_Team,
+                                                nums: [item.TG_Inball_HR, item.TG_Inball]
+                                            },
+                                            ],
+                                        }
+                                    )
+                                }
+                            })
+                            this.setCollapseList(resultList);
+                        }
+                        break;
+                    case 2:
                         let gameResultList = [
                             {
                                 name: 'NBA美国职业篮球联赛',

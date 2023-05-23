@@ -81,7 +81,7 @@ export default defineComponent({
 				selectedType: "H", // "H", "C"
 				gameType: "BK",
 				oddFType: "H",
-				active: 1,
+				active: 2,
 				r_type: "",
 				text: "",
 				m_date: "",
@@ -227,11 +227,11 @@ export default defineComponent({
 				} else {
 					data["show"] = false;
 				}
-				if (bkData[0]["FLAG_CLASS"] == null) {
+
+				if (bkData[0]["FLAG_CLASS"] == null || bkData[0]["FLAG_CLASS"] == "") {
 					data["icon"] = "";
 				} else {
-					let flag_url = `../../../../../src/assets/flags/${bkData[0]["FLAG_CLASS"]}.svg`;
-					data["icon"] = new URL(flag_url, import.meta.url).href;
+					data["icon"] = `https://www.hga030.com/images/flag/${bkData[0]["FLAG_CLASS"]}.svg`;
 				}
 				let gameList = [];
 				bkData.forEach(item => {
@@ -246,11 +246,8 @@ export default defineComponent({
 							text: '总分'
 						},
 						{
-							text: '第一队得分'
+							text: '单/双'
 						},
-						{
-							text: '第二队得分'
-						}
 					];
 					let gameData = {
 						id: item["MID"],
@@ -265,45 +262,56 @@ export default defineComponent({
 								name: item["MB_Team"],
 								nums: [
 									{
-										lineType: 1,
+										lineType: 2,
+										mType: "RH",
 										bettingType: "H",
-										oddFType: "H",
 										type: item["MB_LetB_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: (Number(item["MB_LetB_Rate"])) > (Number(item["TG_LetB_Rate"])) ? "-" + item["M_LetB"] : "+" + item["M_LetB"],
+										text: item["M_LetB"] !== "" ? "+" + item["M_LetB"] : "",
 										num: item["MB_LetB_Rate"] == 0 ? 0 : (Number(item["MB_LetB_Rate"])).toFixed(2)
 									},
 									{
-										lineType: 2,
+										lineType: 3,
+										mType: "OUH",
 										bettingType: "H",
-										oddFType: "H",
 										type: item["MB_Dime_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: item['MB_Dime'],
+										text: item["MB_Dime"] == "" ? "" : "大 " + item["MB_Dime"].split("O")[1],
 										num: item["MB_Dime_Rate"] == 0 ? 0 : (Number(item['MB_Dime_Rate'])).toFixed(2)
 									},
 									{
-										lineType: 3,
+										lineType: 105,
+										r_type: "ODD",
+										mType: "",
 										bettingType: "H",
-										oddFType: "E",
-										type: item["MB_Points_Rate_1"] == 0 ? 2 : 1,
+										type: item["S_Single_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: item["MB_Points_1"],
-										num: (Number(item["MB_Points_Rate_1"])).toFixed(2)
+										text: "单",
+										num: item["S_Single_Rate"] == 0 ? 0 : (Number(item["S_Single_Rate"])).toFixed(2)
 									},
-									{
-										lineType: 4,
-										bettingType: "H",
-										oddFType: "E",
-										type: item["MB_Points_Rate_2"] == 0 ? 2 : 1,
-										colorChangeUp: false,
-										colorChangeDOwn: false,
-										text: item["MB_Points_2"],
-										num: (Number(item["MB_Points_Rate_2"])).toFixed(2)
-									},
+									// {
+									// 	lineType: 3,
+									// 	bettingType: "H",
+									// 	oddFType: "E",
+									// 	type: item["MB_Points_Rate_1"] == 0 ? 2 : 1,
+									// 	colorChangeUp: false,
+									// 	colorChangeDOwn: false,
+									// 	text: item["MB_Points_1"],
+									// 	num: (Number(item["MB_Points_Rate_1"])).toFixed(2)
+									// },
+									// {
+									// 	lineType: 4,
+									// 	bettingType: "H",
+									// 	oddFType: "E",
+									// 	type: item["MB_Points_Rate_2"] == 0 ? 2 : 1,
+									// 	colorChangeUp: false,
+									// 	colorChangeDOwn: false,
+									// 	text: item["MB_Points_2"],
+									// 	num: (Number(item["MB_Points_Rate_2"])).toFixed(2)
+									// },
 								]
 							},
 							{
@@ -311,45 +319,56 @@ export default defineComponent({
 								name: item["TG_Team"],
 								nums: [
 									{
-										lineType: 1,
-										bettingType: "C",
-										oddFType: "H",
+										lineType: 2,
+										mType: "RC",
+										bettingType: "H",
 										type: item["TG_LetB_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: (Number(item["MB_LetB_Rate"])) < (Number(item["TG_LetB_Rate"])) ? "-" + item["M_LetB"] : "+" + item["M_LetB"],
+										text: item["M_LetB"] !== "" ? "-" + item["M_LetB"] : "",
 										num: item["TG_LetB_Rate"] == 0 ? 0 : (Number(item["TG_LetB_Rate"])).toFixed(2)
 									},
 									{
-										lineType: 2,
-										bettingType: "C",
-										oddFType: "H",
+										lineType: 3,
+										mType: "OUC",
+										bettingType: "H",
 										type: item["TG_Dime_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: item['TG_Dime'],
+										text: item["TG_Dime"] == "" ? "" : "小 " + item["TG_Dime"].split("U")[1],
 										num: item["TG_Dime_Rate"] == 0 ? 0 : (Number(item['TG_Dime_Rate'])).toFixed(2)
 									},
 									{
-										lineType: 3,
-										bettingType: "C",
-										oddFType: "E",
-										type: item["TG_Points_Rate_1"] == 0 ? 2 : 1,
+										lineType: 105,
+										mType: "",
+										r_type: "EVEN",
+										bettingType: "H",
+										type: item["S_Double_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: item["TG_Points_1"],
-										num: Number(item["TG_Points_Rate_1"]).toFixed(2)
+										text: "双",
+										num: item["S_Double_Rate"] == 0 ? 0 : (Number(item["S_Double_Rate"])).toFixed(2)
 									},
-									{
-										lineType: 4,
-										bettingType: "C",
-										oddFType: "E",
-										type: item["TG_Points_Rate_2"] == 0 ? 2 : 1,
-										colorChangeUp: false,
-										colorChangeDOwn: false,
-										text: item["TG_Points_2"],
-										num: Number(item["TG_Points_Rate_2"]).toFixed(2)
-									},
+									// {
+									// 	lineType: 3,
+									// 	bettingType: "H",
+									// 	oddFType: "E",
+									// 	type: item["TG_Points_Rate_1"] == 0 ? 2 : 1,
+									// 	colorChangeUp: false,
+									// 	colorChangeDOwn: false,
+									// 	text: item["TG_Points_1"],
+									// 	num: Number(item["TG_Points_Rate_1"]).toFixed(2)
+									// },
+									// {
+									// 	lineType: 4,
+									// 	bettingType: "H",
+									// 	oddFType: "E",
+									// 	type: item["TG_Points_Rate_2"] == 0 ? 2 : 1,
+									// 	colorChangeUp: false,
+									// 	colorChangeDOwn: false,
+									// 	text: item["TG_Points_2"],
+									// 	num: Number(item["TG_Points_Rate_2"]).toFixed(2)
+									// },
 								]
 							},
 						],

@@ -15,11 +15,17 @@ import VueSocketIO from 'vue-3-socket.io';
 import { SOCKET_URL } from "@/config";
 import { Collapse, CollapseItem } from 'vant';
 import { Cell, CellGroup } from 'vant';
+import { Pagination } from 'vant';
 import { Icon } from 'vant';
 import { Col, Row } from 'vant';
+import { CountDown } from 'vant';
 import { Popup } from 'vant';
-
-import { i18n } from '@/i18n'
+import { NumberKeyboard } from 'vant';
+import { Form, Field } from 'vant';
+import { i18n } from '@/i18n';
+// 引入element-plus
+import ElementPlus from 'element-plus'
+import './assets/style/element-variables.scss'
 
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -48,6 +54,12 @@ app.use(Icon);
 app.use(Col);
 app.use(Row);
 app.use(Popup);
+app.use(NumberKeyboard);
+app.use(Pagination);
+app.use(CountDown);
+app.use(Form);
+app.use(Field);
+app.use(ElementPlus);
 app.use(
     new VueSocketIO({
         debug: true,

@@ -53,6 +53,36 @@
 						查看更多
 					</div>
 				</div>
+				<div style="text-align: center; color:red; font-weight: bold; margin-bottom: 10px;">半场波胆</div>
+				<div class="score_box" v-for="(halfscoreItem, halfScoreListIndex) in gameItem['halfScoreList']"
+					:key="halfScoreListIndex">
+					<div class="score_in" :ref="'score' + halfScoreListIndex">
+						<div class="score_list" v-for="(halfsubItem, halfSubItemIndex) in halfscoreItem['score']"
+							:key="halfSubItemIndex">
+							<div class="score_item"
+								:class="{ score_item_show: halfScores.type == 1, score_item_hide: halfScores.type == 2 }"
+								v-for="(halfScores, halfScoresIndex) in halfsubItem" :key="halfScoresIndex">
+								<div class="item-background" v-if="halfScores.state == 1"
+									:class="{ item_background_up: halfScores.colorChangeUp, item_background_down: halfScores.colorChangeDown }"
+									@click="handleModal(lidItem, gameItem, halfScores)">
+									<span>{{ halfScores.text }}</span>
+									<span>{{ halfScores.num }}</span>
+								</div>
+								<div class="lock" v-if="halfScores.state == 2">
+									<img src="@/assets/images/stadiums/lock.png" alt="">
+								</div>
+							</div>
+						</div>
+						<div class="score_other score_item" :class="{ score_item_hide: halfscoreItem.type == 2 }"
+							@click="handleOtherModal(lidItem, gameItem, halfscoreItem)">
+							<span>其他比分</span>
+							<span>{{ halfscoreItem.other }}</span>
+						</div>
+					</div>
+					<div class="more" @click="halfMoreShow(lidItem['lid'], gameItemInex, halfScoreListIndex)">
+						查看更多
+					</div>
+				</div>
 			</div>
 		</div>
 		<OrderModal v-if="openModal" :bettingOrderData="bettingOrderData" :bettingType="bettingType" @close="closeModal" />
@@ -310,6 +340,23 @@ export default defineComponent({
 				}
 			})
 		},
+		halfMoreShow: function (lid: number, gameItemInex: number, scoreListIndex: number) {
+			this.changedFTScoreDataList.map(item => {
+				if (item["lid"] === lid) {
+					item["gameList"][gameItemInex]['halfScoreList'][0]['type'] = item["gameList"][gameItemInex]['halfScoreList'][0]['type'] == 2 ? 1 : 2;
+					item["gameList"][gameItemInex]['halfScoreList'][0]['score'][5][0]['type'] = item["gameList"][gameItemInex]['halfScoreList'][0]['score'][5][0]['type'] == 2 ? 1 : 2;
+					item["gameList"][gameItemInex]['halfScoreList'][0]['score'][5][2]['type'] = item["gameList"][gameItemInex]['halfScoreList'][0]['score'][5][2]['type'] == 2 ? 1 : 2;
+					item["gameList"][gameItemInex]['halfScoreList'][0]['score'][6][0]['type'] = item["gameList"][gameItemInex]['halfScoreList'][0]['score'][6][0]['type'] == 2 ? 1 : 2;
+					item["gameList"][gameItemInex]['halfScoreList'][0]['score'][6][2]['type'] = item["gameList"][gameItemInex]['halfScoreList'][0]['score'][6][2]['type'] == 2 ? 1 : 2;
+					item["gameList"][gameItemInex]['halfScoreList'][0]['score'][7][0]['type'] = item["gameList"][gameItemInex]['halfScoreList'][0]['score'][7][0]['type'] == 2 ? 1 : 2;
+					item["gameList"][gameItemInex]['halfScoreList'][0]['score'][7][2]['type'] = item["gameList"][gameItemInex]['halfScoreList'][0]['score'][7][2]['type'] == 2 ? 1 : 2;
+					item["gameList"][gameItemInex]['halfScoreList'][0]['score'][8][0]['type'] = item["gameList"][gameItemInex]['halfScoreList'][0]['score'][8][0]['type'] == 2 ? 1 : 2;
+					item["gameList"][gameItemInex]['halfScoreList'][0]['score'][8][2]['type'] = item["gameList"][gameItemInex]['halfScoreList'][0]['score'][8][2]['type'] == 2 ? 1 : 2;
+					item["gameList"][gameItemInex]['halfScoreList'][0]['score'][9][0]['type'] = item["gameList"][gameItemInex]['halfScoreList'][0]['score'][9][0]['type'] == 2 ? 1 : 2;
+					item["gameList"][gameItemInex]['halfScoreList'][0]['score'][9][2]['type'] = item["gameList"][gameItemInex]['halfScoreList'][0]['score'][9][2]['type'] == 2 ? 1 : 2;
+				}
+			})
+		},
 		showDetail: function (lid) {
 			console.log(lid);
 			this.changedFTScoreDataList.forEach(element => {
@@ -320,8 +367,8 @@ export default defineComponent({
 			});
 		},
 		ftScoreDataChange: function (ftScoreDataList) {
+			console.log(ftScoreDataList);
 			this.tempFTScoreDataList = this.changedFTScoreDataList;
-			console.log("function:========", this.tempFTScoreDataList);
 			this.changedFTScoreDataList = [];
 			ftScoreDataList.forEach(ftData => {
 				let data = {} as object;
@@ -336,13 +383,10 @@ export default defineComponent({
 				} else {
 					data["show"] = false;
 				}
-				if (ftData[0]["FLAG_CLASS"] != null && ftData[0]["FLAG_CLASS"].includes("flag_GB")) {
-					data["icon"] = new URL('@/assets/flags/flag_GB.svg', import.meta.url).href;
-				} else if (ftData[0]["FLAG_CLASS"] == null) {
+				if (ftData[0]["FLAG_CLASS"] == null || ftData[0]["FLAG_CLASS"] == "") {
 					data["icon"] = "";
 				} else {
-					let flag_url = `../../../../../src/assets/flags/${ftData[0]["FLAG_CLASS"]}.svg`;
-					data["icon"] = new URL(flag_url, import.meta.url).href;
+					data["icon"] = `https://www.hga030.com/images/flag/${ftData[0]["FLAG_CLASS"]}.svg`;
 				}
 				let gameList = [];
 				ftData.forEach(item => {
@@ -362,16 +406,16 @@ export default defineComponent({
 							{
 								lineType: 4,
 								rType: "OVH",
+								type: 2,
 								colorChangeUp: false,
 								colorChangeDOwn: false,
-								other: item["UP5"],
-								state: item["UP5"] == 0 ? 2 : 1,
-								type: 2,
+								other: item["UP5"] == undefined || item["UP5"] == 0 ? 0 : item["UP5"],
+								state: item["UP5"] == undefined || item["UP5"] == 0 ? 2 : 1,
 								score: [
 									[
 										{
 											lineType: 4,
-											rType: "MB1TG0",
+											rType: "H1C0",
 											type: 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -381,7 +425,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB0TG0",
+											rType: "H0C0",
 											type: 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -391,7 +435,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB0TG1",
+											rType: "H0C1",
 											type: 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -403,7 +447,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB2TG0",
+											rType: "H2C0",
 											type: 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -413,7 +457,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB1TG1",
+											rType: "H1C1",
 											type: 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -423,7 +467,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB0TG2",
+											rType: "H0C2",
 											type: 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -435,7 +479,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB2TG1",
+											rType: "H2C1",
 											type: 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -445,7 +489,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB2TG2",
+											rType: "H2C2",
 											type: 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -455,7 +499,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB1TG2",
+											rType: "H1C2",
 											type: 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -467,7 +511,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB3TG0",
+											rType: "H3C0",
 											type: 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -477,7 +521,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB3TG3",
+											rType: "H3C3",
 											type: 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -487,7 +531,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB0TG3",
+											rType: "H0C3",
 											type: 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -499,7 +543,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB3TG1",
+											rType: "H3C1",
 											type: 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -509,7 +553,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB4TG4",
+											rType: "H4C4",
 											type: 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -519,7 +563,7 @@ export default defineComponent({
 										},
 										{
 											lineType: 4,
-											rType: "MB1TG3",
+											rType: "H1C3",
 											type: 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -531,7 +575,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB3TG2",
+											rType: "H3C2",
 											type: 2,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -542,7 +586,7 @@ export default defineComponent({
 										{},
 										{
 											lineType: 4,
-											rType: "MB2TG3",
+											rType: "H2C3",
 											type: 2,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -554,7 +598,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB4TG0",
+											rType: "H4C0",
 											type: 2,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -565,7 +609,7 @@ export default defineComponent({
 										{},
 										{
 											lineType: 4,
-											rType: "MB1TG3",
+											rType: "H1C3",
 											type: 2,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -577,7 +621,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB4TG1",
+											rType: "H4C1",
 											type: 2,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -588,7 +632,7 @@ export default defineComponent({
 										{},
 										{
 											lineType: 4,
-											rType: "MB1TG4",
+											rType: "H1C4",
 											type: 2,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -600,7 +644,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB4TG2",
+											rType: "H4C2",
 											type: 2,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -611,7 +655,7 @@ export default defineComponent({
 										{},
 										{
 											lineType: 4,
-											rType: "MB2TG4",
+											rType: "H2C4",
 											type: 2,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -623,7 +667,7 @@ export default defineComponent({
 									[
 										{
 											lineType: 4,
-											rType: "MB4TG3",
+											rType: "H4C3",
 											type: 2,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
@@ -634,19 +678,306 @@ export default defineComponent({
 										{},
 										{
 											lineType: 4,
-											rType: "MB3TG1",
+											rType: "H3C4",
 											type: 2,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
+											text: '3-4',
+											num: item["MB3TG4"],
+											state: item["MB3TG4"] == 0 ? 2 : 1
+										}
+									]
+								]
+							}
+						],
+						halfScoreList: [
+							{
+								lineType: 14,
+								rType: "OVH",
+								type: 2,
+								colorChangeUp: false,
+								colorChangeDOwn: false,
+								other: item["UP5H"] == undefined || item["UP5H"] == 0 ? 0 : item["UP5H"],
+								state: item["UP5H"] == undefined || item["UP5H"] == 0 ? 2 : 1,
+								score: [
+									[
+										{
+											lineType: 14,
+											rType: "H1C0",
+											type: 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '1-0',
+											num: item["MB1TG0H"] == undefined || item["MB1TG0H"] == 0 ? 0 : item["MB1TG0H"],
+											state: item["MB1TG0H"] == undefined || item["MB1TG0H"] == 0 ? 2 : 1
+										},
+										{
+											lineType: 14,
+											rType: "H0C0",
+											type: 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '0-0',
+											num: item["MB0TG0H"],
+											state: item["MB0TG0H"] == undefined || item["MB0TG0H"] == 0 ? 2 : 1
+										},
+										{
+											lineType: 14,
+											rType: "H0C1",
+											type: 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '0-1',
+											num: item["MB0TG1H"],
+											state: item["MB0TG1H"] == undefined || item["MB0TG1H"] == 0 ? 2 : 1
+										}
+									],
+									[
+										{
+											lineType: 14,
+											rType: "H2C0",
+											type: 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '2-0',
+											num: item["MB2TG0H"],
+											state: item["MB2TG0H"] == undefined || item["MB2TG0H"] == 0 ? 2 : 1
+										},
+										{
+											lineType: 14,
+											rType: "H1C1",
+											type: 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '1-1',
+											num: item["MB1TG1H"],
+											state: item["MB1TG1H"] == undefined || item["MB1TG1H"] == 0 ? 2 : 1
+										},
+										{
+											lineType: 14,
+											rType: "H0C2",
+											type: 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '0-2',
+											num: item["MB0TG2H"],
+											state: item["MB0TG2H"] == undefined || item["MB0TG2H"] == 0 ? 2 : 1
+										}
+									],
+									[
+										{
+											lineType: 14,
+											rType: "H2C1",
+											type: 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '2-1',
+											num: item["MB2TG1H"],
+											state: item["MB2TG1H"] == undefined || item["MB2TG1H"] == 0 ? 2 : 1
+										},
+										{
+											lineType: 14,
+											rType: "H2C2",
+											type: 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '2-2',
+											num: item["MB2TG2H"],
+											state: item["MB2TG2H"] == undefined || item["MB2TG2H"] == 0 ? 2 : 1
+										},
+										{
+											lineType: 14,
+											rType: "H1C2",
+											type: 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '1-2',
+											num: item["MB1TG2H"],
+											state: item["MB1TG2H"] == undefined || item["MB1TG2H"] == 0 ? 2 : 1
+										}
+									],
+									[
+										{
+											lineType: 14,
+											rType: "H3C0",
+											type: 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '3-0',
+											num: item["MB3TG0H"],
+											state: item["MB3TG0H"] == undefined || item["MB3TG0H"] == 0 ? 2 : 1
+										},
+										{
+											lineType: 14,
+											rType: "H3C3",
+											type: 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '3-3',
+											num: item["MB3TG3H"],
+											state: item["MB3TG3H"] == undefined || item["MB3TG3H"] == 0 ? 2 : 1
+										},
+										{
+											lineType: 14,
+											rType: "H0C3",
+											type: 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '0-3',
+											num: item["MB0TG3H"],
+											state: item["MB0TG3H"] == undefined || item["MB0TG3H"] == 0 ? 2 : 1
+										}
+									],
+									[
+										{
+											lineType: 14,
+											rType: "H3C1",
+											type: 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
 											text: '3-1',
-											num: item["MB3TG1"],
-											state: item["MB3TG1"] == 0 ? 2 : 1
+											num: item["MB3TG1H"],
+											state: item["MB3TG1H"] == undefined || item["MB3TG1H"] == 0 ? 2 : 1
+										},
+										{
+											lineType: 14,
+											rType: "H4C4",
+											type: 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '4-4',
+											num: item["MB4TG4H"],
+											state: item["MB4TG4H"] == undefined || item["MB4TG4H"] == 0 ? 2 : 1
+										},
+										{
+											lineType: 14,
+											rType: "H1C3",
+											type: 1,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '1-3',
+											num: item["MB1TG3H"],
+											state: item["MB1TG3H"] == undefined || item["MB1TG3H"] == 0 ? 2 : 1
+										}
+									],
+									[
+										{
+											lineType: 14,
+											rType: "H3C2",
+											type: 2,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '3-2',
+											num: item["MB3TG2H"],
+											state: item["MB3TG2H"] == undefined || item["MB3TG2H"] == 0 ? 2 : 1
+										},
+										{},
+										{
+											lineType: 14,
+											rType: "H2C3",
+											type: 2,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '2-3',
+											num: item["MB2TG3H"],
+											state: item["MB2TG3H"] == undefined || item["MB2TG3H"] == 0 ? 2 : 1
+										}
+									],
+									[
+										{
+											lineType: 14,
+											rType: "H4C0",
+											type: 2,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '4-0',
+											num: item["MB4TG0H"],
+											state: item["MB4TG0H"] == undefined || item["MB4TG0H"] == 0 ? 2 : 1
+										},
+										{},
+										{
+											lineType: 14,
+											rType: "H1C3",
+											type: 2,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '1-3',
+											num: item["MB1TG3H"],
+											state: item["MB1TG3H"] == undefined || item["MB1TG3H"] == 0 ? 2 : 1
+										}
+									],
+									[
+										{
+											lineType: 14,
+											rType: "H4C1",
+											type: 2,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '4-1',
+											num: item["MB4TG1H"],
+											state: item["MB4TG1H"] == undefined || item["MB4TG1H"] == 0 ? 2 : 1
+										},
+										{},
+										{
+											lineType: 14,
+											rType: "H1C4",
+											type: 2,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '1-4',
+											num: item["MB1TG4H"],
+											state: item["MB1TG4H"] == undefined || item["MB1TG4H"] == 0 ? 2 : 1
+										}
+									],
+									[
+										{
+											lineType: 14,
+											rType: "H4C2",
+											type: 2,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '4-2',
+											num: item["MB4TG2H"],
+											state: item["MB4TG2H"] == undefined || item["MB4TG2H"] == 0 ? 2 : 1
+										},
+										{},
+										{
+											lineType: 14,
+											rType: "H2C4",
+											type: 2,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '2-4',
+											num: item["MB2TG4H"],
+											state: item["MB2TG4H"] == undefined || item["MB2TG4H"] == 0 ? 2 : 1
+										}
+									],
+									[
+										{
+											lineType: 14,
+											rType: "H4C3",
+											type: 2,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '4-3',
+											num: item["MB4TG3H"],
+											state: item["MB4TG3H"] == undefined || item["MB4TG3H"] == 0 ? 2 : 1
+										},
+										{},
+										{
+											lineType: 14,
+											rType: "H3C4",
+											type: 2,
+											colorChangeUp: false,
+											colorChangeDOwn: false,
+											text: '3-4',
+											num: item["MB3TG4H"],
+											state: item["MB3TG4H"] == undefined || item["MB3TG4H"] == 0 ? 2 : 1
 										}
 									]
 								]
 							}
 						]
-
 					}
 
 					gameList.push(gameData);

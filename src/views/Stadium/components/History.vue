@@ -20,7 +20,7 @@
 					</div>
 					<span>投注金额</span>
 					<span>有效金额</span>
-					<span>赢/输</span>
+					<span>派彩結果</span>
 				</div>
 				<div class="history_center">
 					<div class="history_item" v-for="(item, index) in historyList" :key="index">
@@ -29,8 +29,8 @@
 							<p>{{ item.week }}</p>
 						</div>
 						<span>{{ item.betscore }}</span>
-						<span>{{ item.m_result }}</span>
-						<span>{{ item.bet_result }}</span>
+						<span>{{ Number(item.v_gold).toFixed(2) }}</span>
+						<span>{{ Number(item.m_result).toFixed(2) }}</span>
 					</div>
 				</div>
 				<div class="history_footer">
@@ -38,8 +38,8 @@
 						<p>总共</p>
 					</div>
 					<span>{{ totalBetScore }}</span>
-					<span>{{ totalMResult }}</span>
-					<span></span>
+					<span>{{ Number(totalVGold).toFixed(2) }}</span>
+					<span>{{ Number(totalMResult).toFixed(2) }}</span>
 				</div>
 			</div>
 		</div>
@@ -60,35 +60,45 @@
 </template>
 
 <script setup lang="ts">
-import moment from 'moment';
-import { ref, onBeforeMount, computed } from 'vue';
+import moment from 'moment-timezone';
+import { ref, onBeforeMount, computed, defineProps, toRefs, watch } from 'vue';
 import { bettingStore } from '@/stores/betting';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 const { dispatchBetHistory } = bettingStore();
 const { getToken } = storeToRefs(useAuthStore());
 const { getHistoryList, getSuccess } = storeToRefs(bettingStore());
+const props = defineProps({
+	sportValue: String,
+});
+const { sportValue } = toRefs(props);
+
 const fromDateType = ref(false);
 const endDateType = ref(false);
-const fromDate = ref(moment().format("YYYY-MM-DD"));
-const endDate = ref(moment().format("YYYY-MM-DD"));
-const fromDatePicker = ref(['2022', '01', '01']);
-const endDatePicker = ref(['2023', '01', '01'])
+const fromDate = ref(moment().tz('America/New_York').format("YYYY-MM-DD"));
+const endDate = ref(moment().tz('America/New_York').format("YYYY-MM-DD"));
+const fromDatePicker = ref([moment().tz('America/New_York').format("YYYY-MM-DD").split("-")[0], moment().tz('America/New_York').format("YYYY-MM-DD").split("-")[1], moment().tz('America/New_York').format("YYYY-MM-DD").split("-")[2]]);
+const endDatePicker = ref([moment().tz('America/New_York').format("YYYY-MM-DD").split("-")[0], moment().tz('America/New_York').format("YYYY-MM-DD").split("-")[1], moment().tz('America/New_York').format("YYYY-MM-DD").split("-")[2]]);
 const minDate = new Date(2020, 0, 1);
 const maxDate = new Date(2025, 12, 31);
 const loading = ref(false);
 const totalBetScore = ref(0);
 const totalMResult = ref(0);
+const totalVGold = ref(0);
 const dayOfWeek = ref(["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"])
 const searchHistoryByDate = async () => {
 	loading.value = true;
-	await dispatchBetHistory({ fromDate: fromDate.value, endDate: endDate.value }, getToken.value);
+	await dispatchBetHistory({ fromDate: fromDate.value, endDate: endDate.value, gameType: sportValue.value == 1 ? "FT" : "BK" }, getToken.value);
 	loading.value = false
 }
 const historyList = computed(() => {
+	totalBetScore.value = 0;
+	totalMResult.value = 0;
+	totalVGold.value = 0;
 	getHistoryList.value.map(item => {
 		totalBetScore.value += Number(item["betscore"]);
 		totalMResult.value += Number(item["m_result"]);
+		totalVGold.value += Number(item["v_gold"]);
 		let day = moment(item['m_date']).day();
 		item["week"] = dayOfWeek.value[day - 1];
 	})
@@ -113,9 +123,26 @@ const endConfirm = (result: any) => {
 	endDatePicker.value = result.selectedValues;
 	endDate.value = result.selectedValues[0] + "-" + result.selectedValues[1] + "-" + result.selectedValues[2]
 };
-onBeforeMount(async () => {
+watch(sportValue, async (newValue: number) => {
+	console.log(sportValue.value);
 	loading.value = true;
-	await dispatchBetHistory({ fromDate: fromDate.value, endDate: endDate.value }, getToken.value);
+	let data = {
+		fromDate: fromDate.value,
+		endDate: endDate.value,
+		gameType: sportValue.value == 1 ? "FT" : "BK"
+	}
+	await dispatchBetHistory(data, getToken.value);
+	loading.value = false
+}, { deep: true });
+onBeforeMount(async () => {
+	console.log(sportValue.value);
+	loading.value = true;
+	let data = {
+		fromDate: fromDate.value,
+		endDate: endDate.value,
+		gameType: sportValue.value == 1 ? "FT" : "BK"
+	}
+	await dispatchBetHistory(data, getToken.value);
 	loading.value = false;
 })
 </script>

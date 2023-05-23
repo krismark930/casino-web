@@ -13,38 +13,31 @@
 <script setup lang="ts">
 import { ref } from "vue";
 const active = ref(1);
-const footerList = ref([{
-	name: '首页',
-	path: '/lottery',
-	icon: {
-		active: new URL("@/assets/images/lottery/footer1.png", import.meta.url).href,
-		inactive: new URL("@/assets/images/lottery/footer1.png", import.meta.url).href,
+const footerList = ref([
+	{
+		name: '首页',
+		path: '/lotterys',
+		icon: {
+			active: new URL("@/assets/images/lottery/footer1.png", import.meta.url).href,
+			inactive: new URL("@/assets/images/lottery/footer1.png", import.meta.url).href,
+		},
 	},
-},
-{
-	name: '投注记录',
-	path: '/record',
-	icon: {
-		active: new URL("@/assets/images/lottery/footer2.png", import.meta.url).href,
-		inactive: new URL("@/assets/images/lottery/footer2.png", import.meta.url).href,
+	{
+		name: '投注记录',
+		path: '/record',
+		icon: {
+			active: new URL("@/assets/images/lottery/footer2.png", import.meta.url).href,
+			inactive: new URL("@/assets/images/lottery/footer2.png", import.meta.url).href,
+		},
 	},
-},
-{
-	name: '走势',
-	path: '/trend',
-	icon: {
-		active: new URL("@/assets/images/lottery/footer3.png", import.meta.url).href,
-		inactive: new URL("@/assets/images/lottery/footer3.png", import.meta.url).href,
+	{
+		name: '走势',
+		path: '/trend',
+		icon: {
+			active: new URL("@/assets/images/lottery/footer3.png", import.meta.url).href,
+			inactive: new URL("@/assets/images/lottery/footer3.png", import.meta.url).href,
+		},
 	},
-},
-{
-	name: '我的',
-	path: '/lotteryMy',
-	icon: {
-		active: new URL("@/assets/images/lottery/footer4.png", import.meta.url).href,
-		inactive: new URL("@/assets/images/lottery/footer4.png", import.meta.url).href,
-	},
-}
 ])
 </script>
 

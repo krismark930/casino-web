@@ -1,22 +1,13 @@
 <template>
     <div class="">
         <div class="follow_bc">
-            <div
-                class="flex border-b-1 border-[#333333] overflow-scroll w-full"
-            >
+            <div class="flex border-b-1 border-[#333333] overflow-scroll w-full">
                 <div class="flex">
-                    <div
-                        @click="tabClick(item.id, i)"
-                        v-for="(item, i) in tabsList"
-                        :key="i"
-                        ref="label"
-                        :class="
-                            item.id === groupId
-                                ? 'active border-b-2 border-blue-500'
-                                : ''
-                        "
-                        class="second_tab py-[15px]"
-                    >
+                    <div @click="tabClick(item.id, i)" v-for="(item, i) in tabsList" :key="i" ref="label" :class="
+                        item.id === groupId
+                            ? 'active border-b-2 border-blue-500'
+                            : ''
+                    " class="second_tab py-[15px]">
                         {{ item.name }}
                     </div>
                 </div>
@@ -25,84 +16,27 @@
         <div>
             <!-- <DiscountItem :itemList="imgList"/> -->
             <div v-show="groupId === 0" class="tab_box animated fadeInLeft">
-                <div
-                    v-for="(item, index) in imgList[0]"
-                    :key="index"
-                    class="box_list"
-                >
+                <div v-for="(item, index) in imgList[0]" :key="index" class="box_list">
                     <img class="back_img" :src="item.url" alt="" />
-                    <img
-                        class="icon_img"
-                        v-if="item.type == 1"
-                        src="@/assets/images/discount/new-icon.png"
-                        alt=""
-                    />
-                    <img
-                        class="icon_img"
-                        v-if="item.type == 2"
-                        src="@/assets/images/discount/time-icon.png"
-                        alt=""
-                    />
-                    <img
-                        class="icon_img"
-                        v-if="item.type == 3"
-                        src="@/assets/images/discount/orther-icon.png"
-                        alt=""
-                    />
+                    <img class="icon_img" v-if="item.type == 1" src="@/assets/images/discount/new-icon.png" alt="" />
+                    <img class="icon_img" v-if="item.type == 2" src="@/assets/images/discount/time-icon.png" alt="" />
+                    <img class="icon_img" v-if="item.type == 3" src="@/assets/images/discount/orther-icon.png" alt="" />
                 </div>
             </div>
             <div v-show="groupId === 1" class="tab_box animated fadeInLeft">
-                <div
-                    v-for="(item, index) in imgList[1]"
-                    :key="index"
-                    class="box_list"
-                >
+                <div v-for="(item, index) in imgList[1]" :key="index" class="box_list">
                     <img class="back_img" :src="item.url" alt="" />
-                    <img
-                        class="icon_img"
-                        v-if="item.type == 1"
-                        src="@/assets/images/discount/new-icon.png"
-                        alt=""
-                    />
-                    <img
-                        class="icon_img"
-                        v-if="item.type == 2"
-                        src="@/assets/images/discount/time-icon.png"
-                        alt=""
-                    />
-                    <img
-                        class="icon_img"
-                        v-if="item.type == 3"
-                        src="@/assets/images/discount/orther-icon.png"
-                        alt=""
-                    />
+                    <img class="icon_img" v-if="item.type == 1" src="@/assets/images/discount/new-icon.png" alt="" />
+                    <img class="icon_img" v-if="item.type == 2" src="@/assets/images/discount/time-icon.png" alt="" />
+                    <img class="icon_img" v-if="item.type == 3" src="@/assets/images/discount/orther-icon.png" alt="" />
                 </div>
             </div>
             <div v-show="groupId === 2" class="tab_box animated fadeInLeft">
-                <div
-                    v-for="(item, index) in imgList[2]"
-                    :key="index"
-                    class="box_list"
-                >
+                <div v-for="(item, index) in imgList[2]" :key="index" class="box_list">
                     <img class="back_img" :src="item.url" alt="" />
-                    <img
-                        class="icon_img"
-                        v-if="item.type == 1"
-                        src="@/assets/images/discount/new-icon.png"
-                        alt=""
-                    />
-                    <img
-                        class="icon_img"
-                        v-if="item.type == 2"
-                        src="@/assets/images/discount/time-icon.png"
-                        alt=""
-                    />
-                    <img
-                        class="icon_img"
-                        v-if="item.type == 3"
-                        src="@/assets/images/discount/orther-icon.png"
-                        alt=""
-                    />
+                    <img class="icon_img" v-if="item.type == 1" src="@/assets/images/discount/new-icon.png" alt="" />
+                    <img class="icon_img" v-if="item.type == 2" src="@/assets/images/discount/time-icon.png" alt="" />
+                    <img class="icon_img" v-if="item.type == 3" src="@/assets/images/discount/orther-icon.png" alt="" />
                 </div>
             </div>
         </div>
@@ -197,6 +131,7 @@ const tabClick = (id: number, i: number) => {
     padding-top: 4px;
 
     .box_list {
+        margin-bottom: 5px;
         position: relative;
 
         .back_img {

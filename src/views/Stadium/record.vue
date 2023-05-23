@@ -17,8 +17,8 @@
 				</div>
 			</div>
 			<div>
-				<gemeList v-if="active == 1"></gemeList>
-				<History v-if="active == 2"></History>
+				<gemeList v-if="active == 1" :sportValue="sportValue"></gemeList>
+				<History v-if="active == 2" :sportValue="sportValue"></History>
 			</div>
 		</div>
 	</div>
@@ -28,7 +28,7 @@
 import gemeList from './components/gameList.vue'
 import History from './components/History.vue'
 
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 const active = ref(2);
 const sportValue = ref(1);
 const gameList = ref([
@@ -58,6 +58,9 @@ const selectType = (id: number) => {
 const typetext = computed(() => {
 	return active.value == 1 ? '交易状态' : '账户历史总览'
 })
+watch(sportValue, (newValue: number) => {
+	console.log(sportValue.value);
+}, { deep: true });
 
 </script>
 

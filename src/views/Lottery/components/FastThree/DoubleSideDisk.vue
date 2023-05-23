@@ -50,7 +50,7 @@ const chageSubActive = (id:number) => {
 
 </script>
 
-<style>
+<style scoped>
 .van-popup{
     z-index: 0 !important;
 }

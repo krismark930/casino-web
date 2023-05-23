@@ -1,31 +1,31 @@
 <template>
 	<div>
 		<van-loading color="#1989fa" class="loading-position" v-if="loading" size="40" />
-		<div style="text-align: center;" v-if="coupon.length === 0 && !loading">您选择的项目暂时没有赛事。请修改您的选项或迟些再返回。</div>
+		<div style="text-align: center;" v-if="coupon.length === 0 && region.length == 0 && !loading">
+			您选择的项目暂时没有赛事。请修改您的选项或迟些再返回。</div>
 		<div class="popular" v-if="!loading && coupon.length > 0">
 			<div class="divide-background"></div>
 			<div class="center-title">
 				<span>最火</span>
 			</div>
-			<van-cell :title=couponItem.name._text v-for="(couponItem, couponIndex) in coupon" :key="couponIndex"
-				@click="showCouponDetail(couponItem.lid._text, couponItem.name._text)" />
+			<van-cell :title=couponItem.name v-for="(couponItem, couponIndex) in coupon" :key="couponIndex"
+				@click="showCouponDetail(couponItem.lid, couponItem.name)" />
 		</div>
 		<div class="region">
 			<div v-for="(regionItem, regionIndex) in region" :key="regionIndex">
 				<div class="divide-background"></div>
-				<div class="center-title" @click="showItem(regionIndex, regionItem._attributes.id)">
-					<span>{{ regionItem._attributes.name }}</span>
-					<img :src="`../../../../../src/assets/flags/${regionItem._attributes.flag_class.split(' ')[1]}.svg`"
-						v-if="regionItem._attributes.flag_class.split(' ')[1] != ''">
+				<div class="center-title" @click="showItem(regionIndex, regionItem.id)">
+					<span>{{ regionItem.name }}</span>
+					<img :src="`https://www.hga030.com/images/flag/${regionItem.flag_class.split(' ')[1]}.svg`"
+						v-if="regionItem.flag_class.split(' ')[1] != ''">
 				</div>
 				<div v-if="regionItem['show']">
 					<div v-if="Array.isArray(regionItem.league)">
-						<van-cell :title=leagueItem._attributes.name v-for="(leagueItem, leagueIndex) in regionItem.league"
-							:key="leagueIndex" @click="showLIDDetail(leagueItem._attributes.id)" />
+						<van-cell :title=leagueItem.name v-for="(leagueItem, leagueIndex) in regionItem.league"
+							:key="leagueIndex" @click="showLIDDetail(leagueItem.id)" />
 					</div>
 					<div v-else>
-						<van-cell :title=regionItem.league._attributes.name
-							@click="showLIDDetail(regionItem.league._attributes.id)" />
+						<van-cell :title=regionItem.league.name @click="showLIDDetail(regionItem.league.id)" />
 					</div>
 				</div>
 			</div>
@@ -55,18 +55,20 @@ export default defineComponent({
 			this.coupon = [];
 			this.region = [];
 			console.log(data);
-			if (data == null) return;
-			if (data["code"]["_text"] === "error") return;
-			console.log(data["coupons"]);
-			if (!Array.isArray(data["coupons"]["coupon"])) {
-				this.coupon.push(data["coupons"]["coupon"]);
-			} else {
-				this.coupon = data["coupons"]["coupon"];
+			if (data == null || data["code"] === "error") return;
+			if (data["coupons"] != undefined) {
+				if (!Array.isArray(data["coupons"]["coupon"])) {
+					this.coupon.push(data["coupons"]["coupon"]);
+				} else {
+					this.coupon = data["coupons"]["coupon"];
+				}
 			}
-			if (!Array.isArray(data["classifier"]["region"])) {
-				this.region.push(data["classifier"]["region"]);
-			} else {
-				this.region = data["classifier"]["region"];
+			if (data["classifier"] != undefined) {
+				if (!Array.isArray(data["classifier"]["region"])) {
+					this.region.push(data["classifier"]["region"]);
+				} else {
+					this.region = data["classifier"]["region"];
+				}
 			}
 			this.region.map(item => {
 				item["show"] = false;
