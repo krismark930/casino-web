@@ -536,6 +536,31 @@ const router = createRouter({
             component: () => import('@/views/Lottery/components/AlwaysColor/BJPK.vue')
         },
         {
+            path: '/chess',
+            name: 'CHESS',
+            component: () => import('@/views/other_game/Chess.vue')
+        },
+        {
+            path: '/ag-slot',
+            name: 'AG_SLOT',
+            component: () => import('@/views/other_game/AG.vue')
+        },
+        {
+            path: '/bbin-slot',
+            name: 'BBIN_SLOT',
+            component: () => import('@/views/other_game/BBIN.vue')
+        },
+        {
+            path: '/mg-slot',
+            name: 'MG_SLOT',
+            component: () => import('@/views/other_game/MG.vue')
+        },
+        {
+            path: '/pt-slot',
+            name: 'PT_SLOT',
+            component: () => import('@/views/other_game/PT.vue')
+        },
+        {
             path: '/mark-six',
             name: 'MarkSix',
             component: () => import('@/views/Lottery/markSix.vue')

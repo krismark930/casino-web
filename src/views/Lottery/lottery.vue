@@ -52,12 +52,12 @@ const router = useRouter();
 const tabItemList = ref([
 	{
 		name: '重庆时时彩',
-		img: new URL("@/assets/images/lottery/kuaisan1.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/CQSSC.png", import.meta.url).href,
 		path: "CQSSC"
 	},
 	{
 		name: '河内五分彩',
-		img: new URL("@/assets/images/lottery/kuaisan2.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/FFC5.png", import.meta.url).href,
 		path: "FFC5"
 	},
 	// {
@@ -72,72 +72,72 @@ const tabItemList = ref([
 	// },
 	{
 		name: '澳洲幸运5',
-		img: new URL("@/assets/images/lottery/shishi1.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/AZXY5.png", import.meta.url).href,
 		path: "AZXY5"
 	},
 	{
 		name: '澳洲幸运10',
-		img: new URL("@/assets/images/lottery/shishi2.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/AZXY10.png", import.meta.url).href,
 		path: "AZXY10"
 	},
 	{
 		name: '幸运飞艇',
-		img: new URL("@/assets/images/lottery/shishi3.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/XYFT.png", import.meta.url).href,
 		path: "XYFT"
 	},
 	{
 		name: '北京PK拾',
-		img: new URL("@/assets/images/lottery/shishi4.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/BJPK.png", import.meta.url).href,
 		path: "BJPK"
 	},
 	{
 		name: '天津时时彩',
-		img: new URL("@/assets/images/lottery/pk10-1.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/TJSSC.png", import.meta.url).href,
 		path: "TJSSC"
 	},
 	{
 		name: '新疆时时彩',
-		img: new URL("@/assets/images/lottery/pk10-6.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/JXSSC.png", import.meta.url).href,
 		path: "JXSSC"
 	},
 	{
 		name: '重庆十分彩',
-		img: new URL("@/assets/images/lottery/pk10-2.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/CQSF.png", import.meta.url).href,
 		path: "CQSF"
 	},
 	{
 		name: '广东十分彩',
-		img: new URL("@/assets/images/lottery/pk10-5.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/GDSF.png", import.meta.url).href,
 		path: "GDSF"
 	},
 	{
 		name: '广西十分彩',
-		img: new URL("@/assets/images/lottery/xuanwu1.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/GXSF.png", import.meta.url).href,
 		path: "GXSF"
 	},
 	{
 		name: '天津十分彩',
-		img: new URL("@/assets/images/lottery/xuanwu2.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/TJSF.png", import.meta.url).href,
 		path: "TJSF"
 	},
 	{
 		name: '上海时时乐',
-		img: new URL("@/assets/images/lottery/xuanwu3.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/SHSSL.png", import.meta.url).href,
 		path: "SHSSL"
 	},
 	{
 		name: '广东11选5',
-		img: new URL("@/assets/images/lottery/kuaisan5.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/GD11.png", import.meta.url).href,
 		path: "GD11"
 	},
 	{
 		name: '福彩3D',
-		img: new URL("@/assets/images/lottery/kuaisan3.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/D3.png", import.meta.url).href,
 		path: "D3"
 	},
 	{
 		name: '排列3',
-		img: new URL("@/assets/images/lottery/kuaisan4.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/P3.png", import.meta.url).href,
 		path: "P3"
 	},
 	// {
@@ -198,12 +198,12 @@ const tabItemList = ref([
 	// },
 	{
 		name: '香港六合彩',
-		img: new URL("@/assets/images/lottery/liuhe3.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/MarkSix.png", import.meta.url).href,
 		path: 'MarkSix'
 	},
 	{
 		name: '澳门六合彩',
-		img: new URL("@/assets/images/lottery/liuhe4.png", import.meta.url).href,
+		img: new URL("@/assets/images/lottery/MacaoMarkSix.png", import.meta.url).href,
 		path: 'MacaoMarkSix'
 	},
 ])

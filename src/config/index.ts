@@ -1,4 +1,4 @@
- // export const BASE_URL = "http://localhost:8000/api";
+//  export const BASE_URL = "http://localhost:8000/api";
 // export const HOST_URL = "http://127.0.0.1:5173";
 // export const SOCKET_URL = "http://localhost:3000";
 
@@ -97,6 +97,20 @@ export const SAVE_OTHER = "/user/lottery-save/other";
 
 export const TOTAL_BET_RESULT = "/user/lottery-result/total-bet";
 export const ALWAYS_COLOR_SUB_BET_RESULT = "/user/lottery-result/sub-bet";
+
+export const GET_CHESS_ALL = "/user/other-game/chess-all";
+export const GET_AG_ALL = "/user/other-game/ag-all";
+export const GET_BBIN_ALL = "/user/other-game/bbin-all";
+export const GET_MG_ALL = "/user/other-game/mg-all";
+export const GET_PT_ALL = "/user/other-game/pt-all";
+export const GET_KY_URL = "/user/other-game/ky-url";
+export const GET_OG_URL = "/user/other-game/og-url";
+export const GET_AG_URL = "/user/other-game/ag-url";
+export const GET_BBIN_URL = "/user/other-game/bbin-url";
+export const GET_MG_URL = "/user/other-game/mg-url";
+export const GET_PT_URL = "/user/other-game/pt-url";
+
+export const GET_CRYPTO = "/deposit/get-crypto";
 
 const config = {
   api: {

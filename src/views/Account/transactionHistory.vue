@@ -301,7 +301,7 @@ const currentDate = ref(['2021', '01', '01']);
 const minDate = new Date(2020, 0, 1);
 const maxDate = new Date(2025, 5, 1);
 </script>
-<style>
+<style lang="scss" scoped>
 .van-dropdown-menu__bar {
     padding-right: 150px !important;
 }

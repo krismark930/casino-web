@@ -1,10 +1,16 @@
-<script setup lang="ts">
-import { RouterView } from "vue-router";
-</script>
 
 <template>
-  <router-view></router-view>
+  <router-view/>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const activeIndex = ref('1')
+const handleSelect = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath)
+}
+</script>
 
 <style scoped>
 header {

@@ -325,15 +325,23 @@
         <p>牛2，牛4，牛6，牛8，牛牛 为 牛双</p>
       </div>
     </van-dialog>
-    <van-dialog v-model:show="alertShow" title="提示">
+    <van-dialog v-model:show="cqAlertShow" title="提示">
       <div class="text-center">当前彩票已经封盘，请稍后再进行下注！</div>
-      <div class="text-center">重庆时时彩开盘时间为：每日10:00 - 次日02:00</div>
+      <div class="text-center">重庆时时彩开盘时间为：每日07:00 - 次日03:10</div>
+    </van-dialog>
+    <van-dialog v-model:show="jxAlertShow" title="提示">
+      <div class="text-center">当前彩票已经封盘，请稍后再进行下注！</div>
+      <div class="text-center">新疆时时彩开盘时间为：每日10:00 - 次日02:00</div>
+    </van-dialog>
+    <van-dialog v-model:show="tjAlertShow" title="提示">
+      <div class="text-center">当前彩票已经封盘，请稍后再进行下注！</div>
+      <div class="text-center">天津时时彩开盘时间为：每日09:00 - 23:00</div>
     </van-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watchEffect, watch, toRefs } from "vue";
+import { ref, computed, onMounted, onUnmounted, watchEffect, watch, toRefs } from "vue";
 import OneWordPosition from "./b5/OneWordPosition.vue";
 import DragonTigerSum from "./b5/DragonTigerSum.vue";
 import Leopard from "./b5/Leopard.vue";
@@ -362,7 +370,9 @@ const { title, g_type, descriptionTitle, descriptionSubTitle } = toRefs(props);
 
 const closed_reason = ref("目前没有开盘!");
 const time = ref(0);
-const alertShow = ref(false);
+const cqAlertShow = ref(false);
+const jxAlertShow = ref(false);
+const tjAlertShow = ref(false);
 const descriptionShow = ref(false);
 const showRight = ref(false);
 const historyShow = ref(false);
@@ -553,8 +563,14 @@ const scheduleItem = computed(() => {
   time.value = getScheduleItem.value.diff_time;
 
   if (!getScheduleItem.value.is_open || time.value <= 0) {
+    if (g_type.value == "cq") {
+      cqAlertShow.value = true;
+    }
     if (g_type.value == "jx") {
-      alertShow.value = true;
+      jxAlertShow.value = true;
+    }
+    if (g_type.value == "tj") {
+      tjAlertShow.value = true;
     }
     disabled.value = true;
   }
@@ -644,7 +660,9 @@ const showBirthHistory = () => {
   historyShow.value = !historyShow.value;
 };
 onMounted(async () => {
-  alertShow.value = false;
+  cqAlertShow.value = false;
+  jxAlertShow.value = false;
+  tjAlertShow.value = false;
   const loading = ElLoading.service({
     lock: true,
     text: "加载中...",
@@ -658,6 +676,9 @@ onMounted(async () => {
   console.log(lotteryStatus.value);
   loading.close();
 });
+onUnmounted(() => {
+  clearInterval(timerId.value);
+})
 </script>
 <style scoped>
 .van-popup .van-dialog__header {

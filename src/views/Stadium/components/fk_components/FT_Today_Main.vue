@@ -145,7 +145,7 @@
 						<div class="store-up" v-if="!halfDatalist.name">
 						</div>
 						<div class="table-text-r" v-for="(num, numIndex) in halfDatalist.nums" :key="numIndex">
-							<div v-if="num.type == 1" @click="handleModal(item, data, halfDatalist, num, numIndex)"
+							<div v-if="num.type == 1" @click="handleModal1(item, data, halfDatalist, num, numIndex)"
 								:class="{ item_background_up: num.colorChangeUp, item_background_down: num.colorChangeDown }"
 								class="item-background">
 								<span>{{ num.text }}</span>
@@ -160,7 +160,7 @@
 					<div class="table-text goal-table-list" v-for="(goalData, goalDataIndex) in data.totalGoalList"
 						:key="goalDataIndex" style="padding-bottom: 10px;">
 						<div class="table-text-r" v-for="(num, numIndex) in goalData.nums" :key="numIndex">
-							<div v-if="num.type == 1" @click="handleModal(item, data, goalData, num, numIndex)"
+							<div v-if="num.type == 1" @click="handleModal2(item, data, goalData, num, numIndex)"
 								:class="{ item_background_up: num.colorChangeUp, item_background_down: num.colorChangeDown }"
 								class="item-background">
 								<span>{{ num.text }}</span>
@@ -175,7 +175,7 @@
 					<div class="table-text full-table-list" v-for="(fullData, fullDataIndex) in data.fullTimeList"
 						:key="fullDataIndex" style="padding-bottom: 10px;">
 						<div class="table-text-r" v-for="(num, numIndex) in fullData.nums" :key="numIndex">
-							<div v-if="num.type == 1" @click="handleModal(item, data, fullData, num, numIndex)"
+							<div v-if="num.type == 1" @click="handleModal3(item, data, fullData, num, numIndex)"
 								:class="{ item_background_up: num.colorChangeUp, item_background_down: num.colorChangeDown }"
 								class="item-background">
 								<span>{{ num.text }}</span>
@@ -510,6 +510,7 @@ export default defineComponent({
 		receivedFTTodayMessage: function (data: any) {
 			this.loading = false;
 			// console.log('receivedFTTodayMessage', data);
+			if (data == null) return;
 			var ftDataList = [];
 			let lidArray: Array<any> = data.map(function (item: object) {
 				return item["LID"];
@@ -1727,6 +1728,72 @@ export default defineComponent({
 			this.bettingOrderData["league"] = leagueData.name;
 			this.bettingOrderData["title"] = gameData.titleList[scoreIndex + 1];
 			this.bettingOrderData["selectedTeam"] = dataList.name;
+			this.bettingOrderData["text"] = rateData.text
+			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
+			else this.openModal = true;
+		},
+		handleModal1: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			console.log(rateData);
+			this.bettingOrderData["mID"] = gameData["id"];
+			this.bettingOrderData["m_date"] = gameData["m_date"];
+			this.bettingOrderData["m_start"] = gameData["m_start"];
+			this.bettingOrderData["gameType"] = "FT";
+			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
+			this.bettingOrderData["tgTeam"] = gameData.scoreList[1].name;
+			this.bettingOrderData["m_ball"] = 0;
+			this.bettingOrderData["t_ball"] = 0;
+			this.bettingOrderData['r_type'] = rateData.r_type;
+			this.bettingOrderData["rate"] = rateData.num;
+			this.bettingOrderData["lineType"] = rateData.lineType;
+			this.bettingOrderData["mType"] = rateData.mType;
+			this.bettingOrderData['selectedType'] = rateData.bettingType;
+			this.bettingOrderData["league"] = leagueData.name;
+			this.bettingOrderData["title"] = gameData.halfTitleList[scoreIndex + 1];
+			this.bettingOrderData["selectedTeam"] = dataList.name;
+			this.bettingOrderData["text"] = rateData.text
+			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
+			else this.openModal = true;
+		},
+		handleModal2: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			console.log(rateData);
+			this.bettingOrderData["mID"] = gameData["id"];
+			this.bettingOrderData["m_date"] = gameData["m_date"];
+			this.bettingOrderData["m_start"] = gameData["m_start"];
+			this.bettingOrderData["gameType"] = "FT";
+			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
+			this.bettingOrderData["tgTeam"] = gameData.scoreList[1].name;
+			this.bettingOrderData["m_ball"] = 0;
+			this.bettingOrderData["t_ball"] = 0;
+			this.bettingOrderData['r_type'] = rateData.r_type;
+			this.bettingOrderData["rate"] = rateData.num;
+			this.bettingOrderData["lineType"] = rateData.lineType;
+			this.bettingOrderData["mType"] = rateData.mType;
+			this.bettingOrderData['selectedType'] = rateData.bettingType;
+			this.bettingOrderData["league"] = leagueData.name;
+			this.bettingOrderData["title"] = "总入球";
+			this.bettingOrderData["selectedTeam"] = rateData.text;
+			this.bettingOrderData["text"] = rateData.text
+			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
+			else this.openModal = true;
+		},
+		handleModal3: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			console.log(rateData);
+			this.bettingOrderData["mID"] = gameData["id"];
+			this.bettingOrderData["m_date"] = gameData["m_date"];
+			this.bettingOrderData["m_start"] = gameData["m_start"];
+			this.bettingOrderData["gameType"] = "FT";
+			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
+			this.bettingOrderData["tgTeam"] = gameData.scoreList[1].name;
+			this.bettingOrderData["m_ball"] = 0;
+			this.bettingOrderData["t_ball"] = 0;
+			this.bettingOrderData['r_type'] = rateData.r_type;
+			this.bettingOrderData["rate"] = rateData.num;
+			this.bettingOrderData["lineType"] = rateData.lineType;
+			this.bettingOrderData["mType"] = rateData.mType;
+			this.bettingOrderData['selectedType'] = rateData.bettingType;
+			this.bettingOrderData["league"] = leagueData.name;
+			this.bettingOrderData["title"] = "半场 / 全场";
+			this.bettingOrderData["selectedTeam"] = rateData.text;;
 			this.bettingOrderData["text"] = rateData.text
 			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
 			else this.openModal = true;

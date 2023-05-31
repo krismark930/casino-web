@@ -39,6 +39,7 @@ onMounted( async ()=>{
 });
 
 const addCrypto = () => {
+    setEditCrypto({});
     router.push({ name: 'addCrypto' })
 }
 

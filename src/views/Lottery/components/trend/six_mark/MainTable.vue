@@ -1,6 +1,6 @@
 <template>
     <div style="margin-top: 60px; margin-bottom: 42px;">
-        <el-table v-loading="loading" :data="mainBetResultList" :summary-method="getSummaries" show-summary stripe
+        <el-table v-loading="loading" :data="sportValue == 1 ? mainBetResultList : macaoMainBetResultList" :summary-method="getSummaries" show-summary stripe
             style="width: 100%;">
             <el-table-column prop="nd" label="日期" width="100">
                 <template #default="scope">
@@ -19,25 +19,34 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, watch, toRefs, onMounted } from 'vue';
 import { ElLoading } from 'element-plus'
 import { katanStore } from "@/stores/katan";
+import { macaoKatanStore } from "@/stores/macao_katan";
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import router from '@/router';
 import { showToast } from 'vant';
 import type { TableColumnCtx } from 'element-plus'
 
+const props = defineProps<{ sportValue: number }>();
+const { sportValue } = toRefs(props);
+
 const emit = defineEmits<{
     (e: 'showSubTable', period: number): void,
 }>()
 
 const { dispatchMainBetResult } = katanStore();
+const { dispatchMacaoMainBetResult } = macaoKatanStore();
 const loading = ref(false);
 
 const mainBetResultList = computed(() => {
     const { getMainBetResultList } = storeToRefs(katanStore());
     return getMainBetResultList.value;
+})
+const macaoMainBetResultList = computed(() => {
+    const { getMacaoMainBetResultList } = storeToRefs(macaoKatanStore());
+    return getMacaoMainBetResultList.value;
 })
 const user = computed(() => {
     const { getUser } = storeToRefs(useAuthStore());
@@ -86,6 +95,24 @@ const getSummaries = (param: SummaryMethodProps) => {
 
     return sums
 }
+watch(sportValue, async () => {
+    if (user.value.id == undefined) {
+        showToast('你必须先登录。')
+        router.push("login")
+        return;
+    }
+    const loading = ElLoading.service({
+        lock: true,
+        text: '加载中...',
+        background: 'rgba(0, 0, 0, 0.7)',
+    })
+    if (sportValue.value == 1) {
+        await dispatchMainBetResult(token.value);
+    } else {
+        await dispatchMacaoMainBetResult(token.value);
+    }
+    loading.close();
+}, {deep: true});
 onMounted(async () => {
     if (user.value.id == undefined) {
         showToast('你必须先登录。')
@@ -97,7 +124,11 @@ onMounted(async () => {
         text: '加载中...',
         background: 'rgba(0, 0, 0, 0.7)',
     })
-    await dispatchMainBetResult(token.value);
+    if (sportValue.value == 1) {
+        await dispatchMainBetResult(token.value);
+    } else {
+        await dispatchMacaoMainBetResult(token.value);
+    }
     loading.close();
 })
 </script>

@@ -250,7 +250,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watchEffect, watch, toRefs } from "vue";
+import { ref, computed, onMounted, onUnmounted, watchEffect, watch, toRefs } from "vue";
 import ChampionRunnerSum from "./azxy10/ChampionRunnerSum.vue";
 import OneWordPosition from "./azxy10/OneWordPosition.vue";
 import DragonTigerClass from "./azxy10/DragonTigerClass.vue";
@@ -459,6 +459,9 @@ const errMessage = computed(() => {
 
 const onChangeTime = (time: any) => {
   if (time.total <= 120000) {
+    if (!disabled.value) {
+      showToast("已封盘")    
+    }
     disabled.value = true;
   }
 }
@@ -535,6 +538,9 @@ onMounted(async () => {
   console.log(lotteryStatus.value);
   loading.close();
 });
+onUnmounted(() => {
+  clearInterval(timerId.value);
+})
 </script>
 
 <style scoped>
