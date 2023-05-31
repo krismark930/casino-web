@@ -40,6 +40,43 @@
 				</template>
 			</el-table-column>
 		</el-table>
+		<el-table v-else-if="sportValue == 18" v-loading="loading" :data="macaoBirthHistoryList" stripe style="width: 100%;">
+			<el-table-column prop="version" width="100">
+				<template #default="scope">
+					<Font color="red">{{ scope.row.version }}期</Font>
+				</template>
+			</el-table-column>
+			<el-table-column prop="result">
+				<template #default="scope">
+					<div class="w-full flex justify-center px-1">
+						<div v-for="(item, index) in scope.row.result" :key="index">
+							<div class="flex justify-center items-center">
+								<div class="relative">
+									<img v-if="redColor.includes(item)" src="@/assets/images/fastthree/red.png"
+										style="width: 40px;" />
+									<img v-if="blueColor.includes(item)" src="@/assets/images/fastthree/blue.png"
+										style="width: 40px;" />
+									<img v-if="greenColor.includes(item)" src="@/assets/images/fastthree/green.png"
+										style="width: 40px;" />
+									<div class="absolute text-black font-bold number-position text-[18px]">
+										{{ item }}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="w-full flex justify-around px-1">
+						<div v-for="(item, index) in scope.row.animal" :key="index">
+							<div class="flex justify-center items-center">
+								<div class="text-black font-bold text-[16px]">
+									{{ item }}
+								</div>
+							</div>
+						</div>
+					</div>
+				</template>
+			</el-table-column>
+		</el-table>
 		<el-table v-else v-loading="loading" :data="birthHistoryList1" stripe style="width: 100%;">
 			<el-table-column prop="version" width="100">
 				<template #default="scope">
@@ -269,9 +306,11 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import { ElLoading } from 'element-plus'
 import { katanStore } from "@/stores/katan";
+import { macaoKatanStore } from "@/stores/macao_katan";
 import { lotteryResultStore } from "@/stores/lottery_result";
 import { storeToRefs } from 'pinia';
 const { dispatchSixMarkBirthHistory } = katanStore();
+const { dispatchMacaoSixMarkBirthHistory } = macaoKatanStore();
 const { dispatchBirthHistory } = lotteryResultStore();
 const redColor = ref([1, 2, 7, 8, 12, 13, 18, 19, 23, 24, 29, 30, 34, 35, 40, 45, 46]);
 const blueColor = ref([3, 4, 9, 10, 14, 15, 20, 25, 26, 31, 36, 37, 41, 42, 47, 48])
@@ -309,6 +348,10 @@ const gameList = ref([
 	{
 		text: '香港六合彩',
 		value: 1
+	},
+	{
+		text: '澳门六合彩',
+		value: 18
 	},
 	{
 		text: '重庆时时彩',
@@ -380,6 +423,10 @@ const birthHistoryList = computed(() => {
 	const { getBirthHistoryList } = storeToRefs(katanStore());
 	return getBirthHistoryList.value;
 })
+const macaoBirthHistoryList = computed(() => {
+	const { getMacaoBirthHistoryList } = storeToRefs(macaoKatanStore());
+	return getMacaoBirthHistoryList.value;
+})
 const birthHistoryList1 = computed(() => {
   const { getBirthHistoryList } = storeToRefs(lotteryResultStore());
   return getBirthHistoryList.value;
@@ -393,6 +440,9 @@ watch(sportValue, async () => {
 	switch (sportValue.value) {
 		case 1:
 			await dispatchSixMarkBirthHistory({});
+			break;
+		case 18:
+			await dispatchMacaoSixMarkBirthHistory({});
 			break;
 		case 2:
 			await dispatchBirthHistory({ g_type: gType1.value, type: "b5" });

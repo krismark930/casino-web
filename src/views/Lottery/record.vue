@@ -2,9 +2,9 @@
 	<van-dropdown-menu class="header-fixed">
 		<van-dropdown-item v-model="sportValue" :options="gameList" />
 	</van-dropdown-menu>
-	<div v-if="sportValue == 1">
-		<MainTable v-if="showMainTable" @showSubTable="showSubTable" />
-		<SubTable v-else :period="period" @showMain="showMain"/>
+	<div v-if="sportValue == 1 || sportValue == 2">
+		<MainTable v-if="showMainTable" @showSubTable="showSubTable" :sportValue="sportValue"/>
+		<SubTable v-else :period="period" :sportValue="sportValue" @showMain="showMain"/>
 	</div>
 	<div v-else>
 		<AlwaysColorMainTable v-if="showAlwaysColorMainTable" @showAlwaysColorSubTable="showAlwaysColorSubTable" @showSubTableByStatus="showSubTableByStatus"/>
@@ -30,8 +30,12 @@ const gameList = ref([
 		value: 1
 	},
 	{
-		text: '彩票游戏',
+		text: '澳门六合彩',
 		value: 2
+	},
+	{
+		text: '彩票游戏',
+		value: 3
 	},
 ]);
 const showMain = () => {

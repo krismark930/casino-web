@@ -300,7 +300,7 @@
         </p>
       </div>
     </van-dialog>
-    <van-dialog v-model:show="alertShow" title="提示" show-cancel-button>
+    <van-dialog v-model:show="alertShow" title="提示">
       <div class="text-center">当前彩票已经封盘，请稍后再进行下注！</div>
       <div class="text-center">{{title}}开盘时间为：09:00 - 22:20</div>
     </van-dialog>
@@ -308,7 +308,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watchEffect, watch, toRefs } from "vue";
+import { ref, computed, onMounted, onUnmounted, watchEffect, watch, toRefs } from "vue";
 import OneWordPosition from "./gxsf/OneWordPosition.vue";
 import DragonTigerSum from "./gxsf/DragonTigerSum.vue";
 import Leopard from "./gxsf/Leopard.vue";
@@ -598,6 +598,9 @@ onMounted(async () => {
   console.log(lotteryStatus.value);
   loading.close();
 });
+onUnmounted(() => {
+  clearInterval(timerId.value);
+})
 </script>
 
 <style scoped>

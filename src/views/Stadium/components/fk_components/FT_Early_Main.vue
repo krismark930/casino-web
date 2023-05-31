@@ -145,7 +145,7 @@
 						<div class="store-up" v-if="!halfDatalist.name">
 						</div>
 						<div class="table-text-r" v-for="(num, numIndex) in halfDatalist.nums" :key="numIndex">
-							<div v-if="num.type == 1" @click="handleModal(item, data, halfDatalist, num, numIndex)"
+							<div v-if="num.type == 1" @click="handleModal1(item, data, halfDatalist, num, numIndex)"
 								:class="{ item_background_up: num.colorChangeUp, item_background_down: num.colorChangeDown }"
 								class="item-background">
 								<span>{{ num.text }}</span>
@@ -1365,6 +1365,28 @@ export default defineComponent({
 			this.bettingOrderData['selectedType'] = rateData.bettingType;
 			this.bettingOrderData["league"] = leagueData.name;
 			this.bettingOrderData["title"] = gameData.titleList[scoreIndex + 1];
+			this.bettingOrderData["selectedTeam"] = dataList.name;
+			this.bettingOrderData["text"] = rateData.text
+			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
+			else this.openModal = true;
+		},
+		handleModal1: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			console.log(rateData);
+			this.bettingOrderData["mID"] = gameData["id"];
+			this.bettingOrderData["m_date"] = gameData["m_date"];
+			this.bettingOrderData["m_start"] = gameData["m_start"];
+			this.bettingOrderData["m_ball"] = 0;
+			this.bettingOrderData["t_ball"] = 0;
+			this.bettingOrderData["gameType"] = "FT";
+			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
+			this.bettingOrderData["tgTeam"] = gameData.scoreList[1].name;
+			this.bettingOrderData["rate"] = rateData.num;
+			this.bettingOrderData['r_type'] = rateData.r_type;
+			this.bettingOrderData["lineType"] = rateData.lineType;
+			this.bettingOrderData["mType"] = rateData.mType;
+			this.bettingOrderData['selectedType'] = rateData.bettingType;
+			this.bettingOrderData["league"] = leagueData.name;
+			this.bettingOrderData["title"] = gameData.halfTitleList[scoreIndex + 1];
 			this.bettingOrderData["selectedTeam"] = dataList.name;
 			this.bettingOrderData["text"] = rateData.text
 			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;

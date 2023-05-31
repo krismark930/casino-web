@@ -29,8 +29,7 @@ export const useBankAccountStore = defineStore({
     setBankAccounts(bankAccounts:Array<any>){
       this.bankAccounts = bankAccounts;
     },
-    setEditCrypto(editCrypto:any){
-      
+    setEditCrypto(editCrypto:any){      
       this.editCrypto = editCrypto;
     },
     setEditBank(editBank:any){
@@ -159,7 +158,7 @@ export const useBankAccountStore = defineStore({
         const response = (await axios.delete(url+`?crypto_id=${id}&user_id=${userId}`)).data;
         if(response.success){
             this.setBankAccounts(response.bankList);
-            this.setEditBank({});
+            this.setEditCrypto({});
             router.go(-1);
         }
         console.log(response.bankList)

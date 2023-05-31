@@ -1,5 +1,7 @@
 {
-  "files": [],
+  "files": [
+    "src/types/shims-vue.d.ts"
+  ],
   "references": [
     {
       "path": "./tsconfig.config.json"

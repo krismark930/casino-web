@@ -13,17 +13,17 @@
         </van-nav-bar>
         <div class="p-3 pt-[46px] pb-[60px]">
             <div class="pt-3 text-[16px]">
-                <div class="">
+                <!-- <div class="">
                     <label for="name" class="block font-semibold text-[#454558]">别名</label>
                     <div class="mt-[7px] border-b border-gray-300 focus-within:border-gray-500 pb-[12px]">
                         <input type="text" v-model="bankAccount" placeholder="别名能便于区分您名下的虚拟币账户" name="name" id="name"
                             class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB]" />
                     </div>
-                </div>
+                </div> -->
                 <div class="mt-[14px]">
                     <label for="name" class="block font-semibold text-[#454558]">虚拟币账户</label>
                     <div class="mt-[7px] border-b border-gray-300 focus-within:border-gray-500 pb-[12px]">
-                        <input type="text" v-model="bankAddress" placeholder="别名能便于区分您名下的虚拟币账户" name="name" id="name"
+                        <input type="text" v-model="bankAddress" placeholder="虚拟币账户" name="name" id="name"
                             class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB]" />
                     </div>
                 </div>
@@ -49,6 +49,8 @@
                             @click="() => cryptoType = 'TRC20'"
                             :class="[cryptoType === 'TRC20'?'border-blue-600':'border-gray-300 ']"
                             class="relative flex justify-center items-center mr-3 mt-[6px] w-[90px] px-[6px] py-[3px] border  rounded-sm">
+                            <img class="w-[22px] h-[22px] mr-[5px]"
+                                src="@/assets/images/deposit/usdttrc20.svg"/>
                             <span class="text-blue-700">TRC20</span>
                             <div v-if="cryptoType === 'TRC20'" class="absolute right-0 bottom-0 image-text_1">
                                 <img class="w-[15px] h-[15px]" referrerpolicy="no-referrer"
@@ -59,6 +61,8 @@
                             @click="() => cryptoType = 'ERC20'"
                             :class="[cryptoType === 'ERC20'?'border-blue-600':'border-gray-300 ']"
                             class="relative flex justify-center items-center mt-[6px] w-[90px] px-[6px] py-[3px] border rounded-sm">
+                            <img class="w-[22px] h-[22px] mr-[5px]"
+                                src="@/assets/images/deposit/usdterc20.svg"/>
                             <span class="text-blue-700">ERC20</span>
                             <div v-if="cryptoType === 'ERC20'" class="absolute right-0 bottom-0 image-text_1">
                                 <img class="w-[15px] h-[15px]" referrerpolicy="no-referrer"
@@ -87,7 +91,7 @@
             </div>
             <div class="my-6">
                 <button
-                    :class="[{ 'bg-blue-200': !bankAccount  || !bankAddress }, 'bg-blue-500 text-white px-2 py-[10px] w-full text-[17px]']"
+                    :class="[{ 'bg-blue-200': !bankAddress }, 'bg-blue-500 text-white px-2 py-[10px] w-full text-[17px]']"
                     @click="onClick_2">
                     提交
                 </button>
@@ -128,14 +132,14 @@ const onClick_1 = () => {
 
 }
 const onClick_2 = async () => {
-    if(bankAccount.value  && bankAddress.value){
+    if(bankAddress.value){
         if(editCrypto.value.id){
-            const result = await editCryptoAccount(user.value.id , editCrypto.value.id,  'USDT-'+cryptoType.value, bankAccount.value, bankAddress.value );
+            const result = await editCryptoAccount(user.value.id , editCrypto.value.id,  'USDT', cryptoType.value, bankAddress.value );
             if(result.success){
                 router.push({name: 'myAccount'});
             }
         }else{
-            const result = await addCryptoAccount(user.value.id , 'USDT-'+cryptoType.value, bankAccount.value, bankAddress.value );
+            const result = await addCryptoAccount(user.value.id , 'USDT', cryptoType.value, bankAddress.value );
             if(result.success){
                 router.push({name: 'myAccount'});
             }
@@ -162,7 +166,6 @@ const commit = async () => {
     }
 }
 onMounted( async () => {
-    console.log(editCrypto.value)
     if(editCrypto.value.id){
         bankAccount.value = editCrypto.value.bank_account;
         bankAddress.value = editCrypto.value.bank_address;

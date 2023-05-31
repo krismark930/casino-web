@@ -39,8 +39,8 @@ export const macaoKatanStore = defineStore({
         getResultTime: (state) => state.resultTime,
         getErrMessage: (state) => state.errMessage,
         getGameResult: (state) => state.gameResult,
-        getBirthHistoryList: (state) => state.birthHistoryList,
-        getMainBetResultList: (state) => state.mainBetResultList
+        getMacaoBirthHistoryList: (state) => state.birthHistoryList,
+        getMacaoMainBetResultList: (state) => state.mainBetResultList
     },
     actions: {
         setSuccess(success: boolean) {
@@ -264,7 +264,7 @@ export const macaoKatanStore = defineStore({
                 }
             }
         },
-        async dispatchSixMarkBirthHistory(data: object) {
+        async dispatchMacaoSixMarkBirthHistory(data: object) {
             try {
                 this.setSuccess(false);
                 const response = await axios.post(`${BASE_URL}${MACAO_BIRTH_HISTORY}`, data);
@@ -278,7 +278,7 @@ export const macaoKatanStore = defineStore({
                 }
             }
         },
-        async dispatchMainBetResult(token: any) {
+        async dispatchMacaoMainBetResult(token: any) {
             try {
                 this.setSuccess(false);
                 const config = {
@@ -298,7 +298,7 @@ export const macaoKatanStore = defineStore({
                 }
             }
         },
-        async dispatchSubBetResult(data: any, token: any) {
+        async dispatchMacaoSubBetResult(data: any, token: any) {
             try {
                 this.setSuccess(false);
                 const config = {

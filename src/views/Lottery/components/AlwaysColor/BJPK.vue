@@ -246,7 +246,7 @@
         <p>为单视为投注"单"的注单视为中奖，为双视为投注"双"的注单视为中奖，其余视为不中奖(如果开11打和)</p>
       </div>
     </van-dialog>
-    <van-dialog v-model:show="alertShow" title="提示" show-cancel-button>
+    <van-dialog v-model:show="alertShow" title="提示">
       <div class="text-center">当前彩票已经封盘，请稍后再进行下注！</div>
       <div class="text-center">{{title}}开盘时间为：09:00 - 23:50</div>
     </van-dialog>
@@ -254,7 +254,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watchEffect, watch, toRefs } from "vue";
+import { ref, computed, onMounted, onUnmounted,  watchEffect, watch, toRefs } from "vue";
 import ChampionRunnerSum from "./azxy10/ChampionRunnerSum.vue";
 import OneWordPosition from "./azxy10/OneWordPosition.vue";
 import DragonTigerClass from "./azxy10/DragonTigerClass.vue";
@@ -544,6 +544,9 @@ onMounted(async () => {
   console.log(lotteryStatus.value);
   loading.close();
 });
+onUnmounted(() => {
+  clearInterval(timerId.value);
+})
 </script>
 
 <style scoped>

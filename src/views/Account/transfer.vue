@@ -105,8 +105,9 @@
 </template>
 <script setup lang="ts">
 import router from '@/router';
-import { ref , onMounted} from 'vue';
+import { ref, computed, onMounted} from 'vue';
 import { Switch } from 'vant';
+import { ElLoading } from "element-plus";
 import { Picker, showToast } from 'vant';
 import { useAuthStore } from '@/stores/auth';
 import { useSysConfigStore } from '@/stores/sysConfig';
@@ -128,9 +129,34 @@ const Credit_MG = ref('');
 const Credit_PT = ref('');
 const Credit_KY = ref('');
 
-const {
-    user,
-} = storeToRefs(useAuthStore());
+const { getProfile } = useAuthStore();
+
+const token = computed(() => {
+    const {getToken} = storeToRefs(useAuthStore());
+    return getToken.value;
+})
+
+const user = computed(() => {
+    const {getUser} = storeToRefs(useAuthStore());
+    moneyList.value.map((item:any) => {
+        if (item.name == "中心钱包") {
+            item.value = getUser.value.Money
+        }
+        if (item.name == "锁定钱包") {
+            item.value = getUser.value.OG_Money + getUser.value.AG_Money + getUser.value.BBIN_Money + getUser.value.MG_Money + getUser.value.PT_Money + getUser.value.KY_Money;
+        }
+    });
+    itemList.value.map((item: any) => {
+        if (item.name == "OG东方馆") {
+            item.value = getUser.value.OG_Money
+        }
+        if (item.name == "开元棋牌") {
+            item.value = getUser.value.KY_Money
+        }
+    });
+    return getUser.value;
+})
+
 const {
     sysConfig
 } = storeToRefs(useSysConfigStore());
@@ -145,6 +171,8 @@ const {
     sumbitTransfer
 } = useTransferStore();
 onMounted( async ()=>{
+    console.log(user.value);
+    await getProfile(token.value);
     if(!sysConfig.value.AG)
         await getSysConfigValue();
 })
@@ -162,30 +190,18 @@ const moneyList = ref([
         name: '锁定钱包',
         value: 0.00
     },
-    {
-        name: '福利中心',
-        value: 0.00
-    },
+    //{
+    //    name: '福利中心',
+    //    value: 0.00
+    //},
 ])
 const itemList = ref([
-    {
-        name: '皇冠体育',
-        value: 0.00
-    },
     {
         name: 'OG东方馆',
         value: 0.00
     },
     {
-        name: 'AG国际厅',
-        value: 0.00
-    },
-    {
-        name: 'AG旗舰厅',
-        value: 0.00
-    },
-    {
-        name: 'AG VIP厅',
+        name: 'AG 馆',
         value: 0.00
     },
     {
@@ -193,43 +209,15 @@ const itemList = ref([
         value: 0.00
     },
     {
+        name: 'PT 馆',
+        value: 0.00
+    },
+    {
+        name: 'MG 馆',
+        value: 0.00
+    },
+    {
         name: '开元棋牌',
-        value: 0.00
-    },
-    {
-        name: 'AG 电子',
-        value: 0.00
-    },
-    {
-        name: 'BBIN 电子',
-        value: 0.00
-    },
-    {
-        name: 'PT 电子',
-        value: 0.00
-    },
-    {
-        name: 'MG 电子',
-        value: 0.00
-    },
-    {
-        name: '新葡京彩票',
-        value: 0.00
-    },
-    {
-        name: '六合彩',
-        value: 0.00
-    },
-    {
-        name: '赛车',
-        value: 0.00
-    },
-    {
-        name: '飞艇PK10',
-        value: 0.00
-    },
-    {
-        name: '5分快3',
         value: 0.00
     },
 
@@ -249,13 +237,25 @@ const submitResult = async () => {
         console.log(amount.value && type.value)
         const result = verifyData();
         if(result){
+            const loading = ElLoading.service({
+                lock: true,
+                text: "加载中...",
+                background: "rgba(0, 0, 0, 0.7)",
+            });
             const response = await sumbitTransfer(user.value.id, amount.value, type.value.value);
+            if (response.message == "转账成功!") {
+                await getProfile(token.value);
+            }
+            loading.close();
             showToast(response.message);
         }
     }
 }
 const verifyData = () => {
-    console.log(user.value.Money )
+    if (type.value.title == "") {
+        showToast("请选择传输选项。");
+        return false;
+    }
     if (amount.value < sysConfig.value.min_change_money ){
         alertMessage.value = "转账金额不能小于"+sysConfig.value.min_change_money+"元!";
         return false;
