@@ -460,7 +460,7 @@ export default defineComponent({
 			],
 			cornerGID: 0,
 			cornerLID: 0,
-			cornerTitleList: [["", ""], ["角球", "让分"], ["角球", "大/小"], ["角球", "独赢"], ["独赢", "上半场"]],
+			cornerTitleList: [["", ""], ["角球", "大小"], ["角球", "单/双"], ["大小", "上半场"], ["角球", "上半场"]],
 			changedFTDataList: [],
 			tempFTDataList: []
 		}

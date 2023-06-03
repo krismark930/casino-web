@@ -211,7 +211,7 @@ export default defineComponent({
 							text: '让球'
 						},
 						{
-							text: '总分'
+							text: '大小'
 						},
 						{
 							text: '单/双'

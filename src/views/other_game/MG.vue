@@ -74,8 +74,8 @@ const token = computed(() => {
 	return getToken.value;
 })
 const redirectMGUrl = computed(() => {
-	const {getRedirectUrl} = storeToRefs(mgGameStore());
-	return getRedirectUrl.value;
+	const {getRedirectMGUrl} = storeToRefs(mgGameStore());
+	return getRedirectMGUrl.value;
 })
 const mgGameList = computed(() => {
 	const {getMGGameList} = storeToRefs(mgGameStore());

@@ -74,8 +74,8 @@ const token = computed(() => {
 	return getToken.value;
 })
 const redirectPTUrl = computed(() => {
-	const {getRedirectUrl} = storeToRefs(ptGameStore());
-	return getRedirectUrl.value;
+	const {getRedirectPTUrl} = storeToRefs(ptGameStore());
+	return getRedirectPTUrl.value;
 })
 const ptGameList = computed(() => {
 	const {getPTGameList} = storeToRefs(ptGameStore());

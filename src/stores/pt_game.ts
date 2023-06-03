@@ -22,7 +22,7 @@ export const ptGameStore = defineStore({
         setSuccess(success: boolean) {
             this.success = success;
         },
-        setPTGameList(ptGameList) {
+        setPTGameList(ptGameList: Array<any>) {
             this.ptGameList = ptGameList;
         },
         setRedirectPTUrl(redirectPTUrl: any) {
