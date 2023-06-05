@@ -477,7 +477,6 @@ export default defineComponent({
 					nums: [
 						{},
 						{},
-						{},
 						{
 							lineType: 46,
 							bettingType: "N",
@@ -492,7 +491,7 @@ export default defineComponent({
 			],
 			cornerGID: 0,
 			cornerLID: 0,
-			cornerTitleList: ["", "角球让分", "角球大/小", "角球独赢"],
+			cornerTitleList: ["", "角球让球", "角球大小", "角球独赢"],
 			changedFTDataList: [],
 			tempFTDataList: []
 		}
@@ -1293,7 +1292,7 @@ export default defineComponent({
 								]
 							},
 							{
-								name: "和",
+								name: "",
 								nums: [
 									{},
 									{},
@@ -1808,7 +1807,7 @@ export default defineComponent({
 			this.bettingOrderData['selectedType'] = rateData.bettingType;
 			this.bettingOrderData["league"] = leagueData.name;
 			this.bettingOrderData["text"] = rateData.text
-			this.bettingOrderData["title"] = this.cornerTitleList[scoreIndex + 1];
+			this.bettingOrderData["title"] = rateData.text == "和" ? this.cornerTitleList[scoreIndex] : this.cornerTitleList[scoreIndex + 1];
 			this.bettingOrderData["selectedTeam"] = dataList.name;
 			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
 			else this.openModal = true;

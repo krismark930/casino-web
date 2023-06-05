@@ -22,7 +22,7 @@ export const mgGameStore = defineStore({
         setSuccess(success: boolean) {
             this.success = success;
         },
-        setMGGameList(mgGameList) {
+        setMGGameList(mgGameList: Array<any>) {
             this.mgGameList = mgGameList;
         },
         setRedirectMGUrl(redirectMGUrl: any) {

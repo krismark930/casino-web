@@ -18,13 +18,36 @@
         {{ this.bettingOrderData['league'] }}
       </section>
 
-      <section class="modal-body">
-        {{ this.bettingOrderData['mbTeam'] }} VS {{ this.bettingOrderData['tgTeam'] }}
+      <section class="modal-body" v-if="this.bettingOrderData.title.includes('让球')">
+        {{ this.bettingOrderData['mbTeam'] }} <Font color="red">{{ this.bettingOrderData.text.replace("+",
+          "").replace("-", "") }}</Font> {{ this.bettingOrderData['tgTeam'] }} <Font color="red">({{
+    this.bettingOrderData.m_ball }}:{{ this.bettingOrderData.t_ball }})</Font>
+      </section>
+      <section class="modal-body" v-else>
+        {{ this.bettingOrderData['mbTeam'] }} <Font color="red">VS</Font> {{ this.bettingOrderData['tgTeam'] }} <Font
+          color="red">({{ this.bettingOrderData.m_ball }}:{{ this.bettingOrderData.t_ball }})</Font>
       </section>
 
-      <section class="modal-body">
-        {{ this.bettingOrderData['selectedTeam'] }} {{ this.bettingOrderData['title'] }} @ {{
-          this.bettingOrderData['rate'] }}
+      <section class="modal-body" v-if="this.bettingOrderData.title.includes('大小') || this.bettingOrderData.title.includes('大/小')">
+        <Font color="red">{{ this.bettingOrderData['text'] }}</Font> @ <Font color="red">{{
+          this.bettingOrderData['rate'] }}</Font>
+      </section><section class="modal-body" v-if="this.bettingOrderData.title.includes('单双') || this.bettingOrderData.title.includes('单/双')">
+        <Font color="red">{{ this.bettingOrderData['text'] }}</Font> @ <Font color="red">{{
+          this.bettingOrderData['rate'] }}</Font>
+      </section>
+      <section class="modal-body" v-else-if="this.bettingOrderData.title.includes('独赢')">
+        <template v-if="this.bettingOrderData['selectedTeam'] != undefined && this.bettingOrderData.selectedTeam != ''">
+          <Font color="red">{{ this.bettingOrderData['selectedTeam'] }}</Font> @ <Font color="red">{{
+            this.bettingOrderData['rate'] }}</Font>
+        </template>
+        <template v-else>
+          <Font color="red">{{ this.bettingOrderData.text }}</Font> @ <Font color="red">{{
+            this.bettingOrderData['rate'] }}</Font>
+        </template>
+      </section>
+      <section class="modal-body" v-else>
+        <Font color="red">{{ this.bettingOrderData['selectedTeam'] }}</Font> @ <Font color="red">{{
+          this.bettingOrderData['rate'] }}</Font>
       </section>
       <section class="modal-body">
         <div class="list_input">
@@ -429,5 +452,4 @@ export default {
   padding: 10px 0;
   font-size: 15px;
   color: white;
-}
-</style>
+}</style>

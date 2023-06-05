@@ -74,8 +74,8 @@ const token = computed(() => {
 	return getToken.value;
 })
 const redirectAGUrl = computed(() => {
-	const {getRedirectUrl} = storeToRefs(agGameStore());
-	return getRedirectUrl.value;
+	const {getRedirectAGUrl} = storeToRefs(agGameStore());
+	return getRedirectAGUrl.value;
 })
 const agGameList = computed(() => {
 	const {getAGGameList} = storeToRefs(agGameStore());
@@ -103,6 +103,7 @@ const goDetail = async (game_type: any) => {
 	await dispatchRedirectAGUrl({game_type}, token.value);
 	loading.close();
     if (success.value) {
+		console.log(redirectAGUrl.value);
         if (redirectAGUrl.value != "") {
             window.open(redirectAGUrl.value, '_blank');
         }

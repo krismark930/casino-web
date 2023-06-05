@@ -22,7 +22,7 @@ export const bbinGameStore = defineStore({
         setSuccess(success: boolean) {
             this.success = success;
         },
-        setBBINGameList(bbinGameList) {
+        setBBINGameList(bbinGameList: Array<any>) {
             this.bbinGameList = bbinGameList;
         },
         setRedirectBBINUrl(redirectBBINUrl: any) {

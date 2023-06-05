@@ -74,8 +74,8 @@ const token = computed(() => {
 	return getToken.value;
 })
 const redirectBBINUrl = computed(() => {
-	const {getRedirectUrl} = storeToRefs(bbinGameStore());
-	return getRedirectUrl.value;
+	const {getRedirectBBINUrl} = storeToRefs(bbinGameStore());
+	return getRedirectBBINUrl.value;
 })
 const bbinGameList = computed(() => {
 	const {getBBINGameList} = storeToRefs(bbinGameStore());
