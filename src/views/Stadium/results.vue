@@ -338,7 +338,8 @@ export default {
 					g_win: (Number(this.parlayGold) * this.allOdds).toFixed(2),
 					bettingCount: this.betSlipList.length,
 					active: 1,
-					m_type: ""
+					m_type: "",
+					show_type: ""
 				}
 				if (this.betSlipList.length > 10) {
 					showToast("不接受" + this.betSlipList.length + "串过关投注!!");
@@ -375,6 +376,7 @@ export default {
 					} else {
 						data["m_type"] += item["m_type"] + ","
 					}
+					data["show_type"] += item.show_type + ",";
 				})
 
 				data["title"] = this.betSlipList.length + "串1";

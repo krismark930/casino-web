@@ -658,6 +658,8 @@ export default defineComponent({
 			this.bettingOrderData["gameType"] = "FT";
 			this.bettingOrderData["mbTeam"] = gameData["mbTeam"];
 			this.bettingOrderData["tgTeam"] = gameData["tgTeam"];
+			this.bettingOrderData["m_ball"] = 0;
+			this.bettingOrderData["t_ball"] = 0;
 			this.bettingOrderData["rate"] = score.num;
 			this.bettingOrderData["league"] = leagueData.name;
 			this.bettingOrderData["title"] = " (滚球) 波胆";
@@ -674,6 +676,8 @@ export default defineComponent({
 			this.bettingOrderData["gameType"] = "FT";
 			this.bettingOrderData["mbTeam"] = gameData["mbTeam"];
 			this.bettingOrderData["tgTeam"] = gameData["tgTeam"];
+			this.bettingOrderData["m_ball"] = 0;
+			this.bettingOrderData["t_ball"] = 0;
 			this.bettingOrderData["rate"] = scoreItem.other;
 			this.bettingOrderData["league"] = leagueData.name;
 			this.bettingOrderData["title"] = " (滚球) 波胆";
