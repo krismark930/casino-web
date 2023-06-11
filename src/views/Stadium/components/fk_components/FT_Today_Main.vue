@@ -1097,7 +1097,7 @@ export default defineComponent({
 										{
 											lineType: 2,
 											mType: "RC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: item["M_LetB"] !== "" && item["M_LetB"] !== undefined ? handicap_sign_t + item["M_LetB"] : "",
@@ -1106,7 +1106,7 @@ export default defineComponent({
 										{
 											lineType: 56,
 											mType: "RC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: item["M_LetB_1"] !== "" && item["M_LetB_1"] !== undefined ? handicap_sign_t + item["M_LetB_1"] : "",
@@ -1115,7 +1115,7 @@ export default defineComponent({
 										{
 											lineType: 57,
 											mType: "RC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: item["M_LetB_2"] !== "" && item["M_LetB_2"] !== undefined ? handicap_sign_t + item["M_LetB_2"] : "",
@@ -1124,7 +1124,7 @@ export default defineComponent({
 										{
 											lineType: 58,
 											mType: "RC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: item["M_LetB_3"] !== "" && item["M_LetB_3"] !== undefined ? handicap_sign_t + item["M_LetB_3"] : "",
@@ -1185,7 +1185,7 @@ export default defineComponent({
 										{
 											lineType: 3,
 											mType: "OUC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: item["TG_Dime"] == "" || item["TG_Dime"] == undefined ? "" : "小 " + item["TG_Dime"].split("U")[1],
@@ -1194,7 +1194,7 @@ export default defineComponent({
 										{
 											lineType: 59,
 											mType: "OUC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: item["TG_Dime_1"] == "" || item["TG_Dime_1"] == undefined ? "" : "小 " + item["TG_Dime_1"].split("U")[1],
@@ -1203,7 +1203,7 @@ export default defineComponent({
 										{
 											lineType: 60,
 											mType: "OUC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: item["TG_Dime_2"] == "" || item["TG_Dime_2"] == undefined ? "" : "小 " + item["TG_Dime_2"].split("U")[1],
@@ -1212,7 +1212,7 @@ export default defineComponent({
 										{
 											lineType: 61,
 											mType: "OUC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: item["TG_Dime_3"] == "" || item["TG_Dime_3"] == undefined ? "" : "小 " + item["TG_Dime_3"].split("U")[1],
@@ -1268,7 +1268,7 @@ export default defineComponent({
 									{
 										lineType: 2,
 										mType: "RC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_LetB_Rate_CN"] == 0 || item["TG_LetB_Rate_CN"] == undefined ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1278,7 +1278,7 @@ export default defineComponent({
 									{
 										lineType: 3,
 										mType: "OUC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_Dime_Rate_CN"] == 0 || item["TG_Dime_Rate_CN"] == undefined ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1288,7 +1288,7 @@ export default defineComponent({
 									{
 										lineType: 1,
 										mType: "MC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_Win_Rate_CN"] == 0 || item["TG_Win_Rate_CN"] == undefined ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1374,7 +1374,7 @@ export default defineComponent({
 									{
 										lineType: 2,
 										mType: "RC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_LetB_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1384,7 +1384,7 @@ export default defineComponent({
 									{
 										lineType: 3,
 										mType: "OUC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_Dime_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1394,7 +1394,7 @@ export default defineComponent({
 									{
 										lineType: 1,
 										mType: "MC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_Win_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1476,7 +1476,7 @@ export default defineComponent({
 										lineType: 5,
 										mType: "",
 										r_type: "EVEN",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["S_Double_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1486,7 +1486,7 @@ export default defineComponent({
 									{
 										lineType: 12,
 										mType: "VRC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_LetB_Rate_H"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1496,7 +1496,7 @@ export default defineComponent({
 									{
 										lineType: 13,
 										mType: "VOUC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_Dime_Rate_H"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1506,7 +1506,7 @@ export default defineComponent({
 									{
 										lineType: 11,
 										mType: "VMC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_Win_Rate_H"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,

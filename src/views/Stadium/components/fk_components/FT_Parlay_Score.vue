@@ -63,14 +63,17 @@
 import OrderModal from "@/views/Stadium/components/Ordermodal.vue"
 import { defineComponent } from "vue";
 import { stadiumStore } from "@/stores/stadium";
+import { bettingStore } from '@/stores/betting';
+import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from "pinia";
 export default defineComponent({
 	name: "other",
 	setup() {
+		const { setBetSlip, setFavoriteList, removeFavoriteList } = bettingStore();
 		const { getFTScoreInPlayDataList } = stadiumStore();
 		const { getFTScoreInPlayLists } = storeToRefs(stadiumStore());
 		const ftScoreDataList = getFTScoreInPlayLists.value;
-		return { getFTScoreInPlayDataList, ftScoreDataList }
+		return { getFTScoreInPlayDataList, ftScoreDataList, setBetSlip, setFavoriteList, removeFavoriteList }
 	},
 	props: {
 		parlayGids: "",
@@ -107,6 +110,10 @@ export default defineComponent({
 		}
 	},
 	computed: {
+		user: function () {
+			const { getUser } = useAuthStore();
+			return getUser;
+		}
 	},
 	watch: {
 	},
@@ -663,8 +670,43 @@ export default defineComponent({
 			this.bettingOrderData["league"] = leagueData.name;
 			this.bettingOrderData["title"] = "足球 (滚球) 波胆";
 			this.bettingOrderData["selectedTeam"] = score.text;
-			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
-			else this.openModal = true;
+			this.bettingOrderData["m_date"] = gameData["m_date"];
+			this.bettingOrderData["m_start"] = gameData["m_start"];
+			this.bettingOrderData["text"] = score.text
+			this.bettingOrderData["show_type"] = gameData.ShowTypeP;
+
+			let data = {
+				showType: this.bettingType,
+				type: this.bettingOrderData["selectedType"],
+				title: this.bettingOrderData["title"],
+				league: this.bettingOrderData["league"],
+				m_team: this.bettingOrderData["mbTeam"],
+				t_team: this.bettingOrderData["tgTeam"],
+				select_team: this.bettingOrderData["selectedTeam"],
+				text: this.bettingOrderData["text"],
+				order_rate: this.bettingOrderData["rate"],
+				odd_f_type: this.bettingOrderData['oddFType'],
+				gold: 0,
+				m_win: 0,
+				id: this.user.id,
+				m_id: this.bettingOrderData["mID"],
+				g_type: this.bettingOrderData["gameType"],
+				line_type: this.bettingOrderData["lineType"],
+				active: 1,
+				r_type: this.bettingOrderData['r_type'],
+				m_date: this.bettingOrderData['m_date'],
+				m_start: this.bettingOrderData['m_start'],
+				m_ball: this.bettingOrderData["m_ball"],
+				t_ball: this.bettingOrderData["t_ball"],
+				m_type: this.bettingOrderData["mType"],
+				show_type: this.bettingOrderData["show_type"]
+			}
+			if (this.user.id == "") {
+				showToast('你必须先登录。')
+				router.push("login")
+				return;
+			}
+			this.setBetSlip(data);
 		},
 		handleOtherModal: function (leagueData, gameData, scoreItem) {
 			console.log(scoreItem);
@@ -681,8 +723,43 @@ export default defineComponent({
 			this.bettingOrderData["league"] = leagueData.name;
 			this.bettingOrderData["title"] = "足球 (滚球) 波胆";
 			this.bettingOrderData["selectedTeam"] = "其他比分";
-			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
-			else this.openModal = true;
+			this.bettingOrderData["m_date"] = gameData["m_date"];
+			this.bettingOrderData["m_start"] = gameData["m_start"];
+			this.bettingOrderData["text"] = "其他比分"
+			this.bettingOrderData["show_type"] = gameData.ShowTypeP;
+
+			let data = {
+				showType: this.bettingType,
+				type: this.bettingOrderData["selectedType"],
+				title: this.bettingOrderData["title"],
+				league: this.bettingOrderData["league"],
+				m_team: this.bettingOrderData["mbTeam"],
+				t_team: this.bettingOrderData["tgTeam"],
+				select_team: this.bettingOrderData["selectedTeam"],
+				text: this.bettingOrderData["text"],
+				order_rate: this.bettingOrderData["rate"],
+				odd_f_type: this.bettingOrderData['oddFType'],
+				gold: 0,
+				m_win: 0,
+				id: this.user.id,
+				m_id: this.bettingOrderData["mID"],
+				g_type: this.bettingOrderData["gameType"],
+				line_type: this.bettingOrderData["lineType"],
+				active: 1,
+				r_type: this.bettingOrderData['r_type'],
+				m_date: this.bettingOrderData['m_date'],
+				m_start: this.bettingOrderData['m_start'],
+				m_ball: this.bettingOrderData["m_ball"],
+				t_ball: this.bettingOrderData["t_ball"],
+				m_type: this.bettingOrderData["mType"],
+				show_type: this.bettingOrderData["show_type"]
+			}
+			if (this.user.id == "") {
+				showToast('你必须先登录。')
+				router.push("login")
+				return;
+			}
+			this.setBetSlip(data);
 		},
 		closeModal: function () {
 			this.openModal = false;

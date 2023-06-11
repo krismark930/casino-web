@@ -1,10 +1,6 @@
-//  export const BASE_URL = "http://localhost:8000/api";
-// export const HOST_URL = "http://127.0.0.1:5173";
-// export const SOCKET_URL = "http://localhost:3000";
-
-export const SOCKET_URL = "http://27.126.187.128";
-export const BASE_URL = "http://27.126.187.128:8000/api";
-export const HOST_URL = "http://27.126.187.128:8080";
+export const SOCKET_URL = import.meta.env.SOCKET_URL;
+export const BASE_URL = import.meta.env.BASE_URL;
+export const HOST_URL = import.meta.env.HOST_URL;
 
 
 export const MATCH_SPORT = "/user/match-sport";
