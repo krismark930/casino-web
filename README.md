@@ -24,6 +24,10 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 ## Project Setup
 
 ```sh
+npm init vue@3
+```
+
+```sh
 npm install
 ```
 

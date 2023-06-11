@@ -31,23 +31,26 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, computed, onMounted, toRefs } from 'vue';
+import { ref, computed, watch, onMounted, toRefs } from 'vue';
 import { ElLoading } from 'element-plus'
 import { katanStore } from "@/stores/katan";
+import { macaoKatanStore } from "@/stores/macao_katan";
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import router from '@/router';
 import { showToast } from 'vant';
 import type { TableColumnCtx } from 'element-plus'
 
-const props = defineProps<{ period: number }>();
-const { period } = toRefs(props);
+const props = defineProps<{ period: number, sportValue: number }>();
+const { period, sportValue } = toRefs(props);
 
 const emit = defineEmits<{
     (e: 'showMain'): void,
 }>()
 
 const { dispatchSubBetResult } = katanStore();
+const { dispatchMacaoSubBetResult } = macaoKatanStore();
+
 const loading = ref(false);
 
 const showMainTable = () => {
@@ -58,14 +61,22 @@ const mainBetResultList = computed(() => {
     const { getMainBetResultList } = storeToRefs(katanStore());
     return getMainBetResultList.value;
 })
+
+const macaoMainBetResultList = computed(() => {
+    const { getMacaoMainBetResultList } = storeToRefs(macaoKatanStore());
+    return getMacaoMainBetResultList.value;
+})
+
 const user = computed(() => {
     const { getUser } = storeToRefs(useAuthStore());
     return getUser.value;
 })
+
 const token = computed(() => {
     const { getToken } = storeToRefs(useAuthStore());
     return getToken.value;
 })
+
 interface BetResult {
     num: string
     adddate: string
@@ -102,6 +113,24 @@ const getSummaries = (param: SummaryMethodProps) => {
 
     return sums
 }
+watch(sportValue, async () => {
+    if (user.value.id == undefined) {
+        showToast('你必须先登录。')
+        router.push("login")
+        return;
+    }
+    const loading = ElLoading.service({
+        lock: true,
+        text: '加载中...',
+        background: 'rgba(0, 0, 0, 0.7)',
+    })
+    if (sportValue.value == 1) {
+        await dispatchSubBetResult({ period: period.value }, token.value);
+    } else {
+        await dispatchMacaoSubBetResult({ period: period.value }, token.value);
+    }
+    loading.close();
+}, {deep: true});
 onMounted(async () => {
     if (user.value.id == undefined) {
         showToast('你必须先登录。')
@@ -113,7 +142,11 @@ onMounted(async () => {
         text: '加载中...',
         background: 'rgba(0, 0, 0, 0.7)',
     })
-    await dispatchSubBetResult({ period: period.value }, token.value);
+    if (sportValue.value == 1) {
+        await dispatchSubBetResult({ period: period.value }, token.value);
+    } else {
+        await dispatchMacaoSubBetResult({ period: period.value }, token.value);
+    }
     loading.close();
 })
 </script>

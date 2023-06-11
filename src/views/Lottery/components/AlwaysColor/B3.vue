@@ -243,15 +243,15 @@
         <p>以开奖三个号码的最大差距(跨度)，作为中奖的依据。会员可以选择 0 ~ 9 的任一跨度。</p>
       </div>
     </van-dialog>
-    <van-dialog v-model:show="alertShow" title="提示" show-cancel-button>
+    <van-dialog v-model:show="alertShow" title="提示">
       <div class="text-center">当前彩票已经封盘，请稍后再进行下注！</div>
-      <div class="text-center">{{title}}开盘时间为：10:00 - 21:30</div>
+      <div class="text-center">{{alertContent}}</div>
     </van-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watchEffect, watch, toRefs } from "vue";
+import { ref, computed, onMounted, onUnmounted, watchEffect, watch, toRefs } from "vue";
 import OneWordPosition from "./b3/OneWordPosition.vue";
 import DragonTigerSum from "./b3/DragonTigerSum.vue";
 import Company3 from "./b3/Company3.vue";
@@ -274,9 +274,9 @@ const { dispatchBirthHistory } = lotteryResultStore();
 const { dispatchLotteryOdds } = lotteryOddsStore();
 const { dispatchSaveLottery } = lotterySaveStore();
 
-const props = defineProps<{ title: string, g_type: string, descriptionTitle: string, descriptionSubTitle: string }>();
+const props = defineProps<{ title: string, alertContent: string, g_type: string, descriptionTitle: string, descriptionSubTitle: string }>();
 
-const { title, g_type, descriptionTitle, descriptionSubTitle } = toRefs(props);
+const { title, alertContent, g_type, descriptionTitle, descriptionSubTitle } = toRefs(props);
 
 const closed_reason = ref("目前没有开盘!");
 const time = ref(0);
@@ -456,9 +456,7 @@ const scheduleItem = computed(() => {
   // time.value = Number(duration.valueOf()) + 60000;
   time.value = getScheduleItem.value.diff_time;
   if (!getScheduleItem.value.is_open || time.value <= 0) {
-    if (g_type.value = "t3") {
-      alertShow.value = true;
-    }
+    alertShow.value = true;
     disabled.value = true;
   }
   return getScheduleItem.value;
@@ -561,6 +559,9 @@ onMounted(async () => {
   console.log(lotteryStatus.value);
   loading.close();
 });
+onUnmounted(() => {
+  clearInterval(timerId.value);
+})
 </script>
 
 <style scoped>

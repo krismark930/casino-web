@@ -440,7 +440,7 @@ const VerifyData = () => {
     return true
 }
 const addBank = () => {
-    if (mainActive.value === 1) {
+    if (mainActive.value === 2) {
         router.push({ name: 'addBank2' });
     } else {
         router.push({ name: 'addCrypto' });

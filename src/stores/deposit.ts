@@ -1,6 +1,9 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import config from "@/config"
+import { BASE_URL } from "@/config";
+import { GET_CRYPTO } from "@/config";
+
 import type { 
   IUser,
  } from "@/interface";
@@ -9,6 +12,7 @@ export const useDepositStore = defineStore({
   id:"deposit",
   state:() =>({
     banks: [] as Array<any>,
+    crypto: null,
     currencyRate: 1,
     walletAddress: '',
     isCrypto: true,
@@ -17,11 +21,15 @@ export const useDepositStore = defineStore({
     getBanks: (state) => state.banks,
     getCurrencyRate: (state) => state.currencyRate,
     getWalletAddress: (state) => state.walletAddress,
-    getIsCrypto: (state) => state.isCrypto
+    getIsCrypto: (state) => state.isCrypto,
+    getCrypto: (state) => state.crypto
   },
   actions:{
-    setBanks(banks:string){
+    setBanks(banks:any){
       this.banks = banks;
+    },
+    setCrypto(crypto: any) {
+      this.crypto = crypto;
     },
     setCurrencyRate(currencyRate:IUser){
       this.currencyRate = currencyRate;
@@ -32,31 +40,60 @@ export const useDepositStore = defineStore({
     setIsCrypto(isCrypto: boolean){
       this.isCrypto = isCrypto;
     },
-    async getBankList() {
+    async dispatchGetCrypto(data, token) {
       try {
-        const url = config.api.BANK_LIST;
-        const response = (await axios.get(url)).data;
-        this.setBanks(response.bankList as Array<any>);
-        return response;
+        const headerConfig = {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Access-Control-Allow-Origin": "*"
+            },
+        };
+        const response = await axios.post(`${BASE_URL}${GET_CRYPTO}`, data, headerConfig);
+        if (response.status == 200) {
+          this.setCrypto(response.data.data);
+        }
       } catch (e) {
         return e;
       }
     },
-    async sumbitDeposit(userId: number, bank:any , amount: number, name: string) {
+    async getBankList(data, token) {
+      try {
+        const url = config.api.BANK_LIST;
+        const headerConfig = {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Access-Control-Allow-Origin": "*"
+            },
+        };
+        const response = await axios.post(url, data, headerConfig);
+        if (response.status == 200) {
+          this.setBanks(response.data.bankList as Array<any>);
+        }
+      } catch (e) {
+        return e;
+      }
+    },
+    async sumbitDeposit(userId: number, amount: number, name: string, bank: string, bankAccount: string, bankAddress: string, token: string) {
       try{
-        console.log(amount)
+        console.log(bankAccount)
         const url = config.api.DEPOSIT;
         let data = {
           userId : userId,
           isCrypto: this.isCrypto,
           money: amount,
           name : name,
-          bankName: bank.bankname,
-          bankAddress: bank.bankaddress,
-          bankNo: bank.bankno
+          bank: bank,
+          bankAccount: bankAccount,
+          bankAddress: bankAddress,
         };
-        
-        const response = (await axios.post(url, data)).data;
+        const headerConfig = {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Access-Control-Allow-Origin": "*"
+            },
+        };        
+        const response = (await axios.post(url, data, headerConfig)).data;
+        console.log(response);
         return response;
       }catch(e){
         

@@ -1,32 +1,18 @@
 <template>
     <div>
-        <div v-for="(item, index) in tokenList" :key="index">
-            <div class="mt-[10px] bg-white p-2">
-                <div class="font-medium text-[#454558] mt-0">虚拟币种类</div>
-                <div
-                    class="relative flex justify-center items-center mt-[18px] w-[90px] px-[6px] py-[3px] border border-blue-800 rounded-sm">
+        <div class="mt-[10px] bg-white p-2">
+            <div class="font-medium text-[#454558] mt-0">虚拟币种类</div>
+            <div class="flex">
+                <div v-for="(item, index) in tokenList" :key="index" @click=selectToken(item.id)
+                    class="relative flex justify-center items-center mt-[18px] w-[90px] px-[6px] py-[3px] mx-[10px] border rounded-sm" :class="[tokenActive === item.id ? 'border-blue-800' : '']">
                     <img class="w-[22px] h-[22px] mr-[5px]" referrerpolicy="no-referrer"
-                        src="@/assets/images/deposit/usdt.png"/>
+                        :src="item.icon"/>
                     <span class="text-blue-700">{{item.name}}</span>
-                    <div class="absolute right-0 bottom-0 image-text_1">
+                    <div v-if="tokenActive === item.id" class="absolute right-0 bottom-0 image-text_1">
                         <img class="w-[15px] h-[15px]" referrerpolicy="no-referrer"
                             src="@/assets/images/deposit/active.png"/>
                     </div>
-                </div>
-            </div>
-            <div class="mt-[10px] bg-white p-2">
-                <span class="font-medium text-[#454558]">虚拟币种类</span>
-                <div class="flex mt-[10px]">
-                    <div v-for="(subItem, index) in item.child" :key="index" @click="selectToken(subItem.name)"
-                        :class="[tokenActive === subItem.name ? 'border border-blue-600' : 'border border-gray-200']"
-                        class="relative flex justify-center items-center mr-3 mt-[6px] w-[90px] px-[6px] py-[3px]  rounded-sm">
-                        <span class="text-blue-700">{{ subItem.name }}</span>
-                        <div v-if="tokenActive === subItem.name" class="absolute right-0 bottom-0 image-text_1">
-                            <img class="w-[15px] h-[15px]" referrerpolicy="no-referrer"
-                                src="@/assets/images/deposit/active.png"/>
-                        </div>
-                    </div>
-                </div>
+                </div>                
             </div>
         </div>
         <div class="mt-[10px] bg-white py-1 px-2">
@@ -77,37 +63,49 @@
     
 </template>
 <script setup lang="ts">
-import { toRefs ,ref} from 'vue';
+import { toRefs ,ref, computed, onMounted} from 'vue';
 import router from '@/router';
+import {storeToRefs} from "pinia";
+import {useAuthStore } from '@/stores/auth';
+import { useDepositStore } from '@/stores/deposit';
+const { dispatchGetCrypto } = useDepositStore();
 const amountFlag = ref(false);
 const amount = ref('');
 const state = defineProps<{tokenList:Array<any>}>();
 const { tokenList } = toRefs(state);
-const tokenActive = ref('TRC20');
+const tokenActive = ref(1);
 const emit = defineEmits(['selectToken']);
+const token = computed(() => {
+    const {getToken} = storeToRefs(useAuthStore());
+    return getToken.value;
+})
+const crypto = computed(() => {
+    const {getCrypto} = storeToRefs(useDepositStore());
+    return getCrypto.value;
+})
 const amountChange = () => {
     amountFlag.value = false;
 }
-const selectToken = (name: number) => {
-    tokenActive.value = name;
+const selectToken = async (id: number) => {
+    tokenActive.value = id;
+    await dispatchGetCrypto({crypto_type: tokenList.value[tokenActive.value - 1].name}, token.value)
 }
 const onSubmit = () => {
     let temp = {};
-    tokenList.value[0].child.map((item:any) => {
-        if(item.name === tokenActive.value){
+    tokenList.value.map((item:any) => {
+        if(item.id === tokenActive.value){
             temp = item;
         }
     })
-    console.log(temp);
 
     if(amount.value <= 100){
         amountFlag.value = true;
     }else{
-        router.push({ name: 'depositInformation', params:{name:'crypto', bankID: (temp as any).bankID, money: amount.value}});
+        console.log(crypto);
+        router.push({ name: 'depositInformation', params:{name:'crypto', bankID: (temp as any).name, money: amount.value}, query: {bank: crypto.value.bank, bankAccount: crypto.value.bank_address, bankAddress: crypto.value.bank_account}});
     }
 }
+onMounted(async () => {
+    await dispatchGetCrypto({crypto_type: tokenList.value[tokenActive.value - 1].name}, token.value)
+})
 </script>
-
-<!-- const { route, index, total, id } = defineProps<{ route: any, index: number, total: number, id:string }>()
-const emit = defineEmits(['changeMenuDialog', 'changeChecked', 'deleteItem', 'editPopup', 'moveToPopup', 'changeStartPoint', 'changeFinishPoint'])
-  emit('deleteItem', route.optimize_route_id) -->

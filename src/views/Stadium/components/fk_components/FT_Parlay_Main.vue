@@ -145,7 +145,7 @@
 						<div class="store-up" v-if="!halfDatalist.name">
 						</div>
 						<div class="table-text-r" v-for="(num, numIndex) in halfDatalist.nums" :key="numIndex">
-							<div v-if="num.type == 1" @click="handleModal(item, data, halfDatalist, num, numIndex)"
+							<div v-if="num.type == 1" @click="handleModal1(item, data, halfDatalist, num, numIndex)"
 								:class="{ item_background_up: num.colorChangeUp, item_background_down: num.colorChangeDown }"
 								class="item-background">
 								<span>{{ num.text }}</span>
@@ -466,7 +466,7 @@ export default defineComponent({
 			],
 			cornerGID: 0,
 			cornerLID: 0,
-			cornerTitleList: ["", "角球让分", "角球大/小", "角球独赢"],
+			cornerTitleList: ["", "角球让球", "角球大小", "角球独赢"],
 			// titleList: ['半场', '让球', '得分大小', '独赢', '下一个进球'],
 			changedFTDataList: [],
 			tempFTDataList: []
@@ -1345,8 +1345,8 @@ export default defineComponent({
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["m_date"] = gameData["m_date"];
 			this.bettingOrderData["m_start"] = gameData["m_start"];
-			this.bettingOrderData["m_ball"] = 0;
-			this.bettingOrderData["t_ball"] = 0;
+			this.bettingOrderData["m_ball"] = gameData.scoreList[0].goalsScored;
+			this.bettingOrderData["t_ball"] = gameData.scoreList[1].goalsScored;
 			this.bettingOrderData["gameType"] = "FT";
 			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
 			this.bettingOrderData["tgTeam"] = gameData.scoreList[1].name;
@@ -1393,6 +1393,59 @@ export default defineComponent({
 			}
 			this.setBetSlip(data);
 		},
+		handleModal1: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			console.log(rateData);
+			this.bettingOrderData["mID"] = gameData["id"];
+			this.bettingOrderData["m_date"] = gameData["m_date"];
+			this.bettingOrderData["m_start"] = gameData["m_start"];
+			this.bettingOrderData["m_ball"] = gameData.scoreList[0].goalsScored;
+			this.bettingOrderData["t_ball"] = gameData.scoreList[1].goalsScored;
+			this.bettingOrderData["gameType"] = "FT";
+			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
+			this.bettingOrderData["tgTeam"] = gameData.scoreList[1].name;
+			this.bettingOrderData["rate"] = rateData.num;
+			this.bettingOrderData['r_type'] = rateData.r_type;
+			this.bettingOrderData["lineType"] = rateData.lineType;
+			this.bettingOrderData["mType"] = rateData.mType;
+			this.bettingOrderData['selectedType'] = rateData.bettingType;
+			this.bettingOrderData["league"] = leagueData.name;
+			this.bettingOrderData["title"] = gameData.halfTitleList[scoreIndex + 1];
+			this.bettingOrderData["selectedTeam"] = dataList.name;
+			this.bettingOrderData["text"] = rateData.text
+			// if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
+			// else this.openModal = true;
+			let data = {
+				showType: this.bettingType,
+				type: this.bettingOrderData["selectedType"],
+				title: this.bettingOrderData["title"],
+				league: this.bettingOrderData["league"],
+				m_team: this.bettingOrderData["mbTeam"],
+				t_team: this.bettingOrderData["tgTeam"],
+				select_team: this.bettingOrderData["selectedTeam"],
+				text: this.bettingOrderData["text"],
+				order_rate: this.bettingOrderData["rate"],
+				odd_f_type: this.bettingOrderData['oddFType'],
+				gold: 0,
+				m_win: 0,
+				id: this.user.id,
+				m_id: this.bettingOrderData["mID"],
+				g_type: this.bettingOrderData["gameType"],
+				line_type: this.bettingOrderData["lineType"],
+				active: 1,
+				r_type: this.bettingOrderData['r_type'],
+				m_date: this.bettingOrderData['m_date'],
+				m_start: this.bettingOrderData['m_start'],
+				m_ball: this.bettingOrderData["m_ball"],
+				t_ball: this.bettingOrderData["t_ball"],
+				m_type: this.bettingOrderData["mType"],
+			}
+			if (this.user.id == "") {
+				showToast('你必须先登录。')
+				router.push("login")
+				return;
+			}
+			this.setBetSlip(data);
+		},
 		handleCornerModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["gameType"] = "FT";
@@ -1403,7 +1456,7 @@ export default defineComponent({
 			this.bettingOrderData['selectedType'] = rateData.bettingType;
 			this.bettingOrderData["league"] = leagueData.name;
 			this.bettingOrderData["text"] = rateData.text
-			this.bettingOrderData["title"] = this.cornerTitleList[scoreIndex + 1];
+			this.bettingOrderData["title"] = rateData.text == "和" ? this.cornerTitleList[scoreIndex] : this.cornerTitleList[scoreIndex + 1];
 			this.bettingOrderData["selectedTeam"] = dataList.name;
 			// if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
 			// else this.openModal = true;

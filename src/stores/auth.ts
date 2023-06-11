@@ -89,7 +89,7 @@ export const useAuthStore = defineStore({
         };
         const response = await axios.post(`${BASE_URL}${GET_PROFILE}`, {}, config);
         if (response.status === 200) {
-          this.setMoney(response.data.data);
+          this.setUser(response.data.data);
         }
       } catch (e) {
         return e;

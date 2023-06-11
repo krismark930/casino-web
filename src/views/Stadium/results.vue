@@ -31,14 +31,39 @@
 					<div>
 						<span>{{ item.league }}</span>
 					</div>
-					<div>
-						<span class="grey">{{ item.m_team + ' VS ' + item.t_team }}</span>
-						<span class="orange">1</span>
+					<div v-if="item.title.includes('让球')">
+						<span class="grey">{{ item.m_team}}</span>
+						<Font color="red">{{ item.text.replace("+", "").replace("-", "") }}</Font>
+						<span class="grey">{{  item.t_team }}</span>
+						<span class="orange">({{ item.m_ball == "" ? 0 : item.m_ball }}:{{ item.t_ball == "" ? 0 : item.t_ball }})</span>
 					</div>
-					<div>
-						<span>{{ item.select_team }}</span>
-						<span class="orange">{{ item.title }}</span>
-						<p>@</p>
+					<div v-else>
+						<span class="grey">{{ item.m_team + ' VS ' + item.t_team }}</span>
+						<span class="orange">({{ item.m_ball == "" ? 0 : item.m_ball }}:{{ item.t_ball == "" ? 0 : item.t_ball }})</span>
+					</div>
+					<div v-if="item.title.includes('大小') || item.title.includes('大/小')">
+						<Font color="red">{{ item['text'] }}</Font>
+						<p>&nbsp;&nbsp;@</p>
+						<span class="orange">{{ item.order_rate }}</span>
+					</div>
+					<div v-else-if="item.title.includes('单双') || item.title.includes('单/双')">
+						<Font color="red">{{ item['text'] }}</Font>
+						<p>&nbsp;&nbsp;@</p>
+						<span class="orange">{{ item.order_rate }}</span>
+					</div>
+					<div v-else-if="item.title.includes('独赢')">
+						<template v-if="item['select_team'] != undefined && item.select_team != ''">
+							<Font color="red">{{ item['select_team'] }}</Font>
+						</template>
+						<template v-else>
+							<Font color="red">{{ item['text'] }}</Font>
+						</template>
+						<p>&nbsp;&nbsp;@</p>
+						<span class="orange">{{ item.order_rate }}</span>
+					</div>
+					<div v-else>
+						<Font color="red">{{ item['select_team'] }}</Font>
+						<p>&nbsp;&nbsp;@</p>
 						<span class="orange">{{ item.order_rate }}</span>
 					</div>
 					<div class="list_input">
@@ -204,6 +229,7 @@ export default {
 				this.allOdds *= order_rate;
 			})
 			this.allOdds -= 1
+			console.log(getSelectedBetSlipList)
 			return getSelectedBetSlipList.reverse()
 		}
 	},

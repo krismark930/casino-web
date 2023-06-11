@@ -40,9 +40,9 @@
                     <div class="flex justify-between">
                         <p class="">{{isCrypto ?  'Wallet Address' :'订单号'}}</p>
                         <div class="flex items-center">
-                            <p class="pr-1"
-                                >{{isCrypto ? bank?.bankaddress: bank?.bankno }}</p
-                            >
+                            <p class="pr-1" v-if="bankAccount != null">
+                                {{ bankAccount.substr(0,5) }}...{{ bankAccount.substr(-5) }}
+                            </p>
                             <img
                                 class="w-[10px] h-[13px]"
                                 referrerpolicy="no-referrer"
@@ -89,7 +89,9 @@ import { useDepositStore } from '@/stores/deposit';
 import {useAuthStore } from '@/stores/auth';
 const route = useRoute();
 const show = ref(false);
-const bank = ref();
+const bank = ref(null);
+const bankAccount = ref(null);
+const bankAddress = ref(null);
 const money = ref(0);
 const name = ref('');
 const {
@@ -100,18 +102,15 @@ const {
     sumbitDeposit
 } = useDepositStore();
 const {
-    user,
+    user, token
 } = storeToRefs(useAuthStore());
 
 onMounted(() => {
-    let bankID  = route.params.bankID;
     money.value = route.params.money;
     name.value = route.params.name;
-    getBanks.value.map((item:any) => {
-        if(item.ID === parseInt(bankID.toString())){
-            bank.value = item;
-        }
-    })
+    bank.value = route.query.bank;
+    bankAccount.value = route.query.bankAccount;
+    bankAddress.value = route.query.bankAddress;
 })
 const onClick_1 = () => {
     router.push({ name: 'depositInformation' });
@@ -135,14 +134,7 @@ const deleteResult = () => {
     show.value = true;
 }
 const submitResult = async () => {
-    let response = await sumbitDeposit(user.value.id, bank.value, money.value, name.value);
-    if(response.success){
-        showToast({
-            message: "存款成功",
-            icon: new URL('@/assets/images/account/icon-success.png', import.meta.url).href,
-        })
-        router.go(-1)
-    }
+    let response = await sumbitDeposit(user.value.id, money.value, name.value, bank.value, bankAccount.value, bankAddress.value, token.value);
 }
 </script>
 <style scoped lang="scss">

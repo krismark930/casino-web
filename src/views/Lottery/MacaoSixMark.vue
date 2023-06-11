@@ -27,7 +27,7 @@
               <p>投注中</p>
               <seven-segment value="8" :rounded="false" :segment-width="25" :segment-height="5" on-color="#ffffff"
                 off-color="transparent" />
-              <van-count-down :time="time" @finish="onFinish" format="HH:mm:ss">
+              <van-count-down :time="time as number" @finish="onFinish" format="HH:mm:ss">
                 <template #default="timeData">
                   <div
                     class="bg-[#d0dfed] border-2 border-white rounded-sm px-[2px] text-[12px] font-bold ml-1 text-black py-[3px]">

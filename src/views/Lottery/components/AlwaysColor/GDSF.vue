@@ -352,7 +352,7 @@
         <p>开出之号码第一球的中奖号码小于第八球的中奖号码。如 第一球开出14 第八球开出16；第一球开出13 第八球开出18；第一球开出05 第八球开出08...中奖为虎。</p>
       </div>
     </van-dialog>
-    <van-dialog v-model:show="alertShow" title="提示" show-cancel-button>
+    <van-dialog v-model:show="alertShow" title="提示">
       <div class="text-center">当前彩票已经封盘，请稍后再进行下注！</div>
       <div class="text-center">广东快乐十分开盘时间为：09:00 - 23:00</div>
     </van-dialog>
@@ -360,7 +360,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watchEffect, watch, toRefs } from "vue";
+import { ref, computed, onMounted, onUnmounted, watchEffect, watch, toRefs } from "vue";
 import OneWordPosition from "./gdsf/OneWordPosition.vue";
 import DragonTigerSum from "./gdsf/DragonTigerSum.vue";
 import { ElLoading } from "element-plus";
@@ -651,6 +651,9 @@ onMounted(async () => {
   console.log(lotteryStatus.value);
   loading.close();
 });
+onUnmounted(() => {
+  clearInterval(timerId.value);
+})
 </script>
 
 <style scoped>

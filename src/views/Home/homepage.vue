@@ -1,23 +1,3 @@
-<script lang="ts">
-    import { defineComponent } from 'vue'
-    import { storeToRefs } from 'pinia';
-    import { useAuthStore } from '@/stores/auth';
-    export default defineComponent({
-        data() {
-        return {
-            userData: []
-        }
-    },
-        mounted() {
-            const {
-                getToken,
-                getUser,
-            } = storeToRefs(useAuthStore());
-            this.userData=getUser.value;
-        },
-        
-    })
-</script>
 <template>
     <div>
         <div class="box-header">
@@ -52,16 +32,16 @@
                 <div class="advertising_bottom">
                     <div class="user_box_l">
                         <div class="user_top">
-                            <span>{{userData.UserName}}</span>
+                            <span>{{user.UserName}}</span>
                             <img src="../../assets/images/home/vip.png" alt="" />
                         </div>
                         <div class="user_bottom">
                             <span>￥</span>
-                            <span>{{userData.Money}}</span>
+                            <span>{{user.Money}}</span>
                         </div>
                     </div>
                     <div class="user_box_r">
-                        <div class="user_box_r_item" v-for="(item, index) in iconList" :key="index + 250" @click="goDetail(item.path)">
+                        <div class="user_box_r_item" v-for="(item, index) in iconList" :key="index + 250" @click="goDetail(item.path, item.redirect)">
                             <img :src="item.icon" alt="" />
                             <span>{{ item.name }}</span>
                         </div>
@@ -79,7 +59,7 @@
                     </div>
                 </div>
                 <div class="tab_right">
-                    <div class="tab_right_item" v-for="(item, index) in selectImgList" @click="goDetail(item.path)"
+                    <div class="tab_right_item" v-for="(item, index) in selectImgList" @click="goDetail(item.path, item.redirect)"
                         :key="index + 400">
                         <div class="tab_right_item_text">
                             <span class="tab_name">{{ item.name }}</span>
@@ -115,11 +95,18 @@
 
 <script setup lang="ts">
 import { showToast } from 'vant';
-import { ref, onMounted } from 'vue';
+import { ElLoading } from "element-plus";
+import { ref, computed, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
+import { ogGameStore } from '@/stores/og_game';
+import { agGameStore } from '@/stores/ag_game';
+import { bbinGameStore } from '@/stores/bbin_game';
 import router from '@/router';
-
+const { dispatchRedirectOGUrl } = ogGameStore();
+const { dispatchRedirectAGUrl } = agGameStore();
+const { dispatchRedirectBBINUrl } = bbinGameStore();
 const show = ref(false);
-
 const iconList = ref([
     {
         id: 1,
@@ -150,7 +137,6 @@ const iconList = ref([
         path: 'vip'
     }
 ]);
-
 const active = ref(1);
 const tabList = ref([
     {
@@ -234,6 +220,7 @@ const imgList = ref([
     [
         {
             name: '新葡京 OG东方馆',
+            redirect: 'OG_GAME',
             en: 'OG  JINGSHEN',
             percentum: '1.18',
             src: new URL('@/assets/images/home/tab-r2-1.png', import.meta.url)
@@ -241,18 +228,21 @@ const imgList = ref([
         },
         {
             name: 'AG  国际厅',
+            redirect: 'AG_GAME_2',
             en: 'AG  CASINO',
             src: new URL('@/assets/images/home/tab-r2-2.png', import.meta.url)
                 .href
         },
         {
             name: 'AG  旗舰厅',
+            redirect: 'AG_GAME_1',
             en: 'AG  CASINO',
             src: new URL('@/assets/images/home/tab-r2-3.png', import.meta.url)
                 .href
         },
         {
             name: 'AG  VIP厅',
+            redirect: 'AG_GAME_4',
             en: 'AG  CASINO',
             percentum: '1.18',
             src: new URL('@/assets/images/home/tab-r2-4.png', import.meta.url)
@@ -260,6 +250,7 @@ const imgList = ref([
         },
         {
             name: 'BBIN  馆',
+            redirect: 'BBIN_GAME_1',
             en: 'BBIN  CASINO',
             src: new URL('@/assets/images/home/tab-r2-5.png', import.meta.url)
                 .href
@@ -268,6 +259,7 @@ const imgList = ref([
     [
         {
             name: '开元棋牌',
+            path: "CHESS",
             en: 'KY BOARD GAMES',
             percentum: '1.18',
             src: new URL('@/assets/images/home/tab-r3-1.png', import.meta.url)
@@ -277,6 +269,7 @@ const imgList = ref([
     [
         {
             name: 'AG  电子',
+            path: "AG_SLOT",
             en: 'AG  SLOTS  GAME',
             percentum: '1.18',
             src: new URL('@/assets/images/home/tab-r4-1.png', import.meta.url)
@@ -284,18 +277,21 @@ const imgList = ref([
         },
         {
             name: 'BBIN  电子',
+            path: "BBIN_SLOT",
             en: 'PG  SLOTS  GAME',
             src: new URL('@/assets/images/home/tab-r4-2.png', import.meta.url)
                 .href
         },
         {
             name: 'PT  电子',
+            path: "PT_SLOT",
             en: 'PT  SLOTS  GAME',
             src: new URL('@/assets/images/home/tab-r4-3.png', import.meta.url)
                 .href
         },
         {
             name: 'MG  电子',
+            path: "MG_SLOT",
             en: 'MG  SLOTS  GAME',
             src: new URL('@/assets/images/home/tab-r4-4.png', import.meta.url)
                 .href
@@ -328,24 +324,121 @@ const getTab = (id: number) => {
     active.value = id;
     selectImgList.value = imgList.value[id - 1];
 };
+const redirectOGUrl = computed(() => {
+    const { getRedirectOGUrl } = storeToRefs(ogGameStore());
+    return getRedirectOGUrl.value;
+})
+const redirectAGUrl = computed(() => {
+    const { getRedirectAGUrl } = storeToRefs(agGameStore());
+    return getRedirectAGUrl.value;
+})
+const redirectBBINUrl = computed(() => {
+    const { getRedirectBBINUrl } = storeToRefs(bbinGameStore());
+    return getRedirectBBINUrl.value;
+})
+const errMessage = computed(() => {
+    const {getErrMessage} = storeToRefs(ogGameStore());
+    return getErrMessage.value;
+})
+const success = computed(() => {
+    const {getSuccess} = storeToRefs(ogGameStore());
+    return getSuccess.value
+})
+const token = computed(() => {
+    const {getToken} = storeToRefs(useAuthStore());
+    return getToken.value;
+})
+const user = computed(() => {
+    const {getUser} = storeToRefs(useAuthStore());
+    return getUser.value;
+})
 const openGame = () => {
     show.value = true;
 };
 onMounted(() => {
     selectImgList.value = imgList.value[active.value - 1];
 });
-const goDetail = (path: string) => {
+const goDetail = async (path: string, redirect: string) => {
     if (path) {
+        if (path == "CHESS" && user.value.KY == 0) {
+            showToast("开元棋牌维护中，请稍候再试......");
+            return;
+        }
+        if (path == "AG_SLOT" && user.value.AG == 0) {
+            showToast("开元棋牌维护中，请稍候再试......");
+            return;
+        }
+        if (path == "BBIN_SLOT" && user.value.BBIN == 0) {
+            showToast("开元棋牌维护中，请稍候再试......");
+            return;
+        }
+        if (path == "MG_SLOT" && user.value.MG == 0) {
+            showToast("开元棋牌维护中，请稍候再试......");
+            return;
+        }
+        if (path == "PT_SLOT" && user.value.PT == 0) {
+            showToast("开元棋牌维护中，请稍候再试......");
+            return;
+        }
         router.push({ name: path });
     } else {
-        showToast('正在开发!');
+        //showToast('正在开发!');
+        if (redirect) {
+            if (user.value.id == undefined) {
+                showToast("您还没有登录或登录超时，请重新登录......");
+                router.push({ name: "login" });
+                return;
+            }
+            if (user.value.OG == 0 && redirect == "OG_GAME") {
+                showToast("开元棋牌维护中，请稍候再试......");
+                return;
+            }
+            if (user.value.AG == 0 && (redirect == "AG_GAME_2" || redirect == "AG_GAME_1" || redirect == "AG_GAME_4")) {
+                showToast("开元棋牌维护中，请稍候再试......");
+                return;
+            }
+            if (user.value.BBIN == 0 && redirect == "BBIN_GAME_1") {
+                showToast("开元棋牌维护中，请稍候再试......");
+                return;
+            }
+            const loading = ElLoading.service({
+                lock: true,
+                text: "加载中...",
+                background: "rgba(0, 0, 0, 0.7)",
+            });
+
+            if (redirect == "OG_GAME") {
+                await dispatchRedirectOGUrl({}, token.value)
+            } else if (redirect == "AG_GAME_2") {
+                await dispatchRedirectAGUrl({game_type: 2}, token.value);
+            } else if (redirect == "AG_GAME_1") {
+                await dispatchRedirectAGUrl({game_type: 1}, token.value);
+            } else if (redirect == "AG_GAME_4") {
+                await dispatchRedirectAGUrl({game_type: 4}, token.value);
+            } else if (redirect == "BBIN_GAME_1") {
+                await dispatchRedirectBBINUrl({game_type: 1}, token.value);
+            }
+
+            loading.close();
+
+            if (success.value) {
+                if (redirectOGUrl.value != "") {
+                    window.open(redirectOGUrl.value, '_blank');
+                } else if (redirectAGUrl.value != "") {
+                    window.open(redirectAGUrl.value, '_blank');
+                } else if (redirectBBINUrl.value != "") {
+                    window.open(redirectBBINUrl.value, '_blank');
+                }
+            } else {
+                showToast(errMessage.value);
+            }
+        }
     }
 };
 const goMessage = () => {
     router.push({ name: 'message' });
 };
 </script>
-
 <style scoped lang="scss">
 .game_box {
     z-index: 6;
