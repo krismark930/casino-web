@@ -313,7 +313,7 @@ export default defineComponent({
 									{
 										lineType: 2,
 										mType: "RC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_LetB_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -323,7 +323,7 @@ export default defineComponent({
 									{
 										lineType: 3,
 										mType: "OUC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_Dime_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -334,7 +334,7 @@ export default defineComponent({
 										lineType: 105,
 										mType: "",
 										r_type: "EVEN",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["S_Double_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,

@@ -316,7 +316,7 @@ export default defineComponent({
 									{
 										lineType: this.field == "cp1" ? 109 : 102,
 										mType: this.field == "cp1" ? "RRC" : "RC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_P_LetB_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDown: false,
@@ -326,7 +326,7 @@ export default defineComponent({
 									{
 										lineType: this.field == "cp1" ? 110 : 103,
 										mType: this.field == "cp1" ? "ROUC" : "OUC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_P_Dime_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDown: false,
@@ -337,7 +337,7 @@ export default defineComponent({
 										lineType: this.field == "cp1" ? 5 : 105,
 										mType: "",
 										r_type: "EVEN",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["S_P_Double_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDown: false,

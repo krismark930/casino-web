@@ -1078,7 +1078,7 @@ export default defineComponent({
 										{
 											lineType: 9,
 											mType: "RRC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: item["M_LetB_RB"] !== "" ? handicap_sign_t + item["M_LetB_RB"] : "",
@@ -1087,7 +1087,7 @@ export default defineComponent({
 										{
 											lineType: 50,
 											mType: "RRC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: item["M_LetB_RB_1"] !== "" ? handicap_sign_t + item["M_LetB_RB_1"] : "",
@@ -1096,7 +1096,7 @@ export default defineComponent({
 										{
 											lineType: 51,
 											mType: "RRC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: item["M_LetB_RB_2"] !== "" ? handicap_sign_t + item["M_LetB_RB_2"] : "",
@@ -1105,7 +1105,7 @@ export default defineComponent({
 										{
 											lineType: 52,
 											mType: "RRC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: item["M_LetB_RB_3"] !== "" ? handicap_sign_t + item["M_LetB_RB_3"] : "",
@@ -1168,7 +1168,7 @@ export default defineComponent({
 										{
 											lineType: 10,
 											mType: "ROUC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: item["TG_Dime_RB"] == "" || item["TG_Dime_RB"] == undefined ? "" : "小 " + item["TG_Dime_RB"].split("U")[1],
@@ -1177,7 +1177,7 @@ export default defineComponent({
 										{
 											lineType: 53,
 											mType: "ROUC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: item["TG_Dime_RB_1"] == "" || item["TG_Dime_RB_1"] == undefined ? "" : "小 " + item["TG_Dime_RB_1"].split("U")[1],
@@ -1186,7 +1186,7 @@ export default defineComponent({
 										{
 											lineType: 54,
 											mType: "ROUC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: item["TG_Dime_RB_2"] == "" || item["TG_Dime_RB_2"] == undefined ? "" : "小 " + item["TG_Dime_RB_2"].split("U")[1],
@@ -1195,7 +1195,7 @@ export default defineComponent({
 										{
 											lineType: 55,
 											mType: "ROUC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDOwn: false,
 											text: item["TG_Dime_RB_3"] == "" || item["TG_Dime_RB_3"] == undefined ? "" : "小 " + item["TG_Dime_RB_3"].split("U")[1],
@@ -1263,7 +1263,7 @@ export default defineComponent({
 									{
 										lineType: 10,
 										mType: "ROUC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_Dime_Rate_RB_CN"] == 0 || item["TG_Dime_Rate_RB_CN"] == undefined ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1273,7 +1273,7 @@ export default defineComponent({
 									{
 										lineType: 5,
 										r_type: "EVEN",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["S_Double_Rate_CN"] == 0 || item["S_Double_Rate_CN"] == undefined ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1282,7 +1282,7 @@ export default defineComponent({
 									},
 									{
 										lineType: 20,
-										bettingType: "H",
+										bettingType: "C",
 										mType: "VROUC",
 										type: item["TG_Dime_Rate_RB_H_CN"] == 0 || item["TG_Dime_Rate_RB_H_CN"] == undefined ? 2 : 1,
 										colorChangeUp: false,
@@ -1293,7 +1293,7 @@ export default defineComponent({
 									{
 										lineType: 15,
 										r_type: "EVEN",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["S_Double_Rate_H_CN"] == 0 || item["S_Double_Rate_H_CN"] == undefined ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1361,7 +1361,7 @@ export default defineComponent({
 									{
 										lineType: 9,
 										mType: "RRC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_LetB_Rate_RB"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1371,7 +1371,7 @@ export default defineComponent({
 									{
 										lineType: 10,
 										mType: "ROUC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_Dime_Rate_RB"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1381,7 +1381,7 @@ export default defineComponent({
 									{
 										lineType: 21,
 										mType: "RMC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_Win_Rate_RB"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1452,7 +1452,7 @@ export default defineComponent({
 									{
 										lineType: 19,
 										mType: "VRRC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_LetB_Rate_RB_H"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1462,7 +1462,7 @@ export default defineComponent({
 									{
 										lineType: 20,
 										mType: "VROUC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_Dime_Rate_RB_H"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1472,7 +1472,7 @@ export default defineComponent({
 									{
 										lineType: 31,
 										mType: "VRMC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_Win_Rate_RB_H"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -1571,8 +1571,8 @@ export default defineComponent({
 		handleCornerModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
 			this.bettingOrderData["mID"] = gameData["cn_id"];
 			this.bettingOrderData["gameType"] = "FT";
-			this.bettingOrderData["m_ball"] = gameData.scoreList[0].goalsScored;
-			this.bettingOrderData["t_ball"] = gameData.scoreList[1].goalsScored;
+			this.bettingOrderData["m_ball"] = gameData.cornerList[0].goalsScored;
+			this.bettingOrderData["t_ball"] = gameData.cornerList[1].goalsScored;
 			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
 			this.bettingOrderData["tgTeam"] = gameData.scoreList[1].name;
 			this.bettingOrderData["rate"] = rateData.num;
