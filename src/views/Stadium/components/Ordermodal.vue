@@ -244,7 +244,7 @@ export default {
     async saveTempData() {
       this.loading = true;
       let data = {
-        showType: this.bettingType,
+        show_type: this.bettingOrderData["show_type"],
         type: this.bettingOrderData["selectedType"],
         title: this.bettingOrderData["title"],
         league: this.bettingOrderData["league"],

@@ -919,7 +919,16 @@ export default defineComponent({
 						})
 					}
 
+					let handicap_sign_m = "";
+					let half_handicap_sign_m = "";
+					let handicap_sign_t = "";
+					let half_handicap_sign_t = "";
+
 					if (item["showType"] == "rb") {
+						handicap_sign_m = item["ShowTypeRB"] == "H" ? "-" : "+";
+						half_handicap_sign_m = item["ShowTypeHRB"] == "H" ? "-" : "+";
+						handicap_sign_t = item["ShowTypeRB"] == "H" ? "+" : "-";
+						half_handicap_sign_t = item["ShowTypeHRB"] == "H" ? "+" : "-";
 
 						if (item["HDP_OU"] === 1) {
 
@@ -936,7 +945,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["M_LetB_RB"] !== "" ? "+" + item["M_LetB_RB"] : "",
+												text: item["M_LetB_RB"] !== "" ? handicap_sign_m + item["M_LetB_RB"] : "",
 												num: item["MB_LetB_Rate_RB"] == 0 ? 0 : (Number(item["MB_LetB_Rate_RB"])).toFixed(2),
 											},
 											{
@@ -945,7 +954,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["M_LetB_RB_1"] !== "" ? "+" + item["M_LetB_RB_1"] : "",
+												text: item["M_LetB_RB_1"] !== "" ? handicap_sign_m + item["M_LetB_RB_1"] : "",
 												num: item["MB_LetB_Rate_RB_1"] == 0 ? 0 : (Number(item["MB_LetB_Rate_RB_1"])).toFixed(2),
 											},
 											{
@@ -954,7 +963,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["M_LetB_RB_2"] !== "" ? "+" + item["M_LetB_RB_2"] : "",
+												text: item["M_LetB_RB_2"] !== "" ? handicap_sign_m + item["M_LetB_RB_2"] : "",
 												num: item["MB_LetB_Rate_RB_2"] == 0 ? 0 : (Number(item["MB_LetB_Rate_RB_2"])).toFixed(2),
 											},
 											{
@@ -963,7 +972,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["M_LetB_RB_3"] !== "" ? "+" + item["M_LetB_RB_3"] : "",
+												text: item["M_LetB_RB_3"] !== "" ? handicap_sign_m + item["M_LetB_RB_3"] : "",
 												num: item["MB_LetB_Rate_RB_3"] == 0 ? 0 : (Number(item["MB_LetB_Rate_RB_3"])).toFixed(2),
 											},
 										]
@@ -978,7 +987,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["M_LetB_RB"] !== "" ? "-" + item["M_LetB_RB"] : "",
+												text: item["M_LetB_RB"] !== "" ? handicap_sign_t + item["M_LetB_RB"] : "",
 												num: item["TG_LetB_Rate_RB"] == 0 ? 0 : (Number(item["TG_LetB_Rate_RB"])).toFixed(2),
 											},
 											{
@@ -987,7 +996,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["M_LetB_RB_1"] !== "" ? "-" + item["M_LetB_RB_1"] : "",
+												text: item["M_LetB_RB_1"] !== "" ? handicap_sign_t + item["M_LetB_RB_1"] : "",
 												num: item["TG_LetB_Rate_RB_1"] == 0 ? 0 : (Number(item["TG_LetB_Rate_RB_1"])).toFixed(2),
 											},
 											{
@@ -996,7 +1005,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["M_LetB_RB_2"] !== "" ? "+" + item["M_LetB_RB_2"] : "",
+												text: item["M_LetB_RB_2"] !== "" ? handicap_sign_t + item["M_LetB_RB_2"] : "",
 												num: item["TG_LetB_Rate_RB_2"] == 0 ? 0 : (Number(item["TG_LetB_Rate_RB_2"])).toFixed(2),
 											},
 											{
@@ -1005,7 +1014,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["M_LetB_RB_3"] !== "" ? "-" + item["M_LetB_RB_3"] : "",
+												text: item["M_LetB_RB_3"] !== "" ? handicap_sign_t + item["M_LetB_RB_3"] : "",
 												num: item["TG_LetB_Rate_RB_3"] == 0 ? 0 : (Number(item["TG_LetB_Rate_RB_3"])).toFixed(2),
 											},
 										]
@@ -1206,6 +1215,10 @@ export default defineComponent({
 						}
 
 					} else {
+						handicap_sign_m = item["ShowTypeR"] == "H" ? "-" : "+";
+						half_handicap_sign_m = item["ShowTypeHR"] == "H" ? "-" : "+";
+						handicap_sign_t = item["ShowTypeR"] == "H" ? "+" : "-";
+						half_handicap_sign_t = item["ShowTypeHR"] == "H" ? "+" : "-";
 						if (item["HDP_OU"] === 1) {
 
 							this.fullCourt1 = {
@@ -1220,7 +1233,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["M_LetB"] !== "" && item["M_LetB"] !== undefined ? "+" + item["M_LetB"] : "",
+												text: item["M_LetB"] !== "" && item["M_LetB"] !== undefined ? handicap_sign_m + item["M_LetB"] : "",
 												num: item["MB_LetB_Rate"] == 0 || item["MB_LetB_Rate"] == undefined ? 0 : (Number(item["MB_LetB_Rate"])).toFixed(2),
 											},
 											{
@@ -1229,7 +1242,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["M_LetB_1"] !== "" && item["M_LetB_1"] !== undefined ? "+" + item["M_LetB_1"] : "",
+												text: item["M_LetB_1"] !== "" && item["M_LetB_1"] !== undefined ? handicap_sign_m + item["M_LetB_1"] : "",
 												num: item["MB_LetB_Rate_1"] == 0 || item["MB_LetB_Rate_1"] == undefined ? 0 : (Number(item["MB_LetB_Rate_1"])).toFixed(2),
 											},
 											{
@@ -1238,7 +1251,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["M_LetB_2"] !== "" && item["M_LetB_2"] !== undefined ? "+" + item["M_LetB_2"] : "",
+												text: item["M_LetB_2"] !== "" && item["M_LetB_2"] !== undefined ? handicap_sign_m + item["M_LetB_2"] : "",
 												num: item["MB_LetB_Rate_2"] == 0 || item["MB_LetB_Rate_2"] == undefined ? 0 : (Number(item["MB_LetB_Rate_2"])).toFixed(2),
 											},
 											{
@@ -1247,7 +1260,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["M_LetB_3"] !== "" && item["M_LetB_3"] !== undefined ? "+" + item["M_LetB_3"] : "",
+												text: item["M_LetB_3"] !== "" && item["M_LetB_3"] !== undefined ? handicap_sign_m + item["M_LetB_3"] : "",
 												num: item["MB_LetB_Rate_3"] == 0 || item["MB_LetB_Rate_3"] == undefined ? 0 : (Number(item["MB_LetB_Rate_3"])).toFixed(2),
 											},
 										]
@@ -1261,7 +1274,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["M_LetB"] !== "" && item["M_LetB"] !== undefined ? "-" + item["M_LetB"] : "",
+												text: item["M_LetB"] !== "" && item["M_LetB"] !== undefined ? handicap_sign_t + item["M_LetB"] : "",
 												num: item["TG_LetB_Rate"] == 0 || item["TG_LetB_Rate"] == undefined ? 0 : (Number(item["TG_LetB_Rate"])).toFixed(2),
 											},
 											{
@@ -1270,7 +1283,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["M_LetB_1"] !== "" && item["M_LetB_1"] !== undefined ? "-" + item["M_LetB_1"] : "",
+												text: item["M_LetB_1"] !== "" && item["M_LetB_1"] !== undefined ? handicap_sign_t + item["M_LetB_1"] : "",
 												num: item["TG_LetB_Rate_1"] == 0 || item["TG_LetB_Rate_1"] == undefined ? 0 : (Number(item["TG_LetB_Rate_1"])).toFixed(2),
 											},
 											{
@@ -1279,7 +1292,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["M_LetB_2"] !== "" && item["M_LetB_2"] !== undefined ? "+" + item["M_LetB_2"] : "",
+												text: item["M_LetB_2"] !== "" && item["M_LetB_2"] !== undefined ? handicap_sign_t + item["M_LetB_2"] : "",
 												num: item["TG_LetB_Rate_2"] == 0 || item["TG_LetB_Rate_2"] == undefined ? 0 : (Number(item["TG_LetB_Rate_2"])).toFixed(2),
 											},
 											{
@@ -1288,7 +1301,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["M_LetB_3"] !== "" && item["M_LetB_3"] !== undefined ? "-" + item["M_LetB_3"] : "",
+												text: item["M_LetB_3"] !== "" && item["M_LetB_3"] !== undefined ? handicap_sign_t + item["M_LetB_3"] : "",
 												num: item["TG_LetB_Rate_3"] == 0 || item["TG_LetB_Rate_3"] == undefined ? 0 : (Number(item["TG_LetB_Rate_3"])).toFixed(2),
 											},
 										]
@@ -1506,7 +1519,7 @@ export default defineComponent({
 											type: item["MB_LetB_Rate_RB"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: (Number(item["MB_LetB_Rate_RB"])) > (Number(item["TG_LetB_Rate_RB"])) ? "-" + item["M_LetB_RB"] : "+" + item["M_LetB_RB"],
+											text: (Number(item["MB_LetB_Rate_RB"])) > (Number(item["TG_LetB_Rate_RB"])) ? handicap_sign_m + item["M_LetB_RB"] : "+" + item["M_LetB_RB"],
 											num: item["MB_LetB_Rate_RB"] == 0 ? 0 : (Number(item["MB_LetB_Rate_RB"])).toFixed(2)
 										},
 										{
@@ -1549,7 +1562,7 @@ export default defineComponent({
 											type: item["TG_LetB_Rate_RB"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: (Number(item["MB_LetB_Rate_RB"])) < (Number(item["TG_LetB_Rate_RB"])) ? "-" + item["M_LetB_RB"] : "+" + item["M_LetB_RB"],
+											text: (Number(item["MB_LetB_Rate_RB"])) < (Number(item["TG_LetB_Rate_RB"])) ? handicap_sign_t + item["M_LetB_RB"] : "+" + item["M_LetB_RB"],
 											num: item["TG_LetB_Rate_RB"] == 0 ? 0 : (Number(item["TG_LetB_Rate_RB"])).toFixed(2)
 										},
 										{
@@ -1618,7 +1631,7 @@ export default defineComponent({
 											type: item["MB_LetB_Rate_RB_H"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["M_LetB_RB_H"] !== "" ? "+" + item["M_LetB_RB_H"] : "",
+											text: item["M_LetB_RB_H"] !== "" ? half_handicap_sign_m + item["M_LetB_RB_H"] : "",
 											num: item["MB_LetB_Rate_RB_H"] == 0 ? 0 : (Number(item["MB_LetB_Rate_RB_H"])).toFixed(2)
 										},
 										{
@@ -1654,7 +1667,7 @@ export default defineComponent({
 											type: item["TG_LetB_Rate_RB_H"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["M_LetB_RB_H"] !== "" ? "-" + item["M_LetB_RB_H"] : "",
+											text: item["M_LetB_RB_H"] !== "" ? half_handicap_sign_t + item["M_LetB_RB_H"] : "",
 											num: item["TG_LetB_Rate_RB_H"] == 0 ? 0 : (Number(item["TG_LetB_Rate_RB_H"])).toFixed(2)
 										},
 										{
@@ -1735,7 +1748,7 @@ export default defineComponent({
 											type: item["MB_LetB_Rate"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: (Number(item["MB_LetB_Rate"])) > (Number(item["TG_LetB_Rate"])) ? "-" + item["M_LetB"] : "+" + item["M_LetB"],
+											text: (Number(item["MB_LetB_Rate"])) > (Number(item["TG_LetB_Rate"])) ? handicap_sign_m + item["M_LetB"] : "+" + item["M_LetB"],
 											num: item["MB_LetB_Rate"] == 0 ? 0 : (Number(item["MB_LetB_Rate"])).toFixed(2)
 										},
 										{
@@ -1778,7 +1791,7 @@ export default defineComponent({
 											type: item["TG_LetB_Rate"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: (Number(item["MB_LetB_Rate"])) < (Number(item["TG_LetB_Rate"])) ? "-" + item["M_LetB"] : "+" + item["M_LetB"],
+											text: (Number(item["MB_LetB_Rate"])) < (Number(item["TG_LetB_Rate"])) ? handicap_sign_t + item["M_LetB"] : "+" + item["M_LetB"],
 											num: item["TG_LetB_Rate"] == 0 ? 0 : (Number(item["TG_LetB_Rate"])).toFixed(2)
 										},
 										{
@@ -1857,7 +1870,7 @@ export default defineComponent({
 											type: item["MB_LetB_Rate_H"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["M_LetB_H"] !== "" ? "+" + item["M_LetB_H"] : "",
+											text: item["M_LetB_H"] !== "" ? half_handicap_sign_m + item["M_LetB_H"] : "",
 											num: item["MB_LetB_Rate_H"] == 0 ? 0 : (Number(item["MB_LetB_Rate_H"])).toFixed(2)
 										},
 										{
@@ -1904,7 +1917,7 @@ export default defineComponent({
 											type: item["TG_LetB_Rate_H"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["M_LetB_H"] !== "" ? "-" + item["M_LetB_H"] : "",
+											text: item["M_LetB_H"] !== "" ? half_handicap_sign_t + item["M_LetB_H"] : "",
 											num: item["TG_LetB_Rate_H"] == 0 ? 0 : (Number(item["TG_LetB_Rate_H"])).toFixed(2)
 										},
 										{
@@ -2147,7 +2160,7 @@ export default defineComponent({
 											type: item["MB_LetB_Rate"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: (Number(item["MB_LetB_Rate"])) > (Number(item["TG_LetB_Rate"])) ? "-" + item["M_LetB"] : "+" + item["M_LetB"],
+											text: (Number(item["MB_LetB_Rate"])) > (Number(item["TG_LetB_Rate"])) ? handicap_sign_m + item["M_LetB"] : "+" + item["M_LetB"],
 											num: item["MB_LetB_Rate"] == 0 ? 0 : (Number(item["MB_LetB_Rate"])).toFixed(2)
 										},
 										{
@@ -2190,7 +2203,7 @@ export default defineComponent({
 											type: item["TG_LetB_Rate"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: (Number(item["MB_LetB_Rate"])) < (Number(item["TG_LetB_Rate"])) ? "-" + item["M_LetB"] : "+" + item["M_LetB"],
+											text: (Number(item["MB_LetB_Rate"])) < (Number(item["TG_LetB_Rate"])) ? handicap_sign_t + item["M_LetB"] : "+" + item["M_LetB"],
 											num: item["TG_LetB_Rate"] == 0 ? 0 : (Number(item["TG_LetB_Rate"])).toFixed(2)
 										},
 										{
@@ -2269,7 +2282,7 @@ export default defineComponent({
 											type: item["MB_LetB_Rate_H"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["M_LetB_H"] !== "" ? "+" + item["M_LetB_H"] : "",
+											text: item["M_LetB_H"] !== "" ? half_handicap_sign_m + item["M_LetB_H"] : "",
 											num: item["MB_LetB_Rate_H"] == 0 ? 0 : (Number(item["MB_LetB_Rate_H"])).toFixed(2)
 										},
 										{
@@ -2316,7 +2329,7 @@ export default defineComponent({
 											type: item["TG_LetB_Rate_H"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["M_LetB_H"] !== "" ? "-" + item["M_LetB_H"] : "",
+											text: item["M_LetB_H"] !== "" ? half_handicap_sign_t + item["M_LetB_H"] : "",
 											num: item["TG_LetB_Rate_H"] == 0 ? 0 : (Number(item["TG_LetB_Rate_H"])).toFixed(2)
 										},
 										{
@@ -2385,8 +2398,10 @@ export default defineComponent({
 			console.log(rateData);
 			if (gameData["showType"] === "rb") {
 				this.bettingType = "Inplay"
+				this.bettingOrderData["show_type"] = gameData.ShowTypeRB
 			} else {
 				this.bettingType = "Today";
+				this.bettingOrderData["show_type"] = gameData.ShowTypeR
 			}
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["m_date"] = gameData["m_date"];
@@ -2409,6 +2424,13 @@ export default defineComponent({
 			else this.openModal = true;
 		},
 		handleCornerModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			if (gameData["showType"] === "rb") {
+				this.bettingType = "Inplay"
+				this.bettingOrderData["show_type"] = gameData.ShowTypeRB
+			} else {
+				this.bettingType = "Today";
+				this.bettingOrderData["show_type"] = gameData.ShowTypeR
+			}
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["gameType"] = "FT";
 			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
@@ -2425,6 +2447,13 @@ export default defineComponent({
 		},
 		handleSummaryModal1: function (leagueData, gameData, title, dataList, rateData) {
 			console.log(rateData)
+			if (gameData["showType"] === "rb") {
+				this.bettingType = "Inplay"
+				this.bettingOrderData["show_type"] = gameData.ShowTypeRB
+			} else {
+				this.bettingType = "Today";
+				this.bettingOrderData["show_type"] = gameData.ShowTypeR
+			}
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["gameType"] = "FT";
 			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
@@ -2440,6 +2469,13 @@ export default defineComponent({
 			else this.openModal = true;
 		},
 		handleSummaryModal2: function (leagueData, gameData, title, dataList, rateData) {
+			if (gameData["showType"] === "rb") {
+				this.bettingType = "Inplay"
+				this.bettingOrderData["show_type"] = gameData.ShowTypeRB
+			} else {
+				this.bettingType = "Today";
+				this.bettingOrderData["show_type"] = gameData.ShowTypeR
+			}
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["gameType"] = "FT";
 			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
