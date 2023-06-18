@@ -23,6 +23,7 @@ import { Popup } from 'vant';
 import { NumberKeyboard } from 'vant';
 import { Form, Field } from 'vant';
 import { i18n } from '@/i18n';
+import { createHead } from '@vueuse/head'
 // 引入element-plus
 import ElementPlus from 'element-plus'
 import './assets/style/element-variables.scss'
@@ -36,9 +37,12 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 /* import specific icons */
 import { faUserSecret, faHatWizard } from '@fortawesome/free-solid-svg-icons'
 
+console.log(import.meta.env)
+
 library.add(faUserSecret);
 library.add(faHatWizard);
 const app = createApp(App);
+const head = createHead()
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.use(createPinia().use(piniaPersist));
 app.use(router);
@@ -66,5 +70,6 @@ app.use(
         connection: SOCKET_URL,
     })
 );
+app.use(head)
 app.provide('i18n', i18n)
 app.mount("#app");

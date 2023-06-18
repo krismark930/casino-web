@@ -223,7 +223,12 @@ export default defineComponent({
 						// 	text: '第二队得分'
 						// }
 					];
+
+					let handicap_sign_m = "";
+					let handicap_sign_t = "";
 					if (item["showType"] === "rb") {
+						handicap_sign_m = item["ShowTypeRB"] == "H" ? "-" : "+";
+						handicap_sign_t = item["ShowTypeRB"] == "H" ? "+" : "-";
 
 						switch (item["NOW_SESSION"]) {
 							case "Q1":
@@ -263,7 +268,7 @@ export default defineComponent({
 											type: item["MB_LetB_Rate_RB"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: (Number(item["MB_LetB_Rate_RB"])) > (Number(item["TG_LetB_Rate_RB"])) ? "-" + item["M_LetB_RB"] : "+" + item["M_LetB_RB"],
+											text: item["M_LetB_RB"] != "" ? handicap_sign_m + item["M_LetB_RB"] : "",
 											num: item["MB_LetB_Rate_RB"] == 0 ? 0 : (Number(item["MB_LetB_Rate_RB"])).toFixed(2)
 										},
 										{
@@ -322,7 +327,7 @@ export default defineComponent({
 											type: item["TG_LetB_Rate_RB"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: (Number(item["MB_LetB_Rate_RB"])) < (Number(item["TG_LetB_Rate_RB"])) ? "-" + item["M_LetB_RB"] : "+" + item["M_LetB_RB"],
+											text: item["M_LetB_RB"] != "" ? handicap_sign_t + item["M_LetB_RB"] : "",
 											num: item["TG_LetB_Rate_RB"] == 0 ? 0 : (Number(item["TG_LetB_Rate_RB"])).toFixed(2)
 										},
 										{
@@ -373,6 +378,8 @@ export default defineComponent({
 						}
 						gameList.push(gameData);
 					} else {
+						handicap_sign_m = item["ShowTypeR"] == "H" ? "-" : "+";
+						handicap_sign_t = item["ShowTypeR"] == "H" ? "+" : "-";
 						titleList[0].text = item["M_Start"];
 						let gameData = {
 							showType: item["showType"],
@@ -393,7 +400,7 @@ export default defineComponent({
 											type: item["MB_LetB_Rate"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["M_LetB"] !== "" ? "+" + item["M_LetB"] : "",
+											text: item["M_LetB"] !== "" ? handicap_sign_m + item["M_LetB"] : "",
 											num: item["MB_LetB_Rate"] == 0 ? 0 : (Number(item["MB_LetB_Rate"])).toFixed(2)
 										},
 										{
@@ -450,7 +457,7 @@ export default defineComponent({
 											type: item["TG_LetB_Rate"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["M_LetB"] !== "" ? "-" + item["M_LetB"] : "",
+											text: item["M_LetB"] !== "" ? handicap_sign_t + item["M_LetB"] : "",
 											num: item["TG_LetB_Rate"] == 0 ? 0 : (Number(item["TG_LetB_Rate"])).toFixed(2)
 										},
 										{
@@ -510,8 +517,10 @@ export default defineComponent({
 			console.log(numIndex);
 			if (gameData["showType"] === "rb") {
 				this.bettingType = "Inplay"
+				this.bettingOrderData["show_type"] = gameData.ShowTypeRB;
 			} else {
 				this.bettingType = "Today";
+				this.bettingOrderData["show_type"] = gameData.ShowTypeR;
 			}
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["m_date"] = gameData["m_date"];
