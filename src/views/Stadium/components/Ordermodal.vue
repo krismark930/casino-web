@@ -193,6 +193,7 @@ export default {
           order_rate: Number(this.bettingOrderData['rate']),
           r_type: this.bettingOrderData['r_type']
         }
+        console.log(data);
         if (this.bettingValue > 10) {
           this.loading = true;
           if (this.bettingOrderData['gameType'] === "BK") {
@@ -244,7 +245,7 @@ export default {
     async saveTempData() {
       this.loading = true;
       let data = {
-        showType: this.bettingType,
+        show_type: this.bettingOrderData["show_type"],
         type: this.bettingOrderData["selectedType"],
         title: this.bettingOrderData["title"],
         league: this.bettingOrderData["league"],

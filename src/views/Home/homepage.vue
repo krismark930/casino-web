@@ -6,42 +6,36 @@
         </div>
         <div class="home_box animated fadeInLeft">
             <div class="banner_box">
-                <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-                    <van-swipe-item v-for="(item, index) in 3" :key="index + 200">
-                        <img class="banner_img" src="@/assets/images/home/banner.png" alt="" />
+                <van-swipe class="my-swipe" :autoplay="autoplay" indicator-color="white">
+                    <van-swipe-item v-for="(item, index) in swipeItem" :key="index + 200">
+                        <img class="banner_img" :src="item" alt="" />
                     </van-swipe-item>
                 </van-swipe>
             </div>
             <div class="advertising">
                 <div class="flex w-full h-[20px] justify-between mb-[13px] ">
-                    <img
-                        class="w-[15px] h-[15px]"
-                        src="../../assets/images/home/icon-2.png"
-                        alt=""
-                    />
+                    <img class="w-[15px] h-[15px]" src="../../assets/images/home/icon-2.png" alt="" />
                     <div class="h-[20px] w-[251px] flex items-center">
-                        <span class="w-full text-[12px] text-[#757392]">尊敬的客户：每日任务 豪礼送不停 已优化完毕</span>
+                        <marquee behavior="scroll" direction="left">
+                            <span class="w-full text-[12px] text-[#757392]">{{webGonggaoMsg}}</span>
+                        </marquee>
                     </div>
-                    <img
-                        @click="openGame"
-                        class="w-[64px] h-[20px]"
-                        src="../../assets/images/home/hot.png"
-                        alt=""
-                    />
+                    <img @click="openGame" class="w-[64px] h-[20px]" src="../../assets/images/home/hot.png" alt="" />
                 </div>
                 <div class="advertising_bottom">
                     <div class="user_box_l">
                         <div class="user_top">
-                            <span>{{user.UserName}}</span>
+                            <span>{{ user.UserName }}</span>
                             <img src="../../assets/images/home/vip.png" alt="" />
                         </div>
                         <div class="user_bottom">
                             <span>￥</span>
-                            <span>{{user.Money}}</span>
+                            <span>{{ user.Money }}</span>
                         </div>
                     </div>
                     <div class="user_box_r">
-                        <div class="user_box_r_item" v-for="(item, index) in iconList" :key="index + 250" @click="goDetail(item.path, item.redirect)">
+                        <div class="user_box_r_item" v-for="(item, index) in iconList" :key="index + 250"
+                            @click="goDetail(item.path, item.redirect)">
                             <img :src="item.icon" alt="" />
                             <span>{{ item.name }}</span>
                         </div>
@@ -59,8 +53,8 @@
                     </div>
                 </div>
                 <div class="tab_right">
-                    <div class="tab_right_item" v-for="(item, index) in selectImgList" @click="goDetail(item.path, item.redirect)"
-                        :key="index + 400">
+                    <div class="tab_right_item" v-for="(item, index) in selectImgList"
+                        @click="goDetail(item.path, item.redirect)" :key="index + 400">
                         <div class="tab_right_item_text">
                             <span class="tab_name">{{ item.name }}</span>
                             <span class="tab_subname">{{ item.en }}</span>
@@ -95,6 +89,7 @@
 
 <script setup lang="ts">
 import { showToast } from 'vant';
+import { showDialog } from 'vant';
 import { ElLoading } from "element-plus";
 import { ref, computed, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
@@ -102,10 +97,14 @@ import { useAuthStore } from '@/stores/auth';
 import { ogGameStore } from '@/stores/og_game';
 import { agGameStore } from '@/stores/ag_game';
 import { bbinGameStore } from '@/stores/bbin_game';
+import { useSysConfigStore } from '@/stores/sysConfig';
+import { FILE_BASE_URL } from "@/config";
+import { useHead } from '@vueuse/head';
 import router from '@/router';
 const { dispatchRedirectOGUrl } = ogGameStore();
 const { dispatchRedirectAGUrl } = agGameStore();
 const { dispatchRedirectBBINUrl } = bbinGameStore();
+const { getSysConfigValue } = useSysConfigStore();
 const show = ref(false);
 const iconList = ref([
     {
@@ -138,6 +137,7 @@ const iconList = ref([
     }
 ]);
 const active = ref(1);
+const webGonggaoMsg = ref("");
 const tabList = ref([
     {
         id: 1,
@@ -319,7 +319,8 @@ const imgList = ref([
         }
     ]
 ]);
-const getHomeList = () => { };
+const swipeItem = ref([]);
+const autoplay = ref(3000);
 const getTab = (id: number) => {
     active.value = id;
     selectImgList.value = imgList.value[id - 1];
@@ -337,46 +338,73 @@ const redirectBBINUrl = computed(() => {
     return getRedirectBBINUrl.value;
 })
 const errMessage = computed(() => {
-    const {getErrMessage} = storeToRefs(ogGameStore());
+    const { getErrMessage } = storeToRefs(ogGameStore());
     return getErrMessage.value;
 })
 const success = computed(() => {
-    const {getSuccess} = storeToRefs(ogGameStore());
+    const { getSuccess } = storeToRefs(ogGameStore());
     return getSuccess.value
 })
 const token = computed(() => {
-    const {getToken} = storeToRefs(useAuthStore());
+    const { getToken } = storeToRefs(useAuthStore());
     return getToken.value;
 })
 const user = computed(() => {
-    const {getUser} = storeToRefs(useAuthStore());
+    const { getUser } = storeToRefs(useAuthStore());
     return getUser.value;
+})
+const sysConfigItem = computed(() => {
+    const { getSysConfig } = storeToRefs(useSysConfigStore());
+    return getSysConfig.value;
 })
 const openGame = () => {
     show.value = true;
 };
-onMounted(() => {
+onMounted(async () => {
+
     selectImgList.value = imgList.value[active.value - 1];
+    await getSysConfigValue();
+    // web_gonggao_wap
+    if (sysConfigItem.value.web_popmsg_wap != "" && sysConfigItem.value.web_popmsg_wap != null) {
+        showDialog({
+            title: '公告',
+            message: sysConfigItem.value.web_popmsg_wap,
+        }).then(() => {
+            // on close
+        });
+    }
+    const title = sysConfigItem.value.web_name_wap;
+    useHead({
+        title,
+    })
+    swipeItem.value = sysConfigItem.value.web_banner_wap.split("|").filter(item => item !== '').map(item => {
+        item = FILE_BASE_URL + "/storage" + item;
+        return item;
+    });
+    autoplay.value = sysConfigItem.value.web_slider_time_wap;
+    webGonggaoMsg.value = sysConfigItem.value.web_gonggao_wap;
 });
 const goDetail = async (path: string, redirect: string) => {
+    await getSysConfigValue();
+    console.log(sysConfigItem.value.KY, sysConfigItem.value.KY_Repair);
     if (path) {
-        if (path == "CHESS" && user.value.KY == 0) {
+        if (path == "CHESS" && (user.value.KY == 0 || sysConfigItem.value.KY == 0 || sysConfigItem.value.KY_Repair == 1)) {
             showToast("开元棋牌维护中，请稍候再试......");
             return;
         }
-        if (path == "AG_SLOT" && user.value.AG == 0) {
+        if (path == "AG_SLOT" && (user.value.AG == 0 || sysConfigItem.value.AG == 0 || sysConfigItem.value.AG_Repair == 1)) {
             showToast("开元棋牌维护中，请稍候再试......");
             return;
         }
-        if (path == "BBIN_SLOT" && user.value.BBIN == 0) {
+        if (path == "BBIN_SLOT" && (user.value.BBIN == 0 || sysConfigItem.value.BBIN == 0 || sysConfigItem.value.BBIN_Repair == 1)) {
             showToast("开元棋牌维护中，请稍候再试......");
             return;
         }
-        if (path == "MG_SLOT" && user.value.MG == 0) {
+        if (path == "MG_SLOT" && (user.value.MG == 0 || sysConfigItem.value.MG == 0 || sysConfigItem.value.MG_Repair == 1)) {
             showToast("开元棋牌维护中，请稍候再试......");
             return;
         }
-        if (path == "PT_SLOT" && user.value.PT == 0) {
+        if (path == "PT_SLOT" && (user.value.PT == 0 || sysConfigItem.value.PT == 0 || sysConfigItem.value.PT_Repair == 1)) {
             showToast("开元棋牌维护中，请稍候再试......");
             return;
         }
@@ -389,15 +417,15 @@ const goDetail = async (path: string, redirect: string) => {
                 router.push({ name: "login" });
                 return;
             }
-            if (user.value.OG == 0 && redirect == "OG_GAME") {
+            if ((user.value.OG == 0 || sysConfigItem.value.OG == 0 || sysConfigItem.value.OG_Repair == 1) && redirect == "OG_GAME") {
                 showToast("开元棋牌维护中，请稍候再试......");
                 return;
             }
-            if (user.value.AG == 0 && (redirect == "AG_GAME_2" || redirect == "AG_GAME_1" || redirect == "AG_GAME_4")) {
+            if ((user.value.AG == 0 || sysConfigItem.value.AG == 0 || sysConfigItem.value.AG_Repair == 1) && (redirect == "AG_GAME_2" || redirect == "AG_GAME_1" || redirect == "AG_GAME_4")) {
                 showToast("开元棋牌维护中，请稍候再试......");
                 return;
             }
-            if (user.value.BBIN == 0 && redirect == "BBIN_GAME_1") {
+            if ((user.value.BBIN == 0 || sysConfigItem.value.BBIN == 0 || sysConfigItem.value.BBIN_Repair == 1) && redirect == "BBIN_GAME_1") {
                 showToast("开元棋牌维护中，请稍候再试......");
                 return;
             }
@@ -410,13 +438,13 @@ const goDetail = async (path: string, redirect: string) => {
             if (redirect == "OG_GAME") {
                 await dispatchRedirectOGUrl({}, token.value)
             } else if (redirect == "AG_GAME_2") {
-                await dispatchRedirectAGUrl({game_type: 2}, token.value);
+                await dispatchRedirectAGUrl({ game_type: 2 }, token.value);
             } else if (redirect == "AG_GAME_1") {
-                await dispatchRedirectAGUrl({game_type: 1}, token.value);
+                await dispatchRedirectAGUrl({ game_type: 1 }, token.value);
             } else if (redirect == "AG_GAME_4") {
-                await dispatchRedirectAGUrl({game_type: 4}, token.value);
+                await dispatchRedirectAGUrl({ game_type: 4 }, token.value);
             } else if (redirect == "BBIN_GAME_1") {
-                await dispatchRedirectBBINUrl({game_type: 1}, token.value);
+                await dispatchRedirectBBINUrl({ game_type: 1 }, token.value);
             }
 
             loading.close();

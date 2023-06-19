@@ -118,7 +118,7 @@ const showPicker = ref(false);
 const tokenActive = ref(1);
 const active = ref(1);
 const checked = ref(true);
-const amount = ref(0);
+const amount = ref("");
 const alertMessage = ref("");
 
 ////////////////////////////
@@ -152,6 +152,18 @@ const user = computed(() => {
         }
         if (item.name == "开元棋牌") {
             item.value = getUser.value.KY_Money
+        }
+        if (item.name == "AG 馆") {
+            item.value = getUser.value.AG_Money
+        }
+        if (item.name == "BBIN 馆") {
+            item.value = getUser.value.BBIN_Money
+        }
+        if (item.name == "MG 馆") {
+            item.value = getUser.value.MG_Money
+        }
+        if (item.name == "PT 馆") {
+            item.value = getUser.value.PT_Money
         }
     });
     return getUser.value;

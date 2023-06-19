@@ -14,13 +14,13 @@
 						<img src="@/assets/images/messege/icon.png" alt="">
 					</div>
 					<div class="news_r">
-						<span class="title">【热门赛事快报】</span>
-						<span class="time">2022-11-13 15:05:34</span>
+						<span class="title">【{{messageItem.Subject}}】</span>
+						<span class="time">{{messageItem.Time}}</span>
 					</div>
 				</div>
 				<div class="content_box">
 					<span>
-						温馨提示：热门赛事旗舰充提渠道繁忙，会给哦韩国hi都是 二的哥特人干活的分公司打发时光的辐射热豆腐干地方是告 诉对方的身份个人
+						{{ messageItem.Message }}
 					</span>
 				</div>
 			</div>
@@ -42,8 +42,16 @@
 
 <script setup lang="ts">
 import { showToast } from 'vant'
-import { ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { messageStore } from '@/stores/message';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
 import router from '@/router';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const {dispatchMessageItemByID} = messageStore();
+const {dispatchDeleteMessageItemByID} = messageStore();
 
 const show = ref(false)
 const onClickLeft = () => {
@@ -55,11 +63,24 @@ const onClickRight = () => {
 const cancel = () => {
 	show.value = false
 }
-const commit = () => {
+const commit = async () => {
+	await dispatchDeleteMessageItemByID({ID: messageItem.value.ID}, token.value);
 	show.value = false
 	showToast('删除成功！');
 	router.go(-1)
 }
+const token = computed(() => {
+	const {getToken} = storeToRefs(useAuthStore());
+	return getToken.value;
+})
+const messageItem = computed(() => {
+	const {getMessageItem} = storeToRefs(messageStore());
+	return getMessageItem.value;
+})
+onMounted(async () => {
+	let id = route.query.id;
+	await dispatchMessageItemByID({ID: id}, token.value);
+})
 </script>
 
 <style scoped lang="scss">

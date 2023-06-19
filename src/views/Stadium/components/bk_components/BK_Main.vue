@@ -269,6 +269,9 @@ export default defineComponent({
 							break;
 
 					}
+
+					let handicap_sign_m = item["ShowTypeRB"] == "H" ? "-" : "+";
+					let handicap_sign_t = item["ShowTypeRB"] == "H" ? "+" : "-";
 					let gameData = {
 						id: item["MID"],
 						ecid: item["ECID"],
@@ -289,7 +292,7 @@ export default defineComponent({
 										type: item["MB_LetB_Rate_RB"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: (Number(item["MB_LetB_Rate_RB"])) > (Number(item["TG_LetB_Rate_RB"])) ? "-" + item["M_LetB_RB"] : "+" + item["M_LetB_RB"],
+										text: item["M_LetB_RB"] != "" ? handicap_sign_m + item["M_LetB_RB"] : "",
 										num: item["MB_LetB_Rate_RB"] == 0 ? 0 : (Number(item["MB_LetB_Rate_RB"])).toFixed(2)
 									},
 									{
@@ -343,18 +346,18 @@ export default defineComponent({
 									{
 										lineType: 9,
 										mType: "RRC",
-										bettingType: "H",
+										bettingType: "C",
 										oddFType: "H",
 										type: item["TG_LetB_Rate_RB"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: (Number(item["MB_LetB_Rate_RB"])) < (Number(item["TG_LetB_Rate_RB"])) ? "-" + item["M_LetB_RB"] : "+" + item["M_LetB_RB"],
+										text: item["M_LetB_RB"] != "" ? handicap_sign_t + item["M_LetB_RB"] : "",
 										num: item["TG_LetB_Rate_RB"] == 0 ? 0 : (Number(item["TG_LetB_Rate_RB"])).toFixed(2)
 									},
 									{
 										lineType: 10,
 										mType: "ROUC",
-										bettingType: "H",
+										bettingType: "C",
 										oddFType: "H",
 										type: item["TG_Dime_Rate_RB"] == 0 ? 2 : 1,
 										colorChangeUp: false,
@@ -366,7 +369,7 @@ export default defineComponent({
 										lineType: 5,
 										mType: "",
 										r_type: "EVEN",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["S_Double_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -421,6 +424,7 @@ export default defineComponent({
 			this.bettingOrderData["league"] = leagueData.name;
 			this.bettingOrderData["title"] = gameData.titleList[scoreIndex + 1].text;
 			this.bettingOrderData["selectedTeam"] = dataList.name;
+			this.bettingOrderData["show_type"] = gameData.ShowTypeRB;
 			this.bettingOrderData["text"] = rateData.text
 			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
 			else this.openModal = true;

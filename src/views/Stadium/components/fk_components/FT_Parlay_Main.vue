@@ -921,6 +921,11 @@ export default defineComponent({
 						})
 					}
 
+					let handicap_sign_m = item["ShowTypeP"] == "H" ? "-" : "+";
+					let half_handicap_sign_m = item["ShowTypeHP"] == "H" ? "-" : "+";
+					let handicap_sign_t = item["ShowTypeP"] == "H" ? "+" : "-";
+					let half_handicap_sign_t = item["ShowTypeHP"] == "H" ? "+" : "-";
+
 					if (item["HDP_OU"] === 1) {
 
 						this.fullCourt1 = {
@@ -936,7 +941,7 @@ export default defineComponent({
 											bettingType: "H",
 											colorChangeUp: false,
 											colorChangeDown: false,
-											text: item["M_P_LetB"] !== "" && item["M_P_LetB"] !== undefined ? "+" + item["M_P_LetB"] : "",
+											text: item["M_P_LetB"] !== "" && item["M_P_LetB"] !== undefined ? handicap_sign_m + item["M_P_LetB"] : "",
 											num: item["MB_P_LetB_Rate"] == 0 || item["MB_P_LetB_Rate"] == undefined ? 0 : (Number(item["MB_P_LetB_Rate"])).toFixed(2),
 										},
 										{
@@ -945,7 +950,7 @@ export default defineComponent({
 											bettingType: "H",
 											colorChangeUp: false,
 											colorChangeDown: false,
-											text: item["M_P_LetB_1"] !== "" && item["M_P_LetB_1"] !== undefined ? "+" + item["M_P_LetB_1"] : "",
+											text: item["M_P_LetB_1"] !== "" && item["M_P_LetB_1"] !== undefined ? handicap_sign_m + item["M_P_LetB_1"] : "",
 											num: item["MB_P_LetB_Rate_1"] == 0 || item["MB_P_LetB_Rate_1"] == undefined ? 0 : (Number(item["MB_P_LetB_Rate_1"])).toFixed(2),
 										},
 										{
@@ -954,7 +959,7 @@ export default defineComponent({
 											bettingType: "H",
 											colorChangeUp: false,
 											colorChangeDown: false,
-											text: item["M_P_LetB_2"] !== "" && item["M_P_LetB_2"] !== undefined ? "+" + item["M_P_LetB_2"] : "",
+											text: item["M_P_LetB_2"] !== "" && item["M_P_LetB_2"] !== undefined ? handicap_sign_m + item["M_P_LetB_2"] : "",
 											num: item["MB_P_LetB_Rate_2"] == 0 || item["MB_P_LetB_Rate_2"] == undefined ? 0 : (Number(item["MB_P_LetB_Rate_2"])).toFixed(2),
 										},
 										{
@@ -963,7 +968,7 @@ export default defineComponent({
 											bettingType: "H",
 											colorChangeUp: false,
 											colorChangeDown: false,
-											text: item["M_P_LetB_3"] !== "" && item["M_P_LetB_3"] !== undefined ? "+" + item["M_P_LetB_3"] : "",
+											text: item["M_P_LetB_3"] !== "" && item["M_P_LetB_3"] !== undefined ? handicap_sign_m + item["M_P_LetB_3"] : "",
 											num: item["MB_P_LetB_Rate_3"] == 0 || item["MB_P_LetB_Rate_3"] == undefined ? 0 : (Number(item["MB_P_LetB_Rate_3"])).toFixed(2),
 										},
 									]
@@ -975,37 +980,37 @@ export default defineComponent({
 										{
 											lineType: this.field == "cp1" ? 109 : 102,
 											mType: this.field == "cp1" ? "RRC" : "RC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDown: false,
-											text: item["M_P_LetB"] !== "" && item["M_P_LetB"] !== undefined ? "-" + item["M_P_LetB"] : "",
+											text: item["M_P_LetB"] !== "" && item["M_P_LetB"] !== undefined ? handicap_sign_t + item["M_P_LetB"] : "",
 											num: item["TG_P_LetB_Rate"] == 0 || item["TG_P_LetB_Rate"] == undefined ? 0 : (Number(item["TG_P_LetB_Rate"])).toFixed(2),
 										},
 										{
 											lineType: this.field == "cp1" ? 150 : 156,
 											mType: this.field == "cp1" ? "RRC" : "RC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDown: false,
-											text: item["M_P_LetB_1"] !== "" && item["M_P_LetB_1"] !== undefined ? "-" + item["M_P_LetB_1"] : "",
+											text: item["M_P_LetB_1"] !== "" && item["M_P_LetB_1"] !== undefined ? handicap_sign_t + item["M_P_LetB_1"] : "",
 											num: item["TG_P_LetB_Rate_1"] == 0 || item["TG_P_LetB_Rate_1"] == undefined ? 0 : (Number(item["TG_P_LetB_Rate_1"])).toFixed(2),
 										},
 										{
 											lineType: this.field == "cp1" ? 151 : 157,
 											mType: this.field == "cp1" ? "RRC" : "RC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDown: false,
-											text: item["M_P_LetB_2"] !== "" && item["M_P_LetB_2"] !== undefined ? "+" + item["M_P_LetB_2"] : "",
+											text: item["M_P_LetB_2"] !== "" && item["M_P_LetB_2"] !== undefined ? handicap_sign_t + item["M_P_LetB_2"] : "",
 											num: item["TG_P_LetB_Rate_2"] == 0 || item["TG_P_LetB_Rate_2"] == undefined ? 0 : (Number(item["TG_P_LetB_Rate_2"])).toFixed(2),
 										},
 										{
 											lineType: this.field == "cp1" ? 152 : 158,
 											mType: this.field == "cp1" ? "RRC" : "RC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDown: false,
-											text: item["M_P_LetB_3"] !== "" && item["M_P_LetB_3"] !== undefined ? "-" + item["M_P_LetB_3"] : "",
+											text: item["M_P_LetB_3"] !== "" && item["M_P_LetB_3"] !== undefined ? handicap_sign_t + item["M_P_LetB_3"] : "",
 											num: item["TG_P_LetB_Rate_3"] == 0 || item["TG_P_LetB_Rate_3"] == undefined ? 0 : (Number(item["TG_P_LetB_Rate_3"])).toFixed(2),
 										},
 									]
@@ -1065,7 +1070,7 @@ export default defineComponent({
 										{
 											lineType: this.field == "cp1" ? 110 : 103,
 											mType: this.field == "cp1" ? "ROUC" : "OUC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDown: false,
 											text: item["TG_P_Dime"] == "" || item["TG_P_Dime"] == undefined ? "" : "小 " + item["TG_P_Dime"].split("U")[1],
@@ -1074,7 +1079,7 @@ export default defineComponent({
 										{
 											lineType: this.field == "cp1" ? 153 : 159,
 											mType: this.field == "cp1" ? "ROUC" : "OUC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDown: false,
 											text: item["TG_P_Dime_1"] == "" || item["TG_P_Dime_1"] == undefined ? "" : "小 " + item["TG_P_Dime_1"].split("U")[1],
@@ -1083,7 +1088,7 @@ export default defineComponent({
 										{
 											lineType: this.field == "cp1" ? 154 : 160,
 											mType: this.field == "cp1" ? "ROUC" : "OUC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDown: false,
 											text: item["TG_P_Dime_2"] == "" || item["TG_P_Dime_2"] == undefined ? "" : "小 " + item["TG_P_Dime_2"].split("U")[1],
@@ -1092,7 +1097,7 @@ export default defineComponent({
 										{
 											lineType: this.field == "cp1" ? 155 : 161,
 											mType: this.field == "cp1" ? "ROUC" : "OUC",
-											bettingType: "H",
+											bettingType: "C",
 											colorChangeUp: false,
 											colorChangeDown: false,
 											text: item["TG_P_Dime_3"] == "" || item["TG_P_Dime_3"] == undefined ? "" : "小 " + item["TG_P_Dime_3"].split("U")[1],
@@ -1126,7 +1131,7 @@ export default defineComponent({
 										type: item["MB_P_LetB_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDown: false,
-										text: (Number(item["MB_P_LetB_Rate"])) > (Number(item["TG_P_LetB_Rate"])) ? "-" + item["M_P_LetB"] : "+" + item["M_P_LetB"],
+										text: (Number(item["MB_P_LetB_Rate"])) > (Number(item["TG_P_LetB_Rate"])) ? handicap_sign_m + item["M_P_LetB"] : "+" + item["M_P_LetB"],
 										num: item["MB_P_LetB_Rate"] == 0 ? 0 : (Number(item["MB_P_LetB_Rate"])).toFixed(2)
 									},
 									{
@@ -1158,17 +1163,17 @@ export default defineComponent({
 									{
 										lineType: this.field == "cp1" ? 109 : 102,
 										mType: this.field == "cp1" ? "RRC" : "RC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_P_LetB_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDown: false,
-										text: (Number(item["MB_P_LetB_Rate"])) < (Number(item["TG_P_LetB_Rate"])) ? "-" + item["M_P_LetB"] : "+" + item["M_P_LetB"],
+										text: (Number(item["MB_P_LetB_Rate"])) < (Number(item["TG_P_LetB_Rate"])) ? handicap_sign_t + item["M_P_LetB"] : "+" + item["M_P_LetB"],
 										num: item["TG_P_LetB_Rate"] == 0 ? 0 : (Number(item["TG_P_LetB_Rate"])).toFixed(2)
 									},
 									{
 										lineType: this.field == "cp1" ? 110 : 103,
 										mType: this.field == "cp1" ? "ROUC" : "OUC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_P_Dime_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDown: false,
@@ -1178,7 +1183,7 @@ export default defineComponent({
 									{
 										lineType: this.field == "cp1" ? 121 : 101,
 										mType: this.field == "cp1" ? "RMC" : "MC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_P_Win_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDown: false,
@@ -1229,7 +1234,7 @@ export default defineComponent({
 										type: item["MB_P_LetB_Rate_H"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDown: false,
-										text: item["M_P_LetB_H"] !== "" ? "+" + item["M_P_LetB_H"] : "",
+										text: item["M_P_LetB_H"] !== "" ? half_handicap_sign_m + item["M_P_LetB_H"] : "",
 										num: item["MB_P_LetB_Rate_H"] == 0 ? 0 : (Number(item["MB_P_LetB_Rate_H"])).toFixed(2)
 									},
 									{
@@ -1262,7 +1267,7 @@ export default defineComponent({
 										lineType: this.field == "cp1" ? 5 : 105,
 										mType: "",
 										r_type: "EVEN",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["S_P_Double_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDown: false,
@@ -1272,17 +1277,17 @@ export default defineComponent({
 									{
 										lineType: this.field == "cp1" ? 119 : 112,
 										mType: this.field == "cp1" ? "VRRC" : "VRC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_P_LetB_Rate_H"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDown: false,
-										text: item["M_P_LetB_H"] !== "" ? "-" + item["M_P_LetB_H"] : "",
+										text: item["M_P_LetB_H"] !== "" ? half_handicap_sign_t + item["M_P_LetB_H"] : "",
 										num: item["TG_P_LetB_Rate_H"] == 0 ? 0 : (Number(item["TG_P_LetB_Rate_H"])).toFixed(2)
 									},
 									{
 										lineType: this.field == "cp1" ? 120 : 113,
 										mType: this.field == "cp1" ? "VROUC" : "VOUC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_P_Dime_Rate_H"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDown: false,
@@ -1292,7 +1297,7 @@ export default defineComponent({
 									{
 										lineType: this.field == "cp1" ? 131 : 111,
 										mType: this.field == "cp1" ? "VRMC" : "VMC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_P_Win_Rate_H"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDown: false,
@@ -1359,6 +1364,7 @@ export default defineComponent({
 			this.bettingOrderData["title"] = gameData.titleList[scoreIndex + 1];
 			this.bettingOrderData["selectedTeam"] = dataList.name;
 			this.bettingOrderData["text"] = rateData.text
+			this.bettingOrderData["show_type"] = gameData.ShowTypeP;
 			// if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
 			// else this.openModal = true;
 			let data = {
@@ -1385,6 +1391,7 @@ export default defineComponent({
 				m_ball: this.bettingOrderData["m_ball"],
 				t_ball: this.bettingOrderData["t_ball"],
 				m_type: this.bettingOrderData["mType"],
+				show_type: this.bettingOrderData["show_type"]
 			}
 			if (this.user.id == "") {
 				showToast('你必须先登录。')
@@ -1412,6 +1419,7 @@ export default defineComponent({
 			this.bettingOrderData["title"] = gameData.halfTitleList[scoreIndex + 1];
 			this.bettingOrderData["selectedTeam"] = dataList.name;
 			this.bettingOrderData["text"] = rateData.text
+			this.bettingOrderData["show_type"] = gameData.ShowTypeHP;
 			// if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
 			// else this.openModal = true;
 			let data = {
@@ -1438,6 +1446,7 @@ export default defineComponent({
 				m_ball: this.bettingOrderData["m_ball"],
 				t_ball: this.bettingOrderData["t_ball"],
 				m_type: this.bettingOrderData["mType"],
+				show_type: this.bettingOrderData["show_type"]
 			}
 			if (this.user.id == "") {
 				showToast('你必须先登录。')
@@ -1449,6 +1458,8 @@ export default defineComponent({
 		handleCornerModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["gameType"] = "FT";
+			this.bettingOrderData["m_ball"] = gameData.cornerList[0].goalsScored;
+			this.bettingOrderData["t_ball"] = gameData.cornerList[1].goalsScored;
 			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
 			this.bettingOrderData["tgTeam"] = gameData.scoreList[1].name;
 			this.bettingOrderData["rate"] = rateData.num;
@@ -1456,6 +1467,7 @@ export default defineComponent({
 			this.bettingOrderData['selectedType'] = rateData.bettingType;
 			this.bettingOrderData["league"] = leagueData.name;
 			this.bettingOrderData["text"] = rateData.text
+			this.bettingOrderData["show_type"] = gameData.ShowTypeP;
 			this.bettingOrderData["title"] = rateData.text == "和" ? this.cornerTitleList[scoreIndex] : this.cornerTitleList[scoreIndex + 1];
 			this.bettingOrderData["selectedTeam"] = dataList.name;
 			// if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
@@ -1475,6 +1487,7 @@ export default defineComponent({
 				gid: this.bettingOrderData["mID"],
 				g_type: this.bettingOrderData["gameType"],
 				line_type: this.bettingOrderData["lineType"],
+				show_type: this.bettingOrderData["show_type"],
 				active: 1
 			}
 		},
@@ -1485,6 +1498,8 @@ export default defineComponent({
 			this.bettingOrderData["m_ball"] = 0;
 			this.bettingOrderData["t_ball"] = 0;
 			this.bettingOrderData["gameType"] = "FT";
+			this.bettingOrderData["m_ball"] = gameData.scoreList[0].goalsScored;
+			this.bettingOrderData["t_ball"] = gameData.scoreList[1].goalsScored;
 			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
 			this.bettingOrderData["tgTeam"] = gameData.scoreList[1].name;
 			this.bettingOrderData["rate"] = rateData.num;
@@ -1494,6 +1509,7 @@ export default defineComponent({
 			this.bettingOrderData['selectedType'] = rateData.bettingType;
 			this.bettingOrderData["league"] = leagueData.name;
 			this.bettingOrderData["title"] = title;
+			this.bettingOrderData["show_type"] = gameData.ShowTypeP;
 			this.bettingOrderData["selectedTeam"] = dataList.name;
 			this.bettingOrderData["text"] = rateData.text
 			// if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
@@ -1522,6 +1538,7 @@ export default defineComponent({
 				m_ball: this.bettingOrderData["m_ball"],
 				t_ball: this.bettingOrderData["t_ball"],
 				m_type: this.bettingOrderData["mType"],
+				show_type: this.bettingOrderData["show_type"]
 			}
 			if (this.user.id == "") {
 				showToast('你必须先登录。')
@@ -1537,6 +1554,8 @@ export default defineComponent({
 			this.bettingOrderData["m_ball"] = 0;
 			this.bettingOrderData["t_ball"] = 0;
 			this.bettingOrderData["gameType"] = "FT";
+			this.bettingOrderData["m_ball"] = gameData.scoreList[0].goalsScored;
+			this.bettingOrderData["t_ball"] = gameData.scoreList[1].goalsScored;
 			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
 			this.bettingOrderData["tgTeam"] = gameData.scoreList[1].name;
 			this.bettingOrderData["rate"] = rateData.num;
@@ -1546,6 +1565,7 @@ export default defineComponent({
 			this.bettingOrderData['selectedType'] = rateData.bettingType;
 			this.bettingOrderData["league"] = leagueData.name;
 			this.bettingOrderData["title"] = title;
+			this.bettingOrderData["show_type"] = gameData.ShowTypeP;
 			this.bettingOrderData["selectedTeam"] = dataList.name;
 			this.bettingOrderData["text"] = rateData.text
 			// if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
@@ -1574,6 +1594,7 @@ export default defineComponent({
 				m_ball: this.bettingOrderData["m_ball"],
 				t_ball: this.bettingOrderData["t_ball"],
 				m_type: this.bettingOrderData["mType"],
+				show_type: this.bettingOrderData["show_type"]
 			}
 			if (this.user.id == "") {
 				showToast('你必须先登录。')

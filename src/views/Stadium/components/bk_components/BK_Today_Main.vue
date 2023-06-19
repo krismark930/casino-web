@@ -241,6 +241,12 @@ export default defineComponent({
 							text: '单/双'
 						},
 					];
+
+					console.log(item.ShowTypeR);
+
+					let handicap_sign_m = item["ShowTypeR"] == "H" ? "-" : "+";
+					let handicap_sign_t = item["ShowTypeR"] == "H" ? "+" : "-";
+
 					let gameData = {
 						id: item["MID"],
 						ecid: item["ECID"],
@@ -260,7 +266,7 @@ export default defineComponent({
 										type: item["MB_LetB_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: item["M_LetB"] !== "" ? "+" + item["M_LetB"] : "",
+										text: item["M_LetB"] !== "" ? handicap_sign_m + item["M_LetB"] : "",
 										num: item["MB_LetB_Rate"] == 0 ? 0 : (Number(item["MB_LetB_Rate"])).toFixed(2)
 									},
 									{
@@ -313,17 +319,17 @@ export default defineComponent({
 									{
 										lineType: 2,
 										mType: "RC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_LetB_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: item["M_LetB"] !== "" ? "-" + item["M_LetB"] : "",
+										text: item["M_LetB"] !== "" ? handicap_sign_t + item["M_LetB"] : "",
 										num: item["TG_LetB_Rate"] == 0 ? 0 : (Number(item["TG_LetB_Rate"])).toFixed(2)
 									},
 									{
 										lineType: 3,
 										mType: "OUC",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["TG_Dime_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -334,7 +340,7 @@ export default defineComponent({
 										lineType: 105,
 										mType: "",
 										r_type: "EVEN",
-										bettingType: "H",
+										bettingType: "C",
 										type: item["S_Double_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
@@ -389,6 +395,7 @@ export default defineComponent({
 			this.bettingOrderData["title"] = gameData.titleList[numIndex + 1].text;
 			this.bettingOrderData["selectedTeam"] = dataList.name;
 			this.bettingOrderData["text"] = rateData.text
+			this.bettingOrderData["show_type"] = gameData.ShowTypeR;
 			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
 			else this.openModal = true;
 		},
