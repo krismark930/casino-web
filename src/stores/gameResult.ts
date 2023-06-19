@@ -24,10 +24,16 @@ export const gameResultStore = defineStore({
         },
         async dispatchGameResult(gametype: number, selectedDate: any, active: number) {
             try {
-                let data = { date: formatDate(selectedDate), active: active }
+                let data;
+                if (active == 0) {
+                    data = { date: selectedDate, active: active }
+                } else {
+                    data = { date: formatDate(selectedDate), active: active }
+                }
                 this.setSuccess(false);
                 switch (gametype) {
                     case 0:
+                        console.log(active);
                         const response = await axios.post(`${BASE_URL}${GET_FT_RESULT}`, data);
                         if (response.status === 200) {
                             this.setSuccess(true);

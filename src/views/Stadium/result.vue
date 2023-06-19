@@ -50,6 +50,7 @@
 </template>
 <script lang="ts">
 import { gameResultStore } from "@/stores/gameResult";
+import moment from "moment-timezone";
 export default {
 	setup() {
 		const { dispatchGameResult } = gameResultStore();
@@ -61,7 +62,7 @@ export default {
 		return {
 			selectedDay: 0,
 			gameIndex: 0,
-			selectedDate: new Date(),
+			selectedDate: moment().tz("America/New_York").format("YYYY-MM-DD"),
 			dayList: [],
 			openSelect: false,
 			active: 0,
@@ -89,10 +90,6 @@ export default {
 					name: '篮球',
 					id: 2
 				},
-				{
-					name: '乒乓球',
-					id: 3
-				}
 			]
 		}
 	},
@@ -105,7 +102,13 @@ export default {
 	},
 	watch: {
 		active: async function (newActive) {
-			await this.dispatchGameResult(this.gameIndex, this.selectedDate, newActive)
+			console.log(newActive);
+			if (newActive == 0) {
+				this.selectedDate = moment().tz("America/New_York").format("YYYY-MM-DD");
+				await this.dispatchGameResult(this.gameIndex, this.selectedDate, newActive)
+			} else {
+				await this.dispatchGameResult(this.gameIndex, this.selectedDate, newActive)
+			}
 		}
 	},
 	methods: {
@@ -128,7 +131,7 @@ export default {
 			date.setTime(date.getTime() - 24 * 60 * 60 * 1000 * i);
 			this.dayList.push({ date: date, name: date.getMonth() + 1 + '/' + date.getDate() })
 		}
-		await this.dispatchGameResult(this.gameIndex, new Date(), this.active)
+		await this.dispatchGameResult(this.gameIndex, this.selectedDate, this.active)
 	},
 }
 </script>

@@ -244,6 +244,10 @@ export default defineComponent({
 						// 	text: '第二队得分'
 						// }
 					];
+
+					let handicap_sign_m = item["ShowTypeP"] == "H" ? "-" : "+";
+					let handicap_sign_t = item["ShowTypeP"] == "H" ? "+" : "-";
+
 					let gameData = {
 						id: item["MID"],
 						ecid: item["ECID"],
@@ -263,7 +267,7 @@ export default defineComponent({
 										type: item["MB_P_LetB_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDown: false,
-										text: (Number(item["MB_P_LetB_Rate"])) > (Number(item["TG_P_LetB_Rate"])) ? "-" + item["M_P_LetB"] : "+" + item["M_P_LetB"],
+										text: item["M_P_LetB"] ? handicap_sign_m + item["M_P_LetB"] : "",
 										num: item["MB_P_LetB_Rate"] == 0 ? 0 : (Number(item["MB_P_LetB_Rate"])).toFixed(2)
 									},
 									{
@@ -320,7 +324,7 @@ export default defineComponent({
 										type: item["TG_P_LetB_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDown: false,
-										text: (Number(item["MB_P_LetB_Rate"])) < (Number(item["TG_P_LetB_Rate"])) ? "-" + item["M_P_LetB"] : "+" + item["M_P_LetB"],
+										text: item["M_P_LetB"] ? handicap_sign_t + item["M_P_LetB"] : "",
 										num: item["TG_P_LetB_Rate"] == 0 ? 0 : (Number(item["TG_P_LetB_Rate"])).toFixed(2)
 									},
 									{
@@ -393,6 +397,7 @@ export default defineComponent({
 			this.bettingOrderData["title"] = gameData.titleList[numIndex + 1].text;
 			this.bettingOrderData["selectedTeam"] = dataList.name;
 			this.bettingOrderData["text"] = rateData.text
+			this.bettingOrderData["show_type"] = gameData.ShowTypeP;
 			// if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
 			// else this.openModal = true;
 			let data = {
@@ -419,6 +424,7 @@ export default defineComponent({
 				m_ball: this.bettingOrderData["m_ball"],
 				t_ball: this.bettingOrderData["t_ball"],
 				m_type: this.bettingOrderData["mType"],
+				show_type: this.bettingOrderData["show_type"]
 			}
 			if (this.user.id == "") {
 				showToast('你必须先登录。')
