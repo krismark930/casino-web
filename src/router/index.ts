@@ -584,15 +584,14 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-    const {
-        getToken,
-        getUser,
-    } = storeToRefs(useAuthStore());
-
-    console.log("getUser", getUser.value.id);
+    const { getToken, getUser } = storeToRefs(useAuthStore());
 
     if (!getUser.value.id && to.name === "myhome") {
-        next({ name: "my" });
+        next({ name: "login" });
+    }
+
+    if (!getUser.value.id && to.name === "my") {
+        next({ name: "login" });
     }
     if (!getUser.value.id && to.name == "transfer") {
         next({ name: "login" });

@@ -3,13 +3,31 @@
   <router-view/>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue'
+<script lang="ts">
+import { ref, defineComponent } from 'vue'
+import socket from "@/utils/socket";
+import { useAuthStore } from '@/stores/auth';
 
-const activeIndex = ref('1')
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+export default defineComponent({
+  setup() {
+    const { dispatchLogout } = useAuthStore();
+
+    return {
+      dispatchLogout
+    }
+  },
+  data() {
+    return {
+
+    }
+  },
+  sockets: {
+    logout() {
+      console.log("logout");
+      this.dispatchLogout();      
+    }
+  }
+})
 </script>
 
 <style scoped>

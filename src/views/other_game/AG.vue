@@ -2,7 +2,7 @@
 <template>
 	<div style="background-color: #DCF4FF;">
 		<div class="header">
-			<van-nav-bar title="开元棋牌" @click-left="onClickLeft" fixed left-arrow />
+			<van-nav-bar title="AG电子" @click-left="onClickLeft" fixed left-arrow />
 		</div>
 		<div class="lottery_box animated fadeInLeft">
 			<div class="banner_box">

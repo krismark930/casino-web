@@ -11,8 +11,7 @@ import { DatePicker } from 'vant';
 import { Loading } from 'vant';
 import { createPinia } from "pinia";
 import piniaPersist from "pinia-plugin-persist";
-import VueSocketIO from 'vue-3-socket.io';
-import { SOCKET_URL } from "@/config";
+import socket from "@/utils/socket";
 import { Collapse, CollapseItem } from 'vant';
 import { Cell, CellGroup } from 'vant';
 import { Pagination } from 'vant';
@@ -64,12 +63,7 @@ app.use(CountDown);
 app.use(Form);
 app.use(Field);
 app.use(ElementPlus);
-app.use(
-    new VueSocketIO({
-        debug: true,
-        connection: SOCKET_URL,
-    })
-);
+app.use(socket);
 app.use(head)
 app.provide('i18n', i18n)
 app.mount("#app");
