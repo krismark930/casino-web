@@ -2,7 +2,7 @@
 <template>
 	<div style="background-color: #DCF4FF;">
 		<div class="header">
-			<van-nav-bar title="开元棋牌" @click-left="onClickLeft" fixed left-arrow />
+			<van-nav-bar title="BBIN电子" @click-left="onClickLeft" fixed left-arrow />
 		</div>
 		<div class="lottery_box animated fadeInLeft">
 			<div class="banner_box">
@@ -26,7 +26,7 @@
 			<div class="hall_box animated fadeInLeft">
 				<div class="tab_bottom">
 					<div class="tab_bottom_box">
-						<div class="tab_bottom_item" v-for="(item, index) in bbinGameList" :key='index' @click="goDetail(item.GameType)">
+						<div class="tab_bottom_item" v-for="(item, index) in bbinGameList" :key='index' @click="goDetail()">
 							<span v-if="item.GameName" class="font-bold">{{ item.GameName }}</span>
 							<img v-if="item.ZH_Logo_File" class="item_icon" :src="(item as any).ZH_Logo_File" alt="">
 						</div>
@@ -85,7 +85,8 @@ const success = computed(() => {
 	const {getSuccess} = storeToRefs(bbinGameStore());
 	return getSuccess.value;
 })
-const goDetail = async (game_type: any) => {
+const goDetail = async () => {
+	let game_type = 5;
 	if (user.value.id == undefined) {
 		showToast("您还没有登录或登录超时，请重新登录......");
 		router.push({ name: "login" });

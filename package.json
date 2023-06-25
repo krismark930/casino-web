@@ -20,6 +20,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/vue-fontawesome": "^3.0.2",
     "@vant/area-data": "^1.4.0",
+    "@vueuse/head": "^1.1.26",
     "amfe-flexible": "^2.2.1",
     "animate.css": "3.5.1",
     "core-js": "^3.27.1",
@@ -34,6 +35,7 @@
     "vue": "^3.2.45",
     "vue-3-socket.io": "^1.0.5",
     "vue-i18n": "^9.2.2",
+    "vue-meta": "^2.4.0",
     "vue-router": "^4.1.6",
     "vue-seven-segment-display": "^2.1.0",
     "vue-timer-hook": "^1.0.74"

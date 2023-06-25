@@ -248,13 +248,13 @@
     </van-dialog>
     <van-dialog v-model:show="alertShow" title="提示">
       <div class="text-center">当前彩票已经封盘，请稍后再进行下注！</div>
-      <div class="text-center">{{title}}开盘时间为：09:00 - 23:50</div>
+      <div class="text-center">{{ title }}开盘时间为：09:00 - 23:50</div>
     </van-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted,  watchEffect, watch, toRefs } from "vue";
+import { ref, computed, onMounted, onUnmounted, watchEffect, watch, toRefs } from "vue";
 import ChampionRunnerSum from "./azxy10/ChampionRunnerSum.vue";
 import OneWordPosition from "./azxy10/OneWordPosition.vue";
 import DragonTigerClass from "./azxy10/DragonTigerClass.vue";
@@ -266,6 +266,7 @@ import { lotteryScheduleStore } from "@/stores/lottery_schedule";
 import { lotteryResultStore } from "@/stores/lottery_result";
 import { lotteryOddsStore } from "@/stores/lottery_odds";
 import { lotterySaveStore } from "@/stores/lottery_save";
+import { lotteryConfigStore } from "@/stores/lottery_config";
 import { storeToRefs } from "pinia";
 import moment from "moment-timezone";
 const { dispatchUserMoney } = useAuthStore();
@@ -275,6 +276,7 @@ const { dispatchBeforeLotteryResult } = lotteryResultStore();
 const { dispatchBirthHistory } = lotteryResultStore();
 const { dispatchLotteryOdds } = lotteryOddsStore();
 const { dispatchSaveLottery } = lotterySaveStore();
+const { dispatchLotteryUserConfig } = lotteryConfigStore();
 
 const colorArray = ref(['#f8f02b', '#00a5ff', '#535351', '#d15000', '#2da695', '#1600ca', '#cecdd2', '#f10104', '#af0600', '#166410']);
 
@@ -349,7 +351,7 @@ const onFinish = async () => {
   timerId.value = setInterval(async () => {
     runCount.value++;
     await dispatchBeforeLotteryResult({ g_type: g_type.value, type: "other" });
-    if(runCount.value > 5) {
+    if (runCount.value > 5) {
       clearInterval(timerId.value);
       timerId.value = null;
       runCount.value = 0;
@@ -462,11 +464,15 @@ const errMessage = computed(() => {
   const { getErrMessage } = storeToRefs(lotterySaveStore());
   return getErrMessage.value;
 });
+const lotteryUserConfigItem = computed(() => {
+  const { getLotteryUserConfigItem } = storeToRefs(lotteryConfigStore());
+  return getLotteryUserConfigItem.value;
+})
 
 const onChangeTime = (time: any) => {
   if (time.total <= 120000) {
     if (!disabled.value) {
-      showToast("已封盘")    
+      showToast("已封盘")
     }
     disabled.value = true;
   }
@@ -521,8 +527,21 @@ const submitItem4 = (data: any) => {
 };
 const showPopUp = () => {
   if (selectedItemList.value.length == 0) {
-    showToast("请选择投注数据。");
+    showToast("该彩票注单最高金额：0。00");
   } else {
+    if (g_type.value == "bjpk" && lotteryUserConfigItem.value.bjpk_max_bet == "0.00") {
+      showToast("该彩票注单最高金额：0。00");
+      return;
+    }
+
+    if (g_type.value == "bjpk" && selectedBetAmount.value > lotteryUserConfigItem.value.bjpk_max_bet) {
+      showToast("该彩票单注最高金额：" + lotteryUserConfigItem.value.bjpk_max_bet)
+      return;
+    }
+    if (g_type.value == "bjpk" && selectedBetAmount.value < lotteryUserConfigItem.value.bjpk_lower_bet) {
+      showToast("该彩票单注最低金额：" + lotteryUserConfigItem.value.bjpk_lower_bet)
+      return;
+    }
     showBottom.value = true;
   }
 };
@@ -530,6 +549,11 @@ const showBirthHistory = () => {
   historyShow.value = !historyShow.value;
 };
 onMounted(async () => {
+  if (user.value.id == undefined) {
+    showToast("你必须先登录。");
+    router.push({ name: "login" });
+    return;
+  }
   alertShow.value = false;
   const loading = ElLoading.service({
     lock: true,
@@ -541,6 +565,7 @@ onMounted(async () => {
   await dispatchBeforeLotteryResult({ g_type: g_type.value, type: "other" });
   await dispatchLotteryOdds({ g_type: g_type.value, type: "other" });
   await dispatchLotterySchedule({ g_type: g_type.value, type: "other" });
+  await dispatchLotteryUserConfig({}, token.value);
   console.log(lotteryStatus.value);
   loading.close();
 });
@@ -582,6 +607,7 @@ onUnmounted(() => {
   line-height: 1;
   margin-top: 6px;
 }
+
 .six-title {
   position: absolute;
   left: 164px;

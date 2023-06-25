@@ -1,7 +1,7 @@
 <template>
   <B5 :title="title" :g_type="g_type" :descriptionTitle="descriptionTitle" :descriptionSubTitle="descriptionSubTitle" />
 </template>
-<script setup>
+<script lang="ts" setup>
 import { ref } from "vue";
 import B5 from "./B5.vue";
 const title = ref("河内五分彩");

@@ -971,7 +971,7 @@ const showPopUp = () => {
     if (betAmount.value == "") {
       showToast("输入投注金额。");
     } else if (selectedItemList.value.length == 0) {
-      showToast("请选择投注数据。");
+      showToast("该彩票注单最高金额：0。00");
     } else if (selectedItemList.value.length == 1) {
       showToast("请选择二组以上玩法，若只要单一下注请前往正特投注!");
     } else if (selectedItemList.value.length > 9) {
@@ -984,13 +984,13 @@ const showPopUp = () => {
       if (betAmount.value == "") {
         showToast("输入投注金额。");
       } else if (selectedItemList.value.length == 0) {
-        showToast("请选择投注数据。");
+        showToast("该彩票注单最高金额：0。00");
       } else {
         showBottom.value = true;
       }
     } else {
       if (selectedItemList.value.length == 0) {
-        showToast("请选择投注数据。");
+        showToast("该彩票注单最高金额：0。00");
       } else {
         showBottom.value = true;
       }

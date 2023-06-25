@@ -515,7 +515,7 @@ const submitItem4 = (data: any) => {
 };
 const showPopUp = () => {
   if (selectedItemList.value.length == 0) {
-    showToast("请选择投注数据。");
+    showToast("该彩票注单最高金额：0。00");
   } else {
     showBottom.value = true;
   }

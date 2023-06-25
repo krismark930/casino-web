@@ -5,6 +5,7 @@ import router from "@/router";
 import { showToast } from 'vant';
 import { GET_PROFILE } from "@/config"
 import { BASE_URL } from "@/config"
+import socket from "@/utils/socket";
 
 export const useAuthStore = defineStore({
   id: "auth",
@@ -20,6 +21,13 @@ export const useAuthStore = defineStore({
     getUser: (state) => state.user,
   },
   actions: {
+    logout() {
+      this.user = {
+        UserName: "AC123",
+        Money: "0.00"
+      };
+      this.token = "";
+    },
     setToken(token: string) {
       this.token = token;
     },
@@ -46,6 +54,7 @@ export const useAuthStore = defineStore({
           this.setToken(response.data.data.access_token as string);
           localStorage.setItem("token", (response.data.data.access_token));
           this.setUser(response.data.data as any)
+          socket.io.emit("join", username);
           router.push({ name: 'my' })
         }
       } catch (error: any) {
@@ -97,6 +106,9 @@ export const useAuthStore = defineStore({
     },
     dispatchSetMoney(money: number) {
       this.setMoney(money);
+    },
+    dispatchLogout() {
+      this.logout();
     }
   },
 
