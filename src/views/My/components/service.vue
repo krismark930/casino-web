@@ -11,9 +11,10 @@
             <div
                 class="flex ml-[16px] items-center justify-between w-full"
             >
-                <div class="text-[18px] font-medium text-[#676782]">
+                <div class="text-[18px] font-medium text-[#676782]" @click="goDetail('login')" v-if="user.id == undefined">
                     点击登录/注册
                 </div>
+                <div class="text-[18px] font-medium text-[#676782]" v-else>{{ user.UserName }}</div>
                 <img
                     class="w-[10px] h-[15px]"
                     src="@/assets/images/my/arrow-right.png"
@@ -47,4 +48,12 @@
 </template>
 <script setup lang="ts">
 
+import { toRefs, computed } from 'vue';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
+
+const user = computed(() => {
+    const {getUser} = storeToRefs(useAuthStore());
+    return getUser.value;
+})
 </script>

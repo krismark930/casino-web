@@ -36,7 +36,11 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 /* import specific icons */
 import { faUserSecret, faHatWizard } from '@fortawesome/free-solid-svg-icons'
 
-console.log(import.meta.env)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+  })
+}
 
 library.add(faUserSecret);
 library.add(faHatWizard);

@@ -356,6 +356,9 @@
       <div class="text-center">当前彩票已经封盘，请稍后再进行下注！</div>
       <div class="text-center">{{title}}开盘时间为：09:00 - 22:50</div>
     </van-dialog>
+    <van-dialog v-model:show="closeShow" title="停止销售">
+      <div class="text-center">{{closed_reason}}</div>
+    </van-dialog>
   </div>
 </template>
 
@@ -396,6 +399,7 @@ const descriptionShow = ref(false);
 const showRight = ref(false);
 const initialize = ref(false);
 const disabled = ref(false);
+const closeShow = ref(false);
 
 const selectedCount = ref(0);
 const selectedBetAmount = ref(0);
@@ -531,6 +535,7 @@ const lotteryStatus = computed(() => {
   if (Number(getLotteryStatus.value.tjsf.close) === 1) {
     is_open.value = false;
     closed_reason.value = getLotteryStatus.value.tjsf.des;
+        closeShow.value = true;
   }
   return getLotteryStatus.value;
 });
@@ -634,9 +639,9 @@ const submitItem4 = (data: any) => {
 };
 const showPopUp = () => {
   if (selectedItemList.value.length == 0) {
-    showToast("该彩票注单最高金额：0。00");
+    showToast("请选择投注数据。");
   } else {
-    if (g_type.value == "tjsf" && lotteryUserConfigItem.value.tjsf_max_bet == "0.00") {
+    if (g_type.value == "tjsf" && Number(lotteryUserConfigItem.value.tjsf_max_bet) == 0) {
       showToast("该彩票注单最高金额：0。00");
       return;
     }
