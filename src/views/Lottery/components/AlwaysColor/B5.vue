@@ -337,6 +337,9 @@
       <div class="text-center">当前彩票已经封盘，请稍后再进行下注！</div>
       <div class="text-center">天津时时彩开盘时间为：每日09:00 - 23:00</div>
     </van-dialog>
+    <van-dialog v-model:show="closeShow" title="停止销售">
+      <div class="text-center">{{closed_reason}}</div>
+    </van-dialog>
   </div>
 </template>
 
@@ -380,6 +383,7 @@ const showRight = ref(false);
 const historyShow = ref(false);
 const initialize = ref(false);
 const disabled = ref(false);
+const closeShow = ref(false);
 
 const selectedCount = ref(0);
 const selectedBetAmount = ref(0);
@@ -512,35 +516,40 @@ const birthHistoryList = computed(() => {
 });
 const lotteryStatus = computed(() => {
   const { getLotteryStatus } = storeToRefs(lotteryScheduleStore());
-  switch (g_type) {
+  switch (g_type.value) {
     case "cq":
       if (Number(getLotteryStatus.value.cq.close) === 1) {
         is_open.value = false;
         closed_reason.value = getLotteryStatus.value.cq.des;
+        closeShow.value = true;
       }
       break;
     case "azxy5":
       if (Number(getLotteryStatus.value.azxy5.close) === 1) {
         is_open.value = false;
         closed_reason.value = getLotteryStatus.value.azxy5.des;
+        closeShow.value = true;
       }
       break;
     case "ffc5":
       if (Number(getLotteryStatus.value.ffc5.close) === 1) {
         is_open.value = false;
         closed_reason.value = getLotteryStatus.value.ffc5.des;
+        closeShow.value = true;
       }
       break;
     case "jx":
       if (Number(getLotteryStatus.value.jx.close) === 1) {
         is_open.value = false;
         closed_reason.value = getLotteryStatus.value.jx.des;
+        closeShow.value = true;
       }
       break;
     case "tj":
       if (Number(getLotteryStatus.value.tj.close) === 1) {
         is_open.value = false;
         closed_reason.value = getLotteryStatus.value.tj.des;
+        closeShow.value = true;
       }
       break;
   }
@@ -657,33 +666,33 @@ const submitItem4 = (data: any) => {
 };
 const showPopUp = () => {
   if (selectedItemList.value.length == 0) {
-    showToast("该彩票注单最高金额：0。00");
+    showToast("请选择投注数据。");
   } else {
-    if (g_type.value == "cq" && lotteryUserConfigItem.value.cq_max_bet == "0.00") {
+    if (g_type.value == "cq" && Number(lotteryUserConfigItem.value.cq_max_bet) == 0) {
       showToast("该彩票注单最高金额：0。00");
       return;
     }
-    if (g_type.value == "azxy5" && lotteryUserConfigItem.value.azxy5_max_bet == "0.00") {
+    if (g_type.value == "azxy5" && Number(lotteryUserConfigItem.value.azxy5_max_bet) == 0) {
       showToast("该彩票注单最高金额：0。00");
       return;
     }
-    if (g_type.value == "ffc5" && lotteryUserConfigItem.value.ffc5_max_bet == "0.00") {
+    if (g_type.value == "ffc5" && Number(lotteryUserConfigItem.value.ffc5_max_bet) == 0) {
       showToast("该彩票注单最高金额：0。00");
       return;
     }
-    if (g_type.value == "jx" && lotteryUserConfigItem.value.jx_max_bet == "0.00") {
+    if (g_type.value == "jx" && Number(lotteryUserConfigItem.value.jx_max_bet) == 0) {
       showToast("该彩票注单最高金额：0。00");
       return;
     }
-    if (g_type.value == "tj" && lotteryUserConfigItem.value.tj_max_bet == "0.00") {
+    if (g_type.value == "tj" && Number(lotteryUserConfigItem.value.tj_max_bet) == 0) {
       showToast("该彩票注单最高金额：0。00");
       return;
     }
-    if (g_type.value == "twssc" && lotteryUserConfigItem.value.twssc_max_bet == "0.00") {
+    if (g_type.value == "twssc" && Number(lotteryUserConfigItem.value.twssc_max_bet) == 0) {
       showToast("该彩票注单最高金额：0。00");
       return;
     }
-    if (g_type.value == "txssc" && lotteryUserConfigItem.value.txssc_max_bet == "0.00") {
+    if (g_type.value == "txssc" && Number(lotteryUserConfigItem.value.txssc_max_bet) == 0) {
       showToast("该彩票注单最高金额：0。00");
       return;
     }

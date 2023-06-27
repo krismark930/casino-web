@@ -1591,6 +1591,8 @@ export default defineComponent({
 			console.log(rateData)
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["gameType"] = "FT";
+			this.bettingOrderData["m_ball"] = gameData.scoreList[0].goalsScored;
+			this.bettingOrderData["t_ball"] = gameData.scoreList[1].goalsScored;
 			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
 			this.bettingOrderData["tgTeam"] = gameData.scoreList[1].name;
 			this.bettingOrderData["rate"] = rateData.num;
@@ -1607,6 +1609,8 @@ export default defineComponent({
 		handleSummaryModal2: function (leagueData, gameData, title, dataList, rateData) {
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["gameType"] = "FT";
+			this.bettingOrderData["m_ball"] = gameData.scoreList[0].goalsScored;
+			this.bettingOrderData["t_ball"] = gameData.scoreList[1].goalsScored;
 			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
 			this.bettingOrderData["tgTeam"] = gameData.scoreList[1].name;
 			this.bettingOrderData["rate"] = rateData.num;

@@ -247,6 +247,9 @@
       <div class="text-center">当前彩票已经封盘，请稍后再进行下注！</div>
       <div class="text-center">{{ alertContent }}</div>
     </van-dialog>
+    <van-dialog v-model:show="closeShow" title="停止销售">
+      <div class="text-center">{{closed_reason}}</div>
+    </van-dialog>
   </div>
 </template>
 
@@ -288,6 +291,7 @@ const showRight = ref(false);
 const alertShow = ref(false);
 const initialize = ref(false);
 const disabled = ref(false);
+const closeShow = ref(false);
 
 const selectedCount = ref(0);
 const selectedBetAmount = ref(0);
@@ -420,23 +424,26 @@ const birthHistoryList = computed(() => {
 });
 const lotteryStatus = computed(() => {
   const { getLotteryStatus } = storeToRefs(lotteryScheduleStore());
-  switch (g_type) {
+  switch (g_type.value) {
     case "d3":
       if (Number(getLotteryStatus.value.d3.close) === 1) {
         is_open.value = false;
         closed_reason.value = getLotteryStatus.value.d3.des;
+        closeShow.value = true;
       }
       break;
     case "p3":
       if (Number(getLotteryStatus.value.p3.close) === 1) {
         is_open.value = false;
         closed_reason.value = getLotteryStatus.value.p3.des;
+        closeShow.value = true;
       }
       break;
     case "t3":
       if (Number(getLotteryStatus.value.t3.close) === 1) {
         is_open.value = false;
         closed_reason.value = getLotteryStatus.value.t3.des;
+        closeShow.value = true;
       }
       break;
   }
@@ -542,17 +549,17 @@ const submitItem4 = (data: any) => {
 };
 const showPopUp = () => {
   if (selectedItemList.value.length == 0) {
-    showToast("该彩票注单最高金额：0。00");
+    showToast("请选择投注数据。");
   } else {
-    if (g_type.value == "d3" && lotteryUserConfigItem.value.d3_max_bet == "0.00") {
+    if (g_type.value == "d3" && Number(lotteryUserConfigItem.value.d3_max_bet) == 0) {
       showToast("该彩票注单最高金额：0。00");
       return;
     }
-    if (g_type.value == "p3" && lotteryUserConfigItem.value.p3_max_bet == "0.00") {
+    if (g_type.value == "p3" && Number(lotteryUserConfigItem.value.p3_max_bet) == 0) {
       showToast("该彩票注单最高金额：0。00");
       return;
     }
-    if (g_type.value == "t3" && lotteryUserConfigItem.value.p3_max_bet == "0.00") {
+    if (g_type.value == "t3" && Number(lotteryUserConfigItem.value.p3_max_bet) == 0) {
       showToast("该彩票注单最高金额：0。00");
       return;
     }

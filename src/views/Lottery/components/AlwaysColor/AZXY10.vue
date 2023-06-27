@@ -246,6 +246,9 @@
         <p>为单视为投注"单"的注单视为中奖，为双视为投注"双"的注单视为中奖，其余视为不中奖(如果开11打和)</p>
       </div>
     </van-dialog>
+    <van-dialog v-model:show="closeShow" title="停止销售">
+      <div class="text-center">{{closed_reason}}</div>
+    </van-dialog>
   </div>
 </template>
 
@@ -284,6 +287,7 @@ const descriptionShow = ref(false);
 const showRight = ref(false);
 const initialize = ref(false);
 const disabled = ref(false);
+const closeShow = ref(false);
 
 const selectedCount = ref(0);
 const selectedBetAmount = ref(0);
@@ -515,8 +519,21 @@ const submitItem4 = (data: any) => {
 };
 const showPopUp = () => {
   if (selectedItemList.value.length == 0) {
-    showToast("该彩票注单最高金额：0。00");
+    showToast("请选择投注数据。");
   } else {
+    if (g_type.value == "azxy10" && Number(lotteryUserConfigItem.value.azxy10_max_bet) == 0) {
+      showToast("该彩票注单最高金额：0。00");
+      return;
+    }
+
+    if (g_type.value == "azxy10" && selectedBetAmount.value > lotteryUserConfigItem.value.azxy10_max_bet) {
+      showToast("该彩票单注最高金额：" + lotteryUserConfigItem.value.azxy10_max_bet)
+      return;
+    }
+    if (g_type.value == "azxy10" && selectedBetAmount.value < lotteryUserConfigItem.value.azxy10_lower_bet) {
+      showToast("该彩票单注最低金额：" + lotteryUserConfigItem.value.azxy10_lower_bet)
+      return;
+    }
     showBottom.value = true;
   }
 };
