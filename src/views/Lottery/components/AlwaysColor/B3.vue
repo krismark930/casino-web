@@ -191,7 +191,7 @@
     </van-popup>
     <van-dialog v-model:show="descriptionShow" :title="descriptionTitle">
       <div class="p-2 h-[400px] overflow-y-scroll">
-        <p>{{descriptionSubTitle}}</p>
+        <p>{{ descriptionSubTitle }}</p>
         <div class="font-bold text-red-500"> 1、第一球 ~ 第三球</div>
         <div class="text-blue-500">第一球~第三球：</div>
         <p>第一球、第二球、第三球：指下注的每一球特码与开出之号码其开奖顺序及开奖号码相同，视为中奖，如第一球开出号码 8，下注第一球为 8 者视为中奖，其余情形视为不中奖。</p>
@@ -245,7 +245,7 @@
     </van-dialog>
     <van-dialog v-model:show="alertShow" title="提示">
       <div class="text-center">当前彩票已经封盘，请稍后再进行下注！</div>
-      <div class="text-center">{{alertContent}}</div>
+      <div class="text-center">{{ alertContent }}</div>
     </van-dialog>
   </div>
 </template>
@@ -264,6 +264,7 @@ import { lotteryScheduleStore } from "@/stores/lottery_schedule";
 import { lotteryResultStore } from "@/stores/lottery_result";
 import { lotteryOddsStore } from "@/stores/lottery_odds";
 import { lotterySaveStore } from "@/stores/lottery_save";
+import { lotteryConfigStore } from "@/stores/lottery_config";
 import { storeToRefs } from "pinia";
 import moment from "moment-timezone";
 const { dispatchUserMoney } = useAuthStore();
@@ -273,6 +274,7 @@ const { dispatchBeforeLotteryResult } = lotteryResultStore();
 const { dispatchBirthHistory } = lotteryResultStore();
 const { dispatchLotteryOdds } = lotteryOddsStore();
 const { dispatchSaveLottery } = lotterySaveStore();
+const { dispatchLotteryUserConfig } = lotteryConfigStore();
 
 const props = defineProps<{ title: string, alertContent: string, g_type: string, descriptionTitle: string, descriptionSubTitle: string }>();
 
@@ -348,7 +350,7 @@ const onFinish = async () => {
   timerId.value = setInterval(async () => {
     runCount.value++;
     await dispatchBeforeLotteryResult({ g_type: g_type.value, type: "b3" });
-    if(runCount.value > 5) {
+    if (runCount.value > 5) {
       clearInterval(timerId.value);
       timerId.value = null;
       runCount.value = 0;
@@ -477,11 +479,15 @@ const errMessage = computed(() => {
   const { getErrMessage } = storeToRefs(lotterySaveStore());
   return getErrMessage.value;
 });
+const lotteryUserConfigItem = computed(() => {
+  const { getLotteryUserConfigItem } = storeToRefs(lotteryConfigStore());
+  return getLotteryUserConfigItem.value;
+})
 
 const onChangeTime = (time: any) => {
   if (time.total <= 120000) {
     if (!disabled.value) {
-      showToast("已封盘")    
+      showToast("已封盘")
     }
     disabled.value = true;
   }
@@ -536,8 +542,47 @@ const submitItem4 = (data: any) => {
 };
 const showPopUp = () => {
   if (selectedItemList.value.length == 0) {
-    showToast("请选择投注数据。");
+    showToast("该彩票注单最高金额：0。00");
   } else {
+    if (g_type.value == "d3" && lotteryUserConfigItem.value.d3_max_bet == "0.00") {
+      showToast("该彩票注单最高金额：0。00");
+      return;
+    }
+    if (g_type.value == "p3" && lotteryUserConfigItem.value.p3_max_bet == "0.00") {
+      showToast("该彩票注单最高金额：0。00");
+      return;
+    }
+    if (g_type.value == "t3" && lotteryUserConfigItem.value.p3_max_bet == "0.00") {
+      showToast("该彩票注单最高金额：0。00");
+      return;
+    }
+
+    if (g_type.value == "d3" && selectedBetAmount.value > lotteryUserConfigItem.value.d3_max_bet) {
+      showToast("该彩票单注最高金额：" + lotteryUserConfigItem.value.d3_max_bet)
+      return;
+    }
+    if (g_type.value == "d3" && selectedBetAmount.value < lotteryUserConfigItem.value.d3_lower_bet) {
+      showToast("该彩票单注最低金额：" + lotteryUserConfigItem.value.d3_lower_bet)
+      return;
+    }
+
+    if (g_type.value == "p3" && selectedBetAmount.value > lotteryUserConfigItem.value.p3_max_bet) {
+      showToast("该彩票单注最高金额：" + lotteryUserConfigItem.value.p3_max_bet)
+      return;
+    }
+    if (g_type.value == "p3" && selectedBetAmount.value < lotteryUserConfigItem.value.p3_lower_bet) {
+      showToast("该彩票单注最低金额：" + lotteryUserConfigItem.value.p3_lower_bet)
+      return;
+    }
+
+    if (g_type.value == "t3" && selectedBetAmount.value > lotteryUserConfigItem.value.t3_max_bet) {
+      showToast("该彩票单注最高金额：" + lotteryUserConfigItem.value.t3_max_bet)
+      return;
+    }
+    if (g_type.value == "t3" && selectedBetAmount.value < lotteryUserConfigItem.value.t3_lower_bet) {
+      showToast("该彩票单注最低金额：" + lotteryUserConfigItem.value.t3_lower_bet)
+      return;
+    }
     showBottom.value = true;
   }
 };
@@ -545,6 +590,11 @@ const showBirthHistory = () => {
   historyShow.value = !historyShow.value;
 };
 onMounted(async () => {
+  if (user.value.id == undefined) {
+    showToast("你必须先登录。");
+    router.push({ name: "login" });
+    return;
+  }
   alertShow.value = false;
   const loading = ElLoading.service({
     lock: true,
@@ -556,6 +606,7 @@ onMounted(async () => {
   await dispatchLotterySchedule({ g_type: g_type.value, type: "b3" });
   await dispatchBeforeLotteryResult({ g_type: g_type.value, type: "b3" });
   await dispatchLotteryOdds({ g_type: g_type.value, type: "b3" });
+  await dispatchLotteryUserConfig({}, token.value);
   console.log(lotteryStatus.value);
   loading.close();
 });
@@ -597,6 +648,7 @@ onUnmounted(() => {
   line-height: 1;
   margin-top: 6px;
 }
+
 .six-title {
   position: absolute;
   left: 164px;

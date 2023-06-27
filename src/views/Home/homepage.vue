@@ -17,7 +17,7 @@
                     <img class="w-[15px] h-[15px]" src="../../assets/images/home/icon-2.png" alt="" />
                     <div class="h-[20px] w-[251px] flex items-center">
                         <marquee behavior="scroll" direction="left">
-                            <span class="w-full text-[12px] text-[#757392]">{{webGonggaoMsg}}</span>
+                            <span class="w-full text-[12px] text-[#757392]">{{ webGonggaoMsg }}</span>
                         </marquee>
                     </div>
                     <img @click="openGame" class="w-[64px] h-[20px]" src="../../assets/images/home/hot.png" alt="" />
@@ -45,11 +45,10 @@
             <div class="tab_box">
                 <div class="tab_left">
                     <div class="tab_item" v-for="(item, index) in tabList" @click="getTab(item.id)" :key="index + 3000">
-                        <img :src="
-                            active == item.id
+                        <img :src="active == item.id
                                 ? item.icon.active
                                 : item.icon.inactive
-                        " alt="" />
+                            " alt="" />
                     </div>
                 </div>
                 <div class="tab_right">
@@ -337,11 +336,27 @@ const redirectBBINUrl = computed(() => {
     const { getRedirectBBINUrl } = storeToRefs(bbinGameStore());
     return getRedirectBBINUrl.value;
 })
-const errMessage = computed(() => {
+const ogErrMessage = computed(() => {
     const { getErrMessage } = storeToRefs(ogGameStore());
     return getErrMessage.value;
 })
-const success = computed(() => {
+const bbinErrMessage = computed(() => {
+    const { getErrMessage } = storeToRefs(bbinGameStore());
+    return getErrMessage.value;
+})
+const agErrMessage = computed(() => {
+    const { getErrMessage } = storeToRefs(agGameStore());
+    return getErrMessage.value;
+})
+const agSuccess = computed(() => {
+    const { getSuccess } = storeToRefs(ogGameStore());
+    return getSuccess.value
+})
+const bbinSuccess = computed(() => {
+    const { getSuccess } = storeToRefs(ogGameStore());
+    return getSuccess.value
+})
+const ogSuccess = computed(() => {
     const { getSuccess } = storeToRefs(ogGameStore());
     return getSuccess.value
 })
@@ -377,7 +392,7 @@ onMounted(async () => {
     useHead({
         title,
     })
-    swipeItem.value = sysConfigItem.value.web_banner_wap.split("|").filter(item => item !== '').map(item => {
+    swipeItem.value = sysConfigItem.value.web_banner_wap.split("|").filter((item: any) => item !== '').map((item: any) => {
         item = FILE_BASE_URL + "/storage" + item;
         return item;
     });
@@ -405,6 +420,9 @@ const goDetail = async (path: string, redirect: string) => {
             return;
         }
         if (path == "PT_SLOT" && (user.value.PT == 0 || sysConfigItem.value.PT == 0 || sysConfigItem.value.PT_Repair == 1)) {
+            console.log(user.value.PT);
+            console.log(sysConfigItem.value.PT);
+            console.log(sysConfigItem.value.PT_Repair);
             showToast("开元棋牌维护中，请稍候再试......");
             return;
         }
@@ -437,29 +455,42 @@ const goDetail = async (path: string, redirect: string) => {
 
             if (redirect == "OG_GAME") {
                 await dispatchRedirectOGUrl({}, token.value)
+                if (ogSuccess.value && redirectOGUrl.value != "") {
+                    window.open(redirectOGUrl.value, '_blank');
+                } else {
+                    showToast(ogErrMessage.value);
+                }
             } else if (redirect == "AG_GAME_2") {
                 await dispatchRedirectAGUrl({ game_type: 2 }, token.value);
+                if (agSuccess.value && redirectAGUrl.value != "") {
+                    window.open(redirectAGUrl.value, '_blank');
+                } else {
+                    showToast(agErrMessage.value);
+                }
             } else if (redirect == "AG_GAME_1") {
                 await dispatchRedirectAGUrl({ game_type: 1 }, token.value);
+                if (agSuccess.value && redirectAGUrl.value != "") {
+                    window.open(redirectAGUrl.value, '_blank');
+                } else {
+                    showToast(agErrMessage.value);
+                }
             } else if (redirect == "AG_GAME_4") {
                 await dispatchRedirectAGUrl({ game_type: 4 }, token.value);
+                if (agSuccess.value && redirectAGUrl.value != "") {
+                    window.open(redirectAGUrl.value, '_blank');
+                } else {
+                    showToast(agErrMessage.value);
+                }
             } else if (redirect == "BBIN_GAME_1") {
                 await dispatchRedirectBBINUrl({ game_type: 1 }, token.value);
+                if (bbinSuccess.value && redirectBBINUrl.value != "") {
+                    window.open(redirectBBINUrl.value, '_blank');
+                } else {
+                    showToast(bbinErrMessage.value);
+                }
             }
 
             loading.close();
-
-            if (success.value) {
-                if (redirectOGUrl.value != "") {
-                    window.open(redirectOGUrl.value, '_blank');
-                } else if (redirectAGUrl.value != "") {
-                    window.open(redirectAGUrl.value, '_blank');
-                } else if (redirectBBINUrl.value != "") {
-                    window.open(redirectBBINUrl.value, '_blank');
-                }
-            } else {
-                showToast(errMessage.value);
-            }
         }
     }
 };

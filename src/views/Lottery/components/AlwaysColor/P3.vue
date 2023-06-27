@@ -1,7 +1,7 @@
 <template>
   <B3 :title="title" :alertContent="alertContent" :g_type="g_type" :descriptionTitle="descriptionTitle" :descriptionSubTitle="descriptionSubTitle"/>
 </template>
-<script setup>
+<script lang="ts" setup>
 import { ref } from "vue";
 import B3 from "./B3.vue";
 const title = ref("排列三");

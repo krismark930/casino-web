@@ -1,4 +1,3 @@
-export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 export const BASE_URL = import.meta.env.VITE_BASE_URL;
 export const FILE_BASE_URL = import.meta.env.VITE_FILE_BASE_URL;
 export const HOST_URL = import.meta.env.VITE_HOST_URL;
@@ -112,6 +111,8 @@ export const GET_CRYPTO = "/deposit/get-crypto";
 export const SYSTEM_SMS_ALL = "/user/message/system-sms-all";
 export const GET_SYSTEM_SMS = "/user/message/get-system-sms";
 export const DELETE_SYSTEM_SMS = "/user/message/delete-system-sms";
+
+export const LOTTERY_USER_CONFIG = "/user/lottery-config/item";
 
 const config = {
   api: {

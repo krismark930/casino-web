@@ -32,9 +32,11 @@
 			<div class="hall_box animated fadeInLeft">
 				<div class="tab_bottom">
 					<div class="tab_bottom_box">
-						<div class="tab_bottom_item" v-for="(item, index) in tabItemList" :key='index' @click="goDetail(item.path)">
-							<span v-if="item.name">{{ item.name }}</span>
-							<img v-if="item.img" class="item_icon" :src="(item as any).img" alt="">
+						<div v-for="(item, index) in tabItemList" :key='index'>
+							<div class="tab_bottom_item" v-if="item.hide != 1" @click="goDetail(item.path)">
+								<span v-if="item.name">{{ item.name }}</span>
+								<img v-if="item.img" class="item_icon" :src="(item as any).img" alt="">
+							</div>
 						</div>
 					</div>
 				</div>
@@ -45,20 +47,25 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth';
-import {useRouter} from "vue-router";
-import { ref, computed } from "vue";
+import { useSysConfigStore } from '@/stores/sysConfig';
+import { useRouter } from "vue-router";
+import { ref, computed, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 const router = useRouter();
+const { getSysConfigValue } = useSysConfigStore();
+
 const tabItemList = ref([
 	{
 		name: '重庆时时彩',
 		img: new URL("@/assets/images/lottery/CQSSC.png", import.meta.url).href,
-		path: "CQSSC"
+		path: "CQSSC",
+		hide: 0,
 	},
 	{
 		name: '河内五分彩',
 		img: new URL("@/assets/images/lottery/FFC5.png", import.meta.url).href,
-		path: "FFC5"
+		path: "FFC5",
+		hide: 0,
 	},
 	// {
 	// 	name: '腾讯时时彩',
@@ -73,72 +80,86 @@ const tabItemList = ref([
 	{
 		name: '澳洲幸运5',
 		img: new URL("@/assets/images/lottery/AZXY5.png", import.meta.url).href,
-		path: "AZXY5"
+		path: "AZXY5",
+		hide: 0,
 	},
 	{
 		name: '澳洲幸运10',
 		img: new URL("@/assets/images/lottery/AZXY10.png", import.meta.url).href,
-		path: "AZXY10"
+		path: "AZXY10",
+		hide: 0,
 	},
 	{
 		name: '幸运飞艇',
 		img: new URL("@/assets/images/lottery/XYFT.png", import.meta.url).href,
-		path: "XYFT"
+		path: "XYFT",
+		hide: 0,
 	},
 	{
 		name: '北京PK拾',
 		img: new URL("@/assets/images/lottery/BJPK.png", import.meta.url).href,
-		path: "BJPK"
+		path: "BJPK",
+		hide: 0,
 	},
 	{
 		name: '天津时时彩',
 		img: new URL("@/assets/images/lottery/TJSSC.png", import.meta.url).href,
-		path: "TJSSC"
+		path: "TJSSC",
+		hide: 0,
 	},
 	{
 		name: '新疆时时彩',
 		img: new URL("@/assets/images/lottery/JXSSC.png", import.meta.url).href,
-		path: "JXSSC"
+		path: "JXSSC",
+		hide: 0,
 	},
 	{
 		name: '重庆十分彩',
 		img: new URL("@/assets/images/lottery/CQSF.png", import.meta.url).href,
-		path: "CQSF"
+		path: "CQSF",
+		hide: 0,
 	},
 	{
 		name: '广东十分彩',
 		img: new URL("@/assets/images/lottery/GDSF.png", import.meta.url).href,
-		path: "GDSF"
+		path: "GDSF",
+		hide: 0,
 	},
 	{
 		name: '广西十分彩',
 		img: new URL("@/assets/images/lottery/GXSF.png", import.meta.url).href,
-		path: "GXSF"
+		path: "GXSF",
+		hide: 0,
 	},
 	{
 		name: '天津十分彩',
 		img: new URL("@/assets/images/lottery/TJSF.png", import.meta.url).href,
-		path: "TJSF"
+		path: "TJSF",
+		hide: 0,
 	},
 	{
 		name: '上海时时乐',
 		img: new URL("@/assets/images/lottery/SHSSL.png", import.meta.url).href,
-		path: "SHSSL"
+		path: "SHSSL",
+		hide: 0,
 	},
 	{
 		name: '广东11选5',
 		img: new URL("@/assets/images/lottery/GD11.png", import.meta.url).href,
-		path: "GD11"
+		path: "GD11",
+		hide: 0,
 	},
 	{
 		name: '福彩3D',
 		img: new URL("@/assets/images/lottery/D3.png", import.meta.url).href,
-		path: "D3"
+		path: "D3",
+		hide: 0,
 	},
 	{
 		name: '排列3',
 		img: new URL("@/assets/images/lottery/P3.png", import.meta.url).href,
-		path: "P3"
+		path: "P3",
+		hide: 0,
 	},
 	// {
 	// 	name: '江苏快三',
@@ -199,17 +220,23 @@ const tabItemList = ref([
 	{
 		name: '香港六合彩',
 		img: new URL("@/assets/images/lottery/MarkSix.png", import.meta.url).href,
-		path: 'MarkSix'
+		path: 'MarkSix',
+		hide: 0,
 	},
 	{
 		name: '澳门六合彩',
 		img: new URL("@/assets/images/lottery/MacaoMarkSix.png", import.meta.url).href,
-		path: 'MacaoMarkSix'
+		path: 'MacaoMarkSix',
+		hide: 0,
 	},
 ])
 const onClickLeft = () => {
 	router.push({ name: 'home' })
 }
+const sysConfigItem = computed(() => {
+	const { getSysConfig } = storeToRefs(useSysConfigStore());
+	return getSysConfig.value;
+})
 const user = computed(() => {
 	const { getUser } = storeToRefs(useAuthStore());
 	return getUser.value;
@@ -218,6 +245,61 @@ const goDetail = (path: string) => {
 	console.log(path);
 	router.push({ name: path })
 }
+onMounted(async () => {
+	await getSysConfigValue();
+	console.log(JSON.parse(sysConfigItem.value.Lottery_Config))
+	let lotteryConfig = JSON.parse(sysConfigItem.value.Lottery_Config);
+	tabItemList.value.map((item: any) => {
+		if (item.path == "CQSSC") {
+			item.hide = lotteryConfig.cq.hide
+		}
+		if (item.path == "FFC5") {
+			item.hide = lotteryConfig.ffc5.hide
+		}
+		if (item.path == "AZXY5") {
+			item.hide = lotteryConfig.azxy5.hide
+		}
+		if (item.path == "AZXY10") {
+			item.hide = lotteryConfig.azxy10.hide
+		}
+		if (item.path == "XYFT") {
+			item.hide = lotteryConfig.xyft.hide
+		}
+		if (item.path == "BJPK") {
+			item.hide = lotteryConfig.pk10.hide
+		}
+		if (item.path == "TJSSC") {
+			item.hide = lotteryConfig.tj.hide
+		}
+		if (item.path == "JXSSC") {
+			item.hide = lotteryConfig.jx.hide
+		}
+		if (item.path == "CQSF") {
+			item.hide = lotteryConfig.cq.hide
+		}
+		if (item.path == "GDSF") {
+			item.hide = lotteryConfig.cqsf.hide
+		}
+		if (item.path == "GXSF") {
+			item.hide = lotteryConfig.gxsf.hide
+		}
+		if (item.path == "TJSF") {
+			item.hide = lotteryConfig.tjsf.hide
+		}
+		if (item.path == "SHSSL") {
+			item.hide = lotteryConfig.t3.hide
+		}
+		if (item.path == "GD11") {
+			item.hide = lotteryConfig.gd11.hide
+		}
+		if (item.path == "D3") {
+			item.hide = lotteryConfig.d3.hide
+		}
+		if (item.path == "P3") {
+			item.hide = lotteryConfig.p3.hide
+		}
+	})
+})
 </script>
 
 <style lang="scss" scoped>
@@ -376,6 +458,7 @@ const goDetail = (path: string) => {
 }
 
 .tab_bottom {
+	height: 500px;
 	.tab_bottom_box {
 		display: flex;
 		justify-content: center;

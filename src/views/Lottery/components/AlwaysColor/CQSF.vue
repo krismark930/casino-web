@@ -371,6 +371,7 @@ import { lotteryScheduleStore } from "@/stores/lottery_schedule";
 import { lotteryResultStore } from "@/stores/lottery_result";
 import { lotteryOddsStore } from "@/stores/lottery_odds";
 import { lotterySaveStore } from "@/stores/lottery_save";
+import { lotteryConfigStore } from "@/stores/lottery_config";
 import { storeToRefs } from "pinia";
 import moment from "moment-timezone";
 const { dispatchUserMoney } = useAuthStore();
@@ -380,6 +381,7 @@ const { dispatchBeforeLotteryResult } = lotteryResultStore();
 const { dispatchBirthHistory } = lotteryResultStore();
 const { dispatchLotteryOdds } = lotteryOddsStore();
 const { dispatchSaveLottery } = lotterySaveStore();
+const { dispatchLotteryUserConfig } = lotteryConfigStore();
 
 const blueColor = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]);
 const redColor = ref([19, 20]);
@@ -569,6 +571,10 @@ const errMessage = computed(() => {
   const { getErrMessage } = storeToRefs(lotterySaveStore());
   return getErrMessage.value;
 });
+const lotteryUserConfigItem = computed(() => {
+  const { getLotteryUserConfigItem } = storeToRefs(lotteryConfigStore());
+  return getLotteryUserConfigItem.value;
+})
 
 const onChangeTime = (time: any) => {
   if (time.total <= 120000) {
@@ -628,8 +634,21 @@ const submitItem4 = (data: any) => {
 };
 const showPopUp = () => {
   if (selectedItemList.value.length == 0) {
-    showToast("请选择投注数据。");
+    showToast("该彩票注单最高金额：0。00");
   } else {
+    if (g_type.value == "cqsf" && lotteryUserConfigItem.value.cqsf_max_bet == "0.00") {
+      showToast("该彩票注单最高金额：0。00");
+      return;
+    }
+
+    if (g_type.value == "cqsf" && selectedBetAmount.value > lotteryUserConfigItem.value.cqsf_max_bet) {
+      showToast("该彩票单注最高金额：" + lotteryUserConfigItem.value.cqsf_max_bet)
+      return;
+    }
+    if (g_type.value == "cqsf" && selectedBetAmount.value < lotteryUserConfigItem.value.cqsf_lower_bet) {
+      showToast("该彩票单注最低金额：" + lotteryUserConfigItem.value.cqsf_lower_bet)
+      return;
+    }
     showBottom.value = true;
   }
 };
@@ -637,6 +656,11 @@ const showBirthHistory = () => {
   historyShow.value = !historyShow.value;
 };
 onMounted(async () => {
+  if (user.value.id == undefined) {
+    showToast("你必须先登录。");
+    router.push({ name: "login" });
+    return;
+  }
   alertShow.value = false;
   const loading = ElLoading.service({
     lock: true,
@@ -648,6 +672,7 @@ onMounted(async () => {
   await dispatchBeforeLotteryResult({ g_type: g_type.value, type: "other" });
   await dispatchLotteryOdds({ g_type: g_type.value, type: "other" });
   await dispatchLotterySchedule({ g_type: g_type.value, type: "other" });
+  await dispatchLotteryUserConfig({}, token.value);
   console.log(lotteryStatus.value);
   loading.close();
 });
