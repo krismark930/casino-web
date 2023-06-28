@@ -2,7 +2,7 @@
 <template>
   <div class="w-full">
     <div class="border border-b-2 ">
-			<van-nav-bar>
+      <van-nav-bar>
         <template #left> </template>
         <template #title>
           <span class="text-[#8F8F9E]">我的客服</span>
@@ -11,15 +11,12 @@
           <span class="text-[#8F8F9E]" @click="goDetail('feedback')">意见反馈</span>
         </template>
       </van-nav-bar>
-		</div>
+    </div>
     <div class=" animated fadeInLeft">
-      <div class="shadow-[0_0px_15px_-1px_rgba(0,0,0,0.3)] m-1 rounded-md p-2">
+      <div class="shadow-[0_0px_15px_-1px_rgba(0,0,0,0.3)] m-1 rounded-md p-2" @click="goServicePage">
         <div class="flex justify-start items-center">
-          <img
-            class="w-[72px] h-[72px]"
-            referrerpolicy="no-referrer"
-            src="https://lanhu.oss-cn-beijing.aliyuncs.com/psllz9quefd6kqltg6yydolicnf1nr7jgfb6dcb10-137e-484b-b025-7a561d4701c6"
-          />
+          <img class="w-[72px] h-[72px]" referrerpolicy="no-referrer"
+            src="https://lanhu.oss-cn-beijing.aliyuncs.com/psllz9quefd6kqltg6yydolicnf1nr7jgfb6dcb10-137e-484b-b025-7a561d4701c6" />
           <div class="block ml-[16px]">
             <div class="text-[18px] font-bold text-[#676782]">HI,尊敬的用户</div>
             <div class="text-[13px] text-[#676782] font-medium">欢迎来到客服中心</div>
@@ -38,10 +35,13 @@
 </template>
 <script setup lang="ts">
 import router from '@/router';
-const goDetail = (value:string) => {
+const goDetail = (value: string) => {
   router.push(value)
+}
+const goServicePage = () => {
+  location.href = import.meta.env.VITE_SERVICE_URL + "/kefu.php";
+  // window.open(import.meta.env.VITE_SERVICE_URL + "/kefu.php", '_blank');
 }
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

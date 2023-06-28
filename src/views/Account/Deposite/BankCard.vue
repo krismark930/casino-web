@@ -5,7 +5,7 @@
                 <span class="font-medium text-[#EB2020] text-[25px] ">*</span>
                 <span class="font-medium text-[#454558] w-[130px] pt-[5px]">存款人姓名</span>
                 <input type="text" v-model="name" placeholder="请输入存款人姓名" name="name" id="name"
-                            class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB] placeholder:text-[15px] text-[20px] font-bold" />
+                    class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB] placeholder:text-[15px] text-[20px] font-bold" />
             </div>
             <p class="w-full h-[1px] bg-gray-200 mb-[2px]"></p>
             <span class="font-medium text-[#EB2020] text-[12px] ">为及时到账，请务必输入正确的存款人姓名</span>
@@ -14,10 +14,10 @@
             <span class="font-semibold text-[#454558]">银行卡类型</span>
             <div class="flex">
                 <div v-for="(item, index) in bankList" :key="index" @click="setBank(item)"
-                    :class="[active === item.id? 'border border-blue-600':'border border-gray-300']"
+                    :class="[active === item.id ? 'border border-blue-600' : 'border border-gray-300']"
                     class="relative flex justify-center items-center mr-1 mt-[6px] w-[90px] px-[6px] py-[7px]  rounded-sm">
-                    <img :src="item.img" class="w-[18px] mr-1" alt="bank"/>
-                    <span class="text-blue-700">{{item.name}}</span>
+                    <img :src="item.img" class="w-[18px] mr-1" alt="bank" />
+                    <span class="text-blue-700">{{ item.name }}</span>
                     <div v-if="active === item.id" class="absolute right-0 bottom-0 image-text_1">
                         <img class="w-[15px] h-[15px]" referrerpolicy="no-referrer"
                             src="https://lanhu.oss-cn-beijing.aliyuncs.com/psar0m8wrggrj43h4jglt2a1pbq77if1jnf79e9304-f10e-4ff2-9724-bb196a573e26" />
@@ -28,10 +28,11 @@
         </div>
         <div class="px-2 bg-white mt-[14px]">
             <label for="name" class="block font-semibold text-[#454558] ">所属银行</label>
-            <div class="mt-[5px] border-b border-gray-300 focus-within:border-gray-500 pb-[5px] flex justify-between items-center" @click="selectBank">
+            <div class="mt-[5px] border-b border-gray-300 focus-within:border-gray-500 pb-[5px] flex justify-between items-center"
+                @click="selectBank">
                 <input type="text" v-model="bankType" placeholder="请选择银行" name="name" id="name"
                     class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB]" />
-                    <img class="w-[10px] h-[13px] mr-2" src="@/assets/images/my/arrow-right.png" alt="arrow" />
+                <img class="w-[10px] h-[13px] mr-2" src="@/assets/images/my/arrow-right.png" alt="arrow" />
             </div>
         </div>
         <div class="mt-[10px] bg-white p-2">
@@ -52,9 +53,11 @@
             </div>
             <div class="text-wrapper_2 flex justify-start items-end mt-[20px]">
                 <p class="text-[15px]">￥</p>
-                <p class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB] placeholder:text-[12px] text-[25px] font-bold">{{ amount }}</p>
+                <p
+                    class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB] placeholder:text-[12px] text-[25px] font-bold">
+                    {{ amount }}</p>
             </div>
-        </div>       
+        </div>
         <div class="flex-col bg-white">
             <div class="px-2 pt-2">
                 <button :class="[name ? 'bg-blue-500' : 'bg-blue-200']"
@@ -66,7 +69,7 @@
 
             <div class="text-[12px] pb-[60px] flex justify-center pt-[30px]">
                 <span class="text_21">存款遇到问题？联系</span>
-                <span class="text-blue-300">人工客服</span>
+                <span class="text-blue-300" @click="goServicePage">人工客服</span>
                 <span class="text_23">&nbsp;解决</span>
             </div>
         </div>
@@ -79,12 +82,15 @@
                 </div>
                 <p class="bg-gray-400 h-[1px] "></p>
                 <div class="px-2 relative">
-                    <input v-model="search" class="rounded-full h-[30px] bg-gray-300 flex justify-center w-full pl-4 my-1 placeholder:text-[15px] placeholder:pb-1 items-center" placeholder="">
-                    <img src="@/assets/images/account/icon-search.png" class="w-[20px] absolute top-[5px] left-3"/>
+                    <input v-model="search"
+                        class="rounded-full h-[30px] bg-gray-300 flex justify-center w-full pl-4 my-1 placeholder:text-[15px] placeholder:pb-1 items-center"
+                        placeholder="">
+                    <img src="@/assets/images/account/icon-search.png" class="w-[20px] absolute top-[5px] left-3" />
                 </div>
-                <div v-for="(item, index) in userBankList" :key="index" class="flex px-2 items-center" @click="selectBankType(item)">
-                    <div v-if="search === '' || search===item.name" class="flex px-2 items-center">
-                        <img :src="item.img" class="w-[20px]"/>
+                <div v-for="(item, index) in userBankList" :key="index" class="flex px-2 items-center"
+                    @click="selectBankType(item)">
+                    <div v-if="search === '' || search === item.name" class="flex px-2 items-center">
+                        <img :src="item.img" class="w-[20px]" />
                         <p class="pl-1 text-[14px] font-bold py-1">{{ item.name }}</p>
                     </div>
                 </div>
@@ -96,7 +102,8 @@
 import { ref, computed, toRefs, onMounted } from 'vue';
 import { storeToRefs } from "pinia";
 import { useDepositStore } from '@/stores/deposit';
-import {useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth';
+import { showToast } from 'vant';
 import router from '@/router';
 const { getBankList } = useDepositStore();
 
@@ -106,7 +113,7 @@ const bankType = ref('');
 const bankCardType = ref('储蓄卡');
 const name = ref('');
 const amount = ref(109);
-const state = defineProps<{bank: any}>();
+const state = defineProps<{ bank: any }>();
 const { bank } = toRefs(state);
 const show = ref(false);
 const bankNo = ref("");
@@ -228,10 +235,10 @@ const banks = computed(() => {
     return getBanks.value
 })
 const token = computed(() => {
-    const {getToken} = storeToRefs(useAuthStore());
+    const { getToken } = storeToRefs(useAuthStore());
     return getToken.value;
 })
-const selectBankType = (item:any) => {
+const selectBankType = (item: any) => {
     show.value = false
     let temp = banks.value.filter((data: any) => data.bank_type == item.name);
     console.log(temp);
@@ -239,6 +246,10 @@ const selectBankType = (item:any) => {
     bankNo.value = temp[0].bank_card_type;
     bankAccount.value = temp[0].bank_account;
     bankAddress.value = temp[0].bank_type;
+}
+const goServicePage = () => {
+    location.href = import.meta.env.VITE_SERVICE_URL + "/kefu.php";
+    // window.open(import.meta.env.VITE_SERVICE_URL + "/kefu.php", '_blank');
 }
 const selectBank = () => {
     search.value = '';
@@ -248,19 +259,25 @@ const selectToken = (item: any) => {
     tokenActive.value = item.id;
     amount.value = item.value;
 };
-const setBank = async (item:any) => {
+const setBank = async (item: any) => {
     active.value = item.id;
     bankCardType.value = item.name
-    await getBankList({bank_card_type: bankCardType.value}, token.value);
+    await getBankList({ bank_card_type: bankCardType.value }, token.value);
     console.log(banks.value);
 }
 const onClick_1 = () => {
-    if(name.value){
-        router.push({ name: 'depositInformation', params:{name: name.value, bankID: bank.value.id, money: amount.value}, query: {bank: bankNo.value, bankAccount: bankAccount.value, bankAddress: bankAddress.value}});
+    if (name.value) {
+        console.log(search.value);
+        if (search.value == "") {
+            showToast("请添加银行");
+            router.push({ name: "addBank2" });
+            return;
+        }
+        router.push({ name: 'depositInformation', params: { name: name.value, bankID: bank.value.id, money: amount.value }, query: { bank: bankNo.value, bankAccount: bankAccount.value, bankAddress: bankAddress.value } });
     }
 }
 onMounted(async () => {
-    await getBankList({bank_card_type: bankCardType.value}, token.value);
+    await getBankList({ bank_card_type: bankCardType.value }, token.value);
     console.log(banks.value);
 })
 </script>

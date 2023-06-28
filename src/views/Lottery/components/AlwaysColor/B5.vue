@@ -684,6 +684,7 @@ const showPopUp = () => {
       showToast("该彩票注单最高金额：0。00");
       return;
     }
+    console.log(lotteryUserConfigItem.value.tj_max_bet);
     if (g_type.value == "tj" && Number(lotteryUserConfigItem.value.tj_max_bet) == 0) {
       showToast("该彩票注单最高金额：0。00");
       return;
