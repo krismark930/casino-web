@@ -35,13 +35,23 @@
 </template>
 <script setup lang="ts">
 import router from '@/router';
+import { toRefs, ref, computed, onMounted } from 'vue';
+import { storeToRefs } from "pinia";
+import { useSysConfigStore } from '@/stores/sysConfig';
+const { getConfigValue } = useSysConfigStore();
 const goDetail = (value: string) => {
   router.push(value)
 }
+const config = computed(() => {
+  const { getConfig } = storeToRefs(useSysConfigStore());
+  return getConfig.value
+})
 const goServicePage = () => {
-  location.href = import.meta.env.VITE_SERVICE_URL + "/kefu.php";
-  // window.open(import.meta.env.VITE_SERVICE_URL + "/kefu.php", '_blank');
+  location.href = config.value.kf1;
 }
+onMounted(async () => {
+  await getConfigValue();
+})
 </script>
 
 <style scoped lang="scss"></style>

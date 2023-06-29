@@ -102,10 +102,12 @@
 import { ref, computed, toRefs, onMounted } from 'vue';
 import { storeToRefs } from "pinia";
 import { useDepositStore } from '@/stores/deposit';
+import { useSysConfigStore } from '@/stores/sysConfig';
 import { useAuthStore } from '@/stores/auth';
 import { showToast } from 'vant';
 import router from '@/router';
 const { getBankList } = useDepositStore();
+const { getConfigValue } = useSysConfigStore();
 
 const tokenActive = ref(1);
 const active = ref(1);
@@ -238,6 +240,10 @@ const token = computed(() => {
     const { getToken } = storeToRefs(useAuthStore());
     return getToken.value;
 })
+const config = computed(() => {
+    const { getConfig } = storeToRefs(useSysConfigStore());
+    return getConfig.value
+})
 const selectBankType = (item: any) => {
     show.value = false
     let temp = banks.value.filter((data: any) => data.bank_type == item.name);
@@ -248,8 +254,7 @@ const selectBankType = (item: any) => {
     bankAddress.value = temp[0].bank_type;
 }
 const goServicePage = () => {
-    location.href = import.meta.env.VITE_SERVICE_URL + "/kefu.php";
-    // window.open(import.meta.env.VITE_SERVICE_URL + "/kefu.php", '_blank');
+    location.href = config.value.kf1;
 }
 const selectBank = () => {
     search.value = '';
@@ -279,6 +284,7 @@ const onClick_1 = () => {
 }
 onMounted(async () => {
     await getBankList({ bank_card_type: bankCardType.value }, token.value);
+    await getConfigValue();
     console.log(banks.value);
 })
 </script>
