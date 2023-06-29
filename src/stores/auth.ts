@@ -67,6 +67,8 @@ export const useAuthStore = defineStore({
           showToast('由于密码错误次数过多,您的帐号已经被锁定。请联系在线客服解锁!!!')
         } else if (error.response.data.message === "The password must be at least 6 characters.") {
           showToast('密码必须至少为 6 个字符。')
+        } else if (error.response.data.message === "account suspended") {
+          showToast('您的帐户已禁用。')
         }
       }
     },

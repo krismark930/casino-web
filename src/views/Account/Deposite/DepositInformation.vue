@@ -135,6 +135,11 @@ const deleteResult = () => {
 }
 const submitResult = async () => {
     let response = await sumbitDeposit(user.value.id, money.value, name.value, bank.value, bankAccount.value, bankAddress.value, token.value);
+    console.log(response);
+    if (response.success) {
+        showToast("存款成功。");
+        router.go(-1)
+    }
 }
 </script>
 <style scoped lang="scss">

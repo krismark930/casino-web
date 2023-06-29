@@ -260,6 +260,7 @@ const selectToken = (item: any) => {
     amount.value = item.value;
 };
 const setBank = async (item: any) => {
+    bankType.value = "";
     active.value = item.id;
     bankCardType.value = item.name
     await getBankList({ bank_card_type: bankCardType.value }, token.value);
@@ -267,8 +268,8 @@ const setBank = async (item: any) => {
 }
 const onClick_1 = () => {
     if (name.value) {
-        console.log(search.value);
-        if (search.value == "") {
+        console.log(bankType.value);
+        if (bankType.value == "" || bankType.value == null || bankType.value == undefined) {
             showToast("请添加银行");
             router.push({ name: "addBank2" });
             return;
