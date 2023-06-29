@@ -4,15 +4,15 @@
             <div class="font-medium text-[#454558] mt-0">虚拟币种类</div>
             <div class="flex">
                 <div v-for="(item, index) in tokenList" :key="index" @click=selectToken(item.id)
-                    class="relative flex justify-center items-center mt-[18px] w-[90px] px-[6px] py-[3px] mx-[10px] border rounded-sm" :class="[tokenActive === item.id ? 'border-blue-800' : '']">
-                    <img class="w-[22px] h-[22px] mr-[5px]" referrerpolicy="no-referrer"
-                        :src="item.icon"/>
-                    <span class="text-blue-700">{{item.name}}</span>
+                    class="relative flex justify-center items-center mt-[18px] w-[90px] px-[6px] py-[3px] mx-[10px] border rounded-sm"
+                    :class="[tokenActive === item.id ? 'border-blue-800' : '']">
+                    <img class="w-[22px] h-[22px] mr-[5px]" referrerpolicy="no-referrer" :src="item.icon" />
+                    <span class="text-blue-700">{{ item.name }}</span>
                     <div v-if="tokenActive === item.id" class="absolute right-0 bottom-0 image-text_1">
                         <img class="w-[15px] h-[15px]" referrerpolicy="no-referrer"
-                            src="@/assets/images/deposit/active.png"/>
+                            src="@/assets/images/deposit/active.png" />
                     </div>
-                </div>                
+                </div>
             </div>
         </div>
         <div class="mt-[10px] bg-white py-1 px-2">
@@ -20,7 +20,8 @@
             <p class="w-full h-[1px] bg-gray-200 my-[7px]"></p>
             <div class="text-wrapper_2 flex justify-start items-end">
                 <p class="text-[15px]">￥</p>
-                <input type="text" v-model="amount" @input="amountChange" placeholder="请输入￥100~￥1000000" name="name" id="name"
+                <input type="text" v-model="amount" @input="amountChange" placeholder="请输入￥100~￥1000000" name="name"
+                    id="name"
                     class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB] placeholder:text-[12px] text-[25px] font-bold" />
             </div>
             <p class="w-full h-[1px] bg-gray-200 my-[7px]"></p>
@@ -28,10 +29,10 @@
                 Min Deposit amount is 100。
             </p>
             <div class="text-[12px] flex justify-between py-1">
-                <p class="text_15">参考汇率1USDT≈7.22000CNY</p>
+                <p class="text_15">参考汇率1USDT≈{{ sysConfigItem.USDT?.toFixed(2) }}CNY</p>
                 <div class="text-wrapper_3">
                     <span class="text_16">预计支付</span>
-                    <span class="text-blue-300">1,347.7088</span>
+                    <span class="text-blue-300">{{ (Number(amount) / sysConfigItem.USDT).toFixed(2) }}</span>
                     <span class="text_18">USDT</span>
                 </div>
             </div>
@@ -40,72 +41,87 @@
                 <div class="image-text_1 flex justify-between items-center">
                     <span class="text-blue-300 mr-1">了解虚拟币</span>
                     <img class="w-[13px] h-[13px]" referrerpolicy="no-referrer"
-                        src="@/assets/images/my/arrow-double-right.png"/>
+                        src="@/assets/images/my/arrow-double-right.png" />
                 </div>
             </div>
         </div>
         <div class="flex-col bg-white">
             <div class="px-2 pt-2">
                 <button :class="[amount ? 'bg-blue-500' : 'bg-blue-200']"
-                    class="text-[18px] flex justify-center bg-blue-500 text-white rounded-sm w-full py-1"
-                    @click="onSubmit">
+                    class="text-[18px] flex justify-center bg-blue-500 text-white rounded-sm w-full py-1" @click="onSubmit">
                     <span class="text_20">立即存款</span>
                 </button>
             </div>
 
             <div class="text-[12px] pb-[60px] flex justify-center pt-[30px]">
                 <span class="text_21">存款遇到问题？联系</span>
-                <span class="text-blue-300">人工客服</span>
+                <span class="text-blue-300" @click="goServicePage">人工客服</span>
                 <span class="text_23">&nbsp;解决</span>
             </div>
         </div>
     </div>
-    
 </template>
 <script setup lang="ts">
-import { toRefs ,ref, computed, onMounted} from 'vue';
+import { toRefs, ref, computed, onMounted } from 'vue';
 import router from '@/router';
-import {storeToRefs} from "pinia";
-import {useAuthStore } from '@/stores/auth';
+import { storeToRefs } from "pinia";
+import { useAuthStore } from '@/stores/auth';
 import { useDepositStore } from '@/stores/deposit';
+import { useSysConfigStore } from '@/stores/sysConfig';
+import { showToast } from 'vant';
 const { dispatchGetCrypto } = useDepositStore();
+const { getSysConfigValue } = useSysConfigStore();
 const amountFlag = ref(false);
 const amount = ref('');
-const state = defineProps<{tokenList:Array<any>}>();
+const state = defineProps<{ tokenList: Array<any> }>();
 const { tokenList } = toRefs(state);
 const tokenActive = ref(1);
 const emit = defineEmits(['selectToken']);
 const token = computed(() => {
-    const {getToken} = storeToRefs(useAuthStore());
+    const { getToken } = storeToRefs(useAuthStore());
     return getToken.value;
 })
 const crypto = computed(() => {
-    const {getCrypto} = storeToRefs(useDepositStore());
+    const { getCrypto } = storeToRefs(useDepositStore());
     return getCrypto.value;
+})
+const sysConfigItem = computed(() => {
+    const { getSysConfig } = storeToRefs(useSysConfigStore());
+    return getSysConfig.value;
 })
 const amountChange = () => {
     amountFlag.value = false;
 }
 const selectToken = async (id: number) => {
     tokenActive.value = id;
-    await dispatchGetCrypto({crypto_type: tokenList.value[tokenActive.value - 1].name}, token.value)
+    await dispatchGetCrypto({ crypto_type: tokenList.value[tokenActive.value - 1].name }, token.value)
+}
+const goServicePage = () => {
+    location.href = import.meta.env.VITE_SERVICE_URL + "/kefu.php";
+    // window.open(import.meta.env.VITE_SERVICE_URL + "/kefu.php", '_blank');
 }
 const onSubmit = () => {
     let temp = {};
-    tokenList.value.map((item:any) => {
-        if(item.id === tokenActive.value){
+    tokenList.value.map((item: any) => {
+        if (item.id === tokenActive.value) {
             temp = item;
         }
     })
 
-    if(amount.value <= 100){
+    if (amount.value <= 100) {
         amountFlag.value = true;
-    }else{
-        console.log(crypto);
-        router.push({ name: 'depositInformation', params:{name:'crypto', bankID: (temp as any).name, money: amount.value}, query: {bank: crypto.value.bank, bankAccount: crypto.value.bank_address, bankAddress: crypto.value.bank_account}});
+    } else {
+        console.log(crypto.value);
+        if (crypto.value == null) {
+            showToast("请添加银行");
+            router.push({ name: "addCrypto" });
+            return;
+        }
+        router.push({ name: 'depositInformation', params: { name: 'crypto', bankID: (temp as any).name, money: amount.value }, query: { bank: crypto.value.bank, bankAccount: crypto.value.bank_address, bankAddress: crypto.value.bank_account } });
     }
 }
 onMounted(async () => {
-    await dispatchGetCrypto({crypto_type: tokenList.value[tokenActive.value - 1].name}, token.value)
+    await dispatchGetCrypto({ crypto_type: tokenList.value[tokenActive.value - 1].name }, token.value)
+    await getSysConfigValue();
 })
 </script>

@@ -665,6 +665,11 @@ const submitItem4 = (data: any) => {
   selectedItemList.value = [...selectedItemList1.value, ...selectedItemList2.value, ...selectedItemList3.value, ...selectedItemList4.value];
 };
 const showPopUp = () => {
+  console.log(user.value.Status);
+  if (user.value.Status == 1) {
+    showToast("您的帐户已被暂停。");
+    return;
+  }
   if (selectedItemList.value.length == 0) {
     showToast("请选择投注数据。");
   } else {
@@ -684,6 +689,7 @@ const showPopUp = () => {
       showToast("该彩票注单最高金额：0。00");
       return;
     }
+    console.log(lotteryUserConfigItem.value.tj_max_bet);
     if (g_type.value == "tj" && Number(lotteryUserConfigItem.value.tj_max_bet) == 0) {
       showToast("该彩票注单最高金额：0。00");
       return;

@@ -7,13 +7,15 @@
 import { ref, defineComponent } from 'vue'
 import socket from "@/utils/socket";
 import { useAuthStore } from '@/stores/auth';
+import {showToast} from 'vant'
 
 export default defineComponent({
   setup() {
     const { dispatchLogout } = useAuthStore();
-
+    const {setMoney} = useAuthStore();
     return {
-      dispatchLogout
+      dispatchLogout,
+      setMoney
     }
   },
   data() {
@@ -23,8 +25,11 @@ export default defineComponent({
   },
   sockets: {
     logout() {
-      console.log("logout");
+      showToast('您的帐户已禁用。')
       this.dispatchLogout();      
+    },
+    updateMoney(currentAmount) {
+      this.setMoney(currentAmount);
     }
   }
 })
