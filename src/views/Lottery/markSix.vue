@@ -967,6 +967,10 @@ const submitItemList = (data: any) => {
   selectedItemList.value = [...selectedItemList.value, ...data];
 };
 const showPopUp = () => {
+  if (user.value.Status == 1) {
+    showToast("您的帐户已被暂停。");
+    return;
+  }
   if (class1.value === "过关") {
     if (betAmount.value == "") {
       showToast("输入投注金额。");

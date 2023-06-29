@@ -179,6 +179,10 @@ export default {
         router.push("login")
         return;
       }
+      if (this.user.Status == 1) {
+        showToast("您的帐户已禁用。")
+        return;
+      }
       if (this.bettingValue > this.user.Money) {
         showToast('下注金额不可大于信用额度。')
       } else {

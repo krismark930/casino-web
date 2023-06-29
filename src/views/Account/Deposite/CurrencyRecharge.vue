@@ -29,7 +29,7 @@
                 Min Deposit amount is 100。
             </p>
             <div class="text-[12px] flex justify-between py-1">
-                <p class="text_15">参考汇率1USDT≈{{ sysConfigItem.USDT.toFixed(2) }}CNY</p>
+                <p class="text_15">参考汇率1USDT≈{{ sysConfigItem.USDT?.toFixed(2) }}CNY</p>
                 <div class="text-wrapper_3">
                     <span class="text_16">预计支付</span>
                     <span class="text-blue-300">{{ (Number(amount) / sysConfigItem.USDT).toFixed(2) }}</span>
