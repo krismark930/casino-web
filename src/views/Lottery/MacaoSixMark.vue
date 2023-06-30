@@ -512,7 +512,7 @@ const { dispatchCompatibleLotteryBet } = macaoKatanStore();
 const { dispatchZodaicEvenLotteryBet } = macaoKatanStore();
 const { dispatchMantissaEvenLotteryBet } = macaoKatanStore();
 const { dispatchMissAllLotteryBet } = macaoKatanStore();
-const { dispatchSixMarkBirthHistory } = macaoKatanStore();
+const { dispatchMacaoSixMarkBirthHistory } = macaoKatanStore();
 const { dispatchUserMoney } = useAuthStore();
 const time = ref(0);
 const show = ref(false);
@@ -1436,7 +1436,7 @@ onMounted(async () => {
   await dispatchGameStatus({ class1: class1.value });
   await dispatchGameVersion({});
   await dispatchGameResult({});
-  await dispatchSixMarkBirthHistory({});
+  await dispatchMacaoSixMarkBirthHistory({});
 });
 </script>
 
