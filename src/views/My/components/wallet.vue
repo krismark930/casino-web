@@ -1,8 +1,9 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
     <div class="shadow-[0_0px_10px_-1px_rgba(0,0,0,0.3)] m-1 rounded-sm px-2 pt-[15px] pb-[7px] flex justify-between">
-        <div class="">
-            <div class="text-[20px] text-[#7A7A7A] mt-[12px]" v-if="user.id != undefined">{{ user.Money }}</div>
+        <div class="text-[20px] text-[#7A7A7A] text-center" v-if="user.id != undefined">
+            <div>您的余额是</div>
+            <div class="text-[#4EABFF]">{{ user.Money }}</div>
         </div>
         <div class="flex justify-between w-[150px]">
             <div @click="goDetail(item.path)" class="image-text_1 flex-col justify-between"

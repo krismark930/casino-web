@@ -114,6 +114,8 @@ export const DELETE_SYSTEM_SMS = "/user/message/delete-system-sms";
 
 export const LOTTERY_USER_CONFIG = "/user/lottery-config/item";
 
+export const GET_PAYMENT_METHOD = "/user/payment-method";
+
 const config = {
   api: {
     SIGN_IN: BASE_URL + "/users/login",

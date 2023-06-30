@@ -47,7 +47,7 @@
                     <!-- <yebi-currency v-if="active === 1" :tokenList="tokenList" :tokenActive="tokenActive"
                         @selectToken="selectToken" /> -->
                     <bank-card v-if="active === 1" :bank="cryptoList[active]"/>
-                    <!-- <alipay-currency v-if="active === 4" /> -->
+                    <ly-currency v-if="active === 2" />
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import router from '@/router';
-import AlipayCurrency from './AlipayCurrency.vue';
+import LyCurrency from './LYPayCurrency.vue';
 import BankCard from './BankCard.vue';
 import CurrencyRecharge from './CurrencyRecharge.vue';
 import YebiCurrency from './YebiCurrency.vue';
@@ -95,13 +95,13 @@ const cryptoList = ref([
         name: '银行卡转账',
         new: false
     },
-    // {
-    //     id: 4,
-    //     icon: new URL('@/assets/images/deposit/alipay.png', import.meta.url)
-    //         .href,
-    //     name: '支付宝',
-    //     new: false
-    // }
+    {
+        id: 4,
+        icon: new URL('@/assets/images/deposit/alipay.png', import.meta.url)
+            .href,
+        name: 'LY支付',
+        new: false
+    }
 ]);
 onMounted(async () => {
 });
