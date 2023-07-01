@@ -114,6 +114,8 @@ export const DELETE_SYSTEM_SMS = "/user/message/delete-system-sms";
 
 export const LOTTERY_USER_CONFIG = "/user/lottery-config/item";
 
+export const GET_PAYMENT_METHOD = "/user/payment-method";
+
 const config = {
   api: {
     SIGN_IN: BASE_URL + "/users/login",
@@ -132,6 +134,7 @@ const config = {
     GET_CRYPTO_ACCOUNT_LIST_BY_USER_ID: BASE_URL + "/account/get-crypto-list",
     GET_BANK_ACCOUNT_LIST_BY_USER_ID: BASE_URL + "/account/get-bank-list",
     GET_SYSCONFIG: BASE_URL + "/transfer/getSysConfig",
+    GET_CONFIG: BASE_URL + "/user/home/config",
     BET_FT: BASE_URL + "/sport/bet_ft",
     MULTI_BET_FT: BASE_URL + "/sport/multi_bet_ft",
     GET_BETTING_RECORDS: BASE_URL + "/sport/get_betting_records",

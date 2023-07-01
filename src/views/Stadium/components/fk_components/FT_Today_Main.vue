@@ -196,6 +196,7 @@
 import OrderModal from "@/views/Stadium/components/Ordermodal.vue"
 import { defineComponent } from 'vue';
 import { bettingStore } from "@/stores/betting";
+import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
 import { showToast } from 'vant';
 export default defineComponent({
@@ -497,6 +498,10 @@ export default defineComponent({
 		}
 	},
 	computed: {
+		user: function () {
+			const { getUser } = useAuthStore();
+			return getUser.value;
+		}
 	},
 	watch: {
 		changedFTDataList: function (newDataList: any) {
@@ -1716,6 +1721,9 @@ export default defineComponent({
 			});
 		},
 		handleModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			if (this.user.FT_R_SO == 0) {
+				showToast("对不起,本场有下注金额最高:  RMB 0");
+			}
 			console.log(rateData);
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["m_date"] = gameData["m_date"];

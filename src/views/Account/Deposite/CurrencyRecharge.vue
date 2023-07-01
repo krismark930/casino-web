@@ -71,6 +71,7 @@ import { useSysConfigStore } from '@/stores/sysConfig';
 import { showToast } from 'vant';
 const { dispatchGetCrypto } = useDepositStore();
 const { getSysConfigValue } = useSysConfigStore();
+const { getConfigValue } = useSysConfigStore();
 const amountFlag = ref(false);
 const amount = ref('');
 const state = defineProps<{ tokenList: Array<any> }>();
@@ -89,6 +90,10 @@ const sysConfigItem = computed(() => {
     const { getSysConfig } = storeToRefs(useSysConfigStore());
     return getSysConfig.value;
 })
+const config = computed(() => {
+    const { getConfig } = storeToRefs(useSysConfigStore());
+    return getConfig.value
+})
 const amountChange = () => {
     amountFlag.value = false;
 }
@@ -97,8 +102,7 @@ const selectToken = async (id: number) => {
     await dispatchGetCrypto({ crypto_type: tokenList.value[tokenActive.value - 1].name }, token.value)
 }
 const goServicePage = () => {
-    location.href = import.meta.env.VITE_SERVICE_URL + "/kefu.php";
-    // window.open(import.meta.env.VITE_SERVICE_URL + "/kefu.php", '_blank');
+    location.href = config.value.kf1;
 }
 const onSubmit = () => {
     let temp = {};
@@ -123,5 +127,6 @@ const onSubmit = () => {
 onMounted(async () => {
     await dispatchGetCrypto({ crypto_type: tokenList.value[tokenActive.value - 1].name }, token.value)
     await getSysConfigValue();
+    await getConfigValue();
 })
 </script>

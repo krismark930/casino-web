@@ -3,50 +3,56 @@ import axios from "axios";
 import config from "@/config"
 import { BASE_URL } from "@/config";
 import { GET_CRYPTO } from "@/config";
+import { GET_PAYMENT_METHOD } from "@/config";
 
-import type { 
+import type {
   IUser,
- } from "@/interface";
+} from "@/interface";
 
 export const useDepositStore = defineStore({
-  id:"deposit",
-  state:() =>({
+  id: "deposit",
+  state: () => ({
     banks: [] as Array<any>,
     crypto: null,
     currencyRate: 1,
     walletAddress: '',
     isCrypto: true,
+    paymentMethod: {}
   }),
-  getters:{
+  getters: {
     getBanks: (state) => state.banks,
     getCurrencyRate: (state) => state.currencyRate,
     getWalletAddress: (state) => state.walletAddress,
     getIsCrypto: (state) => state.isCrypto,
-    getCrypto: (state) => state.crypto
+    getCrypto: (state) => state.crypto,
+    getPaymentMethod: (state) => state.paymentMethod
   },
-  actions:{
-    setBanks(banks:any){
+  actions: {
+    setBanks(banks: any) {
       this.banks = banks;
     },
     setCrypto(crypto: any) {
       this.crypto = crypto;
     },
-    setCurrencyRate(currencyRate:IUser){
+    setCurrencyRate(currencyRate: IUser) {
       this.currencyRate = currencyRate;
     },
-    setWalletAddress(walletAddress: string){
+    setWalletAddress(walletAddress: string) {
       this.walletAddress = walletAddress;
     },
-    setIsCrypto(isCrypto: boolean){
+    setIsCrypto(isCrypto: boolean) {
       this.isCrypto = isCrypto;
     },
-    async dispatchGetCrypto(data, token) {
+    setPaymentMethod(paymentMethod: any) {
+      this.paymentMethod = paymentMethod;
+    },
+    async dispatchGetCrypto(data: any, token: string) {
       try {
         const headerConfig = {
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Access-Control-Allow-Origin": "*"
-            },
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Access-Control-Allow-Origin": "*"
+          },
         };
         const response = await axios.post(`${BASE_URL}${GET_CRYPTO}`, data, headerConfig);
         if (response.status == 200) {
@@ -56,14 +62,30 @@ export const useDepositStore = defineStore({
         return e;
       }
     },
-    async getBankList(data, token) {
+    async dispatchPaymentMethod(data: any, token: string) {
+      try {
+        const headerConfig = {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Access-Control-Allow-Origin": "*"
+          },
+        };
+        const response = await axios.post(`${BASE_URL}${GET_PAYMENT_METHOD}`, data, headerConfig);
+        if (response.status == 200) {
+          this.setPaymentMethod(response.data.data);
+        }
+      } catch (e) {
+        return e;
+      }
+    },
+    async getBankList(data: any, token: string) {
       try {
         const url = config.api.BANK_LIST;
         const headerConfig = {
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Access-Control-Allow-Origin": "*"
-            },
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Access-Control-Allow-Origin": "*"
+          },
         };
         const response = await axios.post(url, data, headerConfig);
         if (response.status == 200) {
@@ -74,33 +96,33 @@ export const useDepositStore = defineStore({
       }
     },
     async sumbitDeposit(userId: number, amount: number, name: string, bank: string, bankAccount: string, bankAddress: string, token: string) {
-      try{
+      try {
         console.log(bankAccount)
         const url = config.api.DEPOSIT;
         let data = {
-          userId : userId,
+          userId: userId,
           isCrypto: this.isCrypto,
           money: amount,
-          name : name,
+          name: name,
           bank: bank,
           bankAccount: bankAccount,
           bankAddress: bankAddress,
         };
         const headerConfig = {
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Access-Control-Allow-Origin": "*"
-            },
-        };        
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Access-Control-Allow-Origin": "*"
+          },
+        };
         const response = (await axios.post(url, data, headerConfig)).data;
         console.log(response);
         return response;
-      }catch(e){
-        
+      } catch (e) {
+
       }
     }
   },
-  persist:{
-    enabled:true
+  persist: {
+    enabled: true
   }
 });

@@ -6,7 +6,7 @@
                 <div class="text-[18px] font-medium text-[#676782]" @click="goDetail('login')" v-if="user.id == undefined">
                     点击登录/注册
                 </div>
-                <div class="text-[18px] font-medium text-[#676782]" v-else>{{ user.UserName }}</div>
+                <div class="text-[24px] font-medium text-[#4EABFF]" v-else>{{ user.UserName }}</div>
                 <img class="w-[10px] h-[15px]" src="@/assets/images/my/arrow-right.png" alt="" />
             </div>
         </div>

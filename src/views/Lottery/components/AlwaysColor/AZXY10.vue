@@ -265,6 +265,7 @@ import { lotteryScheduleStore } from "@/stores/lottery_schedule";
 import { lotteryResultStore } from "@/stores/lottery_result";
 import { lotteryOddsStore } from "@/stores/lottery_odds";
 import { lotterySaveStore } from "@/stores/lottery_save";
+import { lotteryConfigStore } from "@/stores/lottery_config";
 import { storeToRefs } from "pinia";
 import moment from "moment-timezone";
 const { dispatchUserMoney } = useAuthStore();
@@ -274,6 +275,7 @@ const { dispatchBeforeLotteryResult } = lotteryResultStore();
 const { dispatchBirthHistory } = lotteryResultStore();
 const { dispatchLotteryOdds } = lotteryOddsStore();
 const { dispatchSaveLottery } = lotterySaveStore();
+const { dispatchLotteryUserConfig } = lotteryConfigStore();
 
 const colorArray = ref(['#f8f02b', '#00a5ff', '#535351', '#d15000', '#2da695', '#1600ca', '#cecdd2', '#f10104', '#af0600', '#166410']);
 
@@ -460,6 +462,10 @@ const errMessage = computed(() => {
   const { getErrMessage } = storeToRefs(lotterySaveStore());
   return getErrMessage.value;
 });
+const lotteryUserConfigItem = computed(() => {
+  const { getLotteryUserConfigItem } = storeToRefs(lotteryConfigStore());
+  return getLotteryUserConfigItem.value;
+})
 
 const onChangeTime = (time: any) => {
   if (time.total <= 120000) {
@@ -556,6 +562,7 @@ onMounted(async () => {
   await dispatchBeforeLotteryResult({ g_type: g_type.value, type: "other" });
   await dispatchLotteryOdds({ g_type: g_type.value, type: "other" });
   await dispatchLotterySchedule({ g_type: g_type.value, type: "other" });
+  await dispatchLotteryUserConfig({}, token.value);
   console.log(lotteryStatus.value);
   loading.close();
 });
