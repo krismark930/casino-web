@@ -7,6 +7,7 @@
                     点击登录/注册
                 </div>
                 <div class="text-[24px] font-medium text-[#4EABFF]" v-else>{{ user.UserName }}</div>
+                <el-button type="primary" v-if="user.id != undefined" @click="logout">登出</el-button>
                 <img class="w-[10px] h-[15px]" src="@/assets/images/my/arrow-right.png" alt="" />
             </div>
         </div>
@@ -29,12 +30,22 @@
 import { toRefs, computed } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
-import router from "@/router";
+//import router from "@/router";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const { dispatchLogout } = useAuthStore();
 
 const user = computed(() => {
     const { getUser } = storeToRefs(useAuthStore());
     return getUser.value;
 })
+
+const logout = () => {
+    dispatchLogout();
+    router.push({ name: "login" });
+}
 
 const goDetail = (value: string) => {
     router.push({ name: value })
