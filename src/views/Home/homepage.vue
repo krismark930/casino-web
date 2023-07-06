@@ -349,11 +349,11 @@ const agErrMessage = computed(() => {
     return getErrMessage.value;
 })
 const agSuccess = computed(() => {
-    const { getSuccess } = storeToRefs(ogGameStore());
+    const { getSuccess } = storeToRefs(agGameStore());
     return getSuccess.value
 })
 const bbinSuccess = computed(() => {
-    const { getSuccess } = storeToRefs(ogGameStore());
+    const { getSuccess } = storeToRefs(bbinGameStore());
     return getSuccess.value
 })
 const ogSuccess = computed(() => {
@@ -462,6 +462,7 @@ const goDetail = async (path: string, redirect: string) => {
                 }
             } else if (redirect == "AG_GAME_2") {
                 await dispatchRedirectAGUrl({ game_type: 2 }, token.value);
+                console.log(agSuccess.value, redirectAGUrl.value);
                 if (agSuccess.value && redirectAGUrl.value != "") {
                     window.open(redirectAGUrl.value, '_blank');
                 } else {

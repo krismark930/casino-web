@@ -55,6 +55,9 @@ export const useAuthStore = defineStore({
           localStorage.setItem("token", (response.data.data.access_token));
           this.setUser(response.data.data as any)
           socket.io.emit("join", username);
+          setInterval(async () => {
+            await this.getProfile(this.token);
+          }, 10000)
           router.push({ name: 'my' })
         }
       } catch (error: any) {
