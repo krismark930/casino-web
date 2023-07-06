@@ -1,7 +1,7 @@
 export const BASE_URL = import.meta.env.VITE_BASE_URL;
 export const FILE_BASE_URL = import.meta.env.VITE_FILE_BASE_URL;
 export const HOST_URL = import.meta.env.VITE_HOST_URL;
-
+export const LY_PAY_URL = import.meta.env.VITE_LY_PAY_URL;
 
 export const MATCH_SPORT = "/user/match-sport";
 export const GET_FT_DATA = "/ft-data";
@@ -115,6 +115,12 @@ export const DELETE_SYSTEM_SMS = "/user/message/delete-system-sms";
 export const LOTTERY_USER_CONFIG = "/user/lottery-config/item";
 
 export const GET_PAYMENT_METHOD = "/user/payment-method";
+
+export const LY_PAY = "/user/third-party-payment/ly-pay";
+
+export const POST_ALL = "/user/post/all";
+export const ADD_POST = "/user/post/add";
+export const GET_POST = "/user/post/item";
 
 const config = {
   api: {

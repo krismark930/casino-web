@@ -15,16 +15,16 @@
             </div>
             <div class="flex justify-start items-center py-1 px-2 " @click="selectAddress">
                 <img v-if="queryType.img" class="w-[25px] h-[25px] mr-2" referrerpolicy="no-referrer"
-                                    :src="queryType.img" />
+                    :src="queryType.img" />
                 <div class="w-full">
                     <div class=" flex justify-between w-full">
-                        <p v-if="queryType.name">{{queryType.name}}</p>
+                        <p v-if="queryType.name">{{ queryType.name }}</p>
                         <p v-if="!queryType.name" class="text-gray-400">请选择问题类型</p>
-                        <img src="@/assets/images/my/arrow-right.png"  class="w-[10px] h-[15px]"/>
+                        <img src="@/assets/images/my/arrow-right.png" class="w-[10px] h-[15px]" />
                     </div>
                 </div>
-                
-                
+
+
             </div>
             <div class="flex px-2 pt-2 bg-white">
                 <p class="">问题描述</p><span class="text-red-500 text-[20px]">*</span>
@@ -32,25 +32,24 @@
             </div>
             <div class=" pt-1 bg-white mt-1">
                 <div class="relative">
-                    <textarea rows="9" class="px-2 w-full" v-model="content" placeholder="请详细描述您的问题或建议！" ></textarea>
-                    <p class="absolute bottom-0 right-2 text-gray-400">{{content.length}}/200</p>
+                    <textarea rows="9" class="px-2 w-full" v-model="content" placeholder="请详细描述您的问题或建议！"></textarea>
+                    <p class="absolute bottom-0 right-2 text-gray-400">{{ content.length }}/200</p>
                 </div>
                 <p class="h-[1px] w-screen bg-gray-300"></p>
             </div>
             <div class="flex px-2 pt-1 bg-white relative">
                 <input type="file" class="hidden" ref="fileChoose" @change="selectFiles">
                 <div v-for="(item, index) in imageList" :key="index" class="relative pt-1 pr-1">
-                    <img class="w-[35px] h-[35px]" referrerpolicy="no-referrer"
-                                    :src="item.img" />
+                    <img class="w-[35px] h-[35px]" referrerpolicy="no-referrer" :src="item.img" />
                     <img class="w-[12px] h-[12px] absolute top-[5px] right-[5px]" referrerpolicy="no-referrer"
-                    src="@/assets/images/customer/icon-remove.png" @click="removeImage(item.id)"/>
+                        src="@/assets/images/customer/icon-remove.png" @click="removeImage(item.id)" />
                 </div>
                 <div class="pt-1">
                     <img @click="addImage" class="w-[35px] h-[35px]" referrerpolicy="no-referrer"
-                                    src="@/assets/images/customer/icon-upload.png" />
+                        src="@/assets/images/customer/icon-upload.png" />
                 </div>
                 <div class="absolute top-1 right-2">
-                    <p class="text-gray-400">{{imageList.length}}/3</p>
+                    <p class="text-gray-400">{{ imageList.length }}/3</p>
                 </div>
             </div>
             <div class="text-gray-400 text-[13px] px-2 py-1 bg-white ">
@@ -75,45 +74,53 @@
                     <span></span>
                 </div>
                 <p class="bg-gray-200 h-[0.5px] "></p>
-                <div v-for="(item, index) in bankCardList" :key="index" class="flex justify-between px-2 items-center border-b" @click="selectQueryType(item)">
+                <div v-for="(item, index) in bankCardList" :key="index"
+                    class="flex justify-between px-2 items-center border-b" @click="selectQueryType(item)">
                     <div class="flex items-center">
-                        <img :src="item.img" class="w-[25px]"/>
+                        <img :src="item.img" class="w-[25px]" />
                         <p class="pl-2 text-[14px] py-1">{{ item.name }}</p>
                     </div>
-                    <div><img class="w-[20px]" v-if="active === item.id" src="@/assets/images/customer/icon-check.png"></div>
+                    <div><img class="w-[20px]" v-if="active === item.id" src="@/assets/images/customer/icon-check.png">
+                    </div>
                 </div>
             </div>
         </van-popup>
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import router from '@/router';
 import { showToast } from 'vant';
 import { Cascader } from 'vant';
+import { postStore } from '@/stores/post';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
+import { ElLoading } from 'element-plus';
+
+const { dispatchAddPost } = postStore();
 
 const fileChoose = ref(null);
 const show = ref(false);
 const active = ref(0)
 const queryType = ref({
-        id: 1,
-        img: new URL('@/assets/images/account/icon-withdraw.png', import.meta.url).href,
-        name: '存款问题',
-    });
+    id: 1,
+    img: new URL('@/assets/images/account/icon-withdraw.png', import.meta.url).href,
+    name: '存款问题',
+});
 const imgFiles = ref([]);
 const cascaderValue = ref('');
 const imageLength = ref(0);
 const chars = ref(0);
 const options = [
-      {
+    {
         text: 'Zhejiang',
         value: '330000',
-      },
-      {
+    },
+    {
         text: 'Jiangsu',
         value: '320000',
-      },
-    ];
+    },
+];
 const bankCardList = ref([
     {
         id: 1,
@@ -158,14 +165,60 @@ const addImage = () => {
 const value = ref([
     { url: 'https://fastly.jsdelivr.net/npm/@vant/assets/leaf.jpeg' },
 ]);
+const token = computed(() => {
+    const { getToken } = storeToRefs(useAuthStore());
+    return getToken.value;
+})
+const user = computed(() => {
+    const { getUser } = storeToRefs(useAuthStore());
+    return getUser.value
+})
+const success = computed(() => {
+    const { getSuccess } = storeToRefs(postStore());
+    return getSuccess.value;
+})
+const errMessage = computed(() => {
+    const { getErrMessage } = storeToRefs(postStore());
+    return getErrMessage.value;
+})
 const onClickLeft = () => {
     router.go(-1);
 };
 const onClickRight = () => {
     router.push('myFeedback');
 };
-const submit = () => {
-    showToast('意见已提交');
+const submit = async () => {
+    console.log("11111111", imgFiles.value);
+    if (!user.value.id) {
+        router.push({ name: "login" });
+        return;
+    }
+    if (!queryType.value.name) {
+        showToast("");
+        return;
+    }
+    if (content.value == "") {
+        showToast("");
+        return;
+    }
+    const loading = ElLoading.service({
+        lock: true,
+        text: '加载中...',
+        background: 'rgba(0, 0, 0, 0.7)',
+    })
+    await dispatchAddPost({
+        title: queryType.value.name,
+        content: content.value,
+        img_list: imageList.value
+    }, token.value)
+    loading.close();
+    if (success.value) {
+        showToast("意见已提交");
+        content.value = "";
+        imageList.value = [];
+    } else {
+        showToast(errMessage.value);
+    }
 }
 const selectQueryType = (item: any) => {
     console.log(item)
@@ -182,15 +235,18 @@ const cancel = () => {
     show.value = false;
     active.value = 0;
 }
-const selectFiles = (event:any) => {
-    if(imageList.value.length >= 3)
+const selectFiles = (event: any) => {
+    if (imageList.value.length >= 3)
         return;
-    imgFiles.value = event.target.files;
+    imgFiles.value = event.target.files[0];
+    console.log(event.target.files[0]);
+    let fileName = event.target.files[0].name
     let reader = new FileReader();
     reader.onload = (event) => {
+        console.log(event);
         const imageUrl = event.target?.result
-        let tempList:Array<any> = [...imageList.value];
-        tempList.push({id:imageLength.value + 1, img:imageUrl});
+        let tempList: Array<any> = [...imageList.value];
+        tempList.push({ id: imageLength.value + 1, fileName: fileName, img: imageUrl });
         imageList.value = tempList;
         imageLength.value = imageLength.value + 1;
     };
@@ -200,10 +256,10 @@ const selectFiles = (event:any) => {
 const removeImage = (id: number) => {
     console.log(id)
     console.log(imageList.value);
-    let tempList = imageList.value.filter((item) => item.id !== id);
+    let tempList = imageList.value.filter((item: any) => item.id !== id);
     imageList.value = tempList;
 }
-const goDetail = (value:string) => {
+const goDetail = (value: string) => {
     router.push(value)
 }
 </script>

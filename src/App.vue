@@ -1,21 +1,23 @@
 
 <template>
-  <router-view/>
+  <router-view />
 </template>
 
 <script lang="ts">
 import { ref, defineComponent } from 'vue'
 import socket from "@/utils/socket";
 import { useAuthStore } from '@/stores/auth';
-import {showToast} from 'vant'
+import { showToast } from 'vant'
 
 export default defineComponent({
   setup() {
     const { dispatchLogout } = useAuthStore();
-    const {setMoney} = useAuthStore();
+    const { getProfile } = useAuthStore();
+    const { setMoney } = useAuthStore();
     return {
       dispatchLogout,
-      setMoney
+      setMoney,
+      getProfile,
     }
   },
   data() {
@@ -23,13 +25,26 @@ export default defineComponent({
 
     }
   },
+  computed: {
+    token: function () {
+      const { getToken } = useAuthStore();
+      return getToken
+    }
+  },
   sockets: {
     logout() {
       showToast('您的帐户已禁用。')
-      this.dispatchLogout();      
+      this.dispatchLogout();
     },
     updateMoney(currentAmount) {
       this.setMoney(currentAmount);
+    }
+  },
+  async mounted() {
+    if (this.token != "") {
+      setInterval(async () => {
+        await this.getProfile(this.token);
+      }, 10000)
     }
   }
 })
