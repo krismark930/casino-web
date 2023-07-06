@@ -1,7 +1,7 @@
-sudo docker login  -u admin -p Fh7FSgEQ6hMn8MB7Q4URnh76eEDdIXAg https://docker.biyong.com/
+ docker login  -u casino -p casinoEHAcf6pTU https://docker.flct.io/
 
 ## api
+sudo docker network create casino --driver bridge
+sudo docker rm -f casino-web
 
-sudo docker rm -f film-admin
-
-sudo docker run  --restart=always --network phoenix --name film-admin -p 10002:9001 -d docker.biyong001.com/pre/phoenix-admin:1.0.0-2
+sudo docker run  --restart=always --network casino --name casino-web -p 8082:9001 -d docker.flct.io/casino/casino-web:1.0.0-1
