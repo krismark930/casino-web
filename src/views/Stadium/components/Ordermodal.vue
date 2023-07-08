@@ -3,11 +3,11 @@
   <div class="modal-backdrop">
     <div class="modal">
       <header class="modal-header">
-        <slot v-if="this.bettingOrderData['gameType'] == 'FT'" :name="header">
-          足球 {{ this.bettingOrderData['title'] }}
+        <slot v-if="bettingOrderData['gameType'] == 'FT'" :name="header">
+          足球 {{ bettingOrderData['title'] }}
         </slot>
-        <slot v-if="this.bettingOrderData['gameType'] == 'BK'" :name="header">
-          篮球 {{ this.bettingOrderData['title'] }}
+        <slot v-if="bettingOrderData['gameType'] == 'BK'" :name="header">
+          篮球 {{ bettingOrderData['title'] }}
         </slot>
         <button type="button" class="btn-close" @click="close">
           x
@@ -15,39 +15,42 @@
       </header>
       <van-loading color="#1989fa" class="loading-position" v-if="loading" size="40" />
       <section class="modal-body">
-        {{ this.bettingOrderData['league'] }}
+        {{ bettingOrderData['league'] }}
       </section>
 
-      <section class="modal-body" v-if="this.bettingOrderData.title.includes('让球')">
-        {{ this.bettingOrderData['mbTeam'] }} <Font color="red">{{ this.bettingOrderData.text.replace("+",
-          "").replace("-", "") }}</Font> {{ this.bettingOrderData['tgTeam'] }} <Font color="red">({{
-    this.bettingOrderData.m_ball }}:{{ this.bettingOrderData.t_ball }})</Font>
+      <section class="modal-body" v-if="bettingOrderData.title.includes('让球')">
+        {{ bettingOrderData['mbTeam'] }} <Font color="red">{{ bettingOrderData.text.replace("+",
+          "").replace("-", "") }}</Font> {{ bettingOrderData['tgTeam'] }} <Font color="red">({{
+    bettingOrderData.m_ball }}:{{ bettingOrderData.t_ball }})</Font>
       </section>
       <section class="modal-body" v-else>
-        {{ this.bettingOrderData['mbTeam'] }} <Font color="red">VS</Font> {{ this.bettingOrderData['tgTeam'] }} <Font
-          color="red">({{ this.bettingOrderData.m_ball }}:{{ this.bettingOrderData.t_ball }})</Font>
+        {{ bettingOrderData['mbTeam'] }} <Font color="red">VS</Font> {{ bettingOrderData['tgTeam'] }} <Font
+          color="red">({{ bettingOrderData.m_ball }}:{{ bettingOrderData.t_ball }})</Font>
       </section>
 
-      <section class="modal-body" v-if="this.bettingOrderData.title.includes('大小') || this.bettingOrderData.title.includes('大/小')">
-        <Font color="red">{{ this.bettingOrderData['text'] }}</Font> @ <Font color="red">{{
-          this.bettingOrderData['rate'] }}</Font>
-      </section><section class="modal-body" v-if="this.bettingOrderData.title.includes('单双') || this.bettingOrderData.title.includes('单/双')">
-        <Font color="red">{{ this.bettingOrderData['text'] }}</Font> @ <Font color="red">{{
-          this.bettingOrderData['rate'] }}</Font>
+      <section class="modal-body"
+        v-if="bettingOrderData.title.includes('大小') || bettingOrderData.title.includes('大/小')">
+        <Font color="red">{{ bettingOrderData['text'] }}</Font> @ <Font color="red">{{
+          bettingOrderData['rate'] }}</Font>
       </section>
-      <section class="modal-body" v-else-if="this.bettingOrderData.title.includes('独赢')">
-        <template v-if="this.bettingOrderData['selectedTeam'] != undefined && this.bettingOrderData.selectedTeam != ''">
-          <Font color="red">{{ this.bettingOrderData['selectedTeam'] }}</Font> @ <Font color="red">{{
-            this.bettingOrderData['rate'] }}</Font>
+      <section class="modal-body"
+        v-if="bettingOrderData.title.includes('单双') || bettingOrderData.title.includes('单/双')">
+        <Font color="red">{{ bettingOrderData['text'] }}</Font> @ <Font color="red">{{
+          bettingOrderData['rate'] }}</Font>
+      </section>
+      <section class="modal-body" v-else-if="bettingOrderData.title.includes('独赢')">
+        <template v-if="bettingOrderData['selectedTeam'] != undefined && bettingOrderData.selectedTeam != ''">
+          <Font color="red">{{ bettingOrderData['selectedTeam'] }}</Font> @ <Font color="red">{{
+            bettingOrderData['rate'] }}</Font>
         </template>
         <template v-else>
-          <Font color="red">{{ this.bettingOrderData.text }}</Font> @ <Font color="red">{{
-            this.bettingOrderData['rate'] }}</Font>
+          <Font color="red">{{ bettingOrderData.text }}</Font> @ <Font color="red">{{
+            bettingOrderData['rate'] }}</Font>
         </template>
       </section>
       <section class="modal-body" v-else>
-        <Font color="red">{{ this.bettingOrderData['selectedTeam'] }}</Font> @ <Font color="red">{{
-          this.bettingOrderData['rate'] }}</Font>
+        <Font color="red">{{ bettingOrderData['selectedTeam'] }}</Font> @ <Font color="red">{{
+          bettingOrderData['rate'] }}</Font>
       </section>
       <section class="modal-body">
         <div class="list_input">
@@ -94,12 +97,16 @@
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { bettingStore } from '@/stores/betting';
+import { useSysConfigStore } from '@/stores/sysConfig';
 import router from "@/router";
 import { showToast } from 'vant';
+import socket from '@/utils/socket';
+
 export default {
   name: 'Modal',
   setup() {
     const { dispatchUserMoney } = useAuthStore();
+    const { getSysConfigValue } = useSysConfigStore();
     const {
       dispatchBettingInplay,
       setBetSlip,
@@ -122,6 +129,7 @@ export default {
       dispatchBKBettingToday,
       setBKBetSlip,
       dispatchBKBettingChampion,
+      useSysConfigStore
     };
   },
   props: {
@@ -136,8 +144,10 @@ export default {
       loading: false
     }
   },
-  mounted() {
+  async mounted() {
     console.log(this.bettingOrderData);
+    await this.getSysConfigValue();
+    console.log(this.sysConfigItem);
   },
   computed: {
     success: function () {
@@ -155,6 +165,10 @@ export default {
     errMessage: function () {
       const { getErrMessage } = bettingStore();
       return getErrMessage;
+    },
+    sysConfigItem: function () {
+      const { getSysConfig } = useSysConfigStore();
+      return getSysConfig;
     }
   },
   watch: {
@@ -233,6 +247,9 @@ export default {
           }
           if (this.success) {
             this.dispatchUserMoney(this.bettingValue);
+            if (this.bettingType == "Inplay") {
+              socket.io.emit("warningUser")
+            }
             showToast('操作成功。')
           } else {
             showToast(this.errMessage);
@@ -457,4 +474,5 @@ export default {
   padding: 10px 0;
   font-size: 15px;
   color: white;
-}</style>
+}
+</style>
