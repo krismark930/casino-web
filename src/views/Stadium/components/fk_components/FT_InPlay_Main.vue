@@ -1535,6 +1535,7 @@ export default defineComponent({
 				showToast("对不起,本场有下注金额最高:  RMB 0");
 				return;
 			}
+			console.log(this.user.FT_ROU_Bet);
 			if (gameData.titleList[scoreIndex + 1] == "得分大小" && this.user.FT_ROU_Bet == 0) {
 				showToast("对不起,本场有下注金额最高:  RMB 0");
 				return;
