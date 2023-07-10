@@ -36,7 +36,7 @@ export default defineComponent({
       showToast('您的帐户已禁用。')
       this.dispatchLogout();
     },
-    updateMoney(currentAmount) {
+    updateMoney(currentAmount: any) {
       this.setMoney(currentAmount);
     }
   },

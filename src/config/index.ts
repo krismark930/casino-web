@@ -122,6 +122,8 @@ export const POST_ALL = "/user/post/all";
 export const ADD_POST = "/user/post/add";
 export const GET_POST = "/user/post/item";
 
+export const WEB_SYSTEM_DATA = "/user/web-system-data/item";
+
 const config = {
   api: {
     SIGN_IN: BASE_URL + "/users/login",

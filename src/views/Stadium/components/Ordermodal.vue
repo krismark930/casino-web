@@ -24,17 +24,15 @@
     bettingOrderData.m_ball }}:{{ bettingOrderData.t_ball }})</Font>
       </section>
       <section class="modal-body" v-else>
-        {{ bettingOrderData['mbTeam'] }} <Font color="red">VS</Font> {{ bettingOrderData['tgTeam'] }} <Font
-          color="red">({{ bettingOrderData.m_ball }}:{{ bettingOrderData.t_ball }})</Font>
+        {{ bettingOrderData['mbTeam'] }} <Font color="red">VS</Font> {{ bettingOrderData['tgTeam'] }} <Font color="red">
+          ({{ bettingOrderData.m_ball }}:{{ bettingOrderData.t_ball }})</Font>
       </section>
 
-      <section class="modal-body"
-        v-if="bettingOrderData.title.includes('大小') || bettingOrderData.title.includes('大/小')">
+      <section class="modal-body" v-if="bettingOrderData.title.includes('大小') || bettingOrderData.title.includes('大/小')">
         <Font color="red">{{ bettingOrderData['text'] }}</Font> @ <Font color="red">{{
           bettingOrderData['rate'] }}</Font>
       </section>
-      <section class="modal-body"
-        v-if="bettingOrderData.title.includes('单双') || bettingOrderData.title.includes('单/双')">
+      <section class="modal-body" v-if="bettingOrderData.title.includes('单双') || bettingOrderData.title.includes('单/双')">
         <Font color="red">{{ bettingOrderData['text'] }}</Font> @ <Font color="red">{{
           bettingOrderData['rate'] }}</Font>
       </section>
@@ -105,6 +103,7 @@ import socket from '@/utils/socket';
 export default {
   name: 'Modal',
   setup() {
+    const { dispatchWebSystemData } = bettingStore();
     const { dispatchUserMoney } = useAuthStore();
     const { getSysConfigValue } = useSysConfigStore();
     const {
@@ -129,7 +128,9 @@ export default {
       dispatchBKBettingToday,
       setBKBetSlip,
       dispatchBKBettingChampion,
-      useSysConfigStore
+      useSysConfigStore,
+      getSysConfigValue,
+      dispatchWebSystemData
     };
   },
   props: {
@@ -138,16 +139,18 @@ export default {
   },
   data() {
     return {
-      bettingValue: "",
+      bettingValue: "" as any,
       openKeyboard: false,
-      winValue: "",
+      winValue: "" as any,
       loading: false
     }
   },
   async mounted() {
     console.log(this.bettingOrderData);
     await this.getSysConfigValue();
+    await this.dispatchWebSystemData(this.token);
     console.log(this.sysConfigItem);
+    console.log(this.webSystemItem.BadArea);
   },
   computed: {
     success: function () {
@@ -169,10 +172,18 @@ export default {
     sysConfigItem: function () {
       const { getSysConfig } = useSysConfigStore();
       return getSysConfig;
+    },
+    webSystemItem: function () {
+      const { getWebSystemItem } = bettingStore();
+      return getWebSystemItem;
+    },
+    configItem: function () {
+      const { getConfigItem } = bettingStore();
+      return getConfigItem
     }
   },
   watch: {
-    bettingValue: function (value) {
+    bettingValue: function (value: any) {
       let changedRate = Number(this.bettingOrderData["rate"]) >= 2 ? Number(this.bettingOrderData["rate"]) : Number(this.bettingOrderData["rate"]) + 1
       if (value == 0) {
         this.winValue = "";
@@ -213,8 +224,34 @@ export default {
         }
         console.log(data);
         if (this.bettingValue > 10) {
+          await this.dispatchWebSystemData(this.token);
           this.loading = true;
           if (this.bettingOrderData['gameType'] === "BK") {
+            if (this.configItem.BadMember.split(",").includes(this.user.UserName) && this.bettingOrderData["mbTeam"].includes("第四节")) {
+              showToast("赛程已关闭,无法进行交易!!");
+              this.loading = false;
+              return;
+            }
+            if (this.configItem.BadMember2.split(",").includes(this.user.UserName) && this.bettingOrderData["mbTeam"].includes("加时")) {
+              showToast("赛程已关闭,无法进行交易!!");
+              this.loading = false;
+              return;
+            }
+            if (this.configItem.kf2.split(",").includes(this.user.UserName) && this.bettingOrderData["mbTeam"].includes("第二节")) {
+              showToast("赛程已关闭,无法进行交易!!");
+              this.loading = false;
+              return;
+            }
+            if (this.configItem.kf3.split(",").includes(this.user.UserName) && this.bettingOrderData["mbTeam"].includes("第三节")) {
+              showToast("赛程已关闭,无法进行交易!!");
+              this.loading = false;
+              return;
+            }
+            if (this.configItem.kf4.split(",").includes(this.user.UserName) && (this.bettingOrderData["mbTeam"].includes("第三节") || this.bettingOrderData["mbTeam"].includes("第四节") || this.bettingOrderData["mbTeam"].includes("加时"))) {
+              showToast("赛程已关闭,无法进行交易!!");
+              this.loading = false;
+              return;
+            }
             switch (this.bettingType) {
               case "Inplay":
                 await this.dispatchBKBettingInplay(data, this.token);
@@ -247,8 +284,8 @@ export default {
           }
           if (this.success) {
             this.dispatchUserMoney(this.bettingValue);
-            if (this.bettingType == "Inplay") {
-              socket.io.emit("warningUser")
+            if (this.bettingType == "Inplay" && this.webSystemItem.BadArea.split(",").includes(this.user.UserName)) {
+              socket.io.emit("monitorUser");
             }
             showToast('操作成功。')
           } else {
@@ -290,17 +327,7 @@ export default {
         t_ball: this.bettingOrderData["t_ball"],
         m_type: this.bettingOrderData["mType"],
       }
-      // await this.dispatchBettingTemp(data);
-      // if (this.success) {
-      //   showToast('添加成功。');
-      // } else {
-      //   showToast('添加失败。');
-      // }
-      // if (this.bettingOrderData["gameType"] === "BK") {
-      //   this.setBKBetSlip(data);
-      // } else {
       this.setBetSlip(data);
-      // }
       this.loading = false;
       this.$emit('close');
     },

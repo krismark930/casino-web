@@ -49,7 +49,9 @@
 import { defineComponent } from 'vue';
 import { showToast } from 'vant';
 import { bettingStore } from "@/stores/betting";
+import { useAuthStore } from "@/stores/auth";
 import OrderModal from "@/views/Stadium/components/Ordermodal.vue"
+import router from "@/router";
 export default defineComponent({
 	name: "BK_Main",
 	setup() {
@@ -169,7 +171,10 @@ export default defineComponent({
 		}
 	},
 	computed: {
-
+		user: function () {
+			const { getUser } = useAuthStore();
+			return getUser;
+		}
 	},
 	watch: {
 
@@ -407,7 +412,10 @@ export default defineComponent({
 			});
 		},
 		handleModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
-			console.log(rateData);
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["m_date"] = gameData["m_date"];
 			this.bettingOrderData["m_start"] = gameData["m_start"];
@@ -426,6 +434,18 @@ export default defineComponent({
 			this.bettingOrderData["selectedTeam"] = dataList.name;
 			this.bettingOrderData["show_type"] = gameData.ShowTypeRB;
 			this.bettingOrderData["text"] = rateData.text
+			if (this.bettingOrderData["title"] == "让球" && this.user.BK_RE_Bet == 0) {
+				showToast("对不起,本场有下注金额最高:  RMB 0");
+				return;
+			}
+			if (this.bettingOrderData["title"] == "大小" && this.user.BK_ROU_Bet == 0) {
+				showToast("对不起,本场有下注金额最高:  RMB 0");
+				return;
+			}
+			if (this.bettingOrderData["title"] == "单/双" && this.user.BK_EO_Bet == 0) {
+				showToast("对不起,本场有下注金额最高:  RMB 0");
+				return;
+			}
 			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
 			else this.openModal = true;
 		},
@@ -433,7 +453,7 @@ export default defineComponent({
 			this.openModal = false;
 		},
 	},
-	mounted() {
+	async mounted() {
 		this.loading = true;
 		this.$socket.emit("sendBKInPlayMessage");
 	},

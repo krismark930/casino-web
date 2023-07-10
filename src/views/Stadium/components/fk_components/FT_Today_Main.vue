@@ -1722,6 +1722,10 @@ export default defineComponent({
 			});
 		},
 		handleModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			console.log(this.user);
 			if (this.user.id == undefined) {
 				router.push({ name: "login" });
@@ -1762,6 +1766,10 @@ export default defineComponent({
 			else this.openModal = true;
 		},
 		handleModal1: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			console.log(rateData);
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["m_date"] = gameData["m_date"];
@@ -1801,6 +1809,10 @@ export default defineComponent({
 			else this.openModal = true;
 		},
 		handleModal2: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			console.log(rateData);
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["m_date"] = gameData["m_date"];
@@ -1828,6 +1840,10 @@ export default defineComponent({
 			else this.openModal = true;
 		},
 		handleModal3: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			console.log(rateData);
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["m_date"] = gameData["m_date"];
@@ -1855,6 +1871,10 @@ export default defineComponent({
 			else this.openModal = true;
 		},
 		handleCornerModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			this.bettingOrderData["mID"] = gameData["cn_id"];
 			this.bettingOrderData["gameType"] = "FT";
 			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;
@@ -1885,6 +1905,10 @@ export default defineComponent({
 			else this.openModal = true;
 		},
 		handleSummaryModal1: function (leagueData, gameData, title, dataList, rateData) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			console.log(rateData)
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["gameType"] = "FT";
@@ -1916,6 +1940,10 @@ export default defineComponent({
 			else this.openModal = true;
 		},
 		handleSummaryModal2: function (leagueData, gameData, title, dataList, rateData) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["gameType"] = "FT";
 			this.bettingOrderData["mbTeam"] = gameData.scoreList[0].name;

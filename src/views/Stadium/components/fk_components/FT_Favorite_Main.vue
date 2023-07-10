@@ -162,6 +162,9 @@
 import OrderModal from "@/views/Stadium/components/Ordermodal.vue"
 import { defineComponent } from 'vue';
 import { bettingStore } from "@/stores/betting";
+import { useAuthStore } from "@/stores/auth";
+import router from "@/router";
+import { showToast } from 'vant';
 export default defineComponent({
 	name: "Football",
 	setup() {
@@ -465,6 +468,10 @@ export default defineComponent({
 		favoriteList: function () {
 			const { getFavoriteList } = bettingStore();
 			return getFavoriteList;
+		},
+		user: function () {
+			const { getUser } = useAuthStore();
+			return getUser;
 		}
 	},
 	watch: {
@@ -2395,6 +2402,10 @@ export default defineComponent({
 			});
 		},
 		handleModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			console.log(rateData);
 			if (gameData["showType"] === "rb") {
 				this.bettingType = "Inplay"
@@ -2420,11 +2431,48 @@ export default defineComponent({
 			this.bettingOrderData["title"] = gameData.titleList[scoreIndex + 1];
 			this.bettingOrderData["selectedTeam"] = dataList.name;
 			this.bettingOrderData["text"] = rateData.text
+			this.bettingOrderData["selectedTeam"] = dataList.name;
+
+			if (gameData["showType"] === "rb") {
+
+				if (this.bettingOrderData["title"].includes("让球") && this.user.FT_RE_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				if (this.bettingOrderData["title"].includes("大小") && this.user.FT_ROU_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				if (this.bettingOrderData["title"].includes("独赢") && this.user.FT_RM_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+			} else {
+
+				if (this.bettingOrderData["title"].includes("让球") && this.user.FT_R_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				if (this.bettingOrderData["title"].includes("大小") && this.user.FT_OU_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				if (this.bettingOrderData["title"].includes("独赢") && this.user.FT_M_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+			}
+
 			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
 			else this.openModal = true;
 		},
 		handleCornerModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			if (gameData["showType"] === "rb") {
+
 				this.bettingType = "Inplay"
 				this.bettingOrderData["show_type"] = gameData.ShowTypeRB
 			} else {
@@ -2442,15 +2490,78 @@ export default defineComponent({
 			this.bettingOrderData["text"] = rateData.text
 			this.bettingOrderData["title"] = this.cornerTitleList[scoreIndex + 1][0] + this.cornerTitleList[scoreIndex + 1][1];
 			this.bettingOrderData["selectedTeam"] = dataList.name;
+
+			if (gameData["showType"] === "rb") {
+
+				if (this.bettingOrderData["title"].includes("让球") && this.user.FT_RE_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				if (this.bettingOrderData["title"].includes("大小") && this.user.FT_ROU_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				if (this.bettingOrderData["title"].includes("独赢") && this.user.FT_RM_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+			} else {
+
+				if (this.bettingOrderData["title"].includes("让球") && this.user.FT_R_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				if (this.bettingOrderData["title"].includes("大小") && this.user.FT_OU_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				if (this.bettingOrderData["title"].includes("独赢") && this.user.FT_M_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+			}
+
 			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
 			else this.openModal = true;
 		},
 		handleSummaryModal1: function (leagueData, gameData, title, dataList, rateData) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			console.log(rateData)
 			if (gameData["showType"] === "rb") {
+
+				if (title.includes("让球") && this.user.FT_RE_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				if (title.includes("大小") && this.user.FT_ROU_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				if (title.includes("独赢") && this.user.FT_RM_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+
 				this.bettingType = "Inplay"
 				this.bettingOrderData["show_type"] = gameData.ShowTypeRB
 			} else {
+
+				if (title.includes("让球") && this.user.FT_R_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				if (title.includes("大小") && this.user.FT_OU_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				if (title.includes("独赢") && this.user.FT_M_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+
 				this.bettingType = "Today";
 				this.bettingOrderData["show_type"] = gameData.ShowTypeR
 			}
@@ -2469,10 +2580,42 @@ export default defineComponent({
 			else this.openModal = true;
 		},
 		handleSummaryModal2: function (leagueData, gameData, title, dataList, rateData) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			if (gameData["showType"] === "rb") {
+
+				if (title.includes("让球") && this.user.FT_RE_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				if (title.includes("大小") && this.user.FT_ROU_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				if (title.includes("独赢") && this.user.FT_RM_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				
 				this.bettingType = "Inplay"
 				this.bettingOrderData["show_type"] = gameData.ShowTypeRB
 			} else {
+
+				if (title.includes("让球") && this.user.FT_R_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				if (title.includes("大小") && this.user.FT_OU_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+				if (title.includes("独赢") && this.user.FT_M_Bet == 0) {
+					showToast("对不起,本场有下注金额最高:  RMB 0");
+					return;
+				}
+
 				this.bettingType = "Today";
 				this.bettingOrderData["show_type"] = gameData.ShowTypeR
 			}

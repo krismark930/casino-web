@@ -170,6 +170,7 @@ import { storeToRefs } from "pinia";
 import { useAuthStore } from '@/stores/auth';
 import { bettingStore } from '@/stores/betting';
 import { showToast } from 'vant';
+import router from "@/router";
 export default defineComponent({
 	name: "Football",
 	setup() {
@@ -1346,6 +1347,10 @@ export default defineComponent({
 			});
 		},
 		handleModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			console.log(rateData);
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["m_date"] = gameData["m_date"];
@@ -1413,6 +1418,10 @@ export default defineComponent({
 			this.setBetSlip(data);
 		},
 		handleModal1: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			console.log(rateData);
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["m_date"] = gameData["m_date"];
@@ -1480,6 +1489,10 @@ export default defineComponent({
 			this.setBetSlip(data);
 		},
 		handleCornerModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["gameType"] = "FT";
 			this.bettingOrderData["m_ball"] = gameData.cornerList[0].goalsScored;
@@ -1534,6 +1547,10 @@ export default defineComponent({
 			this.setBetSlip(data);
 		},
 		handleSummaryModal1: function (leagueData, gameData, title, dataList, rateData) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["m_date"] = gameData["m_date"];
 			this.bettingOrderData["m_start"] = gameData["m_start"];
@@ -1602,6 +1619,10 @@ export default defineComponent({
 			this.setBetSlip(data);
 		},
 		handleSummaryModal2: function (leagueData, gameData, title, dataList, rateData) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["m_date"] = gameData["m_date"];
 			this.bettingOrderData["m_start"] = gameData["m_start"];
