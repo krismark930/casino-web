@@ -168,11 +168,12 @@ import { bettingStore } from "@/stores/betting";
 import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
 import { showToast } from 'vant';
+import router from "@/router";
 export default defineComponent({
 	name: "Football",
 	setup() {
-		const { setFavoriteList, removeFavoriteList } = bettingStore();
-		return { setFavoriteList, removeFavoriteList };
+		const { setFavoriteList, removeFavoriteList, dispatchWebSystemData } = bettingStore();
+		return { setFavoriteList, removeFavoriteList, dispatchWebSystemData };
 	},
 	components: {
 		OrderModal
@@ -1220,7 +1221,7 @@ export default defineComponent({
 								name: item["MB_Team"],
 								nums: [
 									{
-										lineType: 10,
+										lineType: 110,
 										mType: "ROUH",
 										bettingType: "H",
 										type: item["MB_Dime_Rate_RB_CN"] == 0 ? 2 : 1,
@@ -1240,7 +1241,7 @@ export default defineComponent({
 										num: item["S_Single_Rate_CN"] == 0 || item["S_Single_Rate_CN"] == undefined ? 0 : (Number(item['S_Single_Rate_CN'])).toFixed(2)
 									},
 									{
-										lineType: 20,
+										lineType: 120,
 										mType: "VROUH",
 										bettingType: "H",
 										type: item["MB_Dime_Rate_RB_H_CN"] == 0 || item["MB_Dime_Rate_RB_H_CN"] == undefined ? 2 : 1,
@@ -1530,17 +1531,19 @@ export default defineComponent({
 			});
 		},
 		handleModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
-			console.log(rateData);
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			if (gameData.titleList[scoreIndex + 1] == "让球" && this.user.FT_RE_Bet == 0) {
 				showToast("对不起,本场有下注金额最高:  RMB 0");
 				return;
 			}
-			console.log(this.user.FT_ROU_Bet);
-			if (gameData.titleList[scoreIndex + 1] == "得分大小" && this.user.FT_ROU_Bet == 0) {
+			if (gameData.titleList[scoreIndex + 1] == "大小" && this.user.FT_ROU_Bet == 0) {
 				showToast("对不起,本场有下注金额最高:  RMB 0");
 				return;
 			}
-			if (gameData.titleList[scoreIndex + 1] == "独赢" && this.user.FT_M_Bet == 0) {
+			if (gameData.titleList[scoreIndex + 1] == "独赢" && this.user.FT_RM_Bet == 0) {
 				showToast("对不起,本场有下注金额最高:  RMB 0");
 				return;
 			}
@@ -1566,6 +1569,10 @@ export default defineComponent({
 		},
 		handleModal1: function (leagueData, gameData, dataList, rateData, scoreIndex) {
 			console.log(rateData);
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			if (gameData.titleList[scoreIndex + 1] == "半场让球" && this.user.FT_RE_Bet == 0) {
 				showToast("对不起,本场有下注金额最高:  RMB 0");
 				return;
@@ -1599,6 +1606,10 @@ export default defineComponent({
 			else this.openModal = true;
 		},
 		handleCornerModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			this.bettingOrderData["mID"] = gameData["cn_id"];
 			this.bettingOrderData["gameType"] = "FT";
 			this.bettingOrderData["m_ball"] = gameData.cornerList[0].goalsScored;
@@ -1621,7 +1632,7 @@ export default defineComponent({
 				showToast("对不起,本场有下注金额最高:  RMB 0");
 				return;
 			}
-			if (this.bettingOrderData["title"].includes("半场独赢") && this.user.FT_RM_Bet == 0) {
+			if (this.bettingOrderData["title"].includes("独赢") && this.user.FT_RM_Bet == 0) {
 				showToast("对不起,本场有下注金额最高:  RMB 0");
 				return;
 			}
@@ -1630,6 +1641,10 @@ export default defineComponent({
 			else this.openModal = true;
 		},
 		handleSummaryModal1: function (leagueData, gameData, title, dataList, rateData) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			console.log(rateData)
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["gameType"] = "FT";
@@ -1661,6 +1676,10 @@ export default defineComponent({
 			else this.openModal = true;
 		},
 		handleSummaryModal2: function (leagueData, gameData, title, dataList, rateData) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["gameType"] = "FT";
 			this.bettingOrderData["m_ball"] = gameData.scoreList[0].goalsScored;

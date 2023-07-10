@@ -27,6 +27,10 @@
 <script lang="ts">
 import OrderModal from "@/views/Stadium/components/Ordermodal.vue"
 import { defineComponent } from "vue";
+import { showToast } from 'vant';
+import { useAuthStore } from "@/stores/auth";
+import router from "@/router";
+
 export default defineComponent({
 	name: "BK_Champion_Main",
 	setup() {
@@ -70,6 +74,10 @@ export default defineComponent({
 		}
 	},
 	computed: {
+		user: function () {
+			const { getUser } = useAuthStore();
+			return getUser;
+		}
 	},
 	watch: {
 	},
@@ -116,11 +124,14 @@ export default defineComponent({
 		this.$socket.emit("stopBKChampionMessage")
 	},
 	methods: {
-		showDetail: function (lidItemIndex, teamIndex) {
+		showDetail(lidItemIndex: any, teamIndex: any): void {
 			this.ftChampionDataList[lidItemIndex].teamItems[teamIndex]["show"] = !this.ftChampionDataList[lidItemIndex].teamItems[teamIndex]["show"];
 		},
-		handleModal: function (leagueName, datetime, gid, teamName, teamItem) {
-			console.log(gid);
+		handleModal: function (leagueName: string, datetime: any, gid: any, teamName: string, teamItem: any) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
 			this.bettingOrderData["lineType"] = 16;
 			this.bettingOrderData["r_type"] = teamItem.rtype
 			this.bettingOrderData["mID"] = gid;
@@ -135,6 +146,10 @@ export default defineComponent({
 			this.bettingOrderData["m_start"] = datetime;
 			this.bettingOrderData["m_ball"] = 0;
 			this.bettingOrderData["t_ball"] = 0;
+			if (this.user.FS_FS_Bet == 0) {
+				showToast("对不起,本场有下注金额最高:  RMB 0");
+				return;
+			}
 			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
 			else this.openModal = true;
 		},

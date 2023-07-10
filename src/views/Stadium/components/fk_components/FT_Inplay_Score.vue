@@ -64,7 +64,10 @@
 import OrderModal from "@/views/Stadium/components/Ordermodal.vue"
 import { defineComponent } from "vue";
 import { stadiumStore } from "@/stores/stadium";
+import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
+import { showToast } from 'vant';
+import router from "@/router";
 export default defineComponent({
 	name: "other",
 	setup() {
@@ -104,6 +107,10 @@ export default defineComponent({
 		}
 	},
 	computed: {
+		user: function () {
+			const { getUser } = useAuthStore();
+			return getUser;
+		}
 	},
 	watch: {
 	},
@@ -628,6 +635,14 @@ export default defineComponent({
 			});
 		},
 		handleModal: function (leagueData, gameData, score) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
+			if (this.user.FT_PD_Bet == 0) {
+				showToast("对不起,本场有下注金额最高:  RMB 0");
+				return;
+			}
 			this.bettingOrderData["lineType"] = score["lineType"];
 			this.bettingOrderData["r_type"] = score["rType"]
 			this.bettingOrderData["mID"] = gameData["id"];
@@ -644,6 +659,14 @@ export default defineComponent({
 			else this.openModal = true;
 		},
 		handleOtherModal: function (leagueData, gameData, scoreItem) {
+			if (this.user.id == undefined) {
+				router.push({ name: "login" });
+				return;
+			}
+			if (this.user.FT_PD_Bet == 0) {
+				showToast("对不起,本场有下注金额最高:  RMB 0");
+				return;
+			}
 			console.log(scoreItem);
 			console.log(this.bettingOrderData);
 			this.bettingOrderData["lineType"] = scoreItem["lineType"];

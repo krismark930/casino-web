@@ -49,6 +49,7 @@ import { defineComponent } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { bettingStore } from '@/stores/betting';
 import { showToast } from 'vant';
+import router from "@/router";
 export default defineComponent({
 	name: "BK_Parlay_Main",
 	setup() {
@@ -96,7 +97,7 @@ export default defineComponent({
 			this.loading = false;
 			console.log('receivedBKParlayMessage', data);
 			if (data == null || data.length == 0) return;
-			var bkDataList = [];
+			var bkDataList = [] as Array<any>;
 			let lidArray: Array<any> = data.map(function (item: any) {
 				return item["LID"];
 			});
@@ -379,7 +380,11 @@ export default defineComponent({
 			});
 		},
 		handleModal: function (leagueData, gameData, dataList, rateData, numIndex) {
-			console.log(rateData);
+			if (this.user.id == "") {
+				showToast('你必须先登录。')
+				router.push("login")
+				return;
+			}
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["m_date"] = gameData["m_date"];
 			this.bettingOrderData["m_start"] = gameData["m_start"];
@@ -426,9 +431,16 @@ export default defineComponent({
 				m_type: this.bettingOrderData["mType"],
 				show_type: this.bettingOrderData["show_type"]
 			}
-			if (this.user.id == "") {
-				showToast('你必须先登录。')
-				router.push("login")
+			if (this.bettingOrderData["title"] == "让球" && this.user.BK_R_Bet == 0) {
+				showToast("对不起,本场有下注金额最高:  RMB 0");
+				return;
+			}
+			if (this.bettingOrderData["title"] == "大小" && this.user.BK_OU_Bet == 0) {
+				showToast("对不起,本场有下注金额最高:  RMB 0");
+				return;
+			}
+			if (this.bettingOrderData["title"] == "单/双" && this.user.BK_EO_Bet == 0) {
+				showToast("对不起,本场有下注金额最高:  RMB 0");
 				return;
 			}
 			this.setBetSlip(data);

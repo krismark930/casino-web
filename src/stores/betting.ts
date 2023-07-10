@@ -15,6 +15,7 @@ import { SINGLE_BK_BETTING_PARLAY } from "@/config";
 import { BK_BET_HISTORY } from "@/config";
 import { BK_BET_SLIP } from "@/config";
 import { ADD_TEMP } from "@/config";
+import { WEB_SYSTEM_DATA } from "@/config";
 
 export const bettingStore = defineStore({
     id: "betting",
@@ -29,7 +30,9 @@ export const bettingStore = defineStore({
         favoriteBKList: [],
         historyBKList: [],
         betHistoryBKList: [],
-        betSlipCount: 0
+        betSlipCount: 0,
+        webSystemItem: {},
+        configItem: {}
     }),
     getters: {
         getSuccess: (state) => state.success,
@@ -42,7 +45,9 @@ export const bettingStore = defineStore({
         getHistoryBKList: (state) => state.historyBKList,
         getBetHistoryBKList: (state) => state.betHistoryBKList,
         getErrMessage: (state) => state.errMessage,
-        getBetSlipCount: (state) => state.betSlipCount
+        getBetSlipCount: (state) => state.betSlipCount,
+        getWebSystemItem: (state) => state.webSystemItem,
+        getConfigItem: (state) => state.configItem
     },
     actions: {
         setSuccess(success: boolean) {
@@ -83,9 +88,12 @@ export const bettingStore = defineStore({
             this.selectedBetSlipList = this.betSlipList.filter(item => item["g_type"] === g_type);
         },
         settingGold(gold: number) {
-            this.betSlipList.map(item => {
+            this.betSlipList.map((item :any)=> {
                 item['gold'] = gold;
             })
+        },
+        setWebSystemItem(webSystemItem: any) {
+            this.webSystemItem = webSystemItem;
         },
         setBetSlip(betSlip: object) {
             if (this.betSlipList.length > 0) {
@@ -116,6 +124,9 @@ export const bettingStore = defineStore({
         setBetHistoryList(betHistoryList: Array<any>) {
             this.betHistoryList = betHistoryList;
         },
+        setConfigItem(configItem: any) {
+            this.configItem = configItem;
+        },
         dispatchBetSlipListSelect(g_type: string) {
             this.selectedBetSlipList = this.betSlipList.filter(item => item["g_type"] === g_type);
         },
@@ -138,6 +149,8 @@ export const bettingStore = defineStore({
                 if (err.response.status === 400) {
                     if (err.response.data.message === 'The schedule has been closed!') {
                         this.setErrorMessage("日程已经关闭！");
+                    } else if(err.response.data.message === '赛程已关闭,无法进行交易!!') {
+                        this.setErrorMessage("赛程已关闭,无法进行交易!!");
                     }
                 }
             }
@@ -472,6 +485,25 @@ export const bettingStore = defineStore({
                         )
                     })
                     this.setBetHistoryBKList(betSlipHistoryBKList);
+                }
+            } catch (e) {
+                return e;
+            }
+        },
+        async dispatchWebSystemData(token: any) {
+            try {
+                this.setSuccess(false);
+                const config = {
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Access-Control-Allow-Origin": "*"
+                    },
+                };
+                const response = await axios.get(`${BASE_URL}${WEB_SYSTEM_DATA}`, config);
+                if (response.status === 200) {
+                    this.setSuccess(true);
+                    this.setWebSystemItem(response.data.data);
+                    this.setConfigItem(response.data.config);
                 }
             } catch (e) {
                 return e;
