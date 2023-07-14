@@ -284,7 +284,7 @@ export default {
           }
           if (this.success) {
             this.dispatchUserMoney(this.bettingValue);
-            if (this.bettingType == "Inplay" && this.webSystemItem.BadArea.split(",").includes(this.user.UserName)) {
+            if (this.bettingType == "Inplay" && this.webSystemItem.BadArea.split("，").includes(this.user.UserName)) {
               socket.io.emit("monitorUser");
             }
             showToast('操作成功。')
@@ -343,7 +343,7 @@ export default {
     backSpace() {
       this.bettingValue = Number(this.bettingValue.toString().substr(0, this.bettingValue.length - 1));
     },
-    addValue(e) {
+    addValue(e: any) {
       switch (e.target.value) {
         case '100':
           this.bettingValue += 100

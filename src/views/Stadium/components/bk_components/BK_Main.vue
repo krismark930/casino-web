@@ -55,8 +55,8 @@ import router from "@/router";
 export default defineComponent({
 	name: "BK_Main",
 	setup() {
-		const { setFavoriteBKList, removeFavoriteBKList } = bettingStore();
-		return { setFavoriteBKList, removeFavoriteBKList };
+		const { setFavoriteBKList, removeFavoriteBKList, dispatchWebSystemData } = bettingStore();
+		return { setFavoriteBKList, removeFavoriteBKList, dispatchWebSystemData };
 	},
 	components: {
 		OrderModal
@@ -174,6 +174,14 @@ export default defineComponent({
 		user: function () {
 			const { getUser } = useAuthStore();
 			return getUser;
+		},
+		token: function () {
+			const { getToken } = useAuthStore();
+			return getToken;
+		},
+		configItem: function () {
+			const { getConfigItem } = bettingStore();
+			return getConfigItem
 		}
 	},
 	watch: {
@@ -282,6 +290,7 @@ export default defineComponent({
 						ecid: item["ECID"],
 						m_date: item["M_Date"],
 						m_start: item["M_Start"],
+						now_session: item["NOW_SESSION"],
 						titleList: titleList,
 						collection: false,
 						scoreList: [
@@ -412,10 +421,6 @@ export default defineComponent({
 			});
 		},
 		handleModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
-			if (this.user.id == undefined) {
-				router.push({ name: "login" });
-				return;
-			}
 			this.bettingOrderData["mID"] = gameData["id"];
 			this.bettingOrderData["m_date"] = gameData["m_date"];
 			this.bettingOrderData["m_start"] = gameData["m_start"];
@@ -434,6 +439,7 @@ export default defineComponent({
 			this.bettingOrderData["selectedTeam"] = dataList.name;
 			this.bettingOrderData["show_type"] = gameData.ShowTypeRB;
 			this.bettingOrderData["text"] = rateData.text
+			
 			if (this.bettingOrderData["title"] == "让球" && this.user.BK_RE_Bet == 0) {
 				showToast("对不起,本场有下注金额最高:  RMB 0");
 				return;
@@ -446,6 +452,32 @@ export default defineComponent({
 				showToast("对不起,本场有下注金额最高:  RMB 0");
 				return;
 			}
+
+            if (this.configItem.BadMember.split(",").includes(this.user.UserName) && gameData.now_session == "Q4") {
+              showToast("赛程已关闭,无法进行交易!!");
+              this.loading = false;
+              return;
+            }
+            if (this.configItem.BadMember2.split(",").includes(this.user.UserName) && this.bettingOrderData["mbTeam"].includes("加时")) {
+              showToast("赛程已关闭,无法进行交易!!");
+              this.loading = false;
+              return;
+            }
+            if (this.configItem.kf2.split(",").includes(this.user.UserName) && gameData.now_session == "Q2") {
+              showToast("赛程已关闭,无法进行交易!!");
+              this.loading = false;
+              return;
+            }
+            if (this.configItem.kf3.split(",").includes(this.user.UserName) && gameData.now_session == "Q3") {
+              showToast("赛程已关闭,无法进行交易!!");
+              this.loading = false;
+              return;
+            }
+            if (this.configItem.kf4.split(",").includes(this.user.UserName) && (gameData.now_session == "Q3" || gameData.now_session == "Q4" || this.bettingOrderData["mbTeam"].includes("加时"))) {
+              showToast("赛程已关闭,无法进行交易!!");
+              this.loading = false;
+              return;
+            }
 			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
 			else this.openModal = true;
 		},
@@ -455,6 +487,11 @@ export default defineComponent({
 	},
 	async mounted() {
 		this.loading = true;
+		if (this.user.id == undefined) {
+			router.push({ name: "login" });
+			return;
+		}
+		await this.dispatchWebSystemData(this.token);
 		this.$socket.emit("sendBKInPlayMessage");
 	},
 	unmounted() {

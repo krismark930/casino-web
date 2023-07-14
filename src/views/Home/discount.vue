@@ -3,11 +3,9 @@
         <div class="follow_bc">
             <div class="flex border-b-1 border-[#333333] overflow-scroll w-full">
                 <div class="flex">
-                    <div @click="tabClick(item.id, i)" v-for="(item, i) in tabsList" :key="i" ref="label" :class="
-                        item.id === groupId
-                            ? 'active border-b-2 border-blue-500'
-                            : ''
-                    " class="second_tab py-[15px]">
+                    <div @click="tabClick(item.id, i)" v-for="(item, i) in tabsList" :key="i" ref="label"
+                        :class="item.id === groupId ? 'active border-b-2 border-blue-500' : ''"
+                        class="second_tab py-[15px]">
                         {{ item.name }}
                     </div>
                 </div>
@@ -16,27 +14,87 @@
         <div>
             <!-- <DiscountItem :itemList="imgList"/> -->
             <div v-show="groupId === 0" class="tab_box animated fadeInLeft">
-                <div v-for="(item, index) in imgList[0]" :key="index" class="box_list">
-                    <img class="back_img" :src="item.url" alt="" />
-                    <img class="icon_img" v-if="item.type == 1" src="@/assets/images/discount/new-icon.png" alt="" />
-                    <img class="icon_img" v-if="item.type == 2" src="@/assets/images/discount/time-icon.png" alt="" />
+                <div v-for="(item, index) in discountList" :key="index" class="box_list">
+                    <el-row style="height: 100%;">
+                        <el-col :span="8">
+                            <p class="discount-title">{{ item.title }}</p>
+                            <div class="discount-content" v-html="item.content"></div>
+                        </el-col>
+                        <el-col :span="16" style="display: flex; align-items: center; justify-content: end;">
+                            <img class="back_img" :src="item.image" alt="" />
+                        </el-col>
+                    </el-row>
+                    <img class="icon_img" v-if="item.type == 1" src="@/assets/images/discount/time-icon.png" alt="" />
+                    <img class="icon_img" v-if="item.type == 2" src="@/assets/images/discount/new-icon.png" alt="" />
                     <img class="icon_img" v-if="item.type == 3" src="@/assets/images/discount/orther-icon.png" alt="" />
                 </div>
             </div>
             <div v-show="groupId === 1" class="tab_box animated fadeInLeft">
-                <div v-for="(item, index) in imgList[1]" :key="index" class="box_list">
-                    <img class="back_img" :src="item.url" alt="" />
-                    <img class="icon_img" v-if="item.type == 1" src="@/assets/images/discount/new-icon.png" alt="" />
-                    <img class="icon_img" v-if="item.type == 2" src="@/assets/images/discount/time-icon.png" alt="" />
-                    <img class="icon_img" v-if="item.type == 3" src="@/assets/images/discount/orther-icon.png" alt="" />
+                <div v-for="(item, index) in discountList.filter(item => item.type == 1)" :key="index" class="box_list">
+                    <el-row style="height: 100%;">
+                        <el-col :span="8">
+                            <p class="discount-title">{{ item.title }}</p>
+                            <div class="discount-content" v-html="item.content"></div>
+                        </el-col>
+                        <el-col :span="16" style="display: flex; align-items: center; justify-content: end;">
+                            <img class="back_img" :src="item.image" alt="" />
+                        </el-col>
+                    </el-row>
+                    <img class="icon_img" src="@/assets/images/discount/time-icon.png" alt="" />
                 </div>
             </div>
             <div v-show="groupId === 2" class="tab_box animated fadeInLeft">
-                <div v-for="(item, index) in imgList[2]" :key="index" class="box_list">
-                    <img class="back_img" :src="item.url" alt="" />
-                    <img class="icon_img" v-if="item.type == 1" src="@/assets/images/discount/new-icon.png" alt="" />
-                    <img class="icon_img" v-if="item.type == 2" src="@/assets/images/discount/time-icon.png" alt="" />
-                    <img class="icon_img" v-if="item.type == 3" src="@/assets/images/discount/orther-icon.png" alt="" />
+                <div v-for="(item, index) in discountList.filter(item => item.type == 2)" :key="index" class="box_list">
+                    <el-row style="height: 100%;">
+                        <el-col :span="8">
+                            <p class="discount-title">{{ item.title }}</p>
+                            <div class="discount-content" v-html="item.content"></div>
+                        </el-col>
+                        <el-col :span="16" style="display: flex; align-items: center; justify-content: end;">
+                            <img class="back_img" :src="item.image" alt="" />
+                        </el-col>
+                    </el-row>
+                    <img class="icon_img" src="@/assets/images/discount/new-icon.png" alt="" />
+                </div>
+            </div>
+            <div v-show="groupId === 3" class="tab_box animated fadeInLeft">
+                <div v-for="(item, index) in discountList.filter(item => item.type == 3)" :key="index" class="box_list">
+                    <el-row style="height: 100%;">
+                        <el-col :span="8">
+                            <p class="discount-title">{{ item.title }}</p>
+                            <div class="discount-content" v-html="item.content"></div>
+                        </el-col>
+                        <el-col :span="16" style="display: flex; align-items: center; justify-content: end;">
+                            <img class="back_img" :src="item.image" alt="" />
+                        </el-col>
+                    </el-row>
+                    <img class="icon_img" src="@/assets/images/discount/orther-icon.png" alt="" />
+                </div>
+            </div>
+            <div v-show="groupId === 4" class="tab_box animated fadeInLeft">
+                <div v-for="(item, index) in discountList.filter(item => item.type == 4)" :key="index" class="box_list">
+                    <el-row style="height: 100%;">
+                        <el-col :span="8">
+                            <p class="discount-title">{{ item.title }}</p>
+                            <div class="discount-content" v-html="item.content"></div>
+                        </el-col>
+                        <el-col :span="16" style="display: flex; align-items: center; justify-content: end;">
+                            <img class="back_img" :src="item.image" alt="" />
+                        </el-col>
+                    </el-row>
+                </div>
+            </div>
+            <div v-show="groupId === 5" class="tab_box animated fadeInLeft">
+                <div v-for="(item, index) in discountList.filter(item => item.type == 5)" :key="index" class="box_list">
+                    <el-row style="height: 100%;">
+                        <el-col :span="8">
+                            <p class="discount-title">{{ item.title }}</p>
+                            <div class="discount-content" v-html="item.content"></div>
+                        </el-col>
+                        <el-col :span="16" style="display: flex; align-items: center; justify-content: end;">
+                            <img class="back_img" :src="item.image" alt="" />
+                        </el-col>
+                    </el-row>
                 </div>
             </div>
         </div>
@@ -44,8 +102,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import DiscountItem from '@/components/discount/discountItem.vue';
+import { ref, onMounted } from 'vue';
+import { discountStore } from "@/stores/discount";
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+
+const { dispatchDiscounts } = discountStore();
+
 const groupId = ref(0);
 const tabsList = ref([
     {
@@ -73,44 +136,32 @@ const tabsList = ref([
         id: 5
     }
 ]);
-const imgList = ref([
-    [
-        {
-            url: new URL('@/assets/images/discount/img1.png', import.meta.url)
-                .href,
-            type: 1
-        },
-        {
-            url: new URL('@/assets/images/discount/img2.png', import.meta.url)
-                .href,
-            type: 1
-        },
-        {
-            url: new URL('@/assets/images/discount/img3.png', import.meta.url)
-                .href,
-            type: 2
-        },
-        {
-            url: new URL('@/assets/images/discount/img4.png', import.meta.url)
-                .href,
-            type: 3
-        }
-    ],
-    [
-        {
-            url: new URL('@/assets/images/discount/img3.png', import.meta.url)
-                .href,
-            type: 2
-        }
-    ],
-    [
-        {
-            url: new URL('@/assets/images/discount/img4.png', import.meta.url)
-                .href,
-            type: 3
-        }
-    ]
-]);
+// const discountList = ref([
+//     {
+//         url: new URL('@/assets/images/discount/img3.png', import.meta.url)
+//             .href,
+//         type: 1
+//     },
+//     {
+//         url: new URL('@/assets/images/discount/img1.png', import.meta.url)
+//             .href,
+//         type: 2
+//     },
+//     {
+//         url: new URL('@/assets/images/discount/img2.png', import.meta.url)
+//             .href,
+//         type: 2
+//     },
+//     {
+//         url: new URL('@/assets/images/discount/img4.png', import.meta.url)
+//             .href,
+//         type: 3
+//     }
+// ]);
+const discountList = computed(() => {
+    const { getDiscountList } = storeToRefs(discountStore());
+    return getDiscountList.value;
+})
 const tabClick = (id: number, i: number) => {
     groupId.value = id;
     let doc = document.getElementsByClassName('bottom_line')[0];
@@ -120,6 +171,9 @@ const tabClick = (id: number, i: number) => {
     // (doc as any).style.transform = `translateX(${left})`;
     // (doc as any).style.transition = ".3s";
 };
+onMounted(async () => {
+    await dispatchDiscounts();
+})
 </script>
 
 <style scoped lang="scss">
@@ -129,14 +183,17 @@ const tabClick = (id: number, i: number) => {
     align-items: center;
     border-top: 2px solid #e9e9e9;
     padding-top: 4px;
+    margin-bottom: 60px;
 
     .box_list {
+        background: #F9FAFF;
         margin-bottom: 5px;
         position: relative;
+        width: 351px;
+        height: 142px;
 
         .back_img {
-            width: 351px;
-            height: 142px;
+            width: 100%;
         }
 
         .icon_img {
@@ -146,6 +203,19 @@ const tabClick = (id: number, i: number) => {
             top: 0;
             left: -4px;
         }
+    }
+
+    .discount-title {
+        margin-top: 30px;
+        text-align: center;
+        font-weight: 600;
+    }
+    .discount-content {
+        font-size: 24px;
+        margin-top: 10px;
+        font-size: 18px;
+        text-align: center;
+        word-wrap: break-word;
     }
 }
 
