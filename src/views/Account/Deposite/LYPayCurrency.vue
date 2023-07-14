@@ -74,11 +74,13 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref,computed } from 'vue';
+import { ref, computed } from 'vue';
 import router from '@/router';
 import { thirdpartyPaymentStore } from "@/stores/thirdparty_payment";
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
+import { ElLoading } from "element-plus";
+import { showToast } from 'vant';
 
 const tokenActive = ref(1);
 const name = ref('');
@@ -88,7 +90,6 @@ const search = ref('');
 const show = ref(false);
 const bankType = ref('');
 const { dispatchLYPay } = thirdpartyPaymentStore();
-const { dispatchSubmitLYPay } = thirdpartyPaymentStore();
 
 const currencyList = ref([
     {
@@ -112,6 +113,7 @@ const currencyList = ref([
         value: 4991
     },
 ])
+
 const bankCardList = ref([
     {
         id: 1,
@@ -203,13 +205,31 @@ const amountChange = () => {
     amountFlag.value = false;
 }
 
+const redirectToHTMLContent = (htmlContent: string): void => {
+    // console.log(import.meta.env.VITE_LY_PAY_URL);
+    const newWindow = window.open("", "_blank");
+    newWindow?.document.write(htmlContent);
+    newWindow?.document.close();
+}
+
 const requestPayment = async () => {
+    if (amount.value == "") {
+        showToast("请输入存款金额。");
+    }
+    const loading = ElLoading.service({
+        lock: true,
+        text: "加载中...",
+        background: "rgba(0, 0, 0, 0.7)",
+    });
     await dispatchLYPay({
         amount: amount.value,
         username: user.value.UserName,
         bankcode: "ICBC",
         PayID: 6
     })
-    // await dispatchSubmitLYPay(payFormData.value);
+    loading.close();
+    if (payFormData.value != "") {
+        redirectToHTMLContent(payFormData.value);
+    }
 }
 </script>

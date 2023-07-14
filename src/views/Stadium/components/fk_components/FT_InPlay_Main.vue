@@ -471,6 +471,14 @@ export default defineComponent({
 		user: function () {
 			const { getUser } = useAuthStore();
 			return getUser;
+		},
+		token: function () {
+			const { getToken } = useAuthStore();
+			return getToken;
+		},
+		configItem: function () {
+			const { getConfigItem } = bettingStore();
+			return getConfigItem
 		}
 	},
 	sockets: {
@@ -883,6 +891,11 @@ export default defineComponent({
 		}
 	},
 	async created() {
+		if (this.user.id == undefined) {
+			router.push({ name: "login" });
+			return;
+		}
+		await this.dispatchWebSystemData(this.token);
 		this.$socket.emit("sendFTInPlayMessage");
 	},
 	unmounted() {
@@ -1606,10 +1619,10 @@ export default defineComponent({
 			else this.openModal = true;
 		},
 		handleCornerModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
-			if (this.user.id == undefined) {
-				router.push({ name: "login" });
-				return;
-			}
+            if (this.configItem.BadMember_JQ.split(",").includes(this.user.UserName)) {
+              showToast("赛程已关闭,无法进行交易!!");
+              return;
+            }
 			this.bettingOrderData["mID"] = gameData["cn_id"];
 			this.bettingOrderData["gameType"] = "FT";
 			this.bettingOrderData["m_ball"] = gameData.cornerList[0].goalsScored;

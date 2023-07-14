@@ -124,6 +124,8 @@ export const GET_POST = "/user/post/item";
 
 export const WEB_SYSTEM_DATA = "/user/web-system-data/item";
 
+export const GET_DISCOUNT = "/user/discount/all";
+
 const config = {
   api: {
     SIGN_IN: BASE_URL + "/users/login",
