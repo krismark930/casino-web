@@ -2,9 +2,24 @@
   <div>
     <div class="form_item">
       <img class="form_icon" src="@/assets/images/login/username.png" alt="" />
+      <input v-model="login_name" type="text" placeholder="请输入登陆帐号" />
+      <div>
+        <img v-if="login_name" src="@/assets/images/login/clear.png" @click="clearLoginName" alt="" />
+      </div>
+    </div>
+    <div class="form_item">
+      <img class="form_icon" src="@/assets/images/login/username.png" alt="" />
       <input v-model="username" type="text" placeholder="请输入用户账号" />
       <div>
         <img v-if="username" src="@/assets/images/login/clear.png" @click="clearUsername" alt="" />
+      </div>
+    </div>
+    <div class="form_item" v-if="sysConfigItem.phone_number_show == 1">
+      <img src="@/assets/images/login/phone.svg" alt=""
+        style="margin-left: 4%; width: 24px !important; height: 26px !important;" />
+      <input v-model="phone_number" type="number" placeholder="请输入电话号码" />
+      <div>
+        <img v-if="phone_number" src="@/assets/images/login/clear.png" @click="clearPhoneNumber" alt="" />
       </div>
     </div>
     <div class="form_item">
@@ -32,7 +47,7 @@
       和
       <span>隐私政策</span>
     </div>
-    <button v-if="!username || !password || !passwords" class="submit_btn" @click="register">
+    <button v-if="!username || !password || !passwords || !login_name" class="submit_btn" @click="register">
       登录
     </button>
     <button v-else class="submit_btn2" @click="register">登录</button>
@@ -42,12 +57,15 @@
 
 <script setup lang="ts">
 import verification from "./verification.vue";
-import { ref, toRefs } from "vue";
+import { ref, toRefs, onMounted, computed } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { useSysConfigStore } from '@/stores/sysConfig';
 import { storeToRefs } from "pinia";
 import axios from "axios";
 import config from "@/config";
 import router from "@/router";
+import { onUnmounted } from "vue";
+import { showToast } from "vant";
 const {
   getToken,
   getUser
@@ -57,6 +75,8 @@ const {
   signUp
 } = useAuthStore();
 
+const { getSysConfigValue } = useSysConfigStore();
+
 const state = defineProps<{ inviter_id: string }>();
 
 const { inviter_id } = toRefs(state)
@@ -64,9 +84,12 @@ const { inviter_id } = toRefs(state)
 const isVerification = ref(false);
 const checked = ref(false);
 const username = ref("");
+const login_name = ref("");
+const phone_number = ref("");
 const password = ref("");
 const passwords = ref("");
 const passwordType = ref(false);
+const interval = ref(null);
 
 const onValidation = (s: boolean) => {
   isVerification.value = s;
@@ -80,11 +103,45 @@ const clearUsername = () => {
 const clearPsssword = () => {
   password.value = "";
 }
-
-const register = async () => {
-  await signUp(username.value, password.value, inviter_id.value ? inviter_id.value : '');
+const clearPhoneNumber = () => {
+  phone_number.value = "";
+}
+const clearLoginName = () => {
+  login_name.value = "";
 }
 
+const sysConfigItem = computed(() => {
+  const { getSysConfig } = storeToRefs(useSysConfigStore());
+  return getSysConfig.value;
+})
+
+const success = computed(() => {
+  const { getSuccess } = storeToRefs(useAuthStore());
+  return getSuccess.value;
+})
+
+const errMessage = computed(() => {
+  const { getErrMessage } = storeToRefs(useAuthStore());
+  return getErrMessage.value;
+})
+
+const register = async () => {
+  await signUp(username.value, password.value, inviter_id.value ? inviter_id.value : '', phone_number.value, login_name.value);
+  if (!success.value) {
+    showToast(errMessage.value);
+  }
+}
+
+onMounted(async () => {
+  await getSysConfigValue();
+  interval.value = setInterval(async () => {
+    await getSysConfigValue();
+  }, 5000);
+})
+
+onUnmounted(() => {
+  clearInterval(interval.value);
+})
 </script>
 
 <style scoped lang="scss">

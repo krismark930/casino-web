@@ -9,8 +9,16 @@
             </div>
             <p class="w-full h-[1px] bg-gray-200 mb-[2px]"></p>
             <span class="font-medium text-[#EB2020] text-[12px] ">为及时到账，请务必输入正确的存款人姓名</span>
+            <p class="mt-[10px] font-medium text-[#454558]">存款金额</p>
+            <p class="w-full h-[1px] bg-gray-200 my-[7px]"></p>
+            <div class="text-wrapper_2 flex justify-start items-end">
+                <p class="text-[15px]">￥</p>
+                <input type="text" v-model="amount" @input="amountChange" placeholder="请输入￥100~￥1000000" name="name"
+                    id="name"
+                    class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB] placeholder:text-[12px] text-[25px] font-bold" />
+            </div>
         </div>
-        <div class="px-2 bg-white mt-[10px]">
+        <!-- <div class="px-2 bg-white mt-[10px]">
             <span class="font-semibold text-[#454558]">银行卡类型</span>
             <div class="flex">
                 <div v-for="(item, index) in bankList" :key="index" @click="setBank(item)"
@@ -57,10 +65,10 @@
                     class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB] placeholder:text-[12px] text-[25px] font-bold">
                     {{ amount }}</p>
             </div>
-        </div>
+        </div> -->
         <div class="flex-col bg-white">
             <div class="px-2 pt-2">
-                <button :class="[name ? 'bg-blue-500' : 'bg-blue-200']"
+                <button :class="[name && amount? 'bg-blue-500' : 'bg-blue-200']"
                     class="text-[18px] flex justify-center bg-blue-500 text-white rounded-sm w-full py-1"
                     @click="onClick_1">
                     <span class="text_20">立即存款</span>
@@ -114,7 +122,7 @@ const active = ref(1);
 const bankType = ref('');
 const bankCardType = ref('储蓄卡');
 const name = ref('');
-const amount = ref(109);
+const amount = ref("");
 const state = defineProps<{ bank: any }>();
 const { bank } = toRefs(state);
 const show = ref(false);
@@ -274,12 +282,13 @@ const setBank = async (item: any) => {
 const onClick_1 = () => {
     if (name.value) {
         console.log(bankType.value);
-        if (bankType.value == "" || bankType.value == null || bankType.value == undefined) {
-            showToast("请添加银行");
-            router.push({ name: "addBank2" });
-            return;
-        }
-        router.push({ name: 'depositInformation', params: { name: name.value, bankID: bank.value.id, money: amount.value }, query: { bank: bankNo.value, bankAccount: bankAccount.value, bankAddress: bankAddress.value } });
+        // if (bankType.value == "" || bankType.value == null || bankType.value == undefined) {
+        //     showToast("请添加银行");
+        //     router.push({ name: "addBank2" });
+        //     return;
+        // }
+        // router.push({ name: 'depositInformation', params: { name: name.value, bankID: bank.value.id, money: amount.value }, query: { bank: bankNo.value, bankAccount: bankAccount.value, bankAddress: bankAddress.value } });
+        router.push({ name: 'depositInformation', params: { name: name.value, bankID: bank.value.id, money: amount.value }});
     }
 }
 onMounted(async () => {

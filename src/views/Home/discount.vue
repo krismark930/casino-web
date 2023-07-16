@@ -209,10 +209,11 @@ onMounted(async () => {
         margin-top: 30px;
         text-align: center;
         font-weight: 600;
+        font-size: 26px;
     }
     .discount-content {
         font-size: 24px;
-        margin-top: 10px;
+        // margin-top: 10px;
         font-size: 18px;
         text-align: center;
         word-wrap: break-word;
