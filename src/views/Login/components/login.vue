@@ -2,9 +2,9 @@
   <div>
     <div class="form_item">
       <img class="form_icon" src="@/assets/images/login/username.png" alt="" />
-      <input v-model="username" type="text" placeholder="请输入用户名" />
+      <input v-model="login_name" type="text" placeholder="请输入登陆帐号" />
       <div>
-        <img v-if="username" src="@/assets/images/login/clear.png" @click="clearUsername" alt="" />
+        <img v-if="login_name" src="@/assets/images/login/clear.png" @click="clearLoginName" alt="" />
       </div>
     </div>
     <div class="form_item">
@@ -22,7 +22,7 @@
       <van-checkbox v-model="checked" icon-size="14px" checked-color="#00A8FF">记住密码</van-checkbox>
       <span>忘记密码</span>
     </div>
-    <button v-if="!username || !password" class="submit_btn">
+    <button v-if="!login_name || !password" class="submit_btn">
       登录
     </button>
     <button v-else class="submit_btn2" @click="login">登录</button>
@@ -48,7 +48,7 @@ export default ({
     return {
       isVerification: false,
       checked: false,
-      username: "",
+      login_name: "",
       password: "",
       passwordType: false,
     }
@@ -60,15 +60,14 @@ export default ({
     seePassword: function () {
       this.passwordType = !this.passwordType;
     },
-    clearUsername: function () {
-      this.username = "";
+    clearLoginName: function () {
+      this.login_name = "";
     },
     clearPsssword: function () {
       this.password = ""
     },
     login: async function () {
-      await this.signIn(this.username, this.password);
-      this.$socket.emit("join", this.user.UserName);
+      await this.signIn(this.login_name, this.password);
     }
   },
   computed: {

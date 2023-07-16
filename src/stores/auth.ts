@@ -11,6 +11,8 @@ export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
     token: '',
+    success: false,
+    errMessage: "",
     user: {
       UserName: "AC123",
       Money: "0.00"
@@ -19,6 +21,8 @@ export const useAuthStore = defineStore({
   getters: {
     getToken: (state) => state.token,
     getUser: (state) => state.user,
+    getSuccess: (state) => state.success,
+    getErrMessage: (state) => state.errMessage,
   },
   actions: {
     logout() {
@@ -40,11 +44,17 @@ export const useAuthStore = defineStore({
     setUserMoney(money: number) {
       this.user["Money"] = this.user["Money"] - money;
     },
-    async signIn(username: string, password: string) {
+    setSuccess(success: boolean) {
+      this.success = success;
+    },
+    setErrMessage(errMessage: string) {
+      this.errMessage = errMessage;
+    },
+    async signIn(login_name: string, password: string) {
       try {
         let url = config.api.SIGN_IN;
         let data = {
-          UserName: username,
+          LoginName: login_name,
           password: password
         };
         const response = await axios.post(url, data);
@@ -54,7 +64,7 @@ export const useAuthStore = defineStore({
           this.setToken(response.data.data.access_token as string);
           localStorage.setItem("token", (response.data.data.access_token));
           this.setUser(response.data.data as any)
-          socket.io.emit("join", username);
+          socket.io.emit("join", response.data.data.UserName);
           setInterval(async () => {
             await this.getProfile(this.token);
           }, 10000)
@@ -75,19 +85,27 @@ export const useAuthStore = defineStore({
         }
       }
     },
-    async signUp(username: string, password: string, inviter_id: string) {
+    async signUp(username: string, password: string, inviter_id: string, phone_number: any, login_name: string) {
       try {
+        this.setSuccess(false);
         let url = config.api.SIGN_UP;
         let data = {
           UserName: username,
           password: password,
-          inviter_id: inviter_id
+          inviter_id: inviter_id,
+          phone_number: phone_number,
+          login_name: login_name
         };
-        const response = (await axios.post(url, data)).data;
-        this.signIn(username, password);
-        return response;
-      } catch (e) {
-        return e;
+        const response = (await axios.post(url, data));
+        if (response.status == 200) {
+          this.setSuccess(true);
+          this.signIn(username, password);
+        }
+      } catch (e: any) {
+        console.log(e.response);
+        if (e.response.status == 400)  {
+          this.setErrMessage(e.response.data.message);
+        }
       }
     },
     dispatchUserMoney(money: number) {
