@@ -560,6 +560,7 @@ const lotteryResult = computed(() => {
   return getBeforeLotteryResult.value;
 })
 const scheduleItem = computed(() => {
+  disabled.value = false;
   const { getScheduleItem } = storeToRefs(lotteryScheduleStore());
   if (getScheduleItem.value == null) {
     return;
@@ -572,6 +573,8 @@ const scheduleItem = computed(() => {
   // time.value = Number(duration.valueOf()) + 60000;
 
   time.value = getScheduleItem.value.diff_time;
+
+  console.log(time.value, getScheduleItem.value.is_open);
 
   if (!getScheduleItem.value.is_open || time.value <= 0) {
     if (g_type.value == "cq") {
@@ -780,6 +783,7 @@ onMounted(async () => {
   cqAlertShow.value = false;
   jxAlertShow.value = false;
   tjAlertShow.value = false;
+  disabled.value = false;
   const loading = ElLoading.service({
     lock: true,
     text: "加载中...",

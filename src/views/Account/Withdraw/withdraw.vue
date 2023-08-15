@@ -6,9 +6,9 @@
                 <img class="w-1" referrerpolicy="no-referrer" src="@/assets/images/my/arrow-left.png" />
             </template>
             <template #title>
-                <span class="pt-[10px] text-[#454558]">取款</span>
+                <span class="pt-[10px] text-[#454558]">{{ t('withdraw.text_1') }}</span>
             </template>
-            <template #right>教程
+            <template #right>{{ t('withdraw.text_2') }}
                 <img class="w-[15px] h-[15px] ml-1" referrerpolicy="no-referrer"
                     src="@/assets/images/withdraw/icon-help.png" />
             </template>
@@ -19,10 +19,8 @@
                 <div v-for="(item, index) in selectList" :key="index" @click="selectMainCategory(item.id)" class="px-2">
                     {{ item.name }}
                     <div class="flex justify-center mt-1">
-                        <div :class="{
-                            'w-[36px] h-[2px] bg-[#01b3ff]':
-                                mainActive == item.id
-                        }"></div>
+                        <div :class="{ 'w-[36px] h-[2px] bg-[#01b3ff]': mainActive == item.id }">
+                        </div>
                     </div>
                 </div>
                 <!-- <div class="text-wrapper_1 flex-row justify-between">
@@ -37,12 +35,12 @@
             <div class=" px-2 bg-white  text-[13px] ">
                 <div class="flex justify-between mt-1 pt-[10px]">
                     <div class="flex items-center">
-                        <p>钱包金额</p>
+                        <p>{{ t('withdraw.text_3') }}</p>
                         <img class="w-[15px] h-[15px] ml-1" referrerpolicy="no-referrer"
                             src="@/assets/images/withdraw/icon-refresh.png" />
                     </div>
                     <div class="text-blue-400">
-                        一键回收
+                        {{ t('withdraw.text_4') }}
                     </div>
                 </div>
                 <p class="w-full h-[0.5px] bg-[#CBCBCB] my-[10px]"></p>
@@ -67,7 +65,7 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <p class="text-center">更多</p>
+                        <p class="text-center">{{ t('withdraw.text_5') }}</p>
                         <div class="flex justify-center">
                             <img class="w-[15px] h-[15px] mt-[5px]" referrerpolicy="no-referrer"
                                 src="@/assets/images/withdraw/icon-more.png" />
@@ -78,7 +76,7 @@
             <div class=" px-2 bg-white  text-[12px] pb-1">
                 <div class="flex justify-between mt-1 pt-[10px]">
                     <div class="flex">
-                        <p>取款方式</p>
+                        <p>{{ t('withdraw.text_6') }}</p>
                     </div>
                 </div>
                 <p class="w-full h-[0.5px] bg-[#CBCBCB] my-[10px]"></p>
@@ -95,7 +93,8 @@
                             <div class="relative">
                                 <img class=" w-[80px] h-[16px]" referrerpolicy="no-referrer"
                                     src="@/assets/images/withdraw/icon-new.png" />
-                                <div class="absolute top-[2px] left-[20px] text-white text-[8px]">最高加送0.8%</div>
+                                <div class="absolute top-[2px] left-[20px] text-white text-[8px]">{{ t('withdraw.text_7') }}
+                                </div>
                             </div>
 
                         </div>
@@ -103,7 +102,7 @@
                 </div>
                 <div class="flex justify-between mt-1 pt-[10px]">
                     <div class="flex">
-                        <p>预约取款时间</p>
+                        <p>{{ t('withdraw.text_8') }}</p>
                     </div>
                 </div>
                 <p class="w-full h-[0.5px] bg-[#CBCBCB] my-[10px]"></p>
@@ -127,21 +126,21 @@
             <div class=" px-2 bg-white text-[12px] pb-1">
                 <div class="text-wrapper_2 flex justify-start items-end">
                     <p class="text-[15px]">￥</p>
-                    <input type="text" v-model="amount" @input="amountChange" placeholder="请输入￥100~￥1000000" name="name"
-                        id="name"
+                    <input type="text" v-model="amount" @input="amountChange" :placeholder="t('withdraw.text_9')"
+                        name="name" id="name"
                         class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB] placeholder:text-[12px] text-[25px] font-bold" />
                 </div>
             </div>
             <div class=" px-2 bg-white  text-[12px] pb-1">
                 <div class="flex justify-between mt-1 pt-[10px]">
                     <div class="flex">
-                        <p>银行卡 </p>
+                        <p>{{ t('withdraw.text_10') }}</p>
                         <p>(0/10)</p>
                     </div>
                     <div class="flex border border-blue-400 px-[5px] items-center rounded-sm" @click="addBank">
                         <!-- <img class="w-[10px] h-[10px] mr-1" referrerpolicy="no-referrer"
                             src="@/assets/images/deposit/active.png" /> -->
-                        添加银行卡
+                        {{ t('withdraw.text_11') }}
                     </div>
                 </div>
             </div>
@@ -158,7 +157,8 @@
                                 <span class="text-[13px] text-bold">{{ item.bank_account.substring(0, 7) + '*******' +
                                     item.bank_account.substring(item.bank_account.length - 7, item.bank_account.length)
                                 }}</span>
-                                <span class="text-[12px] text-[#4EABFF]" @click="editBank(item)">编辑</span>
+                                <span class="text-[12px] text-[#4EABFF]" @click="editBank(item)">{{ t('withdraw.text_12')
+                                }}</span>
                             </div>
                         </van-radio>
                     </van-radio-group>
@@ -174,10 +174,11 @@
                 </div>
                 <div v-else>
                     <div class=" px-2  flex  text-[10px] mt-2">
-                        <p>请先绑定一张银行卡，用于收款 </p>
+                        <p>{{ t('withdraw.text_13') }}</p>
                     </div>
                     <div class=" px-2  flex  text-[10px] mt-2 flex justify-center">
-                        <p>取款遇到问题？联系<span class="text-blue-500">人工客服</span>解决</p>
+                        <p>{{ t('withdraw.text_14') }}<span class="text-blue-500">{{ t('withdraw.text_15') }}</span>
+                            {{ t('withdraw.text_16') }}</p>
                     </div>
                 </div>
 
@@ -186,20 +187,21 @@
                         <div class="image-text_1 flex justify-between items-center">
                             <img class="w-[25px]" referrerpolicy="no-referrer" src="@/assets/images/my/bank-mark.png" />
                             <span class="text-[12px] pl-1">{{ user.Bank_Address }}</span>
-                            <span class="text-[12px] pl-1">农业银行</span>
+                            <span class="text-[12px] pl-1">{{ t('withdraw.text_17') }}</span>
 
                         </div>
                         <span class="text-[13px] text-bold">{{ user.Bank_Account }}</span>
                         <span class="text-[13px] text-bold">622848******888</span>
-                        <span class="text-[12px] text-[#4EABFF]" @click="editBank()">编辑</span>
+                        <span class="text-[12px] text-[#4EABFF]" @click="editBank()">{{ t('withdraw.text_18') }}</span>
                     </div>
                 </div>
                 <div v-else>
                     <div class=" px-2  flex  text-[10px] mt-2">
-                        <p>请先绑定一张银行卡，用于收款 </p>
+                        <p>{{ t('withdraw.text_19') }}</p>
                     </div>
                     <div class=" px-2  flex  text-[10px] mt-2 flex justify-center">
-                        <p>取款遇到问题？联系<span class="text-blue-500">人工客服</span>解决</p>
+                        <p>{{ t('withdraw.text_20') }}<span class="text-blue-500">{{ t('withdraw.text_21') }}</span>{{
+                            t('withdraw.text_22') }}</p>
                     </div>
                 </div>
             </div>
@@ -217,7 +219,8 @@
                                 <span class="text-[13px] text-bold">{{ item.bank_address.substring(0, 7) + '*******' +
                                     item.bank_address.substring(item.bank_address.length - 7, item.bank_address.length)
                                 }}</span>
-                                <span class="text-[12px] text-[#4EABFF]" @click="editCrypto(item)">编辑</span>
+                                <span class="text-[12px] text-[#4EABFF]" @click="editCrypto(item)">{{ t('withdraw.text_23')
+                                }}</span>
                             </div>
                         </van-radio>
                     </van-radio-group>
@@ -233,10 +236,11 @@
                 </div>
                 <div v-else>
                     <div class=" px-2  flex  text-[10px] mt-2">
-                        <p>请先绑定一张银行卡，用于收款 </p>
+                        <p>{{ t('withdraw.text_19') }}</p>
                     </div>
                     <div class=" px-2  flex  text-[10px] mt-2 flex justify-center">
-                        <p>取款遇到问题？联系<span class="text-blue-500">人工客服</span>解决</p>
+                        <p>{{ t('withdraw.text_20') }}<span class="text-blue-500">{{ t('withdraw.text_21') }}</span>{{
+                            t('withdraw.text_22') }}</p>
                     </div>
                 </div>
             </div>
@@ -249,7 +253,7 @@
                     <button
                         :class="[amount > 0 && user.Bank_Address ? 'bg-blue-500 border-blue-500' : 'bg-blue-200 border-blue-200']"
                         class="button_1 flex w-full justify-center  py-1 border-2  rounded-sm " @click="submitResult">
-                        <p class="text-white text-[12px]">确定</p>
+                        <p class="text-white text-[12px]">{{ t('withdraw.text_24') }}</p>
                     </button>
                 </div>
             </div>
@@ -257,28 +261,23 @@
     </div>
 </template>
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import router from '@/router';
 import { ref, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useWithdrawStore } from '@/stores/withdraw';
 import { useSysConfigStore } from '@/stores/sysConfig';
+import socket from '@/utils/socket';
 import { storeToRefs } from 'pinia';
 import { showToast } from 'vant';
 import { useBankAccountStore } from '@/stores/bankAccount';
-const {
-    user,
-} = storeToRefs(useAuthStore());
+const { t } = useI18n();
+const { user } = storeToRefs(useAuthStore());
 const { cryptoAccounts, bankAccounts } = storeToRefs(useBankAccountStore());
 const { getBankList, getCryptoList, setEditBank, setEditCrypto } = useBankAccountStore();
-const {
-    sumbitWithdraw, test
-} = useWithdrawStore();
-const {
-    getSysConfigValue
-} = useSysConfigStore();
-const {
-    sysConfig
-} = storeToRefs(useSysConfigStore());
+const { sumbitWithdraw, test } = useWithdrawStore();
+const { getSysConfigValue } = useSysConfigStore();
+const { sysConfig } = storeToRefs(useSysConfigStore());
 
 const cryptoBankList = ref([]);
 const cryptoAccount = ref();
@@ -299,6 +298,7 @@ onMounted(async () => {
     bankAccount.value = bankList.value[0] ? bankList.value[0] : null;
     console.log(bankAccounts.value)
 });
+console.log(t('withdraw.text_25'));
 
 const tokenActive = ref(1);
 const active = ref(1);
@@ -307,68 +307,70 @@ const amount = ref(0);
 const tokenList = ref([
     {
         id: 1,
-        name: '预约取款',
+        name: t('withdraw.text_25'),
         disccount: true
     },
     {
         id: 2,
-        name: '即时取款',
+        name: t('withdraw.text_26'),
         disccount: false
     }
 ]);
+
+console.log(t('withdraw.text_25'));
 const timeList = ref([
     {
         id: 1,
-        name: '0-9小时之内取款-加送0.2%',
+        name: t('withdraw.text_27'),
     },
     {
         id: 2,
-        name: '0-9小时之内取款-加送0.4%',
+        name: t('withdraw.text_28'),
     },
     {
         id: 3,
-        name: '0-9小时之内取款-加送0.6%',
+        name: t('withdraw.text_29'),
     },
     {
         id: 4,
-        name: '0-9小时之内取款-加送0.8%',
+        name: t('withdraw.text_30'),
     },
 ]);
 const moneyList = ref([
     {
-        name: '中心钱包',
+        name: t('withdraw.text_31'),
         value: 0.00
     },
     {
-        name: '锁定钱包',
+        name: t('withdraw.text_32'),
         value: 0.00
     },
     {
-        name: '福利中心',
+        name: t('withdraw.text_33'),
         value: 0.00
     },
 ])
 const itemList = ref([
     {
-        name: '皇冠体育 拷贝',
+        name: t('withdraw.text_34'),
         value: 0.00
     },
     {
-        name: 'OG东方馆',
+        name: t('withdraw.text_35'),
         value: 0.00
     },
     {
-        name: 'AG国际厅',
+        name: t('withdraw.text_36'),
         value: 0.00
     },
 ])
 const selectList = ref([
     {
-        name: '极速取款',
+        name: t('withdraw.text_37'),
         id: 2
     },
     {
-        name: 'USDT提币',
+        name: t('withdraw.text_38'),
         id: 1
     }
 ]);
@@ -402,6 +404,7 @@ const submitResult = async () => {
             const result = await sumbitWithdraw(user.value.id, amount.value, bankAccount.value.bank_address, bankAccount.value.bank_account);
             showToast(result.message);
             if (result.success) {
+                socket.io.emit("submitWithdrawAlert");
                 router.push({ name: 'my' });
             }
         }
@@ -410,6 +413,7 @@ const submitResult = async () => {
             const result = await sumbitWithdraw(user.value.id, amount.value, cryptoAccount.value.bank_address, cryptoAccount.value.bank_account);
             showToast(result.message);
             if (result.success) {
+                socket.io.emit("submitWithdrawAlert");
                 router.push({ name: 'my' });
             }
         }
@@ -417,23 +421,23 @@ const submitResult = async () => {
 }
 const VerifyData = () => {
     if (amount.value == "") {
-        showToast("请输入提款金额！");
+        showToast(t('withdraw.text_39'));
         return false;
     }
     if (amount.value != "") {
         if (amount.value > user.value.Money) {
-            showToast(`提款金额不能大于账号金额:${user.value.Money}`);
+            showToast(`${t('withdraw.text_40')}:${user.value.Money}`);
             return false;
         }
     }
     if (amount.value != "") {
         var ccc = amount.value % 100;
         if (ccc != 0) {
-            showToast("提款金额必须是100的倍数！");
+            showToast(t('withdraw.text_41'));
             return false;
         }
         if (amount.value < sysConfig.value.min_qukuan_money) {
-            showToast(`提款金额不能小于${value.min_qukuan_money}元！`);
+            showToast(`${t('withdraw.text_42')}${value.min_qukuan_money}${t('withdraw.text_43')}`);
             return false;
         }
     }

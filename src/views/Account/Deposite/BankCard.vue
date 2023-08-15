@@ -3,18 +3,18 @@
         <div class="mt-[10px] bg-white p-2">
             <div class="flex items-start">
                 <span class="font-medium text-[#EB2020] text-[25px] ">*</span>
-                <span class="font-medium text-[#454558] w-[130px] pt-[5px]">存款人姓名</span>
-                <input type="text" v-model="name" placeholder="请输入存款人姓名" name="name" id="name"
+                <span class="font-medium text-[#454558] w-[130px] pt-[5px]">{{ t('deposit_card.text_1') }}</span>
+                <input type="text" v-model="name" :placeholder="t('deposit_card.text_2')" name="name" id="name"
                     class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB] placeholder:text-[15px] text-[20px] font-bold" />
             </div>
             <p class="w-full h-[1px] bg-gray-200 mb-[2px]"></p>
-            <span class="font-medium text-[#EB2020] text-[12px] ">为及时到账，请务必输入正确的存款人姓名</span>
-            <p class="mt-[10px] font-medium text-[#454558]">存款金额</p>
+            <span class="font-medium text-[#EB2020] text-[12px] ">{{ t('deposit_card.text_3') }}</span>
+            <p class="mt-[10px] font-medium text-[#454558]">{{ t('deposit_card.text_4') }}</p>
             <p class="w-full h-[1px] bg-gray-200 my-[7px]"></p>
             <div class="text-wrapper_2 flex justify-start items-end">
                 <p class="text-[15px]">￥</p>
-                <input type="text" v-model="amount" @input="amountChange" placeholder="请输入￥100~￥1000000" name="name"
-                    id="name"
+                <input type="text" v-model="amount" @input="amountChange" :placeholder="t('deposit_card.text_5')"
+                    name="name" id="name"
                     class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB] placeholder:text-[12px] text-[25px] font-bold" />
             </div>
         </div>
@@ -68,24 +68,24 @@
         </div> -->
         <div class="flex-col bg-white">
             <div class="px-2 pt-2">
-                <button :class="[name && amount? 'bg-blue-500' : 'bg-blue-200']"
+                <button :class="[name && amount ? 'bg-blue-500' : 'bg-blue-200']"
                     class="text-[18px] flex justify-center bg-blue-500 text-white rounded-sm w-full py-1"
                     @click="onClick_1">
-                    <span class="text_20">立即存款</span>
+                    <span class="text_20">{{ t('deposit_card.text_6') }}</span>
                 </button>
             </div>
 
             <div class="text-[12px] pb-[60px] flex justify-center pt-[30px]">
-                <span class="text_21">存款遇到问题？联系</span>
-                <span class="text-blue-300" @click="goServicePage">人工客服</span>
-                <span class="text_23">&nbsp;解决</span>
+                <span class="text_21">{{ t('deposit_card.text_7') }}</span>
+                <span class="text-blue-300" @click="goServicePage">{{ t('deposit_card.text_8') }}</span>
+                <span class="text_23">&nbsp;{{ t('deposit_card.text_9') }}</span>
             </div>
         </div>
         <van-popup v-model:show="show" position="bottom" :style="{ height: '60%' }" class="rounded-t-md">
             <div class="rounded-t-md">
                 <div class="text-[16px] p-2 flex justify-between">
-                    <span class="text-blue-400" @click="() => show = false">取消</span>
-                    <span class="font-bold">选择所属银行</span>
+                    <span class="text-blue-400" @click="() => show = false">{{ t('deposit_card.text_10') }}</span>
+                    <span class="font-bold">{{ t('deposit_card.text_11') }}</span>
                     <span></span>
                 </div>
                 <p class="bg-gray-400 h-[1px] "></p>
@@ -114,13 +114,15 @@ import { useSysConfigStore } from '@/stores/sysConfig';
 import { useAuthStore } from '@/stores/auth';
 import { showToast } from 'vant';
 import router from '@/router';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const { getBankList } = useDepositStore();
 const { getConfigValue } = useSysConfigStore();
 
 const tokenActive = ref(1);
 const active = ref(1);
 const bankType = ref('');
-const bankCardType = ref('储蓄卡');
+const bankCardType = ref(t('bank_add_2.text_16'));
 const name = ref('');
 const amount = ref("");
 const state = defineProps<{ bank: any }>();
@@ -134,79 +136,79 @@ const bankCardList = ref([
     {
         id: 1,
         img: new URL('@/assets/images/account/icon-bank1.png', import.meta.url).href,
-        name: '中国银行',
+        name: t('bank_add_2.text_18')
     },
     {
         id: 2,
         img: new URL('@/assets/images/account/icon-bank2.png', import.meta.url).href,
-        name: '建设银行',
+        name: t('bank_add_2.text_19')
     },
     {
         id: 3,
         img: new URL('@/assets/images/account/icon-bank3.png', import.meta.url).href,
-        name: '农业银行',
+        name: t('bank_add_2.text_20')
     },
     {
         id: 4,
         img: new URL('@/assets/images/account/icon-bank4.png', import.meta.url).href,
-        name: '工商银行',
+        name: t('bank_add_2.text_21')
     },
     {
         id: 5,
         img: new URL('@/assets/images/account/icon-bank5.png', import.meta.url).href,
-        name: '中国邮政储蓄银行',
+        name: t('bank_add_2.text_22')
     },
     {
         id: 6,
         img: new URL('@/assets/images/account/icon-bank6.png', import.meta.url).href,
-        name: '招商银行',
+        name: t('bank_add_2.text_23')
     },
     {
         id: 7,
         img: new URL('@/assets/images/account/icon-bank7.png', import.meta.url).href,
-        name: '交通银行',
+        name: t('bank_add_2.text_24')
     },
     {
         id: 8,
         img: new URL('@/assets/images/account/icon-bank8.png', import.meta.url).href,
-        name: '中信银行',
+        name: t('bank_add_2.text_25')
     },
     {
         id: 9,
         img: new URL('@/assets/images/account/icon-bank9.png', import.meta.url).href,
-        name: '光大银行',
+        name: t('bank_add_2.text_26')
     },
     {
         id: 10,
         img: new URL('@/assets/images/account/icon-bank10.png', import.meta.url).href,
-        name: '浦发银行',
+        name: t('bank_add_2.text_27')
     },
     {
         id: 11,
         img: new URL('@/assets/images/account/icon-bank11.png', import.meta.url).href,
-        name: '广发银行',
+        name: t('bank_add_2.text_28')
     },
     {
         id: 12,
         img: new URL('@/assets/images/account/icon-bank12.png', import.meta.url).href,
-        name: '华夏银行',
+        name: t('bank_add_2.text_29')
     },
     {
         id: 13,
         img: new URL('@/assets/images/account/icon-bank13.png', import.meta.url).href,
-        name: '兴业银行',
+        name: t('bank_add_2.text_30')
     }
 ])
 const bankList = ref([
     {
         id: 1,
         img: new URL('@/assets/images/account/icon-wallet.png', import.meta.url).href,
-        name: '储蓄卡',
+        name: t('bank_add_2.text_16')
     },
     {
         id: 2,
         img: new URL('@/assets/images/account/icon-bank.png', import.meta.url).href,
-        name: '信用卡',
+        name: t('bank_add_2.text_17')
     }
 ])
 const currencyList = ref([
@@ -288,7 +290,7 @@ const onClick_1 = () => {
         //     return;
         // }
         // router.push({ name: 'depositInformation', params: { name: name.value, bankID: bank.value.id, money: amount.value }, query: { bank: bankNo.value, bankAccount: bankAccount.value, bankAddress: bankAddress.value } });
-        router.push({ name: 'depositInformation', params: { name: name.value, bankID: bank.value.id, money: amount.value }});
+        router.push({ name: 'depositInformation', params: { name: name.value, bankID: bank.value.id, money: amount.value } });
     }
 }
 onMounted(async () => {

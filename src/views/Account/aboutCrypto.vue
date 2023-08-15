@@ -5,7 +5,7 @@
                 <img class="w-1" referrerpolicy="no-referrer" src="@/assets/images/my/arrow-left.png" />
             </template>
             <template #title>
-                <span class="pt-[10px] text-[#454558]">了解虚拟币</span>
+                <span class="pt-[10px] text-[#454558]">{{ t('about_crypto.text_1') }}</span>
             </template>
             <template #right> </template>
         </van-nav-bar>
@@ -21,6 +21,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import router from '@/router';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const itemList = ref([
     {
@@ -36,6 +38,7 @@ const itemList = ref([
         img: "https://lanhu.oss-cn-beijing.aliyuncs.com/pszgyeucyaytejk7e1cs97tw7z9hdszlyaf27e2f7-1e1d-495d-bb49-f90cdb9e7541",
     }
 ]);
+
 const onClickLeft = () => {
     router.go(-1);
 };

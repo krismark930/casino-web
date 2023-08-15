@@ -6,7 +6,7 @@
                     <img class="w-1" referrerpolicy="no-referrer" src="@/assets/images/my/arrow-left.png" />
                 </template>
                 <template #title>
-                    <span class="pt-[10px] text-[#454558]">联系我们</span>
+                    <span class="pt-[10px] text-[#454558]">{{ t('contact_us.text_1') }}</span>
                 </template>
                 <template #right> </template>
             </van-nav-bar>
@@ -14,7 +14,7 @@
                 <div class="bg-blue-50 py-2 px-2 ">
                     <div class="flex items-center">
                         <p class="bg-blue-400 w-[3px] h-[18px]"></p>
-                        <p class="pl-1 text-[16px]">反馈或建议</p>
+                        <p class="pl-1 text-[16px]">{{ t('contact_us.text_2') }}</p>
                     </div>
                     <div v-for="(item, index) in itemList" :key="index" class="flex justify-between items-center mt-1">
                         <div class="flex justify-start items-center w-[220px] px-2 py-[10px]">
@@ -36,7 +36,7 @@
                 <div class="bg-white pb-2 pt-1 px-2 ">
                     <div class="flex items-center">
                         <p class="bg-blue-400 w-[3px] h-[18px]"></p>
-                        <p class="pl-1 text-[16px]">成为合营伙伴</p>
+                        <p class="pl-1 text-[16px]">{{ t('contact_us.text_3') }}</p>
                     </div>
                     <div v-for="(item, index) in partnerList" :key="index"
                         class="flex justify-between items-center mt-1 ">
@@ -59,7 +59,7 @@
                 <div class="px-2">
                     <button class="text-[16px] bg-[#4eabff] flex justify-center text-white rounded-sm w-full py-1"
                         @click="onClick_1">
-                        <span class="text_20">7*24小时在线客服</span>
+                        <span class="text_20">{{ t('contact_us.text_4') }}</span>
                     </button>
                 </div>
             </div>
@@ -69,24 +69,26 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import router from '@/router';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const itemList = ref([
     {
         icon: new URL(
             '@/assets/images/deposit/virtual-currency.png',
             import.meta.url
         ).href,
-        title: '投诉建议',
+        title: t('contact_us.text_5'),
         content: 'XPJ99.COM',
-        control: ['复制']
+        control: [t('contact_us.text_6')]
     },
     {
         icon: new URL(
             '@/assets/images/deposit/virtual-currency.png',
             import.meta.url
         ).href,
-        title: '客服邮箱',
+        title: t('contact_us.text_7'),
         content: 'XPJ99&@gmail.com',
-        control: ['复制']
+        control: [t('contact_us.text_6')]
     }
 ]);
 
@@ -96,9 +98,9 @@ const partnerList = ref([
             '@/assets/images/deposit/virtual-currency.png',
             import.meta.url
         ).href,
-        title: '合作咨询',
-        content: '点击进入在线咨询',
-        control: ['复制']
+        title: t('contact_us.text_9'),
+        content: t('contact_us.text_10'),
+        control: [t('contact_us.text_6')]
     },
     {
         icon: new URL(
@@ -107,7 +109,7 @@ const partnerList = ref([
         ).href,
         title: 'SKYPE',
         content: 'XPJ99&@OUTLOOK.COM',
-        control: ['复制', '下载']
+        control: [t('contact_us.text_6'), t('contact_us.text_11')]
     },
     {
         icon: new URL(
@@ -116,7 +118,7 @@ const partnerList = ref([
         ).href,
         title: 'FLYGRAM',
         content: 'XPJ99',
-        control: ['复制', '下载']
+        control: [t('contact_us.text_6'), t('contact_us.text_11')]
     }
 ])
 const onClick_1 = () => {

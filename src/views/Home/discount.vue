@@ -106,33 +106,35 @@ import { ref, onMounted } from 'vue';
 import { discountStore } from "@/stores/discount";
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const { dispatchDiscounts } = discountStore();
 
 const groupId = ref(0);
 const tabsList = ref([
     {
-        name: '全部优惠',
+        name: t('discount.text_1'),
         id: 0
     },
     {
-        name: '限时活动',
+        name: t('discount.text_2'),
         id: 1
     },
     {
-        name: '新人首存',
+        name: t('discount.text_3'),
         id: 2
     },
     {
-        name: '日常活动',
+        name: t('discount.text_4'),
         id: 3
     },
     {
-        name: '高额返水',
+        name: t('discount.text_5'),
         id: 4
     },
     {
-        name: 'VIP特权',
+        name: t('discount.text_6'),
         id: 5
     }
 ]);

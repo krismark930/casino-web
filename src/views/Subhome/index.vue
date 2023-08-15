@@ -56,7 +56,7 @@
 				<p class="bg-gray-400 h-[0.5px]"></p>
 			</div>
 		</div>
-		<van-popup v-model:show="show" position="bottom">
+		<!-- <van-popup v-model:show="show" position="bottom">
 			<div class="pupop_box">
 				<div class="pupop_title">
 					<span>语言设置</span>
@@ -71,7 +71,7 @@
 					</div>
 				</div>
 			</div>
-		</van-popup>
+		</van-popup> -->
 	</div>
 </template>
 
@@ -161,7 +161,7 @@ const langList = ref([
 		id: 3,
 		icon: new URL("@/assets/images/subhome/select3.png", import.meta.url).href,
 		title: 'English',
-		name: '英文（美国 )',
+		name: '英文',
 		lang: 'en'
 	}
 ])
@@ -170,7 +170,7 @@ const goDetail = (path: string, subName: string) => {
 		router.push({ name: path })
 	} else {
 		if (subName == '语言') {
-			// show.value = true
+			show.value = true
 		}
 	}
 }
@@ -181,11 +181,10 @@ const goBeforePage = () => {
 	router.go(-1);
 }
 const selectLang = (item: any) => {
-	console.log(item)
 	lang.value = item.lang
 	langName.value = item.name
 	i18n.locale.value = item.lang
-	console.log(i18n.t('yes'))
+	console.log(i18n.t('home.text'))
 	show.value = false
 }
 onMounted(async () => {

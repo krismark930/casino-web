@@ -9,12 +9,12 @@
     </div>
     <div class="form_item">
       <img class="form_icon" src="@/assets/images/login/username.png" alt="" />
-      <input v-model="username" type="text" placeholder="请输入用户账号" />
+      <input v-model="username" type="text" placeholder="请输入会员名字" />
       <div>
         <img v-if="username" src="@/assets/images/login/clear.png" @click="clearUsername" alt="" />
       </div>
     </div>
-    <div class="form_item" v-if="sysConfigItem.phone_number_show == 1">
+    <div class="form_item" v-if="Number(sysConfigItem.phone_number_show) == 1">
       <img src="@/assets/images/login/phone.svg" alt=""
         style="margin-left: 4%; width: 24px !important; height: 26px !important;" />
       <input v-model="phone_number" type="number" placeholder="请输入电话号码" />
