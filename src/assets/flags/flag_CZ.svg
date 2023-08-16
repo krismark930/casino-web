@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/czech_republic</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/czech_republic">
+            <g id="czech_republic">
+                <circle id="Oval" fill="#F5F5F5" fill-rule="nonzero" cx="12" cy="12" r="12"></circle>
+                <path d="M10.9546875,12 L3.515625,20.484375 C6.94756922,23.9155863 12.1083425,24.9419008 16.591956,23.0848435 C21.0755696,21.2277862 23.999267,16.8529838 24,12 L10.9546875,12 L10.9546875,12 Z" id="Path" fill="#FF4B55" fill-rule="nonzero"></path>
+                <path d="M3.65705286,3.715625 C-0.94993362,8.31886118 -0.94993362,15.7811388 3.65705286,20.384375 L12,12.05 L3.65705286,3.715625 Z" id="Path" fill="#41479B" fill-rule="nonzero"></path>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

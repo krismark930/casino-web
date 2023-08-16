@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/belgium</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/belgium">
+            <g id="belgium">
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12.4" r="11.5"></circle>
+                <path d="M16.1021401,1.74416342 C13.5888275,0.810189434 10.8236239,0.810189434 8.31031128,1.74416342 L7.33414397,12.25 L8.31031128,22.7558366 C10.8235537,23.6902007 13.5888976,23.6902007 16.1021401,22.7558366 L17.0783074,12.25 L16.1021401,1.74416342 Z" id="Path" fill="#FFDA44" fill-rule="nonzero"></path>
+                <path d="M23.4124514,12.25 C23.4118794,7.56406868 20.4957727,3.37325671 16.1021401,1.74416342 L16.1021401,22.7558366 C20.4957727,21.1267433 23.4118794,16.9359313 23.4124514,12.25 Z" id="Path" fill="#D80027" fill-rule="nonzero"></path>
+                <path d="M1,12.25 C1.00057199,16.9359313 3.91667865,21.1267433 8.31031128,22.7558366 L8.31031128,1.74416342 C3.91667865,3.37325671 1.00057199,7.56406868 1,12.25 Z" id="Path" fill="#333333" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

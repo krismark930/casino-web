@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/hungary</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/hungary">
+            <g id="hungary">
+                <path d="M0.793774319,7.79766537 C-0.202464603,10.4785321 -0.202464603,13.4280827 0.793774319,16.1089494 L12,17.1501946 L23.2062257,16.1089494 C24.2028808,13.4281575 24.2028808,10.4784573 23.2062257,7.79766537 L12,6.75642023 L0.793774319,7.79766537 Z" id="Path" fill="#F5F5F5" fill-rule="nonzero"></path>
+                <path d="M11.9999995,0.2 C7.04627596,0.200594473 2.61596693,3.23132745 0.893774,7.797665 L23.106225,7.797665 C21.3840321,3.23132745 16.953723,0.200594473 11.9999995,0.2 Z" id="Path" fill="#FF4B55" fill-rule="nonzero"></path>
+                <path d="M11.9999995,23.8066144 C16.953723,23.8060121 21.3840321,20.7353888 23.106225,16.1089494 L0.893774,16.1089494 C2.61596693,20.7353888 7.04627596,23.8060121 11.9999995,23.8066144 Z" id="Path" fill="#73AF00" fill-rule="nonzero"></path>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

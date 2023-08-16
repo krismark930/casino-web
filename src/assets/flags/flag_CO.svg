@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/colombia</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/colombia">
+            <g id="colombia">
+                <path d="M0.2,12.1766082 C0.2,5.56211013 5.51733852,0.2 12.076608,0.2 C18.6358775,0.2 23.953216,5.56211013 23.953216,12.1766082 L12.076608,13.219883 L0.2,12.1766082 Z" id="Path" fill="#FFDA44" fill-rule="nonzero"></path>
+                <path d="M1.804678,17.7649125 C3.92161676,21.4728833 7.83790128,23.7576973 12.076608,23.7576973 C16.3153147,23.7576973 20.2315992,21.4728833 22.348538,17.7649125 L12.076608,16.983626 L1.804678,17.7649125 Z" id="Path" fill="#D80027" fill-rule="nonzero"></path>
+                <path d="M22.3619369,17.9649123 C23.4068195,16.1452743 23.9558133,14.0793013 23.953226,11.9766082 L0.2,11.9766082 C0.2,14.1567251 0.77991252,16.2011696 1.79127996,17.9649123 L22.3619369,17.9649123 Z" id="Path" fill="#0052B4" fill-rule="nonzero"></path>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>
