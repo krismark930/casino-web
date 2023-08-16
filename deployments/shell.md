@@ -36,3 +36,6 @@ sudo docker run \
 -d -p 443:443 -p 80:80 \
 -v ~/gateway:/var/log/nginx \
 docker.flct.io/casino/gateway-huangjia:1.0.0-11
+
+
+
