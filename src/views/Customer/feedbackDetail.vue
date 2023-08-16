@@ -5,24 +5,24 @@
                 <img class="w-1" referrerpolicy="no-referrer" src="@/assets/images/my/arrow-left.png" />
             </template>
             <template #title>
-                <span class="pt-[10px] text-[#454558]">我的反馈</span>
+                <span class="pt-[10px] text-[#454558]">{{ t('feedback_detail.text_1') }}</span>
             </template>
             <template #right> </template>
         </van-nav-bar>
         <div class="pt-[50px] pb-[60px] ">
             <div class="flex justify-start text-[15px] items-center py-1 px-2">
                 <img class="w-[25px] h-[25px]" referrerpolicy="no-referrer" src="@/assets/images/account/icon-deposit.png"
-                    v-if="post.title == '取款问题'" />
+                    v-if="post.title == t('feedback_detail.text_2')" />
                 <img class="w-[25px] h-[25px]" referrerpolicy="no-referrer" src="@/assets/images/account/icon-withdraw.png"
-                    v-else-if="post.title == '存款问题'" />
+                    v-else-if="post.title == t('feedback_detail.text_3')" />
                 <img class="w-[25px] h-[25px]" referrerpolicy="no-referrer" src="@/assets/images/customer/icon-game.png"
-                    v-else-if="post.title == '游戏问题'" />
+                    v-else-if="post.title == t('feedback_detail.text_4')" />
                 <img class="w-[25px] h-[25px]" referrerpolicy="no-referrer" src="@/assets/images/customer/icon-gift.png"
-                    v-else-if="post.title == '优惠问题'" />
+                    v-else-if="post.title == t('feedback_detail.text_5')" />
                 <img class="w-[25px] h-[25px]" referrerpolicy="no-referrer" src="@/assets/images/customer/icon-pen.png"
-                    v-else-if="post.title == '修改资料'" />
+                    v-else-if="post.title == t('feedback_detail.text_6')" />
                 <img class="w-[25px] h-[25px]" referrerpolicy="no-referrer" src="@/assets/images/account/icon-intro.png"
-                    v-else-if="post.title == '其他问题'" />
+                    v-else-if="post.title == t('feedback_detail.text_7')" />
                 <div class="w-full">
                     <div class="pl-2 flex justify-between w-full">
                         <p class="font-medium">{{ post.title }}</p>
@@ -66,6 +66,8 @@ import router from '@/router';
 import { useRoute } from 'vue-router';
 import moment from "moment"
 import { ElLoading } from 'element-plus';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const route = useRoute();
 const { dispatchPost } = postStore();
@@ -89,7 +91,7 @@ onMounted(async () => {
     const id = route.query.id;
     const loading = ElLoading.service({
         lock: true,
-        text: '加载中...',
+        text: t('feedback_detail.text_8'),
         background: 'rgba(0, 0, 0, 0.7)',
     })
     await dispatchPost({ id }, token.value);

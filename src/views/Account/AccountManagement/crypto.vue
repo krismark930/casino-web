@@ -6,7 +6,7 @@
             <div class="text-[12px] text-bold">{{ item.bank.split('-')[1] }}</div>
         </div>
         <span class="text-[13px] text-bold">{{ item.bank_address.substring(0, 7)+'*******'+ item.bank_address.substring(item.bank_address.length-7,item.bank_address.length) }}</span>
-        <span class="text-[12px] text-[#4EABFF]" @click="editCryptoAccount(item)">编辑</span>
+        <span class="text-[12px] text-[#4EABFF]" @click="editCryptoAccount(item)">{{ t('bank_card.text_1') }}</span>
     </div>
     <div v-if="bankList.length === 0">
         <img class="p-4" referrerpolicy="no-referrer" src="@/assets/images/my/bg-account.png" />
@@ -17,11 +17,11 @@
             @click="addCrypto">
             <div class="w-full flex justify-center items-center">
                 <img class="w-[15px] h-[15px]" referrerpolicy="no-referrer" src="@/assets/images/my/icon-plus.png" />
-                <span class="text-[15px] pl-1 text-[#454558]">添加银行卡</span>
+                <span class="text-[15px] pl-1 text-[#454558]">{{ t('bank_card.text_2') }}</span>
             </div>
         </button>
         <div class="mt-[30px]  text-[#C0C4CD] bg-transparent text-[13px]  w-full flex justify-center">
-            最多支持添加10张银行卡
+            {{ t('bank_card.text_3') }}
         </div>
     </div>
     
@@ -31,6 +31,8 @@ import router from '@/router';
 import { ref, onMounted } from 'vue';
 import { useBankAccountStore} from '@/stores/bankAccount';
 import { storeToRefs } from 'pinia';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const bankList = ref([]);
 const { cryptoAccounts } = storeToRefs(useBankAccountStore());
 const { setEditCrypto } = useBankAccountStore();

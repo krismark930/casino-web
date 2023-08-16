@@ -21,7 +21,7 @@ import { CountDown } from 'vant';
 import { Popup } from 'vant';
 import { NumberKeyboard } from 'vant';
 import { Form, Field } from 'vant';
-import { i18n } from '@/i18n';
+import { i18n } from '@/locale/index';
 import { createHead } from '@vueuse/head'
 // 引入element-plus
 import ElementPlus from 'element-plus'
@@ -63,5 +63,4 @@ app.use(Field);
 app.use(ElementPlus);
 app.use(socket);
 app.use(head)
-app.provide('i18n', i18n)
 app.mount("#app");

@@ -113,6 +113,7 @@ export const GET_SYSTEM_SMS = "/user/message/get-system-sms";
 export const DELETE_SYSTEM_SMS = "/user/message/delete-system-sms";
 
 export const LOTTERY_USER_CONFIG = "/user/lottery-config/item";
+export const LOTTERY_USER_CONFING_ADD = "/user/lottery-config/add";
 
 export const GET_PAYMENT_METHOD = "/user/payment-method";
 

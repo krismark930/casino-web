@@ -5,13 +5,13 @@
                 <img class="w-1" referrerpolicy="no-referrer" src="@/assets/images/my/arrow-left.png" />
             </template>
             <template #title>
-                <span class="pt-[10px] text-[#454558]">意见反馈</span>
+                <span class="pt-[10px] text-[#454558]">{{ t('feed_back.text_1') }}</span>
             </template>
-            <template #right> 我的反馈</template>
+            <template #right> {{ t('feed_back.text_2') }}</template>
         </van-nav-bar>
         <div class="pt-[50px] pb-[60px]   bg-gray-100 text-[15px]">
             <div class="flex px-2 bg-white pt-[15px]">
-                <p class="">问题类型</p><span class="text-red-500 text-[20px]">*</span>
+                <p class="">{{ t('feed_back.text_3') }}</p><span class="text-red-500 text-[20px]">*</span>
             </div>
             <div class="flex justify-start items-center py-1 px-2 " @click="selectAddress">
                 <img v-if="queryType.img" class="w-[25px] h-[25px] mr-2" referrerpolicy="no-referrer"
@@ -19,7 +19,7 @@
                 <div class="w-full">
                     <div class=" flex justify-between w-full">
                         <p v-if="queryType.name">{{ queryType.name }}</p>
-                        <p v-if="!queryType.name" class="text-gray-400">请选择问题类型</p>
+                        <p v-if="!queryType.name" class="text-gray-400">{{ t('feed_back.text_4') }}</p>
                         <img src="@/assets/images/my/arrow-right.png" class="w-[10px] h-[15px]" />
                     </div>
                 </div>
@@ -27,12 +27,12 @@
 
             </div>
             <div class="flex px-2 pt-2 bg-white">
-                <p class="">问题描述</p><span class="text-red-500 text-[20px]">*</span>
-                <p class="text-gray-400">（内容介于20~200字）</p>
+                <p class="">{{ t('feed_back.text_5') }}</p><span class="text-red-500 text-[20px]">*</span>
+                <p class="text-gray-400">{{ t('feed_back.text_6') }}</p>
             </div>
             <div class=" pt-1 bg-white mt-1">
                 <div class="relative">
-                    <textarea rows="9" class="px-2 w-full" v-model="content" placeholder="请详细描述您的问题或建议！"></textarea>
+                    <textarea rows="9" class="px-2 w-full" v-model="content" :placeholder="t('feed_back.text_7')"></textarea>
                     <p class="absolute bottom-0 right-2 text-gray-400">{{ content.length }}/200</p>
                 </div>
                 <p class="h-[1px] w-screen bg-gray-300"></p>
@@ -53,24 +53,24 @@
                 </div>
             </div>
             <div class="text-gray-400 text-[13px] px-2 py-1 bg-white ">
-                <span class="">文件格式未</span>
+                <span class="">{{ t('feed_back.text_8') }}</span>
                 <span class="">png、</span>
                 <span class="">jpg、jpeg</span>
-                <span class="">，且大小不超过15MB</span>
+                <span class="">{{ t('feed_back.text_9') }}</span>
             </div>
             <div class="mt-3 px-2">
                 <button
                     :class="[{ 'bg-blue-200': !content }, 'bg-blue-500 text-white px-2 py-[10px] w-full text-[17px] rounded-sm']"
                     @click="submit">
-                    提交
+                    {{ t('feed_back.text_10') }}
                 </button>
             </div>
         </div>
         <van-popup v-model:show="show" round position="bottom">
             <div class="rounded-t-md">
                 <div class="text-[16px] px-2 pt-2 pb-1 flex justify-between">
-                    <span class="text-blue-400" @click="cancel">取消</span>
-                    <span class="font-bold">选择问题类型</span>
+                    <span class="text-blue-400" @click="cancel">{{ t('feed_back.text_11') }}</span>
+                    <span class="font-bold">{{ t('feed_back.text_12') }}</span>
                     <span></span>
                 </div>
                 <p class="bg-gray-200 h-[0.5px] "></p>
@@ -96,6 +96,8 @@ import { postStore } from '@/stores/post';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import { ElLoading } from 'element-plus';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const { dispatchAddPost } = postStore();
 
@@ -105,7 +107,7 @@ const active = ref(0)
 const queryType = ref({
     id: 1,
     img: new URL('@/assets/images/account/icon-withdraw.png', import.meta.url).href,
-    name: '存款问题',
+    name: t('feed_back.text_13'),
 });
 const imgFiles = ref([]);
 const cascaderValue = ref('');
@@ -113,11 +115,11 @@ const imageLength = ref(0);
 const chars = ref(0);
 const options = [
     {
-        text: 'Zhejiang',
+        text: t('feed_back.text_14'),
         value: '330000',
     },
     {
-        text: 'Jiangsu',
+        text: t('feed_back.text_15'),
         value: '320000',
     },
 ];
@@ -125,32 +127,32 @@ const bankCardList = ref([
     {
         id: 1,
         img: new URL('@/assets/images/account/icon-withdraw.png', import.meta.url).href,
-        name: '存款问题',
+        name: t('feed_back.text_16'),
     },
     {
         id: 2,
         img: new URL('@/assets/images/account/icon-deposit.png', import.meta.url).href,
-        name: '取款问题',
+        name: t('feed_back.text_17'),
     },
     {
         id: 3,
         img: new URL('@/assets/images/customer/icon-game.png', import.meta.url).href,
-        name: '游戏问题',
+        name: t('feed_back.text_18'),
     },
     {
         id: 4,
         img: new URL('@/assets/images/customer/icon-gift.png', import.meta.url).href,
-        name: '优惠问题',
+        name: t('feed_back.text_19'),
     },
     {
         id: 5,
         img: new URL('@/assets/images/customer/icon-pen.png', import.meta.url).href,
-        name: '修改资料',
+        name: t('feed_back.text_20'),
     },
     {
         id: 6,
         img: new URL('@/assets/images/account/icon-intro.png', import.meta.url).href,
-        name: '其他问题',
+        name: t('feed_back.text_21'),
     }
 ]);
 const selectAddress = () => {
@@ -203,7 +205,7 @@ const submit = async () => {
     }
     const loading = ElLoading.service({
         lock: true,
-        text: '加载中...',
+        text: t('feed_back.text_22'),
         background: 'rgba(0, 0, 0, 0.7)',
     })
     await dispatchAddPost({
@@ -213,7 +215,7 @@ const submit = async () => {
     }, token.value)
     loading.close();
     if (success.value) {
-        showToast("意见已提交");
+        showToast(t('feed_back.text_23'));
         content.value = "";
         imageList.value = [];
     } else {
@@ -230,7 +232,7 @@ const cancel = () => {
     queryType.value = {
         id: 1,
         img: new URL('@/assets/images/account/icon-withdraw.png', import.meta.url).href,
-        name: '存款问题',
+        name: t('feed_back.text_13'),
     };
     show.value = false;
     active.value = 0;

@@ -84,7 +84,3 @@ const onClick_1 = () => {
     router.push({ name: 'depositInformation' });
 }
 </script>
-
-<!-- const { route, index, total, id } = defineProps<{ route: any, index: number, total: number, id:string }>()
-const emit = defineEmits(['changeMenuDialog', 'changeChecked', 'deleteItem', 'editPopup', 'moveToPopup', 'changeStartPoint', 'changeFinishPoint'])
-  emit('deleteItem', route.optimize_route_id) -->

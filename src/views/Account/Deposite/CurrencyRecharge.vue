@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="mt-[10px] bg-white p-2">
-            <div class="font-medium text-[#454558] mt-0">虚拟币种类</div>
+            <div class="font-medium text-[#454558] mt-0">{{ t('currency_recharge.text_1') }}</div>
             <div class="flex">
                 <div v-for="(item, index) in tokenList" :key="index" @click=selectToken(item.id)
                     class="relative flex justify-center items-center mt-[18px] w-[90px] px-[6px] py-[3px] mx-[10px] border rounded-sm"
@@ -16,30 +16,30 @@
             </div>
         </div>
         <div class="mt-[10px] bg-white py-1 px-2">
-            <p class="mt-[10px] font-medium text-[#454558]">存款金额</p>
+            <p class="mt-[10px] font-medium text-[#454558]">{{ t('currency_recharge.text_2') }}</p>
             <p class="w-full h-[1px] bg-gray-200 my-[7px]"></p>
             <div class="text-wrapper_2 flex justify-start items-end">
                 <p class="text-[15px]">￥</p>
-                <input type="text" v-model="amount" @input="amountChange" placeholder="请输入￥100~￥1000000" name="name"
-                    id="name"
+                <input type="text" v-model="amount" @input=" amountChange " :placeholder="t('currency_recharge.text_3')"
+                    name="name" id="name"
                     class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB] placeholder:text-[12px] text-[25px] font-bold" />
             </div>
             <p class="w-full h-[1px] bg-gray-200 my-[7px]"></p>
-            <p v-if="amountFlag" class="px-2 py-[5px] text-[12px] text-red-500 bg-gray-100">
-                Min Deposit amount is 100。
+            <p v-if=" amountFlag " class="px-2 py-[5px] text-[12px] text-red-500 bg-gray-100">
+                {{ t('currency_recharge.text_4') }}
             </p>
             <div class="text-[12px] flex justify-between py-1">
-                <p class="text_15">参考汇率1USDT≈{{ sysConfigItem.USDT?.toFixed(2) }}CNY</p>
+                <p class="text_15"> {{ t('currency_recharge.text_5') }}≈{{ sysConfigItem.USDT?.toFixed(2) }}CNY</p>
                 <div class="text-wrapper_3">
-                    <span class="text_16">预计支付</span>
+                    <span class="text_16">{{ t('currency_recharge.text_6') }}</span>
                     <span class="text-blue-300">{{ (Number(amount) / sysConfigItem.USDT).toFixed(2) }}</span>
                     <span class="text_18">USDT</span>
                 </div>
             </div>
             <div class="text-[12px] flex justify-between py-1">
-                <span class="text_19">实际到账金额将以支付时的汇率计算</span>
+                <span class="text_19">{{ t('currency_recharge.text_7') }}</span>
                 <div class="image-text_1 flex justify-between items-center">
-                    <span class="text-blue-300 mr-1">了解虚拟币</span>
+                    <span class="text-blue-300 mr-1">{{ t('currency_recharge.text_8') }}</span>
                     <img class="w-[13px] h-[13px]" referrerpolicy="no-referrer"
                         src="@/assets/images/my/arrow-double-right.png" />
                 </div>
@@ -47,16 +47,16 @@
         </div>
         <div class="flex-col bg-white">
             <div class="px-2 pt-2">
-                <button :class="[amount ? 'bg-blue-500' : 'bg-blue-200']"
-                    class="text-[18px] flex justify-center bg-blue-500 text-white rounded-sm w-full py-1" @click="onSubmit">
-                    <span class="text_20">立即存款</span>
+                <button :class=" [amount ? 'bg-blue-500' : 'bg-blue-200'] "
+                    class="text-[18px] flex justify-center bg-blue-500 text-white rounded-sm w-full py-1" @click=" onSubmit ">
+                    <span class="text_20">{{ t('currency_recharge.text_9') }}</span>
                 </button>
             </div>
 
             <div class="text-[12px] pb-[60px] flex justify-center pt-[30px]">
-                <span class="text_21">存款遇到问题？联系</span>
-                <span class="text-blue-300" @click="goServicePage">人工客服</span>
-                <span class="text_23">&nbsp;解决</span>
+                <span class="text_21">{{ t('currency_recharge.text_10') }}</span>
+                <span class="text-blue-300" @click=" goServicePage ">{{ t('currency_recharge.text_11') }}</span>
+                <span class="text_23">&nbsp;{{ t('currency_recharge.text_12') }}</span>
             </div>
         </div>
     </div>
@@ -69,6 +69,8 @@ import { useAuthStore } from '@/stores/auth';
 import { useDepositStore } from '@/stores/deposit';
 import { useSysConfigStore } from '@/stores/sysConfig';
 import { showToast } from 'vant';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const { dispatchGetCrypto } = useDepositStore();
 const { getSysConfigValue } = useSysConfigStore();
 const { getConfigValue } = useSysConfigStore();
@@ -117,7 +119,7 @@ const onSubmit = () => {
     } else {
         console.log(crypto.value);
         if (crypto.value == null) {
-            showToast("请添加银行");
+            showToast(t('currency_recharge.text_13'));
             router.push({ name: "addCrypto" });
             return;
         }

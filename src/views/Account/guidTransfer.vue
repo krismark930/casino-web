@@ -1,20 +1,12 @@
 <!-- 赛果 -->
 <template>
     <div class="animated fadeInLeft">
-        <van-nav-bar
-            class="border-b-2 border-gray-300"
-            fixed
-            @click-left="onClickLeft"
-        >
+        <van-nav-bar class="border-b-2 border-gray-300" fixed @click-left="onClickLeft">
             <template #left>
-                <img
-                    class="w-1"
-                    referrerpolicy="no-referrer"
-                    src="@/assets/images/my/arrow-left.png"
-                />
+                <img class="w-1" referrerpolicy="no-referrer" src="@/assets/images/my/arrow-left.png" />
             </template>
             <template #title>
-                <span class="pt-[10px] text-[#454558]">转账教程</span>
+                <span class="pt-[10px] text-[#454558]">{{ t('guid_transfer.text_1') }}</span>
             </template>
             <template #right> </template>
         </van-nav-bar>
@@ -40,47 +32,46 @@
                     </div>
                 </div>
             </div> -->
-            
+
             <van-collapse v-model="activeNames" class="mt-1">
-                <van-collapse-item title="如何转账" name="1">
+                <van-collapse-item :title="t('guid_transfer.text_2')" name="1">
                     <div class="pt-2 flex justify-between ">
                         <div class="text-start text-[12px] w-[450px] text-[#525252] pt-2">
-                            <span class=""
-                            >1.登录开云账号&nbsp;&gt;&nbsp;首页/我的钱包点
-                            <br />击转账&nbsp;&gt;&nbsp;进入转账页面
-                            <br />2.手动转账步骤：
-                            <br />A.打开页面：登录开云账号&nbsp;--&nbsp;我的钱
-                            <br />包&nbsp;--&nbsp;转账页；
-                            <br />B.选择转出转入钱包；
-                            <br />C.输入金额，或点击最大金额<br />D.点击立即转账；
-                            <br />3.自动转账步骤：
-                            <br />A.打开页面：登录开云账号&nbsp;--&nbsp;我的钱
-                            <br />包&nbsp;--&nbsp;转账页<br />B.（向右）打开自动转账开关。</span
-                            >
+                            <span class="">1.{{ t('guid_transfer.text_3') }}&nbsp;&gt;&nbsp;{{ t('guid_transfer.text_4') }}
+                                <br />{{ t('guid_transfer.text_5') }}&nbsp;&gt;&nbsp;{{ t('guid_transfer.text_6') }}
+                                <br />2.{{ t('guid_transfer.text_7') }}
+                                <br />A.{{ t('guid_transfer.text_8') }}&nbsp;--&nbsp;{{ t('guid_transfer.text_9') }}
+                                <br />{{ t('guid_transfer.text_10') }}&nbsp;--&nbsp;{{ t('guid_transfer.text_11') }}
+                                <br />B.{{ t('guid_transfer.text_12') }}
+                                <br />C.{{ t('guid_transfer.text_13') }}<br />D.{{ t('guid_transfer.text_14') }}
+                                <br />3.{{ t('guid_transfer.text_15') }}
+                                <br />A.{{ t('guid_transfer.text_16') }}&nbsp;--&nbsp;{{ t('guid_transfer.text_9') }}
+                                <br />{{ t('guid_transfer.text_10') }}&nbsp;--&nbsp;{{ t('guid_transfer.text_18')
+                                }}<br />B.{{ t('guid_transfer.text_19') }}</span>
                         </div>
                         <div class=" w-full flex justify-end h-[250px]">
-                            <img class="" src="@/assets/images/account/transfer-guid.png" alt="arrow"/>
+                            <img class="" src="@/assets/images/account/transfer-guid.png" alt="arrow" />
                         </div>
                     </div>
                     <div>
-                        <span class="text-[12px] text-red-500"
-                        >进入某场馆时，中心钱包的金额自动带入到对应的游戏场馆中</span
-                        >
+                        <span class="text-[12px] text-red-500">
+                            {{ t('guid_transfer.text_20') }}
+                        </span>
                     </div>
                 </van-collapse-item>
                 <div class="h-[3px]"></div>
                 <van-collapse-item title="开启自动转账后怎么取款？" name="2">
                     <div class="flex justify-between pb-1">
                         <div class="text-start text-[13px] text-[#525252] ">
-                            开启自动转账模式后，当您进入取款页面时，会自动回收<br />所有场馆的余额，直接进行取款申请的操作即可，若因网<br />络原因造成场馆的余额没有及时回收到中心钱包，点击钱<br />包金额右方的“一键回收”按钮即可进行二次回收场馆余<br />额。
+                            {{ t('guid_transfer.text_21') }}<br />{{ t('guid_transfer.text_22') }}<br />{{ t('guid_transfer.text_23') }}<br />{{ t('guid_transfer.text_24') }}<br />{{ t('guid_transfer.text_25') }}
                         </div>
                     </div>
                 </van-collapse-item>
                 <div class="h-[3px]"></div>
-                <van-collapse-item title="转账到场馆金额变少？" name="3">
+                <van-collapse-item :title="t('guid_transfer.text_26')" name="3">
                     <div class="flex justify-between pb-1">
                         <div class="text-start text-[13px] text-[#525252] ">
-                            大部分金额变少或金额变负数是系统二次结算导致的结果， 若对该部分有异议可联系7*24小时在线客服进行详细咨询。
+                            {{ t('guid_transfer.text_27') }}
                         </div>
                     </div>
                 </van-collapse-item>
@@ -88,9 +79,8 @@
                 <van-collapse-item title="转账没有成功，但是钱却没了怎么办？" name="4">
                     <div class="flex justify-between pb-1">
                         <div class="text-start text-[13px] text-[#525252] ">
-                            <span class="paragraph_4"
-                                >1.转账时请先退出游戏平台再操作。<br />2.如转账出现金额丢失及时联系24小时在线客服，并提供<br />以下信息：<br />（1）会员账号<br />（2）丢失金额<br />（3）问题场馆</span
-                            >
+                            <span
+                                class="paragraph_4">1.{{ t('guid_transfer.text_28') }}<br />2.{{ t('guid_transfer.text_29') }}<br />{{ t('guid_transfer.text_30') }}<br />{{ t('guid_transfer.text_31') }}<br />{{ t('guid_transfer.text_32') }}<br />{{ t('guid_transfer.text_33') }}</span>
                         </div>
                     </div>
                 </van-collapse-item>
@@ -98,9 +88,8 @@
                 <van-collapse-item title="主账户/场馆，转场馆/主账户失败？" name="5">
                     <div class="flex justify-between pb-1">
                         <div class="text-start text-[13px] text-[#525252] ">
-                            <span class="paragraph_5"
-                                >1.查看场馆是否处于维护当中，若场馆处于维护状态是不<br />可以进行转账的。<br />2.是否存在频繁转账操作，因转账人数较多，单个账户若<br />频繁转账会增加数据交互负担，从而造成数据丢失或数据<br />错误。<br />3.请尝试转入整数。<br />4.联系24小时在线客服进行咨询。</span
-                            >
+                            <span
+                                class="paragraph_5">1.{{ t('guid_transfer.text_34') }}<br />{{ t('guid_transfer.text_35') }}<br />2.{{ t('guid_transfer.text_36') }}<br />{{ t('guid_transfer.text_37') }}<br />{{ t('guid_transfer.text_38') }}<br />3.{{ t('guid_transfer.text_39') }}<br />4.{{ t('guid_transfer.text_40') }}</span>
                         </div>
                     </div>
                 </van-collapse-item>
@@ -113,6 +102,8 @@
 import { ref } from 'vue';
 import router from '@/router';
 import { Collapse, CollapseItem } from 'vant';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const activeNames = ref(['1', '2']);
 
@@ -121,6 +112,4 @@ const onClickLeft = () => {
 }
 
 </script>
-<style>
-
-</style>
+<style></style>

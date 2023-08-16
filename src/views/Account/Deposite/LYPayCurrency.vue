@@ -2,7 +2,7 @@
     <div>
         <div class="mt-[10px] bg-white p-2">
             <div>
-                <span class="font-medium text-[#454558]">存款金额</span>
+                <span class="font-medium text-[#454558]">{{ t('ly_pay.text_1') }}</span>
             </div>
             <p class="w-full h-[1px] bg-gray-200 mt-[12px]"></p>
             <!-- <div class="flex mt-[10px] flex-wrap justify-between">
@@ -17,7 +17,7 @@
                 </div>
             </div> -->
             <div class="px-2 mt-[14px]">
-                <label for="name" class="block font-semibold text-[#454558] ">所属银行</label>
+                <label for="name" class="block font-semibold text-[#454558] ">{{ t('ly_pay.text_2') }}</label>
                 <div class="mt-[5px] border-b border-gray-300 focus-within:border-gray-500 pb-[5px] flex justify-between items-center"
                     @click="selectBank">
                     <input type="text" v-model="bankType" placeholder="请选择银行" name="name" id="name"
@@ -27,7 +27,7 @@
             </div>
             <div class="text-wrapper_2 flex justify-start items-end">
                 <p class="text-[15px]">￥</p>
-                <input type="text" v-model="amount" @input="amountChange" placeholder="请输入￥100~￥1000000" name="name"
+                <input type="text" v-model="amount" @input="amountChange" :placeholder="t('ly_pay.text_3')" name="name"
                     id="name"
                     class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB] placeholder:text-[12px] text-[25px] font-bold" />
             </div>
@@ -38,21 +38,21 @@
                 <button :class="[amount ? 'bg-blue-500' : 'bg-blue-200']"
                     class="text-[18px] flex justify-center bg-blue-500 text-white rounded-sm w-full py-1"
                     @click="requestPayment">
-                    <span class="text_20">立即存款</span>
+                    <span class="text_20">{{ t('ly_pay.text_4') }}</span>
                 </button>
             </div>
 
             <div class="text-[12px] pb-[60px] flex justify-center pt-[30px]">
-                <span class="text_21">存款遇到问题？联系</span>
-                <span class="text-blue-300">人工客服</span>
-                <span class="text_23">&nbsp;解决</span>
+                <span class="text_21">{{ t('ly_pay.text_5') }}</span>
+                <span class="text-blue-300">{{ t('ly_pay.text_6') }}</span>
+                <span class="text_23">&nbsp;{{ t('ly_pay.text_7') }}</span>
             </div>
         </div>
         <van-popup v-model:show="show" position="bottom" class="rounded-t-md">
             <div class="rounded-t-md">
                 <div class="text-[16px] p-2 flex justify-between">
-                    <span class="text-blue-400" @click="() => show = false">取消</span>
-                    <span class="font-bold">选择所属银行</span>
+                    <span class="text-blue-400" @click="() => show = false">{{ t('ly_pay.text_8') }}</span>
+                    <span class="font-bold">{{ t('ly_pay.text_9') }}</span>
                     <span></span>
                 </div>
                 <p class="bg-gray-400 h-[1px] "></p>
@@ -79,8 +79,11 @@ import router from '@/router';
 import { thirdpartyPaymentStore } from "@/stores/thirdparty_payment";
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
+import socket from '@/utils/socket';
 import { ElLoading } from "element-plus";
 import { showToast } from 'vant';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const tokenActive = ref(1);
 const name = ref('');
@@ -118,67 +121,67 @@ const bankCardList = ref([
     {
         id: 1,
         img: new URL('@/assets/images/account/icon-bank1.png', import.meta.url).href,
-        name: '中国银行',
+        name: t('bank_add_2.text_18')
     },
     {
         id: 2,
         img: new URL('@/assets/images/account/icon-bank2.png', import.meta.url).href,
-        name: '建设银行',
+        name: t('bank_add_2.text_19')
     },
     {
         id: 3,
         img: new URL('@/assets/images/account/icon-bank3.png', import.meta.url).href,
-        name: '农业银行',
+        name: t('bank_add_2.text_20')
     },
     {
         id: 4,
         img: new URL('@/assets/images/account/icon-bank4.png', import.meta.url).href,
-        name: '工商银行',
+        name: t('bank_add_2.text_21')
     },
     {
         id: 5,
         img: new URL('@/assets/images/account/icon-bank5.png', import.meta.url).href,
-        name: '中国邮政储蓄银行',
+        name: t('bank_add_2.text_22')
     },
     {
         id: 6,
         img: new URL('@/assets/images/account/icon-bank6.png', import.meta.url).href,
-        name: '招商银行',
+        name: t('bank_add_2.text_23')
     },
     {
         id: 7,
         img: new URL('@/assets/images/account/icon-bank7.png', import.meta.url).href,
-        name: '交通银行',
+        name: t('bank_add_2.text_24')
     },
     {
         id: 8,
         img: new URL('@/assets/images/account/icon-bank8.png', import.meta.url).href,
-        name: '中信银行',
+        name: t('bank_add_2.text_25')
     },
     {
         id: 9,
         img: new URL('@/assets/images/account/icon-bank9.png', import.meta.url).href,
-        name: '光大银行',
+        name: t('bank_add_2.text_26')
     },
     {
         id: 10,
         img: new URL('@/assets/images/account/icon-bank10.png', import.meta.url).href,
-        name: '浦发银行',
+        name: t('bank_add_2.text_27')
     },
     {
         id: 11,
         img: new URL('@/assets/images/account/icon-bank11.png', import.meta.url).href,
-        name: '广发银行',
+        name: t('bank_add_2.text_28')
     },
     {
         id: 12,
         img: new URL('@/assets/images/account/icon-bank12.png', import.meta.url).href,
-        name: '华夏银行',
+        name: t('bank_add_2.text_29')
     },
     {
         id: 13,
         img: new URL('@/assets/images/account/icon-bank13.png', import.meta.url).href,
-        name: '兴业银行',
+        name: t('bank_add_2.text_30')
     }
 ])
 const user = computed(() => {
@@ -214,11 +217,11 @@ const redirectToHTMLContent = (htmlContent: string): void => {
 
 const requestPayment = async () => {
     if (amount.value == "") {
-        showToast("请输入存款金额。");
+        showToast(t('ly_pay.text_10'));
     }
     const loading = ElLoading.service({
         lock: true,
-        text: "加载中...",
+        text: t('ly_pay.text_11'),
         background: "rgba(0, 0, 0, 0.7)",
     });
     await dispatchLYPay({
@@ -228,7 +231,8 @@ const requestPayment = async () => {
         PayID: 6
     })
     loading.close();
-    if (payFormData.value != "") {
+    if (payFormData.value != "") {        
+        socket.io.emit("submitDepositAlert");
         redirectToHTMLContent(payFormData.value);
     }
 }

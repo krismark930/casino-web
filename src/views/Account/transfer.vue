@@ -6,9 +6,9 @@
                 <img class="w-1" referrerpolicy="no-referrer" src="@/assets/images/my/arrow-left.png" />
             </template>
             <template #title>
-                <span class="pt-[10px] text-[#454558]">转账</span>
+                <span class="pt-[10px] text-[#454558]">{{ t('transfer.text_1') }}</span>
             </template>
-            <template #right>教程
+            <template #right>{{ t('transfer.text_2') }}
                 <img class="w-[15px] h-[15px] ml-1" referrerpolicy="no-referrer"
                     src="@/assets/images/withdraw/icon-help.png" />
             </template>
@@ -18,12 +18,12 @@
             <div class=" px-2 bg-white  text-[13px] mt-2">
                 <div class="flex justify-between mt-1 pt-[10px]">
                     <div class="flex items-center">
-                        <p>钱包金额</p>
+                        <p>{{ t('transfer.text_3') }}</p>
                         <img class="w-[15px] h-[15px] ml-1" referrerpolicy="no-referrer"
                             src="@/assets/images/withdraw/icon-refresh.png" />
                     </div>
                     <div class="text-blue-400">
-                        一键回收
+                        {{ t('transfer.text_4') }}
                     </div>
                 </div>
                 <p class="w-full h-[0.5px] bg-[#CBCBCB] my-[10px]"></p>
@@ -49,42 +49,54 @@
                 </div>
             </div>
             <div class="mt-1 py-2 px-2 bg-white flex justify-between text-[13px]">
-                <p>自动转账</p>
+                <p>{{ t('transfer.text_5') }}</p>
                 <van-switch v-model="checked" size="20px" />
             </div>
 
             <div class="mt-1">
-                <van-field v-model="type.title" is-link readonly label="转账选择：" placeholder="转账选择"
+                <van-field v-model="type.title" is-link readonly :label="t('transfer.text_6')" :placeholder="t('transfer.text_7')"
                     @click="showPicker = true" />
                 <van-popup v-model:show="showPicker" round position="bottom" class="text-center text-[15px]">
-                    <div v-if="user.AG && sysConfig.AG" class="py-1" @click="() => selectType('AGIN', '我的钱包-->AG馆')">
-                        我的钱包-->AG馆</div>
-                    <div v-if="user.OG && sysConfig.OG" class="py-1" @click="() => selectType('OGIN', '我的钱包-->OG馆')">
-                        我的钱包-->OG馆 </div>
-                    <div v-if="user.BBIN && sysConfig.BBIN" class="py-1" @click="() => selectType('BBIN', '我的钱包-->BBIN馆')">
-                        我的钱包-->BBIN馆</div>
-                    <div v-if="user.MG && sysConfig.MG" class="py-1" @click="() => selectType('MGIN', '我的钱包-->MG馆')">
-                        我的钱包-->MG馆</div>
-                    <div v-if="user.PT && sysConfig.PT" class="py-1" @click="() => selectType('PTIN', '我的钱包-->PT馆')">
-                        我的钱包-->PT馆</div>
-                    <div v-if="user.KY && sysConfig.KY" class="py-1" @click="() => selectType('KYIN', '我的钱包-->开元棋牌')">
-                        我的钱包-->开元棋牌</div>
-                    <div v-if="user.AG && sysConfig.AG" class="py-1" @click="() => selectType('AGOUT', 'AG馆-->我的钱包')">
-                        AG馆-->我的钱包</div>
-                    <div v-if="user.OG && sysConfig.OG" class="py-1" @click="() => selectType('OGOUT', 'OG馆-->我的钱包')">
-                        OG馆-->我的钱包</div>
-                    <div v-if="user.BBIN && sysConfig.BBIN" class="py-1" @click="() => selectType('BBOUT', 'BBIN馆-->我的钱包')">
-                        BBIN馆-->我的钱包</div>
-                    <div v-if="user.MG && sysConfig.MG" class="py-1" @click="() => selectType('MGOUT', 'MG馆-->我的钱包')">
-                        MG馆-->我的钱包</div>
-                    <div v-if="user.PT && sysConfig.PT" class="py-1" @click="() => selectType('PTOUT', 'PT馆-->我的钱包')">
-                        PT馆-->我的钱包</div>
-                    <div v-if="user.KY && sysConfig.KY" class="py-1" @click="() => selectType('KYOUT', '开元棋牌-->我的钱包')">
-                        开元棋牌-->我的钱包</div>
+                    <div v-if="user.AG && sysConfig.AG" class="py-1" @click="() => selectType('AGIN', t('transfer.text_8'))">
+                        {{ t('transfer.text_9')}}
+                    </div>
+                    <div v-if="user.OG && sysConfig.OG" class="py-1" @click="() => selectType('OGIN', t('transfer.text_10'))">
+                        {{ t('transfer.text_11')}}
+                    </div>
+                    <div v-if="user.BBIN && sysConfig.BBIN" class="py-1" @click="() => selectType('BBIN', t('transfer.text_12'))">
+                        {{ t('transfer.text_13')}}
+                    </div>
+                    <div v-if="user.MG && sysConfig.MG" class="py-1" @click="() => selectType('MGIN', t('transfer.text_14'))">
+                        {{ t('transfer.text_14')}}
+                    </div>
+                    <div v-if="user.PT && sysConfig.PT" class="py-1" @click="() => selectType('PTIN', t('transfer.text_15'))">
+                        {{ t('transfer.text_15')}}
+                    </div>
+                    <div v-if="user.KY && sysConfig.KY" class="py-1" @click="() => selectType('KYIN', t('transfer.text_16'))">
+                        {{ t('transfer.text_16')}}
+                    </div>
+                    <div v-if="user.AG && sysConfig.AG" class="py-1" @click="() => selectType('AGOUT', t('transfer.text_17'))">
+                        {{ t('transfer.text_17')}}
+                    </div>
+                    <div v-if="user.OG && sysConfig.OG" class="py-1" @click="() => selectType('OGOUT', t('transfer.text_19'))">
+                        {{ t('transfer.text_19')}}
+                    </div>
+                    <div v-if="user.BBIN && sysConfig.BBIN" class="py-1" @click="() => selectType('BBOUT', t('transfer.text_18'))">
+                        {{ t('transfer.text_18')}}
+                    </div>
+                    <div v-if="user.MG && sysConfig.MG" class="py-1" @click="() => selectType('MGOUT', t('transfer.text_20'))">
+                        {{ t('transfer.text_20')}}
+                    </div>
+                    <div v-if="user.PT && sysConfig.PT" class="py-1" @click="() => selectType('PTOUT', t('transfer.text_21'))">
+                        {{ t('transfer.text_21')}}
+                    </div>
+                    <div v-if="user.KY && sysConfig.KY" class="py-1" @click="() => selectType('KYOUT', t('transfer.text_22'))">
+                        {{ t('transfer.text_22')}}
+                    </div>
                 </van-popup>
             </div>
             <div class="text-wrapper_2 flex justify-start items-center px-2 bg-white mt-1">
-                <p class="text-[15px] w-12">转账金额：</p>
+                <p class="text-[15px] w-12">{{ t('transfer.text_23')}}</p>
                 <input type="number" v-model="amount" @input="amountChange" placeholder="" name="name" id="name"
                     class="ml-1 bg-gray-50block w-full border-0 border-b border-transparent placeholder-[#CBCBCB] placeholder:text-[12px] text-[25px] font-bold" />
             </div>
@@ -92,7 +104,7 @@
                 {{ alertMessage }}
             </p>
             <div class=" px-2  flex  text-[10px] mt-2 flex justify-center">
-                <p>如需帮助，请 <span class="text-blue-500">联系客服</span></p>
+                <p>{{ t('transfer.text_24')}} <span class="text-blue-500">{{ t('transfer.text_25')}}</span></p>
             </div>
         </div>
 
@@ -105,7 +117,7 @@
                 </button> -->
                 <button :class="[amount && type ? 'bg-blue-500 border-blue-500' : 'bg-blue-200 border-blue-200']"
                     class="button_1 flex w-full justify-center  py-1 border-2  rounded-sm " @click="submitResult">
-                    <p class="text-white text-[12px]">确定</p>
+                    <p class="text-white text-[12px]">{{ t('transfer.text_26')}}</p>
                 </button>
             </div>
         </div>
@@ -121,6 +133,8 @@ import { useAuthStore } from '@/stores/auth';
 import { useSysConfigStore } from '@/stores/sysConfig';
 import { storeToRefs } from 'pinia';
 import { useTransferStore } from '@/stores/transfer';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const type = ref({ title: '', value: '' });
 const showPicker = ref(false);
 const tokenActive = ref(1);
@@ -147,30 +161,30 @@ const token = computed(() => {
 const user = computed(() => {
     const { getUser } = storeToRefs(useAuthStore());
     moneyList.value.map((item: any) => {
-        if (item.name == "中心钱包") {
+        if (item.name == t('transfer.text_27')) {
             item.value = getUser.value.Money
         }
-        if (item.name == "锁定钱包") {
+        if (item.name == t('transfer.text_28')) {
             item.value = getUser.value.OG_Money + getUser.value.AG_Money + getUser.value.BBIN_Money + getUser.value.MG_Money + getUser.value.PT_Money + getUser.value.KY_Money;
         }
     });
     itemList.value.map((item: any) => {
-        if (item.name == "OG东方馆") {
+        if (item.name == t('transfer.text_29')) {
             item.value = getUser.value.OG_Money
         }
-        if (item.name == "开元棋牌") {
+        if (item.name == t('transfer.text_30')) {
             item.value = getUser.value.KY_Money
         }
-        if (item.name == "AG 馆") {
+        if (item.name == t('transfer.text_31')) {
             item.value = getUser.value.AG_Money
         }
-        if (item.name == "BBIN 馆") {
+        if (item.name == t('transfer.text_32')) {
             item.value = getUser.value.BBIN_Money
         }
-        if (item.name == "MG 馆") {
+        if (item.name == t('transfer.text_33')) {
             item.value = getUser.value.MG_Money
         }
-        if (item.name == "PT 馆") {
+        if (item.name == t('transfer.text_34')) {
             item.value = getUser.value.PT_Money
         }
     });
@@ -203,11 +217,11 @@ const amountChange = () => {
 
 const moneyList = ref([
     {
-        name: '中心钱包',
+        name: t('transfer.text_27'),
         value: 0.00
     },
     {
-        name: '锁定钱包',
+        name: t('transfer.text_28'),
         value: 0.00
     },
     //{
@@ -217,27 +231,27 @@ const moneyList = ref([
 ])
 const itemList = ref([
     {
-        name: 'OG东方馆',
+        name: t('transfer.text_29'),
         value: 0.00
     },
     {
-        name: 'AG 馆',
+        name: t('transfer.text_30'),
         value: 0.00
     },
     {
-        name: 'BBIN 馆',
+        name: t('transfer.text_31'),
         value: 0.00
     },
     {
-        name: 'PT 馆',
+        name: t('transfer.text_32'),
         value: 0.00
     },
     {
-        name: 'MG 馆',
+        name: t('transfer.text_33'),
         value: 0.00
     },
     {
-        name: '开元棋牌',
+        name: t('transfer.text_34'),
         value: 0.00
     },
 
@@ -259,14 +273,14 @@ const submitResult = async () => {
         if (result) {
             const loading = ElLoading.service({
                 lock: true,
-                text: "加载中...",
+                text: t('transfer.text_35'),
                 background: "rgba(0, 0, 0, 0.7)",
             });
             const response = await sumbitTransfer(user.value.id, amount.value, type.value.value);
             if (!response.success) {
                 showToast(response.message);
             }
-            if (response.message == "转账成功!") {
+            if (response.message == t('transfer.text_36')) {
                 await getProfile(token.value);
             }
             loading.close();
@@ -276,38 +290,38 @@ const submitResult = async () => {
 }
 const verifyData = () => {
     if (type.value.title == "") {
-        showToast("请选择传输选项。");
+        showToast(t('transfer.text_37'));
         return false;
     }
     if (amount.value < sysConfig.value.min_change_money) {
-        alertMessage.value = "转账金额不能小于" + sysConfig.value.min_change_money + "元!";
+        alertMessage.value = t('transfer.text_38') + sysConfig.value.min_change_money + t('transfer.text_39');
         return false;
     }
     if (type.value.value == "AGIN" || type.value.value == "OGIN" || type.value.value == "BBIN" || type.value.value == "MGIN" || type.value.value == "PTIN" || type.value.value == "KYIN") {
         if (amount.value > user.value.Money) {
-            alertMessage.value = "转账金额不能大于钱包的额度！";
+            alertMessage.value = t('transfer.text_40');
             return false;
         }
     }
     if (user.value.AG && sysConfig.value.AG) {
         if (type.value.value == "AGOUT") {
             if (Credit_AG == -1 || Credit_AG == -99) {
-                showToast("数据读取中，请稍候!");
+                showToast(t('transfer.text_41'));
                 return false;
             }
             if (amount.value > Credit_AG) {
-                showToast("转账金额不能大于真人的额度！");
+                showToast(t('transfer.text_42'));
                 return false;
             }
         }
     } if (user.value.BBIN && sysConfig.value.BBIN) {
         if (type.value.value == "BBOUT") {
             if (Credit_BBIN == -1 || Credit_BBIN == -99) {
-                showToast("数据读取中，请稍候!")
+                showToast(t('transfer.text_41'))
                 return false;
             }
             if (amount.value > Credit_BBIN) {
-                showToast("转账金额不能大于真人的额度！");
+                showToast(t('transfer.text_42'));
                 return false;
             }
         }
@@ -315,11 +329,11 @@ const verifyData = () => {
     if (user.value.OG && sysConfig.value.OG) {
         if (type.value.value == "OGOUT") {
             if (Credit_OG == -1 || Credit_OG == -99) {
-                showToast("数据读取中，请稍候!")
+                showToast(t('transfer.text_41'))
                 return false;
             }
             if (amount.value > Credit_OG) {
-                showToast("转账金额不能大于真人的额度！");
+                showToast(t('transfer.text_42'));
                 return false;
             }
         }
@@ -327,11 +341,11 @@ const verifyData = () => {
     if (user.value.MG && sysConfig.value.MG) {
         if (type.value.value == "MGOUT") {
             if (Credit_OG == -1 || Credit_OG == -99) {
-                showToast("数据读取中，请稍候!")
+                showToast(t('transfer.text_41'))
                 return false;
             }
             if (amount.value > Credit_MG) {
-                showToast("转账金额不能大于真人的额度！");
+                showToast(t('transfer.text_42'));
                 return false;
             }
         }
@@ -339,11 +353,11 @@ const verifyData = () => {
     if (user.value.PT && sysConfig.value.PT) {
         if (type.value.value == "PTOUT") {
             if (Credit_OG == -1 || Credit_OG == -99) {
-                showToast("数据读取中，请稍候!")
+                showToast(t('transfer.text_41'))
                 return false;
             }
             if (amount.value > Credit_PT) {
-                showToast("转账金额不能大于真人的额度！");
+                showToast(t('transfer.text_42'));
                 return false;
             }
         }
@@ -351,11 +365,11 @@ const verifyData = () => {
     if (user.value.KY && sysConfig.value.KY) {
         if (type.value.value == "KYOUT") {
             if (Credit_OG == -1 || Credit_OG == -99) {
-                showToast("数据读取中，请稍候!")
+                showToast(t('transfer.text_41'))
                 return false;
             }
             if (amount.value > Credit_KY) {
-                showToast("转账金额不能大于真人的额度！");
+                showToast(t('transfer.text_42'));
                 return false;
             }
         }
