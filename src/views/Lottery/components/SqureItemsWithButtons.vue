@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { ref, toRefs } from 'vue';
-import LotteryAlwaysColorItem from '@/components/global/LotteryAlwaysColorItem.vue';
+import LotteryAlwaysColorItem from '@/components/global/lotteryAlwaysColorItem.vue';
 
 const active = ref(1);
 
