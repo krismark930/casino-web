@@ -5,21 +5,21 @@
                 <img class="w-1" referrerpolicy="no-referrer" src="@/assets/images/my/arrow-left.png" />
             </template>
             <template #title>
-                <span class="pt-[10px] text-[#454558]">添加银行卡</span>
+                <span class="pt-[10px] text-[#454558]">{{ t('bank_add_3.text_1') }}</span>
             </template>
             <template #right> </template>
         </van-nav-bar>
         <div class="py-3 pt-[46px] pb-[60px] text-[13px] bg-blue-50 h-screen">
             <div class=" pt-1 bg-white">
                 <div class="px-2 mt-[14px]">
-                    <label for="name" class="block font-semibold text-[#454558] ">开户行地址</label>
+                    <label for="name" class="block font-semibold text-[#454558] ">{{ t('bank_add_3.text_2') }}</label>
                     <div class="mt-[7px] border-b border-gray-300 focus-within:border-gray-500 pb-[15px] flex justify-between items-center" @click="() => show = true">
-                        <input type="text" v-model="bankAddress" placeholder="请选择开户行地址" name="name" id="name"
+                        <input type="text" v-model="bankAddress" :placeholder="t('bank_add_3.text_3')" name="name" id="name"
                             class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB]" />
                         <img class="w-[10px] h-[13px] mr-2" src="@/assets/images/my/arrow-right.png" alt="arrow"/>
                     </div>
                     <div class="text-[12px]  text-red-500 pt-[5px] pb-1">
-                        请认真校准开户行及开户行地址，如有错误，请手动修改
+                        {{ t('bank_add_3.text_4') }}
                     </div>
                 </div>
             </div>
@@ -27,16 +27,16 @@
                 <button
                     :class="[[bankAddress ?'bg-blue-400': 'bg-blue-200'], ' text-white px-2 py-[10px] w-full text-[17px]']"
                     @click="goNextStep">
-                    下一步
+                    {{ t('bank_add_3.text_5') }}
                 </button>
             </div>
             <div class="mx-2 mt-2 text-[#CBCBCB] text-[12px] flex justify-center">
-                如需帮助，请
-                <span class="text-blue-400">联系客服</span>
+                {{ t('bank_add_3.text_6') }}
+                <span class="text-blue-400">{{ t('bank_add_3.text_7') }}</span>
             </div>
         </div>{{ addressValue }}
         <van-popup v-model:show="show" position="bottom" class="rounded-t-md">
-            <van-area  v-model="addressValue" @cancel="cancel" @confirm="selectBankAddress" cancel-button-text="取消" confirm-button-text="确定" :area-list="areaList" />
+            <van-area  v-model="addressValue" @cancel="cancel" @confirm="selectBankAddress" :cancel-button-text="t('bank_add_3.text_8')" :confirm-button-text="t('bank_add_3.text_9')" :area-list="areaList" />
 		</van-popup>
     </div>
 </template>
@@ -46,6 +46,8 @@ import router from '@/router';
 import { areaList } from '@vant/area-data';
 import { useBankAccountStore } from '@/stores/bankAccount';
 const { setBankAdd, bankAdd } = useBankAccountStore();
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const bankAddress = ref('');
 const addressValue = ref('');
 const verifyCode = ref('');

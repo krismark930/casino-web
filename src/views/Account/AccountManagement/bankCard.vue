@@ -6,7 +6,7 @@
             <div class="text-[12px] text-bold pl-1">{{ item.bank_type }}</div>
         </div>
         <span class="text-[13px] text-bold">{{ item.bank_account.substring(0, 7)+'*******'+ item.bank_account.substring(item.bank_account.length-7,item.bank_account.length) }}</span>
-        <span class="text-[12px] text-[#4EABFF]" @click="editBank(item)">编辑</span>
+        <span class="text-[12px] text-[#4EABFF]" @click="editBank(item)">{{ t('bank_card.text_1') }}</span>
     </div>
     <!-- <div 
         v-if="user.Bank_Account"
@@ -16,7 +16,7 @@
             <span class="text-[12px] pl-1">{{ user.Bank_Address }}</span>
         </div>
         <span class="text-[13px] text-bold">{{ user.Bank_Account.substring(0, 7)+'*******'+ user.Bank_Account.substring(user.Bank_Account.length-7,user.Bank_Account.length) }}</span>
-        <span class="text-[12px] text-[#4EABFF]" @click="editBank(item)">编辑</span>
+        <span class="text-[12px] text-[#4EABFF]" @click="editBank(item)">{{ t('bank_card.text_1') }}</span>
     </div> -->
     <div v-if="user.Bank_Account === null || user.Bank_Account === ''">
         <img class="p-4" referrerpolicy="no-referrer" src="@/assets/images/my/bg-account.png" />
@@ -28,11 +28,11 @@
             @click="addBank">
             <div class="w-full flex justify-center items-center">
                 <img class="w-[15px] h-[15px]" referrerpolicy="no-referrer" src="@/assets/images/my/icon-plus.png" />
-                <span class="text-[15px] pl-1 text-[#454558]">添加银行卡</span>
+                <span class="text-[15px] pl-1 text-[#454558]">{{ t('bank_card.text_2') }}</span>
             </div>
         </button>
         <div class="mt-[30px]  text-[#C0C4CD] bg-transparent text-[13px]  w-full flex justify-center">
-            最多支持添加10张银行卡
+            {{ t('bank_card.text_3') }}
         </div>
     </div>
 
@@ -41,11 +41,11 @@
         @click="addBank">
         <div class="w-full flex justify-center items-center">
             <img class="w-[15px] h-[15px]" referrerpolicy="no-referrer" src="@/assets/images/my/icon-plus.png" />
-            <span class="text-[15px] pl-1 text-[#454558]">添加银行卡</span>
+            <span class="text-[15px] pl-1 text-[#454558]">{{ t('bank_card.text_2') }}</span>
         </div>
     </button> -->
     <!-- <div class="text-[#C0C4CD] text-[13px] absolute top-[450px] w-full flex justify-center">
-        最多支持添加10张银行卡
+        {{ t('bank_card.text_3') }}
     </div> -->
 </template>
 <script setup lang="ts">
@@ -54,6 +54,8 @@ import {ref, onMounted} from 'vue';
 import {useAuthStore} from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import { useBankAccountStore } from '@/stores/bankAccount';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const {user} = storeToRefs(useAuthStore());
 const { getBankList, bankAccounts, setEditBank } = useBankAccountStore();
 const bankList = ref([])

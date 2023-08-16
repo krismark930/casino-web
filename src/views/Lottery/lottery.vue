@@ -53,6 +53,7 @@ import { ref, computed, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 const router = useRouter();
 const { getSysConfigValue } = useSysConfigStore();
+const { dispatchLotteryUserConfig } = useSysConfigStore();
 
 const tabItemList = ref([
 	{
@@ -241,11 +242,20 @@ const user = computed(() => {
 	const { getUser } = storeToRefs(useAuthStore());
 	return getUser.value;
 })
+const token = computed(() => {
+	const { getToken } = storeToRefs(useAuthStore());
+	return getToken.value;
+})
 const goDetail = (path: string) => {
 	console.log(path);
 	router.push({ name: path })
 }
 onMounted(async () => {
+	if (user.value.id == undefined) {
+		router.push({ name: "login" });
+		return;
+	}
+	await dispatchLotteryUserConfig(token.value);
 	await getSysConfigValue();
 	console.log(JSON.parse(sysConfigItem.value.Lottery_Config))
 	let lotteryConfig = JSON.parse(sysConfigItem.value.Lottery_Config);
@@ -459,6 +469,7 @@ onMounted(async () => {
 
 .tab_bottom {
 	height: 500px;
+
 	.tab_bottom_box {
 		display: flex;
 		justify-content: center;

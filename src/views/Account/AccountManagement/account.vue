@@ -5,7 +5,7 @@
                 <img class="w-1" referrerpolicy="no-referrer" src="@/assets/images/my/arrow-left.png" />
             </template>
             <template #title>
-                <span class="pt-[10px] text-[#454558]">账户管理</span>
+                <span class="pt-[10px] text-[#454558]">{{ t('account.text_1') }}</span>
             </template>
             <template #right> </template>
         </van-nav-bar>
@@ -40,15 +40,27 @@ import router from '@/router';
 import Bank from './bankCard.vue';
 import Crypto from './crypto.vue';
 import { ref, onMounted } from 'vue';
-import { useBankAccountStore} from '@/stores/bankAccount';
+import { useBankAccountStore } from '@/stores/bankAccount';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const bankList = ref([]);
 const { user } = useAuthStore();
 const { getCryptoList } = useBankAccountStore();
 const { cryptoAccounts } = storeToRefs(useBankAccountStore());
 
-onMounted( async ()=>{
+onMounted(async () => {
+    selectList.value = [
+        {
+            name: t('account.text_2'),
+            id: 1
+        },
+        {
+            name: t('account.text_3'),
+            id: 2
+        }
+    ]
     const response = await getCryptoList(user.id);
     console.log(response)
     bankList.value = response.bankList;
@@ -56,16 +68,7 @@ onMounted( async ()=>{
 
 const active = ref(1);
 
-const selectList = ref([
-    {
-        name: '银行卡',
-        id: 1
-    },
-    {
-        name: '虚拟币账户',
-        id: 2
-    }
-]);
+const selectList = ref([]);
 const onClick_1 = () => {
     //alert(1);
 };

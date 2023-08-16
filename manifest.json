@@ -1,0 +1,19 @@
+{
+  "name": "Casino App",
+  "short_name": "Casino App",
+  "icons": [
+    {
+      "src": "/assets/images/invite/InviteAdvertisement.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/images/invite/InviteAdvertisement.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "display": "standalone"
+}

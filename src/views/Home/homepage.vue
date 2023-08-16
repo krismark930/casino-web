@@ -46,8 +46,8 @@
                 <div class="tab_left">
                     <div class="tab_item" v-for="(item, index) in tabList" @click="getTab(item.id)" :key="index + 3000">
                         <img :src="active == item.id
-                                ? item.icon.active
-                                : item.icon.inactive
+                            ? item.icon.active
+                            : item.icon.inactive
                             " alt="" />
                     </div>
                 </div>
@@ -83,8 +83,45 @@
                 </div>
             </div>
         </van-overlay>
+        <van-dialog v-model:show="maintainAlertShow" :title="t('home_page.text_1')">
+            <div class="text-center font-bold mt-[4px]">{{ t('home_page.text_2') }}</div>
+            <div class="text-center text-[14px] mx-[12px] mt-[4px]">{{ t('home_page.text_3') }}</div>
+            <div class="text-center text-[14px] mx-[12px] mt-[4px] font-bold">{{ t('home_page.text_4') }}</div>
+            <div class="text-center text-[14px] mx-[12px] mt-[4px]">{{ maintainTime }}</div>
+        </van-dialog>
     </div>
 </template>
+
+<script lang="ts">
+import { useRouter } from 'vue-router';
+export default {
+    data() {
+        return {
+            router: null,
+            maintainAlertShow: false,
+            maintainTime: "",
+        }
+    },
+    sockets: {
+        connect: function () {
+            console.log('socket to notification channel connected')
+        },
+        receiveMaintainTime: function (maintainTime: string) {
+            console.log(maintainTime)
+            this.maintainTime = maintainTime;
+            if (maintainTime != "") {
+                this.maintainAlertShow = true;
+            } else {
+                this.router.push({ name: "stadium" });
+            }
+        }
+    },
+    mounted() {
+        this.router = useRouter();
+        // this.$socket.emit("systemMaintance");
+    }
+}
+</script>
 
 <script setup lang="ts">
 import { showToast } from 'vant';
@@ -100,6 +137,9 @@ import { useSysConfigStore } from '@/stores/sysConfig';
 import { FILE_BASE_URL } from "@/config";
 import { useHead } from '@vueuse/head';
 import router from '@/router';
+import socket from '@/utils/socket';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const { dispatchRedirectOGUrl } = ogGameStore();
 const { dispatchRedirectAGUrl } = agGameStore();
 const { dispatchRedirectBBINUrl } = bbinGameStore();
@@ -110,7 +150,7 @@ const iconList = ref([
         id: 1,
         icon: new URL('@/assets/images/home/m-icon-1.png', import.meta.url)
             .href,
-        name: '转账',
+        name: t('home_page.text_5'),
         path: 'transfer'
     },
     {
@@ -426,6 +466,10 @@ const goDetail = async (path: string, redirect: string) => {
             showToast("开元棋牌维护中，请稍候再试......");
             return;
         }
+        if (path == "stadium") {
+            socket.io.emit("systemMaintance");
+            return;
+        }
         router.push({ name: path });
     } else {
         //showToast('正在开发!');
@@ -499,6 +543,7 @@ const goMessage = () => {
     router.push({ name: 'message' });
 };
 </script>
+
 <style scoped lang="scss">
 .game_box {
     z-index: 6;

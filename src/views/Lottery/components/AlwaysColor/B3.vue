@@ -454,6 +454,7 @@ const lotteryResult = computed(() => {
   return getBeforeLotteryResult.value;
 })
 const scheduleItem = computed(() => {
+  disabled.value = false;
   const { getScheduleItem } = storeToRefs(lotteryScheduleStore());
   if (getScheduleItem.value == null) {
     return;

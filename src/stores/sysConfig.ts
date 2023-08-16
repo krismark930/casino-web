@@ -1,23 +1,38 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import config from "@/config"
+import config from "@/config";
+import { BASE_URL } from "@/config";
+import { LOTTERY_USER_CONFING_ADD } from "@/config";
 
 export const useSysConfigStore = defineStore({
-  id:"sysConfig",
-  state:() =>({
+  id: "sysConfig",
+  state: () => ({
     sysConfig: {} as any,
     config: {} as any,
   }),
-  getters:{
+  getters: {
     getSysConfig: (state) => state.sysConfig,
     getConfig: (state) => state.config,
   },
-  actions:{
-    setSysConfig(sysConfig: any){
+  actions: {
+    setSysConfig(sysConfig: any) {
       this.sysConfig = sysConfig;
     },
     setConfig(config: any) {
       this.config = config;
+    },
+    async dispatchLotteryUserConfig(token: string) {
+      try {
+        const config = {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Access-Control-Allow-Origin": "*"
+          },
+        };
+        const response = (await axios.get(`${BASE_URL}${LOTTERY_USER_CONFING_ADD}`, config)).data;
+      } catch (e) {
+        return e;
+      }
     },
     async getSysConfigValue() {
       try {
@@ -40,7 +55,7 @@ export const useSysConfigStore = defineStore({
       }
     },
   },
-  persist:{
-    enabled:true
+  persist: {
+    enabled: true
   }
 });

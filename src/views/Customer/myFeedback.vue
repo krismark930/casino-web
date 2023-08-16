@@ -5,7 +5,7 @@
                 <img class="w-1" referrerpolicy="no-referrer" src="@/assets/images/my/arrow-left.png" />
             </template>
             <template #title>
-                <span class="pt-[10px] text-[#454558]">我的反馈</span>
+                <span class="pt-[10px] text-[#454558]">{{ t('my_feedback.text_1') }}</span>
             </template>
             <template #right> </template>
         </van-nav-bar>
@@ -13,17 +13,17 @@
             <div class="flex justify-start text-[15px] items-center pt-3" v-for="(post, index) in posts" :key="index"
                 @click="goDetail(post.id)">
                 <img class="w-[25px] h-[25px]" referrerpolicy="no-referrer" src="@/assets/images/account/icon-deposit.png"
-                    v-if="post.title == '取款问题'" />
+                    v-if="post.title == t('my_feedback.text_2')" />
                 <img class="w-[25px] h-[25px]" referrerpolicy="no-referrer" src="@/assets/images/account/icon-withdraw.png"
-                    v-else-if="post.title == '存款问题'" />
+                    v-else-if="post.title == t('my_feedback.text_3')" />
                 <img class="w-[25px] h-[25px]" referrerpolicy="no-referrer" src="@/assets/images/customer/icon-game.png"
-                    v-else-if="post.title == '游戏问题'" />
+                    v-else-if="post.title == t('my_feedback.text_4')" />
                 <img class="w-[25px] h-[25px]" referrerpolicy="no-referrer" src="@/assets/images/customer/icon-gift.png"
-                    v-else-if="post.title == '优惠问题'" />
+                    v-else-if="post.title == t('my_feedback.text_5')" />
                 <img class="w-[25px] h-[25px]" referrerpolicy="no-referrer" src="@/assets/images/customer/icon-pen.png"
-                    v-else-if="post.title == '修改资料'" />
+                    v-else-if="post.title == t('my_feedback.text_6')" />
                 <img class="w-[25px] h-[25px]" referrerpolicy="no-referrer" src="@/assets/images/account/icon-intro.png"
-                    v-else-if="post.title == '其他问题'" />
+                    v-else-if="post.title == t('my_feedback.text_7')" />
                 <div class="w-full">
                     <div class="pl-2 flex justify-between w-full">
                         <p class="">{{ post.title }}</p>
@@ -45,6 +45,8 @@ import { postStore } from '@/stores/post';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import { ElLoading } from 'element-plus';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import moment from 'moment';
 
 const { dispatchPosts } = postStore();
@@ -77,7 +79,7 @@ onMounted(async () => {
     }
     const loading = ElLoading.service({
         lock: true,
-        text: '加载中...',
+        text: t('my_feedback.text_8'),
         background: 'rgba(0, 0, 0, 0.7)',
     })
     await dispatchPosts(token.value);
