@@ -51,15 +51,15 @@ const { dispatchRedirectUrl } = chessGameStore();
 const swipeItemList = ref([
 	{
 		id: 1,
-		icon: "http://pic.pj6678.com/chess/180x180/dzpk.png"	
+		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/chess/180x180/dzpk.png"
 	},
 	{
 		id: 2,
-		icon: "http://pic.pj6678.com/chess/180x180/ddz.png"	
+		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/chess/180x180/ddz.png"
 	},
 	{
 		id: 3,
-		icon: "http://pic.pj6678.com/chess/180x180/sg.png"	
+		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/chess/180x180/sg.png"
 	},
 ])
 const onClickLeft = () => {

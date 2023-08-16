@@ -51,15 +51,15 @@ const { dispatchRedirectAGUrl } = agGameStore();
 const swipeItemList = ref([
 	{
 		id: 1,
-		icon: "http://pic.pj6678.com/yoplay/YP801.png"	
+		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/yoplay/YP801.png"
 	},
 	{
 		id: 2,
-		icon: "http://pic.pj6678.com/yoplay/YP806.png"	
+		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/yoplay/YP806.png"
 	},
 	{
 		id: 3,
-		icon: "http://pic.pj6678.com/yoplay/YP811.png"	
+		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/yoplay/YP811.png"
 	},
 ])
 const onClickLeft = () => {
