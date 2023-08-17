@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/ireland</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/ireland">
+            <g id="ireland">
+                <g id="Group" transform="translate(0.500000, 0.500000)" fill-rule="nonzero">
+                    <circle id="Oval" fill="#FFFFFF" cx="11.5" cy="11.5" r="11.5"></circle>
+                    <path d="M23,11.5 C22.999413,6.69122568 20.0068598,2.39055042 15.4980469,0.71875 L15.4980469,22.28125 C20.0068598,20.6094496 22.999413,16.3087743 23,11.5 Z" id="Path" fill="#E69F2E"></path>
+                    <path d="M0,11.5 C0.00058698366,16.3087743 2.99314019,20.6094496 7.50195312,22.28125 L7.50195312,0.71875 C2.99314019,2.39055042 0.00058698366,6.69122568 0,11.5 Z" id="Path" fill="#75DCC5"></path>
+                </g>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

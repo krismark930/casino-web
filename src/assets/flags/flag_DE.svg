@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/germany</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/germany">
+            <g id="germany">
+                <g id="Group" transform="translate(0.500000, 0.500000)" fill-rule="nonzero">
+                    <path d="M0.716046726,15.4377432 C2.38258414,19.9275275 6.66624306,22.9067368 11.4553463,22.9067368 C16.2444496,22.9067368 20.5281085,19.9275275 22.1946459,15.4377432 L11.4553463,14.444358 L0.716046726,15.4377432 Z" id="Path" fill="#FFE15A"></path>
+                    <path d="M11.4553463,-2.84217094e-14 C6.6652832,0.000584699676 2.38134209,2.98149373 0.716046726,7.47276265 L11.4553463,8.46614786 L22.1946459,7.47276265 C20.5293506,2.98149373 16.2454095,0.000584699676 11.4553463,-2.84217094e-14 Z" id="Path" fill="#464655"></path>
+                    <path d="M0.716046726,7.47276265 C-0.238682242,10.0419266 -0.238682242,12.8685792 0.716046726,15.4377432 L22.1946459,15.4377432 C23.1497737,12.8686509 23.1497737,10.0418549 22.1946459,7.47276265 L0.716046726,7.47276265 L0.716046726,7.47276265 Z" id="Path" fill="#FF4B55"></path>
+                </g>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

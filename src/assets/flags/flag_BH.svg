@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/bahrain</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/bahrain">
+            <g id="bahrain">
+                <circle id="Oval" fill="#EEEEEE" fill-rule="nonzero" cx="12.026608" cy="12.026608" r="11.826608"></circle>
+                <path d="M11.9009381,0.2 C9.52122408,0.2 7.30818262,0.897585107 5.45163528,2.10334479 L8.49803964,4.14066289 L4.6877193,6.11330422 L8.49803964,8.08594554 L4.6877193,10.0539671 L8.49803964,12.0266084 L4.6877193,13.9992498 L8.49803964,15.9672713 L4.6877193,17.9399126 L8.49803964,19.912554 L5.45163528,21.9498721 C9.69510246,24.6953123 15.2169346,24.4515307 19.2008277,21.3428633 C23.1847208,18.2341958 24.752912,12.9455689 23.1055755,8.1743447 C21.458239,3.40312048 16.9583291,0.200532889 11.9009381,0.2 Z" id="Path" fill="#D80027" fill-rule="nonzero"></path>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

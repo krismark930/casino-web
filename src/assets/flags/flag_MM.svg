@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/myanmar</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/myanmar">
+            <g id="myanmar" transform="translate(-0.000000, 0.000000)">
+                <path d="M23.2536094,16.1738906 C23.736,14.8739531 24,13.4678438 24,12 C24,10.5321562 23.736,9.12604688 23.2536094,7.82610937 L12,6.782625 L0.746390625,7.82610937 C0.264046875,9.12604688 0,10.5321563 0,12 C0,13.4678438 0.264046875,14.8739531 0.746390625,16.1738906 L12,17.217375 L23.2536094,16.1738906 Z" id="Path" fill="#6DA544" fill-rule="nonzero"></path>
+                <path d="M23.2536094,7.82610937 C21.5580937,3.2565 17.1595781,0 12,0 C6.84042187,0 2.44190625,3.2565 0.746390625,7.82610937 L23.2536094,7.82610937 Z" id="Path" fill="#FFDA44" fill-rule="nonzero"></path>
+                <path d="M12,24 C17.1595781,24 21.5580937,20.7435 23.2536094,16.1738906 L0.746390625,16.1738906 C2.44190625,20.7435 6.84042188,24 12,24 Z" id="Path" fill="#D80027" fill-rule="nonzero"></path>
+                <polygon id="Path" fill="#F0F0F0" fill-rule="nonzero" points="20.2288594 10.1524688 13.9425938 10.1524688 12 4.17389063 10.0574062 10.1524688 3.77114062 10.1524688 8.85684375 13.8474375 6.91425 19.8261094 12 16.1738906 17.08575 19.8260625 15.1432031 13.8473906"></polygon>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

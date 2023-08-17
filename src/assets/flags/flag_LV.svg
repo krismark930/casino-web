@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/latvia</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/latvia">
+            <g id="latvia">
+                <g id="Group" transform="translate(0.500000, 0.500000)" fill-rule="nonzero">
+                    <circle id="Oval" fill="#EEEEEE" cx="11.5" cy="11.5000004" r="11.5"></circle>
+                    <path d="M11.5,-3.55271368e-15 C6.30326087,-0.00139902681 1.75133648,3.48251722 0.3953125,8.49921917 L22.6046875,8.49921917 C21.2473012,3.48343104 16.6962129,0.000154727094 11.5,-3.55271368e-15 Z M11.5,23.0000008 C16.6967391,23.0013999 21.2486635,19.5174836 22.6046875,14.5007817 L0.3953125,14.5007817 C1.75133648,19.5174836 6.30326087,23.0013999 11.5,23.0000008 Z" id="Shape" fill="#A2001D"></path>
+                </g>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

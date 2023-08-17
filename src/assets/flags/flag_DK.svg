@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/denmark</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/denmark">
+            <g id="denmark">
+                <circle id="Oval" fill="#EEEEEE" fill-rule="nonzero" cx="12" cy="12" r="12"></circle>
+                <path d="M9.3890625,10.434375 L23.896875,10.434375 C23.1111886,4.46382143 18.0220273,0.000278050448 12,-2.28048045e-05 C11.1220371,-0.00170863947 10.2465202,0.0926019785 9.3890625,0.28125 L9.3890625,10.434375 Z M6.2625,10.434375 L6.2625,1.4578125 C2.89318372,3.29414365 0.604247302,6.62999848 0.103125,10.434375 L6.2625,10.434375 L6.2625,10.434375 Z M6.2625,13.565625 L0.103125,13.565625 C0.604247302,17.3700015 2.89318372,20.7058563 6.2625,22.5421875 L6.2625,13.565625 Z M9.3890625,13.565625 L9.3890625,23.7140625 C10.2463463,23.9042867 11.1218652,24.0001694 12,24.0000002 C18.0220273,23.9997219 23.1111886,19.5361786 23.896875,13.565625 L9.3890625,13.565625 Z" id="Shape" fill="#FF4B55" fill-rule="nonzero"></path>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

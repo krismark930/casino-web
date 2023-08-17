@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.1 (78136) - https://sketchapp.com -->
+    <title>Flags/scotland</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flags/scotland">
+            <g id="scotland">
+                <g id="Group" transform="translate(0.500000, 0.500000)" fill-rule="nonzero">
+                    <path d="M11.5,23 C5.14872538,23 0,17.8512746 0,11.5 C0,5.14872538 5.14872538,0 11.5,0 C17.8512746,0 23,5.14872538 23,11.5 C23,17.8512746 17.8512746,23 11.5,23 Z" id="Combined-Shape" fill="#4173CD"></path>
+                    <path d="M20.6448947,4.5261346 L13.6710293,11.5 L20.6448947,18.4738654 C20.0211642,19.2905238 19.2905238,20.0211642 18.4738654,20.6448947 L11.5,13.6710293 L4.5261346,20.6448947 C3.70947623,20.0211642 2.97883584,19.2905238 2.3551053,18.4738654 L9.3289707,11.5 L2.3551053,4.5261346 C2.97883584,3.70947623 3.70947623,2.97883584 4.5261346,2.3551053 L11.5,9.3289707 L18.4738654,2.3551053 C19.2905238,2.97883584 20.0211642,3.70947623 20.6448947,4.5261346 Z" id="Combined-Shape" fill="#F5F5F5"></path>
+                </g>
+                <circle id="Oval" stroke="#FFFFFF" cx="12" cy="12" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>
