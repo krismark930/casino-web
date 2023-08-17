@@ -17,7 +17,7 @@
 </template>
 <script setup lang="ts">
 import {ref} from 'vue';
-import LotteryAlwaysColorItem from '@/components/global/lotteryAlwaysColorItem.vue';
+import LotteryAlwaysColorItem from '@/components/global/LotteryAlwaysColorItem.vue';
 import lotteryItem from '@/components/global/lotteryItem.vue';
 const active = ref(1);
 const sizeActive = ref(1);

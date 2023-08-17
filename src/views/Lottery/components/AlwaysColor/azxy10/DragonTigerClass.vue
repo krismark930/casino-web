@@ -5,7 +5,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in dragon_tiger_list_1" :key="index">
-                            <lotteryAlwaysColorItem1 :item="item" :disabled="disabled" @changeItem="changeItem"
+                            <LotteryAlwaysColorItem1 :item="item" :disabled="disabled" @changeItem="changeItem"
                                 @betResult="betResult" />
                         </div>
                     </div>
@@ -17,7 +17,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in dragon_tiger_list_2" :key="index">
-                            <lotteryAlwaysColorItem1 :item="item" :disabled="disabled" @changeItem="changeItem"
+                            <LotteryAlwaysColorItem1 :item="item" :disabled="disabled" @changeItem="changeItem"
                                 @betResult="betResult" />
                         </div>
                     </div>
@@ -29,7 +29,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in dragon_tiger_list_3" :key="index">
-                            <lotteryAlwaysColorItem1 :item="item" :disabled="disabled" @changeItem="changeItem"
+                            <LotteryAlwaysColorItem1 :item="item" :disabled="disabled" @changeItem="changeItem"
                                 @betResult="betResult" />
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in dragon_tiger_list_4" :key="index">
-                            <lotteryAlwaysColorItem1 :item="item" :disabled="disabled" @changeItem="changeItem"
+                            <LotteryAlwaysColorItem1 :item="item" :disabled="disabled" @changeItem="changeItem"
                                 @betResult="betResult" />
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in dragon_tiger_list_5" :key="index">
-                            <lotteryAlwaysColorItem1 :item="item" :disabled="disabled" @changeItem="changeItem"
+                            <LotteryAlwaysColorItem1 :item="item" :disabled="disabled" @changeItem="changeItem"
                                 @betResult="betResult" />
                         </div>
                     </div>
@@ -65,7 +65,7 @@
 </template>
 <script setup lang="ts">
 import { ref, computed, onMounted, watch, toRefs, defineEmits } from "vue";
-import lotteryAlwaysColorItem1 from "@/components/global/lotteryAlwaysColorItem1.vue";
+import LotteryAlwaysColorItem1 from "@/components/global/LotteryAlwaysColorItem1.vue";
 const props = defineProps<{ lotteryOddsList: any, initialize: boolean, disabled: boolean }>();
 const emit = defineEmits<{
     (e: "submitItem3", emitItem: any): void;

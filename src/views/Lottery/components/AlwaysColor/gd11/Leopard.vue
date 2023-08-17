@@ -5,7 +5,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in top_list" :key="index">
-                            <lotteryAlwaysColorItem :item="item" :disabled="disabled" @changeItem="changeItem" @betResult="betResult" />
+                            <LotteryAlwaysColorItem :item="item" :disabled="disabled" @changeItem="changeItem" @betResult="betResult" />
                         </div>
                     </div>
                 </div>
@@ -16,7 +16,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in middle_list" :key="index">
-                            <lotteryAlwaysColorItem :item="item" :disabled="disabled" @changeItem="changeItem" @betResult="betResult" />
+                            <LotteryAlwaysColorItem :item="item" :disabled="disabled" @changeItem="changeItem" @betResult="betResult" />
                         </div>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in after_list" :key="index">
-                            <lotteryAlwaysColorItem :item="item" :disabled="disabled" @changeItem="changeItem" @betResult="betResult" />
+                            <LotteryAlwaysColorItem :item="item" :disabled="disabled" @changeItem="changeItem" @betResult="betResult" />
                         </div>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
 </template>
 <script setup lang="ts">
 import { ref, computed, onMounted, watch, toRefs, defineEmits } from "vue";
-import lotteryAlwaysColorItem from "@/components/global/lotteryAlwaysColorItem.vue";
+import LotteryAlwaysColorItem from "@/components/global/LotteryAlwaysColorItem.vue";
 const props = defineProps<{ lotteryOddsList: any, initialize: boolean, disabled: boolean }>();
 const emit = defineEmits<{
     (e: "submitItem3", data: any): void;

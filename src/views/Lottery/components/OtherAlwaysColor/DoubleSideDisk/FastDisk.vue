@@ -29,7 +29,7 @@
 </template>
 <script setup lang="ts">
 import {ref} from 'vue';
-import LotteryAlwaysColorItem from '@/components/global/lotteryAlwaysColorItem.vue';
+import LotteryAlwaysColorItem from '@/components/global/LotteryAlwaysColorItem.vue';
 
 const active = ref(1);
 const sizeActive = ref(1);

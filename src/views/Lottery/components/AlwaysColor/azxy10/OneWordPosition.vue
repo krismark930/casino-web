@@ -5,7 +5,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in ball_1_list" :key="index">
-                            <lotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
+                            <LotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
                                 @betResult="betResult" />
                         </div>
                     </div>
@@ -17,7 +17,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in ball_2_list" :key="index">
-                            <lotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
+                            <LotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
                                 @betResult="betResult" />
                         </div>
                     </div>
@@ -29,7 +29,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in ball_3_list" :key="index">
-                            <lotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
+                            <LotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
                                 @betResult="betResult" />
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in ball_4_list" :key="index">
-                            <lotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
+                            <LotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
                                 @betResult="betResult" />
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in ball_5_list" :key="index">
-                            <lotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
+                            <LotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
                                 @betResult="betResult" />
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in ball_6_list" :key="index">
-                            <lotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
+                            <LotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
                                 @betResult="betResult" />
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in ball_7_list" :key="index">
-                            <lotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
+                            <LotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
                                 @betResult="betResult" />
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in ball_8_list" :key="index">
-                            <lotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
+                            <LotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
                                 @betResult="betResult" />
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in ball_9_list" :key="index">
-                            <lotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
+                            <LotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
                                 @betResult="betResult" />
                         </div>
                     </div>
@@ -113,7 +113,7 @@
                 <div class="m-[6px] py-[3px] px-[15px] flex items-center justify-center">
                     <div class="w-full grid grid-cols-3 gap-1">
                         <div v-for="(item, index) in ball_10_list" :key="index">
-                            <lotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
+                            <LotteryAlwaysColorItem2 :item="item" :disabled="disabled" @changeItem="changeItem"
                                 @betResult="betResult" />
                         </div>
                     </div>
@@ -125,7 +125,7 @@
 </template>
 <script setup lang="ts">
 import { ref, computed, onMounted, watch, toRefs, defineEmits } from "vue";
-import lotteryAlwaysColorItem2 from "@/components/global/lotteryAlwaysColorItem2.vue";
+import LotteryAlwaysColorItem2 from "@/components/global/LotteryAlwaysColorItem2.vue";
 const props = defineProps<{ lotteryOddsList: any, initialize: boolean, disabled: boolean }>();
 const emit = defineEmits<{
     (e: "submitItem2", emitItem: any): void;
