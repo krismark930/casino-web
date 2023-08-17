@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { ref, toRefs } from 'vue';
-import LotteryAlwaysColorItem from '@/components/global/lotteryAlwaysColorItem.vue';
+import LotteryAlwaysColorItem from '@/components/global/LotteryAlwaysColorItem.vue';
 import lotteryItem from '@/components/global/lotteryItem.vue';
 const state = defineProps<{ data: Array<any>, hasLocation: boolean, buttonList: Array<any> }>();
 const { data, hasLocation, buttonList } = toRefs(state);

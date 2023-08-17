@@ -51,15 +51,15 @@ const { dispatchRedirectPTUrl } = ptGameStore();
 const swipeItemList = ref([
 	{
 		id: 1,
-		icon: "http://pic.pj6678.com/pt/FortuneDay.png"	
+		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/pt/AstroLegendsLyraandErion.png"
 	},
 	{
 		id: 2,
-		icon: "http://pic.pj6678.com/pt/LieYanZuanShi.png"	
+		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/pt/LieYanZuanShi.png"
 	},
 	{
 		id: 3,
-		icon: "http://pic.pj6678.com/pt/EpicApe.png"	
+		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/pt/EpicApe.png"
 	},
 ])
 const onClickLeft = () => {

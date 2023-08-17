@@ -51,15 +51,15 @@ const { dispatchRedirectBBINUrl } = bbinGameStore();
 const swipeItemList = ref([
 	{
 		id: 1,
-		icon: "http://pic.pj6678.com/BBIN/5025.png"	
+		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/BBIN/5025.png"
 	},
 	{
 		id: 2,
-		icon: "http://pic.pj6678.com/BBIN/5034.png"	
+		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/BBIN/5034.png"
 	},
 	{
 		id: 3,
-		icon: "http://pic.pj6678.com/BBIN/5040.png"	
+		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/BBIN/5040.png"
 	},
 ])
 const onClickLeft = () => {

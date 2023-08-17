@@ -51,15 +51,15 @@ const { dispatchRedirectMGUrl } = mgGameStore();
 const swipeItemList = ref([
 	{
 		id: 1,
-		icon: "http://pic.pj6678.com/mg/JungleJimandtheLostSphinx.png"	
+		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/mg/JungleJimandtheLostSphinx.png"
 	},
 	{
 		id: 2,
-		icon: "http://pic.pj6678.com/mg/AstroLegendsLyraandErion.png"	
+		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/mg/AstroLegendsLyraandErion.png"
 	},
 	{
 		id: 3,
-		icon: "http://pic.pj6678.com/mg/theIncredibleBalloonMachine.png"	
+		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/mg/theIncredibleBalloonMachine.png"
 	},
 ])
 const onClickLeft = () => {
