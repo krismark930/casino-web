@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import { ref, toRefs } from 'vue';
-import LotteryAlwaysColorItem from '@/components/global/LotteryAlwaysColorItem.vue';
+import LotteryAlwaysColorItem from '@/components/global/lotteryAlwaysColorItem.vue';
 import lotteryRedColorItem from '@/components/global/lotteryRedColorItem.vue';
 const state = defineProps<{ data: Array<any>, isPK10: boolean }>();
 const { data, isPK10 } = toRefs(state);
