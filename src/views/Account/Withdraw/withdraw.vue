@@ -15,23 +15,6 @@
         </van-nav-bar>
 
         <div class="pt-[40px] pb-[60px] bg-[#f7f7ff] h-screen overflow-scroll">
-            <div class="flex justify-start text-[15px] px-1 pt-1 mt-1 bg-white text-[#454558]">
-                <div v-for="(item, index) in selectList" :key="index" @click="selectMainCategory(item.id)" class="px-2">
-                    {{ item.name }}
-                    <div class="flex justify-center mt-1">
-                        <div :class="{ 'w-[36px] h-[2px] bg-[#01b3ff]': mainActive == item.id }">
-                        </div>
-                    </div>
-                </div>
-                <!-- <div class="text-wrapper_1 flex-row justify-between">
-                    <span class="text_1">银行卡</span>
-                    <span class="text_2">虚拟币账户</span>
-                </div>
-                <div class="image-wrapper_1 flex-row">
-                    <img class="image_1" referrerpolicy="no-referrer"
-                        src="@/assets/images/deposit/active.png" />
-                </div> -->
-            </div>
             <div class=" px-2 bg-white  text-[13px] ">
                 <div class="flex justify-between mt-1 pt-[10px]">
                     <div class="flex items-center">
@@ -80,7 +63,25 @@
                     </div>
                 </div>
                 <p class="w-full h-[0.5px] bg-[#CBCBCB] my-[10px]"></p>
-                <div class="flex justify-between mt-[10px]">
+                <div class="flex justify-start text-[15px] px-1 pt-1 mt-1 bg-white text-[#454558]">
+                    <div v-for="(item, index) in selectList" :key="index" @click="selectMainCategory(item.id)" class="px-2">
+                        {{ item.name }}
+                        <div class="flex justify-center mt-1">
+                            <div :class="{ 'w-[36px] h-[2px] bg-[#01b3ff]': mainActive == item.id }">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="text-wrapper_1 flex-row justify-between">
+                    <span class="text_1">银行卡</span>
+                    <span class="text_2">虚拟币账户</span>
+                </div>
+                <div class="image-wrapper_1 flex-row">
+                    <img class="image_1" referrerpolicy="no-referrer"
+                        src="@/assets/images/deposit/active.png" />
+                </div> -->
+                </div>
+                <p class="w-full h-[0.5px] bg-[#CBCBCB] my-[10px]"></p>
+                <!-- <div class="flex justify-between mt-[10px]">
                     <div v-for="(item, index) in tokenList" :key="index" @click="selectToken(item.id)"
                         :class="[tokenActive === item.id ? 'border border-blue-600' : 'border border-gray-200']"
                         class="relative flex justify-center items-center mt-[6px] w-[200px] h-[40px] mx-[3px] py-[3px]  rounded-sm">
@@ -99,8 +100,8 @@
 
                         </div>
                     </div>
-                </div>
-                <div class="flex justify-between mt-1 pt-[10px]">
+                </div> -->
+                <!-- <div class="flex justify-between mt-1 pt-[10px]">
                     <div class="flex">
                         <p>{{ t('withdraw.text_8') }}</p>
                     </div>
@@ -120,7 +121,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <div class=" px-2 bg-white text-[12px] pb-1">
