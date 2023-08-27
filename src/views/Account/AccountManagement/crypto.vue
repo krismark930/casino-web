@@ -32,6 +32,7 @@ import { ref, onMounted } from 'vue';
 import { useBankAccountStore} from '@/stores/bankAccount';
 import { storeToRefs } from 'pinia';
 import { useI18n } from "vue-i18n";
+import { showToast } from 'vant';
 const { t } = useI18n();
 const bankList = ref([]);
 const { cryptoAccounts } = storeToRefs(useBankAccountStore());
@@ -41,6 +42,10 @@ onMounted( async ()=>{
 });
 
 const addCrypto = () => {
+    if (bankList.value.length > 1) {
+        showToast(t('bank_card.text_4'))
+        return;
+    }
     setEditCrypto({});
     router.push({ name: 'addCrypto' })
 }

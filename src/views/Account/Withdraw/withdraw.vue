@@ -132,19 +132,6 @@
                         class="block w-full border-0 border-b border-transparent placeholder-[#CBCBCB] placeholder:text-[12px] text-[25px] font-bold" />
                 </div>
             </div>
-            <div class=" px-2 bg-white  text-[12px] pb-1">
-                <div class="flex justify-between mt-1 pt-[10px]">
-                    <div class="flex">
-                        <p>{{ t('withdraw.text_10') }}</p>
-                        <p>(0/10)</p>
-                    </div>
-                    <div class="flex border border-blue-400 px-[5px] items-center rounded-sm" @click="addBank">
-                        <!-- <img class="w-[10px] h-[10px] mr-1" referrerpolicy="no-referrer"
-                            src="@/assets/images/deposit/active.png" /> -->
-                        {{ t('withdraw.text_11') }}
-                    </div>
-                </div>
-            </div>
             <div v-if="mainActive === 2">
                 <div v-if="bankList.length > 0">
                     <van-radio-group v-model="bankAccount" direction="horizontal" class="block">
@@ -155,11 +142,14 @@
                                     <img class="w-[25px] h-[24px]" src="@/assets/images/my/bank-mark.png" />
                                     <div class="text-[12px] text-bold pl-1">{{ item.bank_type }}</div>
                                 </div>
-                                <span class="text-[13px] text-bold">{{ item.bank_account.substring(0, 7) + '*******' +
-                                    item.bank_account.substring(item.bank_account.length - 7, item.bank_account.length)
-                                }}</span>
-                                <span class="text-[12px] text-[#4EABFF]" @click="editBank(item)">{{ t('withdraw.text_12')
-                                }}</span>
+                                <span class="text-[13px] text-bold">
+                                    {{ item.bank_account.substring(0, 7) + '*******' +
+                                        item.bank_account.substring(item.bank_account.length - 7, item.bank_account.length)
+                                    }}
+                                </span>
+                                <!-- <span class="text-[12px] text-[#4EABFF]" @click="editBank(item)">
+                                    {{ t('withdraw.text_12') }}
+                                </span> -->
                             </div>
                         </van-radio>
                     </van-radio-group>
@@ -193,13 +183,13 @@
                         </div>
                         <span class="text-[13px] text-bold">{{ user.Bank_Account }}</span>
                         <span class="text-[13px] text-bold">622848******888</span>
-                        <span class="text-[12px] text-[#4EABFF]" @click="editBank()">{{ t('withdraw.text_18') }}</span>
+                        <!-- <span class="text-[12px] text-[#4EABFF]" @click="editBank()">{{ t('withdraw.text_18') }}</span> -->
                     </div>
                 </div>
                 <div v-else>
-                    <div class=" px-2  flex  text-[10px] mt-2">
+                    <!-- <div class=" px-2  flex  text-[10px] mt-2">
                         <p>{{ t('withdraw.text_19') }}</p>
-                    </div>
+                    </div> -->
                     <div class=" px-2  flex  text-[10px] mt-2 flex justify-center">
                         <p>{{ t('withdraw.text_20') }}<span class="text-blue-500">{{ t('withdraw.text_21') }}</span>{{
                             t('withdraw.text_22') }}</p>
@@ -220,8 +210,9 @@
                                 <span class="text-[13px] text-bold">{{ item.bank_address.substring(0, 7) + '*******' +
                                     item.bank_address.substring(item.bank_address.length - 7, item.bank_address.length)
                                 }}</span>
-                                <span class="text-[12px] text-[#4EABFF]" @click="editCrypto(item)">{{ t('withdraw.text_23')
-                                }}</span>
+                                <!-- <span class="text-[12px] text-[#4EABFF]" @click="editCrypto(item)">
+                                    {{ t('withdraw.text_23') }}
+                                </span> -->
                             </div>
                         </van-radio>
                     </van-radio-group>
@@ -236,9 +227,9 @@
                     </div> -->
                 </div>
                 <div v-else>
-                    <div class=" px-2  flex  text-[10px] mt-2">
+                    <!-- <div class=" px-2  flex  text-[10px] mt-2">
                         <p>{{ t('withdraw.text_19') }}</p>
-                    </div>
+                    </div> -->
                     <div class=" px-2  flex  text-[10px] mt-2 flex justify-center">
                         <p>{{ t('withdraw.text_20') }}<span class="text-blue-500">{{ t('withdraw.text_21') }}</span>{{
                             t('withdraw.text_22') }}</p>
@@ -251,8 +242,7 @@
                     <!-- <button class="button_1 flex w-full justify-center  py-1 border-2 border-blue-500 rounded-sm" @click="deleteResult">
                         <p class="text-blue-500">取消存款申请</p>
                     </button> -->
-                    <button
-                        :class="[amount > 0 && user.Bank_Address ? 'bg-blue-500 border-blue-500' : 'bg-blue-200 border-blue-200']"
+                    <button :class="[amount > 0 ? 'bg-blue-500 border-blue-500' : 'bg-blue-200 border-blue-200']"
                         class="button_1 flex w-full justify-center  py-1 border-2  rounded-sm " @click="submitResult">
                         <p class="text-white text-[12px]">{{ t('withdraw.text_24') }}</p>
                     </button>

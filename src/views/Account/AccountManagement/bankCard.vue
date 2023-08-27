@@ -55,6 +55,7 @@ import {useAuthStore} from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import { useBankAccountStore } from '@/stores/bankAccount';
 import { useI18n } from "vue-i18n";
+import { showToast } from 'vant';
 const { t } = useI18n();
 const {user} = storeToRefs(useAuthStore());
 const { getBankList, bankAccounts, setEditBank } = useBankAccountStore();
@@ -65,6 +66,10 @@ onMounted(async ()=>{
 })
 
 const addBank = () => {
+    if (bankList.value.length > 3) {
+        showToast(t('bank_card.text_5'))
+        return;
+    }
 	router.push({ name: 'addBank2' })
 }
 const editBank = (item: any) => {

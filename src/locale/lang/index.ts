@@ -65,6 +65,8 @@ export type langType = {
 		text_1: string
 		text_2: string
 		text_3: string
+		text_4: string
+		text_5: string
 	},
 	edit_bank_card: {
 		text_1: string
