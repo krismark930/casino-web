@@ -67,6 +67,8 @@ export const lang: langType = {
 		text_1: "编辑",
 		text_2: "添加银行卡",
 		text_3: "最多支持添加10张银行卡",
+		text_4: "您不能添加一张以上的加密货币银行卡",
+		text_5: "您不能添加多于一张银行卡。"
 	},
 	edit_bank_card: {
 		text_1: "编辑银行卡",
