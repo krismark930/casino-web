@@ -42,7 +42,7 @@ onMounted( async ()=>{
 });
 
 const addCrypto = () => {
-    if (bankList.value.length > 1) {
+    if (bankList.value.length > 0) {
         showToast(t('bank_card.text_4'))
         return;
     }

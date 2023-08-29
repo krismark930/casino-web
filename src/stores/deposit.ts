@@ -17,7 +17,8 @@ export const useDepositStore = defineStore({
     currencyRate: 1,
     walletAddress: '',
     isCrypto: true,
-    paymentMethod: {}
+    paymentMethod: {},
+    adminBankList: []
   }),
   getters: {
     getBanks: (state) => state.banks,
@@ -25,7 +26,8 @@ export const useDepositStore = defineStore({
     getWalletAddress: (state) => state.walletAddress,
     getIsCrypto: (state) => state.isCrypto,
     getCrypto: (state) => state.crypto,
-    getPaymentMethod: (state) => state.paymentMethod
+    getPaymentMethod: (state) => state.paymentMethod,
+    getAdminBank: (state) => state.adminBankList,
   },
   actions: {
     setBanks(banks: any) {
@@ -45,6 +47,9 @@ export const useDepositStore = defineStore({
     },
     setPaymentMethod(paymentMethod: any) {
       this.paymentMethod = paymentMethod;
+    },
+    setAdminBank(adminBankList: any) {
+      this.adminBankList = adminBankList;
     },
     async dispatchGetCrypto(data: any, token: string) {
       try {
@@ -73,6 +78,23 @@ export const useDepositStore = defineStore({
         const response = await axios.post(`${BASE_URL}${GET_PAYMENT_METHOD}`, data, headerConfig);
         if (response.status == 200) {
           this.setPaymentMethod(response.data.data);
+        }
+      } catch (e) {
+        return e;
+      }
+    },
+    async dispatchAdminBank(token: string) {
+      try {
+        const url = config.api.ADMIN_BANK_LIST;
+        const headerConfig = {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Access-Control-Allow-Origin": "*"
+          },
+        };
+        const response = await axios.post(url, {}, headerConfig);
+        if (response.status == 200) {
+          this.setAdminBank(response.data.data as Array<any>);
         }
       } catch (e) {
         return e;

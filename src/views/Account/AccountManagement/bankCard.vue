@@ -66,7 +66,7 @@ onMounted(async ()=>{
 })
 
 const addBank = () => {
-    if (bankList.value.length > 3) {
+    if (bankList.value.length > 2) {
         showToast(t('bank_card.text_5'))
         return;
     }

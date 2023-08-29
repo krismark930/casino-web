@@ -132,6 +132,7 @@ const config = {
     SIGN_IN: BASE_URL + "/users/login",
     SIGN_UP: BASE_URL + "/users/register",
     BANK_LIST: BASE_URL + "/deposit/getBank",
+    ADMIN_BANK_LIST: BASE_URL + "/deposit/get-admin-bank",
     DEPOSIT: BASE_URL + "/deposit/addMoney",
     QUICK_WITHDRAW: BASE_URL + "/withdraw/quick-withdraw",
     GET_TRANSACTION_HISTORY: BASE_URL + "/withdraw/get-transaction-history",

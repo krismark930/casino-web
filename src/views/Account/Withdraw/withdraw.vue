@@ -163,7 +163,7 @@
                         <span class="text-[12px] text-[#4EABFF]" @click="editBank()">编辑</span>
                     </div> -->
                 </div>
-                <div v-else>
+                <!-- <div v-else>
                     <div class=" px-2  flex  text-[10px] mt-2">
                         <p>{{ t('withdraw.text_13') }}</p>
                     </div>
@@ -171,7 +171,7 @@
                         <p>{{ t('withdraw.text_14') }}<span class="text-blue-500">{{ t('withdraw.text_15') }}</span>
                             {{ t('withdraw.text_16') }}</p>
                     </div>
-                </div>
+                </div> -->
 
                 <div v-if="user.Bank_Address">
                     <div class="bg-white flex justify-between items-center mt-[10px] px-3 py-[15px]">
@@ -398,6 +398,8 @@ const submitResult = async () => {
                 socket.io.emit("submitWithdrawAlert");
                 router.push({ name: 'my' });
             }
+        } else {
+            showToast("请添加提款账户。");
         }
     } else {
         if (result && amount.value > 0 && cryptoAccount.value) {
@@ -407,6 +409,8 @@ const submitResult = async () => {
                 socket.io.emit("submitWithdrawAlert");
                 router.push({ name: 'my' });
             }
+        } else {
+            showToast("请添加提款账户。");
         }
     }
 }
