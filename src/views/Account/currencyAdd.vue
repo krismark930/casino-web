@@ -70,7 +70,7 @@
                     </div>
                 </div>
                 <p class="w-full h-[1px] bg-[#CBCBCB] my-2"></p>
-                <div class="text-[15px] font-semibold text-[#454558]">
+                <!-- <div class="text-[15px] font-semibold text-[#454558]">
                     {{ t('currency_add.text_7') }}
                 </div>
                 <div class="text-[18px] font-bold">188****8888</div>
@@ -82,7 +82,7 @@
                     <button class="bg-blue-500 rounded-sm text-white px-2 py-[2px]" @click=" onClick_1 ">
                         <span class="text_13">{{ t('currency_add.text_10') }}</span>
                     </button>
-                </div>
+                </div> -->
             </div>
             <div class="my-6">
                 <button

@@ -201,7 +201,7 @@ export const lang: langType = {
 		text_34: "皇冠体育 拷贝",
 		text_35: "OG东方馆",
 		text_36: "AG国际厅",
-		text_37: "极速取款",
+		text_37: "银行卡提款",
 		text_38: "USDT提币",
 		text_39: "请输入提款金额！",
 		text_40: "提款金额不能大于账号金额",

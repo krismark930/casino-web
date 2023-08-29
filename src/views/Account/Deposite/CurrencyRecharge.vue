@@ -79,7 +79,7 @@ const amount = ref('');
 const state = defineProps<{ tokenList: Array<any> }>();
 const { tokenList } = toRefs(state);
 const tokenActive = ref(1);
-const emit = defineEmits(['selectToken']);
+const emit = defineEmits(['selectToken', 'changeCurrencyType']);
 const token = computed(() => {
     const { getToken } = storeToRefs(useAuthStore());
     return getToken.value;
@@ -101,6 +101,7 @@ const amountChange = () => {
 }
 const selectToken = async (id: number) => {
     tokenActive.value = id;
+    emit("changeCurrencyType", id);
     await dispatchGetCrypto({ crypto_type: tokenList.value[tokenActive.value - 1].name }, token.value)
 }
 const goServicePage = () => {

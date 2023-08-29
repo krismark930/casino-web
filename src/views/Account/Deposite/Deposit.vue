@@ -39,9 +39,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div style="margin-top: 20px; display: flex;">
+                            <div>银行名称:</div>
+                            <div>{{ selectedAdminBank.bankname }}</div>
+                        </div>
+                        <div style="margin-top: 2px; display: flex;">
+                            <div>银行账号:</div>
+                            <div>{{ selectedAdminBank.bankno }}</div>
+                        </div>
                     </div>
 
-                    <currency-recharge v-if="active === 0" :tokenList="tokenList" />
+                    <currency-recharge v-if="active === 0" :tokenList="tokenList"
+                        @changeCurrencyType="changeCurrencyType" />
                     <!-- <yebi-currency v-if="active === 1" :tokenList="tokenList" :tokenActive="tokenActive"
                         @selectToken="selectToken" /> -->
                     <bank-card v-if="active === 1" :bank="cryptoList[active]" />
@@ -52,27 +61,32 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import router from '@/router';
 import LyCurrency from './LYPayCurrency.vue';
 import BankCard from './BankCard.vue';
 import CurrencyRecharge from './CurrencyRecharge.vue';
 import YebiCurrency from './YebiCurrency.vue';
 import { useDepositStore } from '@/stores/deposit';
+import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const active = ref(0);
 const tokenActive = ref(1);
+const currencyType = ref(1);
 
 const {
+    getAdminBank,
     getBanks,
-    isCrypto
+    isCrypto,
 } = storeToRefs(useDepositStore());
 const {
     getBankList,
-    setIsCrypto
+    setIsCrypto,
+    dispatchAdminBank
 } = useDepositStore();
+const selectedAdminBank = ref({});
 const cryptoList = ref([
     {
         id: 1,
@@ -103,7 +117,31 @@ const cryptoList = ref([
         new: false
     }
 ]);
+const token = computed(() => {
+    const { getToken } = storeToRefs(useAuthStore());
+    return getToken.value
+})
+const adminBankList = computed(() => {
+    const { getAdminBank } = storeToRefs(useDepositStore());
+    if (active.value == 0) {
+        selectedAdminBank.value = currencyType.value == 1 ? getAdminBank.value[0] : getAdminBank.value[1];
+    } else {
+        selectedAdminBank.value = getAdminBank.value[2]
+    }
+    return getAdminBank.value
+})
+const changeCurrencyType = (type: number) => {
+    currencyType.value = type;
+}
+watch(currencyType, (value: number) => {
+    selectedAdminBank.value = value == 1 ? adminBankList.value[0] : adminBankList.value[1];
+}, { deep: true });
+watch(active, (value: number) => {
+    selectedAdminBank.value = value == 0 ? adminBankList.value[0] : adminBankList.value[2];
+}, { deep: true });
 onMounted(async () => {
+    await dispatchAdminBank(token.value);
+    console.log(adminBankList.value);
 });
 
 const tokenList = ref([
