@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
+import { HOST_URL } from "@/config";
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.HOST_URL),
+    history: createWebHistory(HOST_URL),
     routes: [
         // {
         //     path: '/',

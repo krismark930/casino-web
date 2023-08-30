@@ -45,21 +45,22 @@ import {useRouter} from "vue-router";
 import { ref, computed, onMounted } from "vue";
 import {showToast} from "vant";
 import { storeToRefs } from "pinia";
+import { FILE_BASE_URL } from '@/config';
 const router = useRouter();
 const { dispatchBBINGameAll } = bbinGameStore();
 const { dispatchRedirectBBINUrl } = bbinGameStore();
 const swipeItemList = ref([
 	{
 		id: 1,
-		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/BBIN/5025.png"
+		icon: FILE_BASE_URL + "storage/upload/zr_images/BBIN/5025.png"
 	},
 	{
 		id: 2,
-		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/BBIN/5034.png"
+		icon: FILE_BASE_URL + "storage/upload/zr_images/BBIN/5034.png"
 	},
 	{
 		id: 3,
-		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/BBIN/5040.png"
+		icon: FILE_BASE_URL + "storage/upload/zr_images/BBIN/5040.png"
 	},
 ])
 const onClickLeft = () => {
