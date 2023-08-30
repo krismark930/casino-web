@@ -389,32 +389,37 @@ const editCrypto = (item: any) => {
 }
 
 const submitResult = async () => {
-    const result = VerifyData();
+    const result = VerifyData(mainActive.value);
+    console.log(result);
     if (mainActive.value === 2) {
-        if (result && amount.value > 0 && bankAccount.value) {
+        if (result && amount.value > 0) {
             const result = await sumbitWithdraw(user.value.id, amount.value, bankAccount.value.bank_address, bankAccount.value.bank_account);
             showToast(result.message);
             if (result.success) {
                 socket.io.emit("submitWithdrawAlert");
                 router.push({ name: 'my' });
             }
-        } else {
-            showToast("请添加提款账户。");
         }
     } else {
-        if (result && amount.value > 0 && cryptoAccount.value) {
+        if (result && amount.value > 0) {
             const result = await sumbitWithdraw(user.value.id, amount.value, cryptoAccount.value.bank_address, cryptoAccount.value.bank_account);
             showToast(result.message);
             if (result.success) {
                 socket.io.emit("submitWithdrawAlert");
                 router.push({ name: 'my' });
             }
-        } else {
-            showToast("请添加提款账户。");
         }
     }
 }
-const VerifyData = () => {
+const VerifyData = (active: number) => {
+    if (bankList.value.length == 0 && active == 2) {
+        showToast("请添加提款账户。");
+        return false;
+    }
+    if (cryptoBankList.value.length == 0 && active == 1) {
+        showToast("请添加提款账户。");
+        return false;
+    }
     if (amount.value == "") {
         showToast(t('withdraw.text_39'));
         return false;

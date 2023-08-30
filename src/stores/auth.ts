@@ -99,7 +99,7 @@ export const useAuthStore = defineStore({
         const response = (await axios.post(url, data));
         if (response.status == 200) {
           this.setSuccess(true);
-          this.signIn(username, password);
+          this.signIn(login_name, password);
         }
       } catch (e: any) {
         console.log(e.response);
