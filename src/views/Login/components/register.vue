@@ -48,9 +48,9 @@
       <span>隐私政策</span>
     </div>
     <button v-if="!username || !password || !passwords || !login_name" class="submit_btn" @click="register">
-      登录
+      注册
     </button>
-    <button v-else class="submit_btn2" @click="register">登录</button>
+    <button v-else class="submit_btn2" @click="register">注册</button>
     <p class="venture">合营咨询</p>
   </div>
 </template>
