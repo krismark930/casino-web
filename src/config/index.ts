@@ -1,7 +1,22 @@
-export const BASE_URL = import.meta.env.VITE_BASE_URL;
-export const FILE_BASE_URL = import.meta.env.VITE_FILE_BASE_URL;
-export const HOST_URL = import.meta.env.VITE_HOST_URL;
-export const LY_PAY_URL = import.meta.env.VITE_LY_PAY_URL;
+import { VITE_BASE_URL } from "../../public/config.js";
+import { VITE_HOST_URL } from "../../public/config.js";
+import { VITE_SOCKET_URL } from "../../public/config.js";
+import { VITE_FILE_BASE_URL } from "../../public/config.js";
+import { VITE_SERVICE_URL } from "../../public/config.js";
+import { VITE_LY_PAY_URL } from "../../public/config.js";
+
+export const BASE_URL = VITE_BASE_URL;
+export const HOST_URL = VITE_HOST_URL;
+export const SOCKET_URL = VITE_SOCKET_URL;
+export const FILE_BASE_URL = VITE_FILE_BASE_URL;
+export const SERVICE_URL = VITE_SERVICE_URL;
+export const LY_PAY_URL = VITE_LY_PAY_URL;
+
+
+// export const BASE_URL = import.meta.env.VITE_BASE_URL;
+// export const FILE_BASE_URL = import.meta.env.VITE_FILE_BASE_URL;
+// export const HOST_URL = import.meta.env.VITE_HOST_URL;
+// export const LY_PAY_URL = import.meta.env.VITE_LY_PAY_URL;
 
 export const MATCH_SPORT = "/user/match-sport";
 export const GET_FT_DATA = "/ft-data";

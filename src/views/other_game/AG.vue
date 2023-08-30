@@ -45,21 +45,22 @@ import {useRouter} from "vue-router";
 import { ref, computed, onMounted } from "vue";
 import {showToast} from "vant";
 import { storeToRefs } from "pinia";
+import { FILE_BASE_URL } from '@/config';
 const router = useRouter();
 const { dispatchAGGameAll } = agGameStore();
 const { dispatchRedirectAGUrl } = agGameStore();
 const swipeItemList = ref([
 	{
 		id: 1,
-		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/yoplay/YP801.png"
+		icon: FILE_BASE_URL + "storage/upload/zr_images/yoplay/YP801.png"
 	},
 	{
 		id: 2,
-		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/yoplay/YP806.png"
+		icon: FILE_BASE_URL + "storage/upload/zr_images/yoplay/YP806.png"
 	},
 	{
 		id: 3,
-		icon: import.meta.env.VITE_FILE_BASE_URL + "storage/upload/zr_images/yoplay/YP811.png"
+		icon: FILE_BASE_URL + "storage/upload/zr_images/yoplay/YP811.png"
 	},
 ])
 const onClickLeft = () => {

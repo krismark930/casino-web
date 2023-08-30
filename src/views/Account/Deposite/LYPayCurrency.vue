@@ -209,7 +209,6 @@ const amountChange = () => {
 }
 
 const redirectToHTMLContent = (htmlContent: string): void => {
-    // console.log(import.meta.env.VITE_LY_PAY_URL);
     const newWindow = window.open("", "_blank");
     newWindow?.document.write(htmlContent);
     newWindow?.document.close();
