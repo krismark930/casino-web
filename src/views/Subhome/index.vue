@@ -4,7 +4,7 @@
 			<van-icon name="arrow-left" size="1rem" @click="goBeforePage" />
 		</div>
 		<div class="user_box">
-			<img src="@/assets/images/stadiums/user.png" alt="">
+			<img src="@/assets/images/my/avatar.png" alt="">
 			<span>你好，中国赌王</span>
 			<span>{{ moment().tz("Asia/Hong_Kong").format("YYYY-MM-DD HH:mm:ss") }}</span>
 		</div>
