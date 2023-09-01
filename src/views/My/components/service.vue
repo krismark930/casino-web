@@ -1,7 +1,7 @@
 <template>
     <div class="shadow-[0_0px_10px_-1px_rgba(0,0,0,0.3)] m-1 rounded-sm px-[20px] py-[15px]">
         <div class="flex justify-start items-center">
-            <img class="w-[72px] h-[72px]" referrerpolicy="no-referrer" src="@/assets/images/my/avatar.png" />
+            <img class="w-[72px] h-[72px]" referrerpolicy="no-referrer" src="@/assets/images/my/avatar.png" @click="goSubHomePage"/>
             <div class="flex ml-[16px] items-center justify-between w-full">
                 <div class="text-[18px] font-medium text-[#676782]" @click="goDetail('login')" v-if="user.id == undefined">
                     点击登录/注册
@@ -49,5 +49,9 @@ const logout = () => {
 
 const goDetail = (value: string) => {
     router.push({ name: value })
+}
+
+const goSubHomePage = () => {
+    router.push({name: "Subhome"})
 }
 </script>

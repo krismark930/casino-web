@@ -5,6 +5,7 @@ import router from "@/router";
 import { showToast } from 'vant';
 import { GET_PROFILE } from "@/config"
 import { BASE_URL } from "@/config"
+import { PASSWORD_CHANGE } from "@/config"
 import socket from "@/utils/socket";
 
 export const useAuthStore = defineStore({
@@ -122,6 +123,23 @@ export const useAuthStore = defineStore({
         const response = await axios.post(`${BASE_URL}${GET_PROFILE}`, {}, config);
         if (response.status === 200) {
           this.setUser(response.data.data);
+        }
+      } catch (e) {
+        return e;
+      }
+    },
+    async dispatchChangePassword (data: any, token: string) {      
+      this.setSuccess(false);
+      try {
+        const config = {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Access-Control-Allow-Origin": "*"
+          },
+        };
+        const response = await axios.post(`${BASE_URL}${PASSWORD_CHANGE}`, data, config);
+        if (response.status === 200) {
+          this.setSuccess(true);
         }
       } catch (e) {
         return e;
