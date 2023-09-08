@@ -51,12 +51,14 @@ import { showToast } from 'vant';
 import { bettingStore } from "@/stores/betting";
 import { useAuthStore } from "@/stores/auth";
 import OrderModal from "@/views/Stadium/components/Ordermodal.vue"
+import { useRoute } from "vue-router";
 import router from "@/router";
 export default defineComponent({
 	name: "BK_Main",
 	setup() {
 		const { setFavoriteBKList, removeFavoriteBKList, dispatchWebSystemData } = bettingStore();
-		return { setFavoriteBKList, removeFavoriteBKList, dispatchWebSystemData };
+		const { getProfile } = useAuthStore();
+		return { setFavoriteBKList, removeFavoriteBKList, dispatchWebSystemData, getProfile };
 	},
 	components: {
 		OrderModal
@@ -439,7 +441,7 @@ export default defineComponent({
 			this.bettingOrderData["selectedTeam"] = dataList.name;
 			this.bettingOrderData["show_type"] = gameData.ShowTypeRB;
 			this.bettingOrderData["text"] = rateData.text
-			
+
 			if (this.bettingOrderData["title"] == "让球" && this.user.BK_RE_Bet == 0) {
 				showToast("对不起,本场有下注金额最高:  RMB 0");
 				return;
@@ -453,31 +455,31 @@ export default defineComponent({
 				return;
 			}
 
-            if (this.configItem.BadMember.split(",").includes(this.user.UserName) && gameData.now_session == "Q4") {
-              showToast("赛程已关闭,无法进行交易!!");
-              this.loading = false;
-              return;
-            }
-            if (this.configItem.BadMember2.split(",").includes(this.user.UserName) && this.bettingOrderData["mbTeam"].includes("加时")) {
-              showToast("赛程已关闭,无法进行交易!!");
-              this.loading = false;
-              return;
-            }
-            if (this.configItem.kf2.split(",").includes(this.user.UserName) && gameData.now_session == "Q2") {
-              showToast("赛程已关闭,无法进行交易!!");
-              this.loading = false;
-              return;
-            }
-            if (this.configItem.kf3.split(",").includes(this.user.UserName) && gameData.now_session == "Q3") {
-              showToast("赛程已关闭,无法进行交易!!");
-              this.loading = false;
-              return;
-            }
-            if (this.configItem.kf4.split(",").includes(this.user.UserName) && (gameData.now_session == "Q3" || gameData.now_session == "Q4" || this.bettingOrderData["mbTeam"].includes("加时"))) {
-              showToast("赛程已关闭,无法进行交易!!");
-              this.loading = false;
-              return;
-            }
+			if (this.configItem.BadMember.split(",").includes(this.user.UserName) && gameData.now_session == "Q4") {
+				showToast("赛程已关闭,无法进行交易!!");
+				this.loading = false;
+				return;
+			}
+			if (this.configItem.BadMember2.split(",").includes(this.user.UserName) && this.bettingOrderData["mbTeam"].includes("加时")) {
+				showToast("赛程已关闭,无法进行交易!!");
+				this.loading = false;
+				return;
+			}
+			if (this.configItem.kf2.split(",").includes(this.user.UserName) && gameData.now_session == "Q2") {
+				showToast("赛程已关闭,无法进行交易!!");
+				this.loading = false;
+				return;
+			}
+			if (this.configItem.kf3.split(",").includes(this.user.UserName) && gameData.now_session == "Q3") {
+				showToast("赛程已关闭,无法进行交易!!");
+				this.loading = false;
+				return;
+			}
+			if (this.configItem.kf4.split(",").includes(this.user.UserName) && (gameData.now_session == "Q3" || gameData.now_session == "Q4" || this.bettingOrderData["mbTeam"].includes("加时"))) {
+				showToast("赛程已关闭,无法进行交易!!");
+				this.loading = false;
+				return;
+			}
 			if (this.bettingOrderData["rate"] == 0 || this.bettingOrderData["rate"] == null) this.openModal = false;
 			else this.openModal = true;
 		},
@@ -487,6 +489,11 @@ export default defineComponent({
 	},
 	async mounted() {
 		this.loading = true;
+		const route = useRoute();
+		const routeToken = route.query.token;
+		if (routeToken) {
+			await this.getProfile(routeToken);
+		}
 		if (this.user.id == undefined) {
 			router.push({ name: "login" });
 			return;

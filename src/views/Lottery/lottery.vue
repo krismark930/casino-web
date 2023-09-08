@@ -260,54 +260,54 @@ onMounted(async () => {
 	console.log(JSON.parse(sysConfigItem.value.Lottery_Config))
 	let lotteryConfig = JSON.parse(sysConfigItem.value.Lottery_Config);
 	tabItemList.value.map((item: any) => {
-		if (item.path == "CQSSC") {
-			item.hide = lotteryConfig.cq.hide
-		}
-		if (item.path == "FFC5") {
-			item.hide = lotteryConfig.ffc5.hide
-		}
-		if (item.path == "AZXY5") {
-			item.hide = lotteryConfig.azxy5.hide
-		}
-		if (item.path == "AZXY10") {
-			item.hide = lotteryConfig.azxy10.hide
-		}
-		if (item.path == "XYFT") {
-			item.hide = lotteryConfig.xyft.hide
-		}
-		if (item.path == "BJPK") {
-			item.hide = lotteryConfig.pk10.hide
-		}
-		if (item.path == "TJSSC") {
-			item.hide = lotteryConfig.tj.hide
-		}
-		if (item.path == "JXSSC") {
-			item.hide = lotteryConfig.jx.hide
-		}
-		if (item.path == "CQSF") {
-			item.hide = lotteryConfig.cq.hide
-		}
-		if (item.path == "GDSF") {
-			item.hide = lotteryConfig.cqsf.hide
-		}
-		if (item.path == "GXSF") {
-			item.hide = lotteryConfig.gxsf.hide
-		}
-		if (item.path == "TJSF") {
-			item.hide = lotteryConfig.tjsf.hide
-		}
-		if (item.path == "SHSSL") {
-			item.hide = lotteryConfig.t3.hide
-		}
-		if (item.path == "GD11") {
-			item.hide = lotteryConfig.gd11.hide
-		}
-		if (item.path == "D3") {
-			item.hide = lotteryConfig.d3.hide
-		}
-		if (item.path == "P3") {
-			item.hide = lotteryConfig.p3.hide
-		}
+		// if (item.path == "CQSSC") {
+		// 	item.hide = lotteryConfig.cq.hide
+		// }
+		// if (item.path == "FFC5") {
+		// 	item.hide = lotteryConfig.ffc5.hide
+		// }
+		// if (item.path == "AZXY5") {
+		// 	item.hide = lotteryConfig.azxy5.hide
+		// }
+		// if (item.path == "AZXY10") {
+		// 	item.hide = lotteryConfig.azxy10.hide
+		// }
+		// if (item.path == "XYFT") {
+		// 	item.hide = lotteryConfig.xyft.hide
+		// }
+		// if (item.path == "BJPK") {
+		// 	item.hide = lotteryConfig.pk10.hide
+		// }
+		// if (item.path == "TJSSC") {
+		// 	item.hide = lotteryConfig.tj.hide
+		// }
+		// if (item.path == "JXSSC") {
+		// 	item.hide = lotteryConfig.jx.hide
+		// }
+		// if (item.path == "CQSF") {
+		// 	item.hide = lotteryConfig.cq.hide
+		// }
+		// if (item.path == "GDSF") {
+		// 	item.hide = lotteryConfig.cqsf.hide
+		// }
+		// if (item.path == "GXSF") {
+		// 	item.hide = lotteryConfig.gxsf.hide
+		// }
+		// if (item.path == "TJSF") {
+		// 	item.hide = lotteryConfig.tjsf.hide
+		// }
+		// if (item.path == "SHSSL") {
+		// 	item.hide = lotteryConfig.t3.hide
+		// }
+		// if (item.path == "GD11") {
+		// 	item.hide = lotteryConfig.gd11.hide
+		// }
+		// if (item.path == "D3") {
+		// 	item.hide = lotteryConfig.d3.hide
+		// }
+		// if (item.path == "P3") {
+		// 	item.hide = lotteryConfig.p3.hide
+		// }
 	})
 })
 </script>

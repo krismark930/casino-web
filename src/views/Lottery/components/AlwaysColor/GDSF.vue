@@ -376,6 +376,7 @@ import { lotteryOddsStore } from "@/stores/lottery_odds";
 import { lotterySaveStore } from "@/stores/lottery_save";
 import { lotteryConfigStore } from "@/stores/lottery_config";
 import { storeToRefs } from "pinia";
+import {useRoute} from 'vue-router'
 import moment from "moment-timezone";
 const { dispatchUserMoney } = useAuthStore();
 const { dispatchLotteryStatus } = lotteryScheduleStore();
@@ -665,7 +666,13 @@ const showPopUp = () => {
 const showBirthHistory = () => {
   historyShow.value = !historyShow.value;
 };
+const route = useRoute();
+const {getProfile} = useAuthStore();
 onMounted(async () => {
+  const routeToken = route.query.token;
+  if (routeToken) {    
+    await getProfile(routeToken);
+  }
   if (user.value.id == undefined) {
     showToast("你必须先登录。");
     router.push({ name: "login" });

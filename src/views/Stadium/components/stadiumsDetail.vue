@@ -207,6 +207,8 @@ import FT_Parlay_Main from './fk_components/FT_Parlay_Main.vue'
 import FT_Parlay_Score from './fk_components/FT_Parlay_Score.vue'
 
 import { ref, watch, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
 const { setActive, setSportOption } = stadiumStore();
 const active = ref(0);
@@ -345,10 +347,15 @@ watch(sportOptionValue, (newValue: number) => {
 	parlayLeagueShow.value = true;
 	setSportOption(newValue);
 }, { deep: true });
-onMounted(() => {
+const route = useRoute();
+onMounted(async () => {
 	const { getActive, getSportOption } = storeToRefs(stadiumStore());
 	active.value = getActive.value;
+	const type = route.query.type;
 	sportOptionValue.value = getSportOption.value;
+	if (type) {
+		sportOptionValue.value = type == 'ft' ? 0 : 1;
+	}
 }) 
 </script>
 
