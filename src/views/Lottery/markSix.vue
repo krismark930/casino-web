@@ -502,6 +502,7 @@ import { useAuthStore } from "@/stores/auth";
 import { katanStore } from "@/stores/katan";
 import { storeToRefs } from "pinia";
 import moment from "moment-timezone";
+import {useRoute} from 'vue-router';
 const { dispatchLotteryBet } = katanStore();
 const { dispatchParlayLotteryBet } = katanStore();
 const { dispatchGameStatus } = katanStore();
@@ -1434,7 +1435,13 @@ const selectSubButton = (item: any) => {
       break;
   }
 };
+const route = useRoute();
+const {getProfile} = useAuthStore();
 onMounted(async () => {
+  const routeToken = route.query.token;
+  if (routeToken) {    
+    await getProfile(routeToken);
+  }
   await dispatchGameStatus({ class1: class1.value });
   await dispatchGameVersion({});
   await dispatchGameResult({});

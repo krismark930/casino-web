@@ -338,7 +338,7 @@
       <div class="text-center">天津时时彩开盘时间为：每日09:00 - 23:00</div>
     </van-dialog>
     <van-dialog v-model:show="closeShow" title="停止销售">
-      <div class="text-center">{{closed_reason}}</div>
+      <div class="text-center">{{ closed_reason }}</div>
     </van-dialog>
   </div>
 </template>
@@ -359,6 +359,7 @@ import { lotteryResultStore } from "@/stores/lottery_result";
 import { lotteryOddsStore } from "@/stores/lottery_odds";
 import { lotterySaveStore } from "@/stores/lottery_save";
 import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
 import moment from "moment-timezone";
 const { dispatchUserMoney } = useAuthStore();
 const { dispatchLotteryStatus } = lotteryScheduleStore();
@@ -384,6 +385,8 @@ const historyShow = ref(false);
 const initialize = ref(false);
 const disabled = ref(false);
 const closeShow = ref(false);
+
+const route = useRoute();
 
 const selectedCount = ref(0);
 const selectedBetAmount = ref(0);
@@ -759,7 +762,7 @@ const showPopUp = () => {
       showToast("该彩票单注最低金额：" + lotteryUserConfigItem.value.twssc_lower_bet)
       return;
     }
-    
+
     if (g_type.value == "txssc" && selectedBetAmount.value > lotteryUserConfigItem.value.txssc_max_bet) {
       showToast("该彩票单注最高金额：" + lotteryUserConfigItem.value.txssc_max_bet)
       return;
@@ -774,7 +777,12 @@ const showPopUp = () => {
 const showBirthHistory = () => {
   historyShow.value = !historyShow.value;
 };
+const { getProfile } = useAuthStore();
 onMounted(async () => {
+  const routeToken = route.query.token;
+  if (routeToken) {    
+    await getProfile(routeToken);
+  }
   if (user.value.id == undefined) {
     showToast("你必须先登录。");
     router.push({ name: "login" });

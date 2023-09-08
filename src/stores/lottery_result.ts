@@ -14,7 +14,7 @@ export const lotteryResultStore = defineStore({
     id: "lottery_result",
     state: () => ({
         success: false,
-        beforeLotteryResult: null,
+        beforeLotteryResult: {},
         birthHistoryList: [],
         mainBetResultList: [],
         errMessage: ""
