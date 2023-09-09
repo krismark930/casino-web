@@ -8,6 +8,7 @@ import { ref, defineComponent } from 'vue'
 import socket from "@/utils/socket";
 import { useAuthStore } from '@/stores/auth';
 import { showToast } from 'vant'
+import { PC_URL } from '@/config';
 
 export default defineComponent({
   setup() {
@@ -41,6 +42,10 @@ export default defineComponent({
     }
   },
   async mounted() {
+    const width = window.visualViewport.width;
+    if (width > 600) {
+      window.location.href = PC_URL;
+    }
     if (this.token != "") {
       setInterval(async () => {
         await this.getProfile(this.token);
