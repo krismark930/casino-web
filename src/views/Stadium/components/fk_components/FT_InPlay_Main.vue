@@ -168,12 +168,14 @@ import { bettingStore } from "@/stores/betting";
 import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
 import { showToast } from 'vant';
+import { useRoute } from "vue-router";
 import router from "@/router";
 export default defineComponent({
 	name: "Football",
 	setup() {
 		const { setFavoriteList, removeFavoriteList, dispatchWebSystemData } = bettingStore();
-		return { setFavoriteList, removeFavoriteList, dispatchWebSystemData };
+		const {getProfile} = useAuthStore();
+		return { setFavoriteList, removeFavoriteList, dispatchWebSystemData, getProfile };
 	},
 	components: {
 		OrderModal
@@ -891,6 +893,11 @@ export default defineComponent({
 		}
 	},
 	async created() {
+		const route = useRoute();
+		const routeToken = route.query.token;
+		if (routeToken) {
+			await this.getProfile(routeToken);
+		}
 		if (this.user.id == undefined) {
 			router.push({ name: "login" });
 			return;
@@ -1619,10 +1626,10 @@ export default defineComponent({
 			else this.openModal = true;
 		},
 		handleCornerModal: function (leagueData, gameData, dataList, rateData, scoreIndex) {
-            if (this.configItem.BadMember_JQ.split(",").includes(this.user.UserName)) {
-              showToast("赛程已关闭,无法进行交易!!");
-              return;
-            }
+			if (this.configItem.BadMember_JQ.split(",").includes(this.user.UserName)) {
+				showToast("赛程已关闭,无法进行交易!!");
+				return;
+			}
 			this.bettingOrderData["mID"] = gameData["cn_id"];
 			this.bettingOrderData["gameType"] = "FT";
 			this.bettingOrderData["m_ball"] = gameData.cornerList[0].goalsScored;

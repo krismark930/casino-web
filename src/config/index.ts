@@ -136,6 +136,8 @@ export const WEB_SYSTEM_DATA = "/user/web-system-data/item";
 
 export const GET_DISCOUNT = "/user/discount/all";
 
+export const PASSWORD_CHANGE = "/users/password-change";
+
 const config = {
   api: {
     SIGN_IN: BASE_URL + "/users/login",
