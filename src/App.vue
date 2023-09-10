@@ -43,6 +43,7 @@ export default defineComponent({
   },
   async mounted() {
     const width = window.visualViewport.width;
+    console.log(width);
     if (width > 600) {
       window.location.href = PC_URL;
     }
