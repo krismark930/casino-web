@@ -572,6 +572,11 @@ const router = createRouter({
             component: () => import('@/views/Lottery/MacaoSixMark.vue')
         },
         {
+            path: '/new-macao-mark-six',
+            name: 'NewMacaoMarkSix',
+            component: () => import('@/views/Lottery/NewMacaoSixMark.vue')
+        },
+        {
             path: '/pk10',
             name: 'pk10',
             component: () => import('@/views/Lottery/PK10.vue')

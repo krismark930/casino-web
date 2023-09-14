@@ -467,6 +467,7 @@ const goDetail = async (path: string, redirect: string) => {
             return;
         }
         if (path == "stadium") {
+            // router.push({ name: "stadium" });
             socket.io.emit("systemMaintance");
             return;
         }
