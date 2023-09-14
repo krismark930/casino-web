@@ -54,7 +54,7 @@
 					v-if="summaryLoading && data.tepe[0].type == 2" size="40" />
 				<div v-else class="summary"
 					:class="{ full_court_show: data.tepe[0].type == 2, full_court_hidden: data.tepe[0].type == 1 }">
-					<div class="summary-top">全场</div>
+					<!-- <div class="summary-top">全场</div> -->
 					<div class="summary-center">
 						<div class="summary-title">{{ data.fullCourt1.title }}</div>
 						<div class="summary-item" v-for="(summary, fullCourtIndex1) in data.fullCourt1.data"

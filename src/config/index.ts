@@ -70,6 +70,23 @@ export const MACAO_GAME_VERSION = "/user/macao-ka-kithe/game-version";
 export const MACAO_GAME_RESULT = "/user/macao-ka-kithe/game-result";
 export const MACAO_BIRTH_HISTORY = "/user/macao-ka-kithe/birth-history";
 
+// new macao six mark
+export const NEW_MACAO_KATAN_SAVE = "/user/new-macao-ka-tan/save";
+export const NEW_MACAO_KATAN_PARLAY_SAVE = "/user/new-macao-ka-tan/parlay/save";
+export const NEW_MACAO_KATAN_EVEN_SAVE = "/user/new-macao-ka-tan/even-code/save";
+export const NEW_MACAO_KATAN_ZODAIC_EVEN_SAVE = "/user/new-macao-ka-tan/zodaic-even/save";
+export const NEW_MACAO_KATAN_MANTISSA_EVEN_SAVE = "/user/new-macao-ka-tan/mantissa-even/save";
+export const NEW_MACAO_KATAN_MISS_ALL_SAVE = "/user/new-macao-ka-tan/miss-all/save";
+export const NEW_MACAO_KATAN_COMPATIBLE_SAVE = "/user/new-macao-ka-tan/compatible/save";
+export const NEW_MACAO_MAIN_BET_RESULT = "/user/new-macao-ka-tan/bet-result/main";
+export const NEW_MACAO_SUB_BET_RESULT = "/user/new-macao-ka-tan/bet-result/sub";
+
+export const GET_NEW_MACAO_KABL = "/user/macao-ka-bl/get";
+export const NEW_MACAO_GAME_STATUS = "/user/new-macao-ka-kithe/game-status";
+export const NEW_MACAO_GAME_VERSION = "/user/new-macao-ka-kithe/game-version";
+export const NEW_MACAO_GAME_RESULT = "/user/new-macao-ka-kithe/game-result";
+export const NEW_MACAO_BIRTH_HISTORY = "/user/new-macao-ka-kithe/birth-history";
+
 // always color
 
 export const GET_B5_SCHEDULE = "/user/lottery-schedule/b5";

@@ -2,11 +2,7 @@
   <div class="content animated fadeInLeft">
     <div class="log_top">
       <img class="log_back" src="@/assets/images/login/icon1.png" alt="" />
-      <img class="logo" src="@/assets/images/login/icon2.png" alt="" />
-      <div>
-        <img class="img1" src="@/assets/images/login/icon3.png" alt="" />
-        <img class="img2" src="@/assets/images/login/icon4.png" alt="" />
-      </div>
+      <img  src="@/assets/images/login/logo.png" alt="" width="218"/>
     </div>
     <div>
       <div class="select_box">

@@ -41,12 +41,17 @@ export default defineComponent({
       this.setMoney(currentAmount);
     }
   },
-  async mounted() {
-    const width = window.visualViewport.width;
-    console.log(width);
-    if (width > 600) {
-      window.location.href = PC_URL;
+  methods: {
+    handleResize: function() {
+      const width = window.visualViewport?.width;
+      console.log(width);
+      if (width > 600) {
+        window.location.href = PC_URL;
+      }
     }
+  },
+  async mounted() {
+    window.addEventListener("resize", this.handleResize)
     if (this.token != "") {
       setInterval(async () => {
         await this.getProfile(this.token);

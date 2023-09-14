@@ -230,6 +230,12 @@ const tabItemList = ref([
 		path: 'MacaoMarkSix',
 		hide: 0,
 	},
+	{
+		name: '新澳门六合彩',
+		img: new URL("@/assets/images/lottery/MacaoMarkSix.png", import.meta.url).href,
+		path: 'NewMacaoMarkSix',
+		hide: 0,
+	},
 ])
 const onClickLeft = () => {
 	router.push({ name: 'home' })
@@ -472,8 +478,9 @@ onMounted(async () => {
 
 	.tab_bottom_box {
 		display: flex;
-		justify-content: center;
+		justify-content: start;
 		flex-wrap: wrap;
+		margin-left: 10px;
 
 		.tab_bottom_item {
 			background-image: url('../../assets/images/lottery/back-r.png');
