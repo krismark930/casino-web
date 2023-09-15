@@ -10,7 +10,7 @@
       <template #right>
         <div class="text-[14px] p-[4px] bg-gray-100 rounded-full flex items-center h-[20px]">
           <img src="@/assets/images/fastthree/icon-yarn.png" class="w-[20px]" />
-          {{ user.Money }}
+          {{ user.total_money }}
         </div>
         <van-icon style="margin-left: 10px;" size="30" name="wap-nav" @click="showRightMenu" />
       </template>
@@ -212,7 +212,7 @@
         <div class="head-bg">
           <img src="@/assets/images/stadiums/user.png" class="user-info-img" alt="">
           <p class="user-name">{{ user.UserName }}</p>
-          <p class="user-money">余额：<span>{{ user.Money }}</span>元</p>
+          <p class="user-money">余额：<span>{{ user.total_money }}</span>元</p>
         </div>
         <van-cell-group>
           <van-cell title="游戏规则" icon="column" size="large" is-link @click="showDescriptionDialog" />

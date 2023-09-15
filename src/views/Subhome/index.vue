@@ -11,7 +11,7 @@
 		<div class="money">
 			<div>
 				<span>余额</span>
-				<span>RMB {{ getUser != undefined ? getUser.Money.toFixed(2) : 0 }}</span>
+				<span>RMB {{ getUser != undefined ? getuser.total_money.toFixed(2) : 0 }}</span>
 			</div>
 			<div>
 				<span>未结算注单</span>

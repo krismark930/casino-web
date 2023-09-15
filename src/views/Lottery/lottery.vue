@@ -25,7 +25,7 @@
 				</div>
 				<div class="user_right">
 					<span class="t1">￥</span>
-					<span class="t2">{{ user.Money == undefined ? "0.00" : user.Money }}</span>
+					<span class="t2">{{ user.total_money == undefined ? "0.00" : user.total_money }}</span>
 					<img src="@/assets/images/lottery/looding.png" alt="">
 				</div>
 			</div>
