@@ -208,7 +208,7 @@ export default {
         showToast("您的帐户已禁用。")
         return;
       }
-      if (this.bettingValue > this.user.Money) {
+      if (this.bettingValue > this.user.total_money) {
         showToast('下注金额不可大于信用额度。')
       } else {
         let data = {

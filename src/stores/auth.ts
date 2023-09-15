@@ -29,7 +29,7 @@ export const useAuthStore = defineStore({
     logout() {
       this.user = {
         UserName: "AC123",
-        Money: "0.00"
+        total_money: "0.00"
       };
       this.token = "";
     },
@@ -38,12 +38,15 @@ export const useAuthStore = defineStore({
     },
     setUser(user: any) {
       this.user = user;
+      this.user["total_money"] = this.user["Money"] + this.user["bonus_amount"]
     },
     setMoney(money: number) {
       this.user["Money"] = money;
+      this.user["total_money"] = this.user["Money"] + this.user["bonus_amount"]
     },
     setUserMoney(money: number) {
       this.user["Money"] = this.user["Money"] - money;
+      this.user["total_money"] = this.user["Money"] + this.user["bonus_amount"]
     },
     setSuccess(success: boolean) {
       this.success = success;

@@ -30,7 +30,7 @@
                         </div>
                         <div class="user_bottom">
                             <span>￥</span>
-                            <span>{{ user.Money }}</span>
+                            <span>{{ user.total_money }}</span>
                         </div>
                     </div>
                     <div class="user_box_r">
