@@ -39,12 +39,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div style="margin-top: 20px; display: flex;">
-                            <div>银行名称:</div>
+                        <div style="margin-top: 10px; display: flex;" v-if="active === 1">
+                            <div class="font-bold">开户人姓名: </div>
+                            <div>{{ selectedAdminBank.alias }}</div>
+                        </div>
+                        <div style="display: flex;" :style="{marginTop: active == 1 ? '2px' : '10px'}">
+                            <div class="font-bold">银行名称: </div>
                             <div>{{ selectedAdminBank.bankname }}</div>
                         </div>
                         <div style="margin-top: 2px; display: flex;">
-                            <div>银行账号:</div>
+                            <div class="font-bold">银行账号: </div>
                             <div>{{ selectedAdminBank.bankno }}</div>
                         </div>
                     </div>
