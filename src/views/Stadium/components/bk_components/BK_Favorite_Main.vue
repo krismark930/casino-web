@@ -279,7 +279,7 @@ export default defineComponent({
 											type: item["MB_Dime_Rate_RB"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["MB_Dime_RB"] == "" ? "" : "大 " + item["MB_Dime_RB"].split("O")[1],
+											text: item["MB_Dime_RB"] == "" ? "" : "大 " + item["MB_Dime_RB"].toString().split("O")[1],
 											num: item["MB_Dime_Rate_RB"] == 0 ? 0 : (Number(item['MB_Dime_Rate_RB'])).toFixed(2)
 										},
 										{
@@ -338,7 +338,7 @@ export default defineComponent({
 											type: item["TG_Dime_Rate_RB"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["TG_Dime_RB"] == "" ? "" : "小 " + item["TG_Dime_RB"].split("U")[1],
+											text: item["TG_Dime_RB"] == "" ? "" : "小 " + item["TG_Dime_RB"].toString().split("U")[1],
 											num: item["TG_Dime_Rate_RB"] == 0 ? 0 : (Number(item['TG_Dime_Rate_RB'])).toFixed(2)
 										},
 										{
@@ -410,7 +410,7 @@ export default defineComponent({
 											type: item["MB_Dime_Rate"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["MB_Dime"] == "" ? "" : "大 " + item["MB_Dime"].split("O")[1],
+											text: item["MB_Dime"] == "" ? "" : "大 " + item["MB_Dime"].toString().split("O")[1],
 											num: item["MB_Dime_Rate"] == 0 ? 0 : (Number(item['MB_Dime_Rate'])).toFixed(2)
 										},
 										{
@@ -467,7 +467,7 @@ export default defineComponent({
 											type: item["TG_Dime_Rate"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["TG_Dime"] == "" ? "" : "小 " + item["TG_Dime"].split("U")[1],
+											text: item["TG_Dime"] == "" ? "" : "小 " + item["TG_Dime"].toString().split("U")[1],
 											num: item["TG_Dime_Rate"] == 0 ? 0 : (Number(item['TG_Dime_Rate'])).toFixed(2)
 										},
 										{
