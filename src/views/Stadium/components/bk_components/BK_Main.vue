@@ -319,7 +319,7 @@ export default defineComponent({
 										type: item["MB_Dime_Rate_RB"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: item["MB_Dime_RB"] == "" ? "" : "大 " + item["MB_Dime_RB"].split("O")[1],
+										text: item["MB_Dime_RB"] == "" ? "" : "大 " + item["MB_Dime_RB"].toString().split("O")[1],
 										num: item["MB_Dime_Rate_RB"] == 0 ? 0 : (Number(item['MB_Dime_Rate_RB'])).toFixed(2)
 									},
 									{
@@ -378,7 +378,7 @@ export default defineComponent({
 										type: item["TG_Dime_Rate_RB"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDOwn: false,
-										text: item["TG_Dime_RB"] == "" ? "" : "小 " + item["TG_Dime_RB"].split("U")[1],
+										text: item["TG_Dime_RB"] == "" ? "" : "小 " + item["TG_Dime_RB"].toString().split("U")[1],
 										num: item["TG_Dime_Rate_RB"] == 0 ? 0 : (Number(item['TG_Dime_Rate_RB'])).toFixed(2)
 									},
 									{
@@ -455,27 +455,27 @@ export default defineComponent({
 				return;
 			}
 
-			if (this.configItem.BadMember.split(",").includes(this.user.UserName) && gameData.now_session == "Q4") {
+			if (this.configItem.BadMember.toString().split(",").includes(this.user.UserName) && gameData.now_session == "Q4") {
 				showToast("赛程已关闭,无法进行交易!!");
 				this.loading = false;
 				return;
 			}
-			if (this.configItem.BadMember2.split(",").includes(this.user.UserName) && this.bettingOrderData["mbTeam"].includes("加时")) {
+			if (this.configItem.BadMember2.toString().split(",").includes(this.user.UserName) && this.bettingOrderData["mbTeam"].includes("加时")) {
 				showToast("赛程已关闭,无法进行交易!!");
 				this.loading = false;
 				return;
 			}
-			if (this.configItem.kf2.split(",").includes(this.user.UserName) && gameData.now_session == "Q2") {
+			if (this.configItem.kf2.toString().split(",").includes(this.user.UserName) && gameData.now_session == "Q2") {
 				showToast("赛程已关闭,无法进行交易!!");
 				this.loading = false;
 				return;
 			}
-			if (this.configItem.kf3.split(",").includes(this.user.UserName) && gameData.now_session == "Q3") {
+			if (this.configItem.kf3.toString().split(",").includes(this.user.UserName) && gameData.now_session == "Q3") {
 				showToast("赛程已关闭,无法进行交易!!");
 				this.loading = false;
 				return;
 			}
-			if (this.configItem.kf4.split(",").includes(this.user.UserName) && (gameData.now_session == "Q3" || gameData.now_session == "Q4" || this.bettingOrderData["mbTeam"].includes("加时"))) {
+			if (this.configItem.kf4.toString().split(",").includes(this.user.UserName) && (gameData.now_session == "Q3" || gameData.now_session == "Q4" || this.bettingOrderData["mbTeam"].includes("加时"))) {
 				showToast("赛程已关闭,无法进行交易!!");
 				this.loading = false;
 				return;

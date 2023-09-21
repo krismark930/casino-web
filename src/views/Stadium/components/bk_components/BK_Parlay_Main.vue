@@ -278,7 +278,7 @@ export default defineComponent({
 										type: item["MB_P_Dime_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDown: false,
-										text: item["MB_P_Dime"] == "" ? "" : "大 " + item["MB_P_Dime"].split("O")[1],
+										text: item["MB_P_Dime"] == "" ? "" : "大 " + item["MB_P_Dime"].toString().split("O")[1],
 										num: item["MB_P_Dime_Rate"] == 0 ? 0 : (Number(item['MB_P_Dime_Rate'])).toFixed(2)
 									},
 									{
@@ -335,7 +335,7 @@ export default defineComponent({
 										type: item["TG_P_Dime_Rate"] == 0 ? 2 : 1,
 										colorChangeUp: false,
 										colorChangeDown: false,
-										text: item["TG_P_Dime"] == "" ? "" : "小 " + item["TG_P_Dime"].split("U")[1],
+										text: item["TG_P_Dime"] == "" ? "" : "小 " + item["TG_P_Dime"].toString().split("U")[1],
 										num: item["TG_P_Dime_Rate"] == 0 ? 0 : (Number(item['TG_P_Dime_Rate'])).toFixed(2)
 									},
 									{
