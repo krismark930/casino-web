@@ -751,22 +751,22 @@ export default defineComponent({
 							}
 
 							this.changedFTDataList[i]["gameList"][j]["cornerList"][0]["nums"][0]["type"] = data["IOR_ROUC_CN"] == 0 ? 2 : 1
-							this.changedFTDataList[i]["gameList"][j]["cornerList"][0]["nums"][0]["text"] = "大" + data["RATIO_ROUO_CN"].split("O")[1]
+							this.changedFTDataList[i]["gameList"][j]["cornerList"][0]["nums"][0]["text"] = data["RATIO_ROUO_CN"].toString().includes("O") ? "大" + data["RATIO_ROUO_CN"].toString().split("O")[1] : "大" + data["RATIO_ROUO_CN"].toString()
 							this.changedFTDataList[i]["gameList"][j]["cornerList"][0]["nums"][0]["num"] = data["IOR_ROUC_CN"] == 0 ? 0 : (Number(data["IOR_ROUC_CN"])).toFixed(2)
 							this.changedFTDataList[i]["gameList"][j]["cornerList"][0]["nums"][1]["type"] = data["IOR_REOE_CN"] == 0 ? 2 : 1
 							this.changedFTDataList[i]["gameList"][j]["cornerList"][0]["nums"][1]["num"] = data["IOR_REOE_CN"] == 0 ? 0 : (Number(data['IOR_REOE_CN'])).toFixed(2);
 							this.changedFTDataList[i]["gameList"][j]["cornerList"][0]["nums"][2]["type"] = data["IOR_HROUC_CN"] == 0 ? 2 : 1
-							this.changedFTDataList[i]["gameList"][j]["cornerList"][0]["nums"][2]["text"] = "大" + data["RATIO_HROUO_CN"].split("O")[1];
+							this.changedFTDataList[i]["gameList"][j]["cornerList"][0]["nums"][2]["text"] = data["RATIO_HROUO_CN"].toString().includes("O") ? "大" + data["RATIO_HROUO_CN"].toString().split("O")[1] : "大" + data["RATIO_HROUO_CN"].toString();
 							this.changedFTDataList[i]["gameList"][j]["cornerList"][0]["nums"][2]["num"] = data["IOR_HROUC_CN"] == 0 ? 0 : (Number(data["IOR_HROUC_CN"])).toFixed(2);
 							this.changedFTDataList[i]["gameList"][j]["cornerList"][0]["nums"][3]["type"] = data["IOR_HREOE_CN"] == 0 ? 2 : 1
 							this.changedFTDataList[i]["gameList"][j]["cornerList"][0]["nums"][3]["num"] = data["IOR_HREOE_CN"] == 0 ? 0 : Number(data['IOR_HREOE_CN']).toFixed(2)
 							this.changedFTDataList[i]["gameList"][j]["cornerList"][1]["nums"][0]["type"] = data["IOR_ROUH_CN"] == 0 ? 2 : 1
-							this.changedFTDataList[i]["gameList"][j]["cornerList"][1]["nums"][0]["text"] = "小" + data["RATIO_ROUU_CN"].split("U")[1]
+							this.changedFTDataList[i]["gameList"][j]["cornerList"][1]["nums"][0]["text"] = data["RATIO_ROUU_CN"].toString().includes("U") ? "小" + data["RATIO_ROUU_CN"].toString().split("U")[1] : "小" + data["RATIO_ROUU_CN"].toString()
 							this.changedFTDataList[i]["gameList"][j]["cornerList"][1]["nums"][0]["num"] = data["IOR_ROUH_CN"] == 0 ? 0 : (Number(data["IOR_ROUH_CN"])).toFixed(2)
 							this.changedFTDataList[i]["gameList"][j]["cornerList"][1]["nums"][1]["type"] = data["IOR_REOO_CN"] == 0 ? 2 : 1
 							this.changedFTDataList[i]["gameList"][j]["cornerList"][1]["nums"][1]["num"] = data["IOR_REOO_CN"] == 0 ? 0 : (Number(data['IOR_REOO_CN'])).toFixed(2)
 							this.changedFTDataList[i]["gameList"][j]["cornerList"][1]["nums"][2]["type"] = data["IOR_HROUH_CN"] == 0 ? 2 : 1
-							this.changedFTDataList[i]["gameList"][j]["cornerList"][1]["nums"][2]["text"] = "小" + data["RATIO_HROUU_CN"].split("U")[1]
+							this.changedFTDataList[i]["gameList"][j]["cornerList"][1]["nums"][2]["text"] = data["RATIO_HROUU_CN"].toString().includes("U") ? "小" + data["RATIO_HROUU_CN"].toString().split("U")[1] : "小" + data["RATIO_HROUU_CN"].toString()
 							this.changedFTDataList[i]["gameList"][j]["cornerList"][1]["nums"][2]["num"] = data["IOR_HROUH_CN"] == 0 ? 0 : Number(data["IOR_HROUH_CN"]).toFixed(2)
 							this.changedFTDataList[i]["gameList"][j]["cornerList"][1]["nums"][3]["type"] = data["IOR_HREOO_CN"] == 0 ? 2 : 1
 							this.changedFTDataList[i]["gameList"][j]["cornerList"][1]["nums"][3]["num"] = data["IOR_HREOO_CN"] == 0 ? 0 : Number(data['IOR_HREOO_CN']).toFixed(2)
@@ -1042,7 +1042,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["MB_Dime_RB"] == "" ? "" : "大 " + item["MB_Dime_RB"].split("O")[1],
+												text: item["MB_Dime_RB"] == "" ? "" : item["MB_Dime_RB"].toString().includes("O") ? "大 " + item["MB_Dime_RB"].toString().split("O")[1] : "大 " + item["MB_Dime_RB"].toString(),
 												num: item["MB_Dime_Rate_RB"] == 0 ? 0 : (Number(item['MB_Dime_Rate_RB'])).toFixed(2)
 											},
 											{
@@ -1051,7 +1051,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["MB_Dime_RB_1"] == "" ? "" : "大 " + item["MB_Dime_RB_1"].split("O")[1],
+												text: item["MB_Dime_RB_1"] == "" ? "" : item["MB_Dime_RB_1"].toString().includes("O") ? "大 " + item["MB_Dime_RB_1"].toString().split("O")[1] : "大 " + item["MB_Dime_RB_1"].toString(),
 												num: item["MB_Dime_Rate_RB_1"] == 0 ? 0 : (Number(item['MB_Dime_Rate_RB_1'])).toFixed(2)
 											},
 											{
@@ -1060,7 +1060,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["MB_Dime_RB_2"] == "" ? "" : "大 " + item["MB_Dime_RB_2"].split("O")[1],
+												text: item["MB_Dime_RB_2"] == "" ? "" : item["MB_Dime_RB_2"].toString().includes("O") ? "大 " + item["MB_Dime_RB_2"].toString().split("O")[1] : "大 " + item["MB_Dime_RB_2"].toString(),
 												num: item["MB_Dime_Rate_RB_2"] == 0 ? 0 : (Number(item['MB_Dime_Rate_RB_2'])).toFixed(2)
 											},
 											{
@@ -1069,7 +1069,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["MB_Dime_RB_3"] == "" ? "" : "大 " + item["MB_Dime_RB_3"].split("O")[1],
+												text: item["MB_Dime_RB_3"] == "" ? "" : item["MB_Dime_RB_3"].toString().includes("O") ? "大 " + item["MB_Dime_RB_3"].toString().split("O")[1] : "大 " + item["MB_Dime_RB_3"].toString(),
 												num: item["MB_Dime_Rate_RB_3"] == 0 ? 0 : (Number(item['MB_Dime_Rate_RB_3'])).toFixed(2)
 											},
 										]
@@ -1084,7 +1084,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["TG_Dime_RB"] == "" ? "" : "小 " + item["TG_Dime_RB"].split("U")[1],
+												text: item["TG_Dime_RB"] == "" ? "" : item["TG_Dime_RB"].toString().includes("U") ? "小 " + item["TG_Dime_RB"].toString().split("U")[1] : "小 " + item["TG_Dime_RB"].toString(),
 												num: item["TG_Dime_Rate_RB"] == 0 ? 0 : (Number(item['TG_Dime_Rate_RB'])).toFixed(2)
 											},
 											{
@@ -1093,7 +1093,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["TG_Dime_RB_1"] == "" ? "" : "小 " + item["TG_Dime_RB_1"].split("U")[1],
+												text: item["TG_Dime_RB_1"] == "" ? "" : item["TG_Dime_RB_1"].toString().includes("U") ? "小 " + item["TG_Dime_RB_1"].toString().split("U")[1] : "小 " + item["TG_Dime_RB_1"].toString(),
 												num: item["TG_Dime_Rate_RB_1"] == 0 ? 0 : (Number(item['TG_Dime_Rate_RB_1'])).toFixed(2)
 											},
 											{
@@ -1102,7 +1102,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["TG_Dime_RB_2"] == "" ? "" : "小 " + item["TG_Dime_RB_2"].split("U")[1],
+												text: item["TG_Dime_RB_2"] == "" ? "" : item["TG_Dime_RB_2"].toString().includes("U") ? "小 " + item["TG_Dime_RB_2"].toString().split("U")[1] : "小 " + item["TG_Dime_RB_2"].toString(),
 												num: item["TG_Dime_Rate_RB_2"] == "" ? 0 : (Number(item['TG_Dime_Rate_RB_2'])).toFixed(2)
 											},
 											{
@@ -1111,7 +1111,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["TG_Dime_RB_3"] == "" ? "" : "小 " + item["TG_Dime_RB_3"].split("U")[1],
+												text: item["TG_Dime_RB_3"] == "" ? "" : item["TG_Dime_RB_3"].toString().includes("U") ? "小 " + item["TG_Dime_RB_3"].toString().split("U")[1] : "小 " + item["TG_Dime_RB_3"].toString(),
 												num: item["TG_Dime_Rate_RB_3"] == "" ? 0 : (Number(item['TG_Dime_Rate_RB_3'])).toFixed(2)
 											},
 										]
@@ -1136,7 +1136,7 @@ export default defineComponent({
 											type: item["MB_Dime_Rate_RB_CN"] == "" ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["MB_Dime_RB_CN"] == "" ? "" : "大 " + item["MB_Dime_RB_CN"].split("O")[1],
+											text: item["MB_Dime_RB_CN"] == "" ? "" : item["MB_Dime_RB_CN"].toString().includes("O") ? "大 " + item["MB_Dime_RB_CN"].toString().split("O")[1] : "大 " + item["MB_Dime_RB_CN"].toString(),
 											num: item["MB_Dime_Rate_RB_CN"] == "" ? 0 : (Number(item['MB_Dime_Rate_RB_CN'])).toFixed(2)
 										},
 										{
@@ -1156,7 +1156,7 @@ export default defineComponent({
 											type: item["MB_Dime_Rate_RB_H_CN"] == "" ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["MB_Dime_RB_H_CN"] == "" ? "" : "大 " + item["MB_Dime_RB_H_CN"].split("O")[1],
+											text: item["MB_Dime_RB_H_CN"] == "" ? "" : item["MB_Dime_RB_H_CN"].toString().includes("O") ? "大 " + item["MB_Dime_RB_H_CN"].toString().split("O")[1] : "大 " + item["MB_Dime_RB_H_CN"].toString(),
 											num: item["MB_Dime_Rate_RB_H_CN"] == "" ? 0 : (Number(item['MB_Dime_Rate_RB_H_CN'])).toFixed(2)
 										},
 										{
@@ -1182,7 +1182,7 @@ export default defineComponent({
 											type: item["TG_Dime_Rate_RB_CN"] == "" ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["TG_Dime_RB_CN"] == "" ? "" : "小 " + item["TG_Dime_RB_CN"].split("U")[1],
+											text: item["TG_Dime_RB_CN"] == "" ? "" : item["TG_Dime_RB_CN"].toString().includes("U") ? "小 " + item["TG_Dime_RB_CN"].toString().split("U")[1] : "小 " + item["TG_Dime_RB_CN"].toString(),
 											num: item["TG_Dime_Rate_RB_CN"] == "" ? 0 : (Number(item['TG_Dime_Rate_RB_CN'])).toFixed(2)
 										},
 										{
@@ -1202,7 +1202,7 @@ export default defineComponent({
 											type: item["TG_Dime_Rate_RB_H_CN"] == "" ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["TG_Dime_RB_H_CN"] == "" ? "" : "小 " + item["TG_Dime_RB_H_CN"].split("U")[1],
+											text: item["TG_Dime_RB_H_CN"] == "" ? "" : item["TG_Dime_RB_H_CN"].toString().includes("U") ? "小 " + item["TG_Dime_RB_H_CN"].toString().split("U")[1] : "小 " + item["TG_Dime_RB_H_CN"].toString(),
 											num: item["TG_Dime_Rate_RB_H_CN"] == "" ? 0 : (Number(item['TG_Dime_Rate_RB_H_CN'])).toFixed(2)
 										},
 										{
@@ -1328,7 +1328,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["MB_Dime"] == "" || item["MB_Dime"] == undefined ? "" : "大 " + item["MB_Dime"].split("O")[1],
+												text: item["MB_Dime"] == "" || item["MB_Dime"] == undefined ? "" : item["MB_Dime"].toString().includes("O") ? "大 " + item["MB_Dime"].toString().split("O")[1] : "大 " + item["MB_Dime"].toString(),
 												num: item["MB_Dime_Rate"] == 0 || item["MB_Dime_Rate"] == undefined ? 0 : (Number(item['MB_Dime_Rate'])).toFixed(2)
 											},
 											{
@@ -1337,7 +1337,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["MB_Dime_1"] == "" || item["MB_Dime_1"] == undefined ? "" : "大 " + item["MB_Dime_1"].split("O")[1],
+												text: item["MB_Dime_1"] == "" || item["MB_Dime_1"] == undefined ? "" : item["MB_Dime_1"].toString().includes("O") ? "大 " + item["MB_Dime_1"].toString().split("O")[1] : "大 " + item["MB_Dime_1"].toString(),
 												num: item["MB_Dime_Rate_1"] == 0 || item["MB_Dime_Rate_1"] == undefined ? 0 : (Number(item['MB_Dime_Rate_1'])).toFixed(2)
 											},
 											{
@@ -1346,7 +1346,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["MB_Dime_2"] == "" || item["MB_Dime_2"] == undefined ? "" : "大 " + item["MB_Dime_2"].split("O")[1],
+												text: item["MB_Dime_2"] == "" || item["MB_Dime_2"] == undefined ? "" : item["MB_Dime_2"].toString().includes("O") ? "大 " + item["MB_Dime_2"].toString().split("O")[1] : "大 " + item["MB_Dime_2"].toString(),
 												num: item["MB_Dime_Rate_2"] == 0 || item["MB_Dime_Rate_2"] == undefined ? 0 : (Number(item['MB_Dime_Rate_2'])).toFixed(2)
 											},
 											{
@@ -1355,7 +1355,7 @@ export default defineComponent({
 												bettingType: "H",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["MB_Dime_3"] == "" || item["MB_Dime_3"] == undefined ? "" : "大 " + item["MB_Dime_3"].split("O")[1],
+												text: item["MB_Dime_3"] == "" || item["MB_Dime_3"] == undefined ? "" : item["MB_Dime_3"].toString().includes("O") ? "大 " + item["MB_Dime_3"].toString().split("O")[1] : "大 " + item["MB_Dime_3"].toString(),
 												num: item["MB_Dime_Rate_3"] == 0 || item["MB_Dime_Rate_3"] == undefined ? 0 : (Number(item['MB_Dime_Rate_3'])).toFixed(2)
 											},
 										]
@@ -1369,7 +1369,7 @@ export default defineComponent({
 												bettingType: "C",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["TG_Dime"] == "" || item["TG_Dime"] == undefined ? "" : "小 " + item["TG_Dime"].split("U")[1],
+												text: item["TG_Dime"] == "" || item["TG_Dime"] == undefined ? "" : item["TG_Dime"].toString().includes("U") ? "小 " + item["TG_Dime"].toString().split("U")[1] : "小 " + item["TG_Dime"].toString(),
 												num: item["TG_Dime_Rate"] == 0 || item["TG_Dime_Rate"] == undefined ? 0 : (Number(item['TG_Dime_Rate'])).toFixed(2)
 											},
 											{
@@ -1378,7 +1378,7 @@ export default defineComponent({
 												bettingType: "C",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["TG_Dime_1"] == "" || item["TG_Dime_1"] == undefined ? "" : "小 " + item["TG_Dime_1"].split("U")[1],
+												text: item["TG_Dime_1"] == "" || item["TG_Dime_1"] == undefined ? "" : item["TG_Dime_1"].toString().includes("U") ? "小 " + item["TG_Dime_1"].toString().split("U")[1] : "小 " + item["TG_Dime_1"].toString(),
 												num: item["TG_Dime_Rate_1"] == 0 || item["TG_Dime_Rate_1"] == undefined ? 0 : (Number(item['TG_Dime_Rate_1'])).toFixed(2)
 											},
 											{
@@ -1387,7 +1387,7 @@ export default defineComponent({
 												bettingType: "C",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["TG_Dime_2"] == "" || item["TG_Dime_2"] == undefined ? "" : "小 " + item["TG_Dime_2"].split("U")[1],
+												text: item["TG_Dime_2"] == "" || item["TG_Dime_2"] == undefined ? "" : item["TG_Dime_2"].toString().includes("U") ? "小 " + item["TG_Dime_2"].toString().split("U")[1] : "小 " + item["TG_Dime_2"].toString(),
 												num: item["TG_Dime_Rate_2"] == 0 || item["TG_Dime_Rate_2"] == undefined ? 0 : (Number(item['TG_Dime_Rate_2'])).toFixed(2)
 											},
 											{
@@ -1396,7 +1396,7 @@ export default defineComponent({
 												bettingType: "C",
 												colorChangeUp: false,
 												colorChangeDOwn: false,
-												text: item["TG_Dime_3"] == "" || item["TG_Dime_3"] == undefined ? "" : "小 " + item["TG_Dime_3"].split("U")[1],
+												text: item["TG_Dime_3"] == "" || item["TG_Dime_3"] == undefined ? "" : item["TG_Dime_3"].toString().includes("U") ? "小 " + item["TG_Dime_3"].toString().split("U")[1] : "小 " + item["TG_Dime_3"].toString(),
 												num: item["TG_Dime_Rate_3"] == 0 || item["TG_Dime_Rate_3"] == undefined ? 0 : (Number(item['TG_Dime_Rate_3'])).toFixed(2)
 											},
 										]
@@ -1428,7 +1428,7 @@ export default defineComponent({
 											type: item["MB_Dime_Rate_CN"] == 0 || item["MB_Dime_Rate_CN"] == undefined ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["MB_Dime_CN"] == "" || item["MB_Dime_CN"] == undefined ? "" : "大 " + item["MB_Dime_CN"].split("O")[1],
+											text: item["MB_Dime_CN"] == "" || item["MB_Dime_CN"] == undefined ? "" : item["MB_Dime_CN"].toString().includes("O") ? "大 " + item["MB_Dime_CN"].toString().split("O")[1] : "大 " + item["MB_Dime_CN"].toString(),
 											num: item["MB_Dime_Rate_CN"] == 0 || item["MB_Dime_Rate_CN"] == undefined ? 0 : (Number(item["MB_Dime_Rate_CN"])).toFixed(2),
 										},
 										{
@@ -1463,7 +1463,7 @@ export default defineComponent({
 											type: item["TG_Dime_Rate_CN"] == 0 || item["TG_Dime_Rate_CN"] == undefined ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["TG_Dime_CN"] == "" || item["TG_Dime_CN"] == undefined ? "" : "小 " + item["TG_Dime_CN"].split("U")[1],
+											text: item["TG_Dime_CN"] == "" || item["TG_Dime_CN"] == undefined ? "" : item["TG_Dime_CN"].toString().includes("U") ? "小 " + item["TG_Dime_CN"].toString().split("U")[1] : "小 " + item["TG_Dime_CN"].toString(),
 											num: item["TG_Dime_Rate_CN"] == 0 || item["TG_Dime_Rate_CN"] == undefined ? 0 : (Number(item["TG_Dime_Rate_CN"])).toFixed(2),
 										},
 										{
@@ -1648,7 +1648,7 @@ export default defineComponent({
 											type: item["MB_Dime_Rate_RB_H"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["MB_Dime_RB_H"] == "" ? "" : "大 " + item["MB_Dime_RB_H"].split("O")[1],
+											text: item["MB_Dime_RB_H"] == "" ? "" : item["MB_Dime_RB_H"].toString().includes("O") ? "大 " + item["MB_Dime_RB_H"].toString().split("O")[1] : "大 " + item["MB_Dime_RB_H"].toString(),
 											num: item["MB_Dime_Rate_RB_H"] == 0 ? 0 : (Number(item['MB_Dime_Rate_RB_H'])).toFixed(2)
 										},
 										{
@@ -1684,7 +1684,7 @@ export default defineComponent({
 											type: item["TG_Dime_Rate_RB_H"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["TG_Dime_RB_H"] == "" ? "" : "小 " + item["TG_Dime_RB_H"].split("U")[1],
+											text: item["TG_Dime_RB_H"] == "" ? "" : item["TG_Dime_RB_H"].toString().includes("U") ? "小 " + item["TG_Dime_RB_H"].toString().split("U")[1] : "小 " + item["TG_Dime_RB_H"].toString(),
 											num: item["TG_Dime_Rate_RB_H"] == 0 ? 0 : (Number(item['TG_Dime_Rate_RB_H'])).toFixed(2)
 										},
 										{
@@ -1887,7 +1887,7 @@ export default defineComponent({
 											type: item["MB_Dime_Rate_H"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["MB_Dime_H"] == "" ? "" : "大 " + item["MB_Dime_H"].split("O")[1],
+											text: item["MB_Dime_H"] == "" ? "" : item["MB_Dime_H"].toString().includes("O") ? "大 " + item["MB_Dime_H"].toString().split("O")[1] : "大 " + item["MB_Dime_H"].toString(),
 											num: item["MB_Dime_Rate_H"] == 0 ? 0 : (Number(item['MB_Dime_Rate_H'])).toFixed(2)
 										},
 										{
@@ -1934,7 +1934,7 @@ export default defineComponent({
 											type: item["TG_Dime_Rate_H"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["TG_Dime_H"] == "" ? "" : "小 " + item["TG_Dime_H"].split("U")[1],
+											text: item["TG_Dime_H"] == "" ? "" : item["TG_Dime_H"].toString().includes("U") ? "小 " + item["TG_Dime_H"].toString().split("U")[1] : "小 " + item["TG_Dime_H"].toString(),
 											num: item["TG_Dime_Rate_H"] == 0 ? 0 : (Number(item['TG_Dime_Rate_H'])).toFixed(2)
 										},
 										{
@@ -2299,7 +2299,7 @@ export default defineComponent({
 											type: item["MB_Dime_Rate_H"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["MB_Dime_H"] == "" ? "" : "大 " + item["MB_Dime_H"].split("O")[1],
+											text: item["MB_Dime_H"] == "" ? "" : item["MB_Dime_H"].toString().includes("O") ? "大 " + item["MB_Dime_H"].toString().split("O")[1] : "大 " + item["MB_Dime_H"].toString(),
 											num: item["MB_Dime_Rate_H"] == 0 ? 0 : (Number(item['MB_Dime_Rate_H'])).toFixed(2)
 										},
 										{
@@ -2346,7 +2346,7 @@ export default defineComponent({
 											type: item["TG_Dime_Rate_H"] == 0 ? 2 : 1,
 											colorChangeUp: false,
 											colorChangeDOwn: false,
-											text: item["TG_Dime_H"] == "" ? "" : "小 " + item["TG_Dime_H"].split("U")[1],
+											text: item["TG_Dime_H"] == "" ? "" : item["TG_Dime_H"].toString().includes("U") ? "小 " + item["TG_Dime_H"].toString().split("U")[1] : "小 " + item["TG_Dime_H"].toString(),
 											num: item["TG_Dime_Rate_H"] == 0 ? 0 : (Number(item['TG_Dime_Rate_H'])).toFixed(2)
 										},
 										{
@@ -2598,7 +2598,7 @@ export default defineComponent({
 					showToast("对不起,本场有下注金额最高:  RMB 0");
 					return;
 				}
-				
+
 				this.bettingType = "Inplay"
 				this.bettingOrderData["show_type"] = gameData.ShowTypeRB
 			} else {
