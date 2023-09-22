@@ -77,7 +77,7 @@
 
             <div class="text-[12px] pb-[60px] flex justify-center pt-[30px]">
                 <span class="text_21">{{ t('deposit_card.text_7') }}</span>
-                <span class="text-blue-300" @click="goServicePage">{{ t('deposit_card.text_8') }}</span>
+                <span class="text-blue-300" @click="goServicePage">{{ t('currency_recharge.text_11') }}</span>
                 <span class="text_23">&nbsp;{{ t('deposit_card.text_9') }}</span>
             </div>
         </div>

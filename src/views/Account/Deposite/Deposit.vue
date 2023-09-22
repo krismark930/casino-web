@@ -43,7 +43,7 @@
                             <div class="font-bold">开户人姓名: </div>
                             <div>{{ selectedAdminBank.alias }}</div>
                         </div>
-                        <div style="display: flex;" :style="{marginTop: active == 1 ? '2px' : '10px'}">
+                        <div style="display: flex;" :style="{ marginTop: active == 1 ? '2px' : '10px' }">
                             <div class="font-bold">银行名称: </div>
                             <div>{{ selectedAdminBank.bankname }}</div>
                         </div>
@@ -73,6 +73,7 @@ import CurrencyRecharge from './CurrencyRecharge.vue';
 import YebiCurrency from './YebiCurrency.vue';
 import { useDepositStore } from '@/stores/deposit';
 import { useAuthStore } from '@/stores/auth';
+import { useSysConfigStore } from '@/stores/sysConfig';
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
@@ -108,16 +109,15 @@ const cryptoList = ref([
     // },
     {
         id: 2,
-        icon: new URL('@/assets/images/deposit/bank-card.png', import.meta.url)
-            .href,
+        icon: new URL('@/assets/images/deposit/bank-card.png', import.meta.url).href,
         name: t('deposit.text_4'),
         new: false
     },
     {
         id: 4,
-        icon: new URL('@/assets/images/deposit/alipay.png', import.meta.url)
-            .href,
-        name: t('deposit.text_5'),
+        icon: new URL('@/assets/images/deposit/alipay.png', import.meta.url).href,
+        // name: t('deposit.text_5'),
+        name: t('currency_recharge.text_11'),
         new: false
     }
 ]);
@@ -133,6 +133,10 @@ const adminBankList = computed(() => {
         selectedAdminBank.value = getAdminBank.value[2]
     }
     return getAdminBank.value
+})
+const config = computed(() => {
+    const { getConfig } = storeToRefs(useSysConfigStore());
+    return getConfig.value
 })
 const changeCurrencyType = (type: number) => {
     currencyType.value = type;
@@ -161,10 +165,13 @@ const tokenList = ref([
     }
 ]);
 const selectCategory = (index: number, bank: any) => {
-    active.value = index;
-    if (bank.name === t('deposit.text_3')) {
+    if (bank.name === t('currency_recharge.text_11')) {
+        location.href = config.value.kf1;
+    } else if (bank.name === t('deposit.text_3')) {
+        active.value = index;
         setIsCrypto(true)
     } else {
+        active.value = index;
         setIsCrypto(false)
     }
 };
