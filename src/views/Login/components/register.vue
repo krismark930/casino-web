@@ -126,6 +126,10 @@ const errMessage = computed(() => {
 })
 
 const register = async () => {
+  var regex = /^[a-zA-Z0-9]+$/;
+  if (!regex.test(login_name.value)) {
+    showToast("请您用英文字母和数字填写登录账号。")
+  }
   await signUp(username.value, password.value, inviter_id.value ? inviter_id.value : '', phone_number.value, login_name.value);
   if (!success.value) {
     showToast(errMessage.value);

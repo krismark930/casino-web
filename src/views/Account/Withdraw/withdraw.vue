@@ -64,13 +64,14 @@
                 </div>
                 <p class="w-full h-[0.5px] bg-[#CBCBCB] my-[10px]"></p>
                 <div class="flex justify-start text-[15px] px-1 pt-1 mt-1 bg-white text-[#454558]">
-                    <div v-for="(item, index) in selectList" :key="index" @click="selectMainCategory(item.id)" class="px-2">
+                    <div v-for="(item, index) in selectList" :key="index" @click="selectMainCategory(item.id)" class="px-2 font-bold">
                         {{ item.name }}
                         <div class="flex justify-center mt-1">
                             <div :class="{ 'w-[36px] h-[2px] bg-[#01b3ff]': mainActive == item.id }">
                             </div>
                         </div>
                     </div>
+                    <div class="px-2 font-bold" @click="addBank">绑定账户</div>
                     <!-- <div class="text-wrapper_1 flex-row justify-between">
                     <span class="text_1">银行卡</span>
                     <span class="text_2">虚拟币账户</span>
@@ -425,8 +426,8 @@ const VerifyData = (active: number) => {
         return false;
     }
     if (amount.value != "") {
-        if (amount.value > user.value.Money) {
-            showToast(`${t('withdraw.text_40')}:${user.value.Money}`);
+        if (amount.value > user.value.total_money) {
+            showToast(`${t('withdraw.text_40')}:${user.value.total_money}`);
             return false;
         }
     }
