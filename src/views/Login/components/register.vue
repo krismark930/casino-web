@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="form_item">
+    <div class="form_item" :class="regex.test(login_name) ? '' : 'border-warning'">
       <img class="form_icon" src="@/assets/images/login/username.png" alt="" />
-      <input v-model="login_name" type="text" placeholder="请输入登陆帐号" />
+      <input v-model="login_name" type="text" placeholder="请输入登陆帐号" @change="handleLoginNameChange"/>
       <div>
         <img v-if="login_name" src="@/assets/images/login/clear.png" @click="clearLoginName" alt="" />
       </div>
@@ -37,6 +37,10 @@
         <img v-if="passwords" src="@/assets/images/login/see.png" @click="seePassword" alt="" />
         <img v-if="passwords" src="@/assets/images/login/clear.png" @click="clearPsssword" alt="" />
       </div>
+    </div>
+    <div class="form_item">
+      <img class="form_icon" src="@/assets/images/login/username.png" alt="" />
+      <input v-model="referral_code" type="text" placeholder="请输入您的邀请码" />
     </div>
     <div class="verification">
       <verification @onValidation="onValidation"></verification>
@@ -77,9 +81,9 @@ const {
 
 const { getSysConfigValue } = useSysConfigStore();
 
-const state = defineProps<{ inviter_id: string }>();
+const state = defineProps<{ referral_code: string }>();
 
-const { inviter_id } = toRefs(state)
+const { referral_code } = toRefs(state)
 
 const isVerification = ref(false);
 const checked = ref(false);
@@ -90,6 +94,7 @@ const password = ref("");
 const passwords = ref("");
 const passwordType = ref(false);
 const interval = ref(null);
+const regex = /^[a-zA-Z0-9]+$/; 
 
 const onValidation = (s: boolean) => {
   isVerification.value = s;
@@ -129,10 +134,20 @@ const register = async () => {
   var regex = /^[a-zA-Z0-9]+$/;
   if (!regex.test(login_name.value)) {
     showToast("请您用英文字母和数字填写登录账号。")
+    return;
   }
-  await signUp(username.value, password.value, inviter_id.value ? inviter_id.value : '', phone_number.value, login_name.value);
+  await signUp(username.value, password.value, referral_code.value ? referral_code.value : '', phone_number.value, login_name.value);
   if (!success.value) {
     showToast(errMessage.value);
+  }
+}
+
+
+const handleLoginNameChange = () => {
+  var regex = /^[a-zA-Z0-9]+$/;
+  if (!regex.test(login_name.value)) {
+    showToast("请您用英文字母和数字填写登录账号。")
+    return;
   }
 }
 
@@ -235,5 +250,9 @@ onUnmounted(() => {
   font-size: 14px;
   margin-top: 22px;
   margin-bottom: 80px;
+}
+
+.border-warning {
+  border-bottom: 0.02667rem solid #f00 !important;
 }
 </style>

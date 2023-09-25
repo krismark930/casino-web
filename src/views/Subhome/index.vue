@@ -11,7 +11,7 @@
 		<div class="money">
 			<div>
 				<span>余额</span>
-				<span>RMB {{ getUser != undefined ? getuser.total_money.toFixed(2) : 0 }}</span>
+				<span>RMB {{ getUser.id != undefined ? getUser.total_money.toFixed(2) : 0 }}</span>
 			</div>
 			<div>
 				<span>未结算注单</span>
@@ -189,7 +189,8 @@ const selectLang = (item: any) => {
 }
 onMounted(async () => {
 	const { dispatchNotBetScore } = subHomeStore();
-	if (getUser != undefined) {
+	console.log(getUser);
+	if (getUser.id != undefined) {
 		await dispatchNotBetScore(getToken.value);
 	}
 })

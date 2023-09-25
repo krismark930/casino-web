@@ -95,14 +95,14 @@ export const useAuthStore = defineStore({
         }
       }
     },
-    async signUp(username: string, password: string, inviter_id: string, phone_number: any, login_name: string) {
+    async signUp(username: string, password: string, referral_code: string, phone_number: any, login_name: string) {
       try {
         this.setSuccess(false);
         let url = config.api.SIGN_UP;
         let data = {
           UserName: username,
           password: password,
-          inviter_id: inviter_id,
+          referral_code: referral_code,
           phone_number: phone_number,
           login_name: login_name
         };

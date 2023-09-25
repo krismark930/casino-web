@@ -17,7 +17,7 @@
       </div>
       <div class="form_box">
         <login v-if="select == 1"></login>
-        <register v-if="select == 2" :inviter_id="inviter_id"></register>
+        <register v-if="select == 2" :referral_code="referral_code"></register>
       </div>
     </div>
   </div>
@@ -32,14 +32,14 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const select = ref(1);
-const inviter_id = ref('');
+const referral_code = ref('');
 
 onMounted(() => {
   const code = route.params.code;
   console.log(code);
   if(code){
     select.value = 2;
-    inviter_id.value = code;
+    referral_code.value = code;
   }
 })
 
