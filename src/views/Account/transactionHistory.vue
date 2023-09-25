@@ -100,7 +100,7 @@
                             <div>
                                 <p class="text-gray-800">{{ item.Gold }}</p>
                                 <p class="text-gray-300">
-                                    {{ item.Checked === 0 ? t('transaction_history.text_13') : t('transaction_history.text_14') }}
+                                    {{ item.status }}
                                 </p>
                             </div>
                             <img class="w-[7px] h-[13px] ml-2" src="@/assets/images/my/arrow-right.png" alt="arrow" />
